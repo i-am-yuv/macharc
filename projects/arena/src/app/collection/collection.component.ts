@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { MessageService } from '@splenta/vezo';
 import { GenericComponent } from '../utils/genericcomponent';
 import { Collection } from './collection';
@@ -13,6 +14,7 @@ import { CollectionService } from './collection.service';
 })
 export class CollectionComponent extends GenericComponent implements OnInit {
 
+
   form: FormGroup<any>;
   data: Collection[] = [];
   componentName: string = 'Collection';
@@ -20,7 +22,8 @@ export class CollectionComponent extends GenericComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     collectionService: CollectionService,
-    messageService: MessageService
+    messageService: MessageService,
+    private router: Router
   ) {
     super(collectionService, messageService);
     this.form = this.fb.group({
@@ -33,4 +36,7 @@ export class CollectionComponent extends GenericComponent implements OnInit {
     this.getAllData();
   }
 
+  editFields(collection: Collection) {
+    this.router.navigate(['/builder/fields/' + collection.id]);
+  }
 }

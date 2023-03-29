@@ -16,6 +16,8 @@ export class MicroserviceComponent extends GenericComponent implements OnInit {
   form: FormGroup;
   data: MicroService[] = [];
 
+  showGrid: boolean = true;
+
   constructor(
     private fb: FormBuilder,
     msService: MicroserviceService,

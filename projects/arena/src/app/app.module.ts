@@ -24,6 +24,9 @@ import { CollectionComponent } from './collection/collection.component';
 import { CollectionFormComponent } from './collection/collection-form/collection-form.component';
 import { WorkflowComponent } from './workflow/workflow.component';
 import { CardModule } from '@splenta/vezo/card';
+import { TextareaModule } from '@splenta/vezo/textarea';
+import { FieldsComponent } from './fields/fields.component';
+import { SelectModule } from '@splenta/vezo/select';
 
 @NgModule({
   declarations: [
@@ -35,7 +38,8 @@ import { CardModule } from '@splenta/vezo/card';
     DatasourceComponent,
     CollectionComponent,
     CollectionFormComponent,
-    WorkflowComponent
+    WorkflowComponent,
+    FieldsComponent
   ],
   imports: [
     BrowserModule,
@@ -53,7 +57,9 @@ import { CardModule } from '@splenta/vezo/card';
     TableModule,
     ButtonModule,
     ToastModule,
-    CardModule
+    SelectModule,
+    CardModule,
+    TextareaModule
   ],
   providers: [HttpClientModule, MessageService],
   bootstrap: [AppComponent]

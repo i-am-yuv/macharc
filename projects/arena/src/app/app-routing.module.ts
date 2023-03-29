@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CollectionComponent } from './collection/collection.component';
 import { DatasourceComponent } from './datasource/datasource.component';
+import { FieldsComponent } from './fields/fields.component';
 import { FrontComponent } from './front/front.component';
 import { LayoutComponent } from './layout/layout.component';
 import { MicroserviceComponent } from './microservice/microservice.component';
@@ -16,6 +17,7 @@ const routes: Routes = [
           { path: 'microservices', component: MicroserviceComponent },
           { path: 'datasources', component: DatasourceComponent },
           { path: 'collections', component: CollectionComponent },
+          { path: 'fields/:id', component: FieldsComponent },
           { path: 'workflows', component: WorkflowComponent },
         ]
       }

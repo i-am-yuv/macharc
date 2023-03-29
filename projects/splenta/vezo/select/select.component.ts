@@ -60,7 +60,7 @@ export class SelectComponent implements OnInit, ControlValueAccessor {
     this.markAsTouched();
     this.comboValue = { ...item };
     this.comboOpen = false;
-    this.onChange(this.comboValue);
+    this.onChange(this.comboValue.value);
   }
 
   clearCombo(event: any) {

@@ -15,12 +15,18 @@ export abstract class GenericComponent {
 
     abstract componentName: string;
 
+    pageNo?: number;
+    pageSize?: number;
+    sortField?: string;
+    sortDir?: string;
+    search?: string;
+
     constructor(dataService: GenericService, messageService: MessageService) {
         this.dataService = dataService;
         this.messageService = messageService;
     }
     getAllData() {
-        this.dataService.getAllData().then((res: any) => {
+        this.dataService.getAllData(this.pageNo, this.pageSize, this.sortField, this.sortDir, this.search).then((res: any) => {
             this.data = res.content;
         })
     }

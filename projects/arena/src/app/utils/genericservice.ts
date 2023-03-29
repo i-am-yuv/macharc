@@ -10,19 +10,36 @@ export abstract class GenericService {
 
     constructor(private http: HttpClient) { }
 
-    async getAllData() {
-        var url = this.apiurl + '/' + this.endpoint;
-        const res: any = await lastValueFrom(this.http.get<any>(url));
-        return res;
-    }
-    async getDataWithPagination(pageNo: number, pageSize: number, sortField: any, sortDir: any, search: string) {
-        var url = this.apiurl + '/' + this.endpoint + '/all?pageNo=' + pageNo + '&pageSize=' + pageSize + '&sortField=' + sortField + '&sortDir=' + sortDir + '&search=' + search;
+    // async getAllData() {
+    //     var url = this.apiurl + '/' + this.endpoint;
+    //     const res: any = await lastValueFrom(this.http.get<any>(url));
+    //     return res;
+    // }
+    async getAllData(pageNo?: number, pageSize?: number, sortField?: string, sortDir?: string, search?: string) {
+        var params = [];
+        if (pageNo) {
+            params.push('page=' + pageNo);
+        }
+        if (pageSize) {
+            params.push('size=' + pageSize);
+        }
+        if (sortField) {
+            params.push('sort=' + sortField + ',' + sortDir);
+        }
+        if (search) {
+            params.push('filter=' + search);
+        }
+        var pageFilter = '';
+        if (params.length > 0) {
+            pageFilter += '?' + params.join('&');
+        }
+        var url = this.apiurl + '/' + this.endpoint + pageFilter;
         const res = await lastValueFrom(this.http.get<any>(url));
         return res;
     }
 
     async getData(data: any) {
-        var url = this.apiurl + '/' + this.endpoint + encodeURIComponent(data.id!);
+        var url = this.apiurl + '/' + this.endpoint + '/' + encodeURIComponent(data.id!);
         const res = await lastValueFrom(this.http.get<any>(url));
         return res;
     }
@@ -38,7 +55,7 @@ export abstract class GenericService {
         return res;
     }
     async deleteData(data: any) {
-        var url = this.apiurl + '/' + this.endpoint + encodeURIComponent(data.id!);
+        var url = this.apiurl + '/' + this.endpoint + '/' + encodeURIComponent(data.id!);
         const res = await lastValueFrom(this.http.delete<any>(url));
         return res;
     }

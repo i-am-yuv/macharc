@@ -16,7 +16,7 @@
             <th class="w-4"><input type="checkbox" class="w-4 h-4" /></th>
             <th>Collection Name</th>
             <th> Custom Table Name</th>
-            <th [width]="100">Actions</th>
+            <th [width]="150">Actions</th>
         </tr>
     </ng-template>
     <ng-template vTemplate="body">
@@ -25,6 +25,8 @@
             <td>{{ ds.collectionName }}</td>
             <td>{{ ds.customTableName }}</td>
             <td>
+                <vezo-icon icon="queueList" (click)="editFields(ds)"
+                    className="mr-5 w-4 h-4 text-purple-400 cursor-pointer"></vezo-icon>
                 <vezo-icon icon="pencil" (click)="editData(ds)"
                     className="mr-5 w-4 h-4 text-indigo-400 cursor-pointer"></vezo-icon>
                 <vezo-icon icon="trash" (click)="deleteData(ds)"
