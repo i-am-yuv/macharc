@@ -2,6 +2,14 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "paths": {
+      "@splenta/vezo/*": [
+        "projects/splenta/vezo/*"
+      ],
+      "@splenta/vezo": [
+        "dist/splenta/vezo"
+      ]
+    },
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,

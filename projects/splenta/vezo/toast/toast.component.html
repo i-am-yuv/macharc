@@ -1,0 +1,25 @@
+<div class="absolute right-3 top-3 max-w-lg">
+    <div class="rounded" *ngFor="let msg of messages; let i = index">
+        <div class="grid grid-cols-6 justify-items-stretch mb-3 border rounded"
+            [ngClass]="{ 'text-indigo-500 bg-indigo-50 border-indigo-500': msg.severity == 'info', 'text-orange-500 bg-orange-50 border-orange-500': msg.severity == 'warn', 'text-red-500 bg-red-50 border-red-500': msg.severity == 'error', 'text-green-500 bg-green-50 border-green-500': msg.severity == 'success' }">
+            <div class="col-span-1">
+                <div class="text-center p-5">
+                    <vezo-icon
+                        [icon]="( msg.severity == 'info' ? 'informationCircle' :  msg.severity == 'warn' ? 'exclamationTriangle' : msg.severity == 'error' ? 'xCircle': 'checkCircle' )"></vezo-icon>
+                </div>
+            </div>
+            <div class="col-span-4 p-3">
+                <div class="font-semibold text-left">{{ msg.summary }}</div>
+                <div class="p-toast-detail text-left">{{ msg.detail }}</div>
+            </div>
+            <div class="col-span-1 p-5">
+                <div class="text-center">
+                    <button (click)="onMessageClose($event)" (keydown.enter)="onMessageClose($event)"
+                        *ngIf="msg.closable !== false">
+                        <vezo-icon icon="x-mark"></vezo-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

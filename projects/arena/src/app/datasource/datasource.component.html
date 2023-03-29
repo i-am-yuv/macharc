@@ -1,0 +1,55 @@
+<vezo-table [data]="data">
+    <ng-template vTemplate="caption">
+        <div class="grid grid-cols-2 justify-content items-center">
+            <div class="text-xl">DATA SOURCES</div>
+            <div class="text-right">
+                <vezo-button label="Add New Data" icon="plus" className="mr-2" (click)="addData()"></vezo-button>
+                <vezo-button label="Filter" icon="funnel" className="bg-green-100"></vezo-button>
+            </div>
+        </div>
+
+    </ng-template>
+    <ng-template vTemplate="header">
+        <tr>
+            <th class="w-4"><input type="checkbox" class="w-4 h-4" /></th>
+            <th>Data Source Name</th>
+            <th> DB URL</th>
+            <th [width]="100">Actions</th>
+        </tr>
+    </ng-template>
+    <ng-template vTemplate="body">
+        <tr *ngFor="let ds of data">
+            <td><input type="checkbox" class="w-4 h-4" /></td>
+            <td>{{ ds.dataSourceName }}</td>
+            <td>{{ ds.dbUrl }}</td>
+            <td>
+                <vezo-icon icon="pencil" (click)="editData(ds)"
+                    className="mr-5 w-4 h-4 text-indigo-400 cursor-pointer"></vezo-icon>
+                <vezo-icon icon="trash" (click)="deleteData(ds)"
+                    className="w-4 h-4 text-red-400 cursor-pointer"></vezo-icon>
+            </td>
+        </tr>
+    </ng-template>
+</vezo-table>
+
+
+
+
+<vezo-modal [(visible)]="visible">
+    <ng-template vTemplate="header">Data</ng-template>
+    <ng-template vTemplate="content">
+        <form [formGroup]="form">
+            <vezo-input label="Data Source Name" formControlName="dataSourceName"></vezo-input>
+            <error-message [controlName]="form.controls['dataSourceName']"></error-message>
+            <vezo-input label="DB URL" formControlName="dbUrl"></vezo-input>
+            <error-message [controlName]="form.controls['dbUrl']"></error-message>
+        </form>
+    </ng-template>
+    <ng-template vTemplate="footer">
+        <div class="text-right">
+            <vezo-button label="Save" [disabled]="!form.valid" (click)="saveData()"></vezo-button>
+        </div>
+    </ng-template>
+</vezo-modal>
+
+<vezo-toast></vezo-toast>

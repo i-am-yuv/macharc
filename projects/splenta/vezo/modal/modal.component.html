@@ -1,0 +1,20 @@
+<div class="modal-overlay" *ngIf="visible">
+    <div class="modal-content rounded divide-y min-w-[50%]">
+        <div class="p-5 bg-gray-50 rounded grid grid-cols-3">
+            <div class="col-span-2 font-bold place-items-center">
+                <ng-container [ngTemplateOutlet]="header"></ng-container>
+            </div>
+            <div class="col-span-1 text-right">
+                <button (click)="closeModal()">
+                    <vezo-icon icon="x-mark"></vezo-icon>
+                </button>
+            </div>
+        </div>
+        <div class="p-5 min-h-[300px]">
+            <ng-container [ngTemplateOutlet]="content"></ng-container>
+        </div>
+        <div class="p-5 bg-gray-50 rounded min-h-[50px]" *ngIf="footer">
+            <ng-container [ngTemplateOutlet]="footer"></ng-container>
+        </div>
+    </div>
+</div>

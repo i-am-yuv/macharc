@@ -1,0 +1,79 @@
+<div class="py-3" *ngIf="this.caption">
+    <ng-container [ngTemplateOutlet]="caption"></ng-container>
+</div>
+<div *ngIf="data.length > 0">
+    <div class="bg-gray-200 text-slate-500" *ngIf="toolBar">
+        <div class="text-right">
+            <button class="hover:bg-gray-300 p-3 pr-3">
+                <vezo-icon icon="magnifying-glass" className="w-4 h-4">
+                </vezo-icon>
+            </button>
+            <button class="hover:bg-gray-300 p-3 pr-3">
+                <vezo-icon icon="cog-8-tooth" className="w-4 h-4">
+                </vezo-icon>
+            </button>
+            <button class="hover:bg-primary-dark bg-primary text-white p-3 pl-5 pr-5"> Add new </button>
+        </div>
+    </div>
+    <div class="bg-primary text-white" *ngIf="actionBar">
+        <div class="grid grid-cols-12">
+            <div class="col-span-6 p-3">
+                <p>1 item selected</p>
+            </div>
+
+            <div class="col-span-6 text-right">
+                <button class="hover:bg-primary-dark p-3 pr-3"> Delete <vezo-icon icon="trash" className="w-4 h-4">
+                    </vezo-icon>
+                </button>
+                <button class="hover:bg-primary-dark p-3">Save <vezo-icon icon="bookmark-square" className="w-4 h-4">
+                    </vezo-icon></button>
+                <button class="hover:bg-primary-dark p-3">Download <vezo-icon icon="arrow-down-tray"
+                        className="w-4 h-4 mb-1">
+                    </vezo-icon></button>
+                <vezo-icon icon="minus" className="rotate-90"></vezo-icon>
+                <button class="hover:bg-primary-dark p-3">Cancel </button>
+            </div>
+        </div>
+    </div>
+
+
+    <table class="border-collapse border table-auto w-full text-sm bg-white">
+        <thead class="border-b">
+            <ng-container [ngTemplateOutlet]="header"></ng-container>
+        </thead>
+        <tbody class="divide-y">
+            <ng-container [ngTemplateOutlet]="body"></ng-container>
+        </tbody>
+        <tfoot *ngIf="this.caption">
+            <ng-container [ngTemplateOutlet]="footer"></ng-container>
+        </tfoot>
+    </table>
+    <div class="pagination bg-indigo-50 text-indigo-500">
+        <div class="grid grid-cols-12">
+            <div class="col-span-4 p-3">
+                Items per page : <span class="ml-2">10 <vezo-icon icon="chevron-down" className="w-4 h-4"></vezo-icon>
+                </span>
+            </div>
+            <div class="col-span-4 p-3">1 -10 of 187 Items</div>
+            <div class="col-span-2 p-3"> 1 of <span class="ml-2 mr-2">19 <vezo-icon icon="chevron-down"
+                        className="w-4 h-4">
+                    </vezo-icon>
+                </span> pages</div>
+            <div class="col-span-2 text-right">
+                <button class="p-3 hover:bg-gray-200">
+                    <vezo-icon icon="chevron-left" className="w-4 h-4"></vezo-icon>
+                </button>
+                <button class="p-3 hover:bg-gray-200">
+                    <vezo-icon icon="chevron-right" className="w-4 h-4"></vezo-icon>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="grid place-items-center bg-white shadow-md h-96 p-5" *ngIf="data.length === 0">
+    <div class="text-center">
+        <vezo-icon icon="archiveBoxXMark" strokeWidth="0.5" className="w-24 h-24 text-indigo-300"></vezo-icon>
+        <div class="p-5"> No Records to display</div>
+    </div>
+</div>

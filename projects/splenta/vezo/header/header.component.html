@@ -1,0 +1,13 @@
+<div class="{{ className }}">
+    <div class="grid grid-cols-12">
+        <div class="col-span-3">
+            <ng-container [ngTemplateOutlet]="left"></ng-container>
+        </div>
+        <div class="col-span-6">
+            <ng-container [ngTemplateOutlet]="middle"></ng-container>
+        </div>
+        <div class="col-span-3">
+            <ng-container [ngTemplateOutlet]="right"></ng-container>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,20 @@
+<div class="modal-overlay" @insertRemoveTrigger *ngIf="visible">
+    <div class="modal-wrapper divide-y" @flyInOut>
+        <div class="p-3 grid grid-cols-3">
+            <div class="col-span-2">
+                <ng-container [ngTemplateOutlet]="header"></ng-container>
+            </div>
+            <div class="col-span-1 text-right">
+                <button (click)="closeModal()">
+                    <vezo-icon icon="x-mark"></vezo-icon>
+                </button>
+            </div>
+        </div>
+        <div class="p-3 modal-content">
+            <ng-container [ngTemplateOutlet]="content"></ng-container>
+        </div>
+        <div class="p-3" *ngIf="this.footer">
+            <ng-container [ngTemplateOutlet]="footer"></ng-container>
+        </div>
+    </div>
+</div>

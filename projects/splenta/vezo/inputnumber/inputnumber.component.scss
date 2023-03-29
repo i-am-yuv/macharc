@@ -1,0 +1,23 @@
+
+
+.number-wrapper {
+    position: relative;
+}
+
+.number-plus {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.number-minus {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    right: 2rem;
+}

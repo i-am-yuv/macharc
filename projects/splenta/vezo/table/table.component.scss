@@ -1,0 +1,18 @@
+
+
+:host::ng-deep{
+    thead, tfoot {
+        text-align: left;
+        color: #686666;
+    }
+    tr {
+        height: 2.5rem;
+    }
+    th, td {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    td {
+        color: #525252;
+    }
+}

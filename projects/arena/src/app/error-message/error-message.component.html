@@ -1,0 +1,5 @@
+<div class="text-xs text-red-400 mb2" [hidden]="controlName.valid || !controlName.dirty || controlName.touched">
+    <ng-container *ngFor="let errorMessage of listErrors(); let last=last;">
+        {{ last ? errorMessage: '' }}
+    </ng-container>
+</div>
