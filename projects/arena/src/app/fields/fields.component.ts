@@ -21,7 +21,7 @@ export class FieldsComponent extends GenericComponent implements OnInit {
   componentName: string = 'Field';
   collection: Collection = {};
   dataTypes: any[] = [
-    { label: 'String', value: 'string' },
+    { label: 'String', value: 'String' },
     { label: 'Integer', value: 'int' },
     { label: 'Decimal', value: 'BigDecimal' },
     { label: 'Boolean', value: 'boolean' },

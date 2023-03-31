@@ -17,6 +17,7 @@ const routes: Routes = [
           { path: 'microservices', component: MicroserviceComponent },
           { path: 'datasources', component: DatasourceComponent },
           { path: 'collections', component: CollectionComponent },
+          { path: 'collections/:id', component: CollectionComponent },
           { path: 'fields/:id', component: FieldsComponent },
           { path: 'workflows', component: WorkflowComponent },
         ]

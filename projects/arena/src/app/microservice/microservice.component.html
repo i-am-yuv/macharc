@@ -35,8 +35,12 @@
                 </p>
             </ng-template>
             <ng-template vTemplate="footer">
-                <div class="text-right p-3 border-t">
-                    <vezo-button label="Manage Fields" icon="queueList" (click)="addData()"></vezo-button>
+                <div class="text-center p-3 border-t">
+                    <a [routerLink]="['/builder/collections/'+ms.id]" class="text-indigo-400 cursor-pointer"><vezo-icon
+                            icon="queueList" className="w-4 h-4 mr-2">
+                        </vezo-icon>Manage
+                        Collections</a>
+                    <!-- <vezo-button label="Manage Collections" (click)="addData()"></vezo-button> -->
                 </div>
             </ng-template>
         </vezo-card>
