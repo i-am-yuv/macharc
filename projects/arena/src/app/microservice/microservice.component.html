@@ -30,9 +30,13 @@
 
             </ng-template>
             <ng-template vTemplate="body">
-                <p class="p-5 min-h-[12rem]">
-                    {{ ms.microServiceName }}
-                </p>
+                <div class="p-5 min-h-[14rem]">
+                    <p class="mb-4">{{ ms.microServiceName }}</p>
+                    <label class="text-xs uppercase text-gray-400">Package</label>
+                    <p class="mb-4">com.nexomaxer.neoledger</p>
+                    <label class="text-xs uppercase text-gray-400">Packaging</label>
+                    <p>Jar</p>
+                </div>
             </ng-template>
             <ng-template vTemplate="footer">
                 <div class="text-center p-3 border-t">
@@ -64,6 +68,8 @@
             <th class="w-4"><input type="checkbox" class="w-4 h-4" /></th>
             <th>Service Code</th>
             <th>Service Name</th>
+            <th>Package</th>
+            <th>Packaging</th>
             <th [width]="150">Actions</th>
         </tr>
     </ng-template>
@@ -72,6 +78,8 @@
             <td><input type="checkbox" class="w-4 h-4" /></td>
             <td>{{ ms.microServiceCode }}</td>
             <td>{{ ms.microServiceName }}</td>
+            <td>com.nexomaxer.neoledger</td>
+            <td>Jar</td>
             <td>
                 <vezo-icon icon="pencil" (click)="editData(ms)"
                     className="mr-5 w-4 h-4 text-indigo-400 cursor-pointer"></vezo-icon>

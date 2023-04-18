@@ -27,6 +27,22 @@ import { CardModule } from '@splenta/vezo/card';
 import { TextareaModule } from '@splenta/vezo/textarea';
 import { FieldsComponent } from './fields/fields.component';
 import { SelectModule } from '@splenta/vezo/select';
+import { WorkflowDesignerComponent } from './workflow/workflow-designer/workflow-designer.component';
+import { DispatcherComponent } from './dispatcher/dispatcher.component';
+import { ScreenComponent } from './screen/screen.component';
+import { DesignerComponent } from './screen/designer/designer.component';
+import { BlocksComponent } from './screen/blocks/blocks.component';
+import { DndModule } from 'ngx-drag-drop';
+import { CheckboxModule } from '@splenta/vezo/checkbox';
+import { SwitchModule } from '@splenta/vezo/switch';
+import { RadiobuttonModule } from '@splenta/vezo/radiobutton';
+import { TabsModule } from '@splenta/vezo/tabs';
+import { AccordionModule } from '@splenta/vezo/accordion';
+import { DatepickerModule } from '@splenta/vezo/datepicker';
+import { FileuploadModule } from '@splenta/vezo/fileupload';
+import { FlowComponent } from './flow/flow.component';
+import { MxflowComponent } from './workflow/mxflow/mxflow.component';
+import { SequentialWorkflowDesignerModule } from 'sequential-workflow-designer-angular';
 
 @NgModule({
   declarations: [
@@ -39,7 +55,14 @@ import { SelectModule } from '@splenta/vezo/select';
     CollectionComponent,
     CollectionFormComponent,
     WorkflowComponent,
-    FieldsComponent
+    FieldsComponent,
+    DispatcherComponent,
+    ScreenComponent,
+    BlocksComponent,
+    DesignerComponent,
+    WorkflowDesignerComponent,
+    FlowComponent,
+    MxflowComponent
   ],
   imports: [
     BrowserModule,
@@ -59,7 +82,17 @@ import { SelectModule } from '@splenta/vezo/select';
     ToastModule,
     SelectModule,
     CardModule,
-    TextareaModule
+    TextareaModule,
+    CheckboxModule,
+    SwitchModule,
+    RadiobuttonModule,
+    MenuModule,
+    DatepickerModule,
+    AccordionModule,
+    FileuploadModule,
+    TabsModule,
+    DndModule,
+    SequentialWorkflowDesignerModule
   ],
   providers: [HttpClientModule, MessageService],
   bootstrap: [AppComponent]

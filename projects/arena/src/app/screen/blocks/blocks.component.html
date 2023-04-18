@@ -1,0 +1,49 @@
+<ng-container *ngIf="block.name === 'button'">
+    <div class="text-{{ block.data?.align ? block.data.align : 'right' }}">
+        <vezo-button label="Button"></vezo-button>
+    </div>
+</ng-container>
+<ng-container *ngIf="block.name === 'input'">
+    <vezo-input label="Input Label"></vezo-input>
+</ng-container>
+<ng-container *ngIf="block.name === 'textarea'">
+    <vezo-textarea label="Textarea Label"></vezo-textarea>
+</ng-container>
+<ng-container *ngIf="block.name === 'dropdown'">
+    <vezo-select label="Dropdown Label"></vezo-select>
+</ng-container>
+<ng-container *ngIf="block.name === 'checkbox'">
+    <vezo-checkbox label="Checkbox Label"></vezo-checkbox>
+</ng-container>
+<ng-container *ngIf="block.name === 'radio'">
+    <vezo-radiobutton label="Radio Label"></vezo-radiobutton>
+</ng-container>
+<ng-container *ngIf="block.name === 'switch'">
+    <vezo-switch label="Switch Label"></vezo-switch>
+</ng-container>
+<ng-container *ngIf="block.name === 'table'">
+    <vezo-table [data]="[1,2,3,4,5,6,7,8,9,10]">
+        <ng-template vTemplate="caption">
+            Table
+        </ng-template>
+        <ng-template vTemplate="header">
+            <tr>
+                <th class="w-4"><input type="checkbox" class="w-4 h-4" /></th>
+                <th>Code</th>
+                <th>Name</th>
+                <th [width]="100">Actions</th>
+            </tr>
+        </ng-template>
+        <ng-template vTemplate="body">
+            <tr *ngFor="let i of [1,2,3,4,5,6,7,8,9,10]">
+                <td><input type="checkbox" class="w-4 h-4" /></td>
+                <td>{{ i }}</td>
+                <td>Name</td>
+                <td>
+                    <vezo-icon icon="pencil" className="mr-5 w-4 h-4 text-blue-400"></vezo-icon>
+                    <vezo-icon icon="trash" className="w-4 h-4 text-red-400"></vezo-icon>
+                </td>
+            </tr>
+        </ng-template>
+    </vezo-table>
+</ng-container>

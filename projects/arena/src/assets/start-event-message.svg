@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   height="47.994583"
+   width="48.000004"
+   version="1.1"
+   id="svg360"
+   sodipodi:docname="start-event-message.svg"
+   inkscape:version="1.2.1 (9c6d41e4, 2022-07-14)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs364" />
+  <sodipodi:namedview
+     id="namedview362"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="false"
+     inkscape:zoom="0.11523438"
+     inkscape:cx="932.88136"
+     inkscape:cy="928.54237"
+     inkscape:window-width="1309"
+     inkscape:window-height="456"
+     inkscape:window-x="0"
+     inkscape:window-y="25"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg360" />
+  <path
+     d="M 23.991863,0.00198496 C 14.556223,-0.12599104 5.4646728,5.946523 1.8856328,14.662733 c -3.738352,8.56396 -1.79594505,19.20251 4.74334,25.88159 6.2893602,6.76997 16.6518002,9.2548 25.3303602,6.08722 8.99422,-3.06276 15.63427,-11.89564 15.99522,-21.40238 0.60541,-9.34158 -4.8905,-18.66136 -13.30571,-22.73052 -3.2952,-1.64440204 -6.9749,-2.50192304 -10.65698,-2.49665804 z m 0,2.59393804 c 9.31958,-0.16208 18.18311,6.53249 20.58932,15.5359 2.5169,8.47979 -0.8875,18.29777 -8.19444,23.32015 -7.59019,5.57891 -18.84601,5.17529 -26.01365,-0.93786 C 3.1511928,34.756093 0.56608675,24.105483 4.2714128,15.659453 7.4829028,7.851363 15.544383,2.496803 23.991863,2.595923 Z m -10.88482,13.09814 v 16.60375 h 21.76964 c 0,-5.53459 0,-11.06917 0,-16.60375 -7.25654,0 -14.51309,0 -21.76964,0 z m 4.83597,2.59404 h 12.09592 c -2.14249,1.31836 -4.28517,4.21251 -6.4274,4.52828 -1.88944,-1.50951 -3.77898,-3.01889 -5.66852,-4.52828 z m 14.34288,1.52713 v 9.88854 c -5.52936,0 -11.0587,0 -16.58805,0 0,-3.29593 0,-6.59185 0,-9.88778 2.76386,2.2088 5.5276,4.41776 8.29159,6.62641 2.76561,-2.20891 5.53097,-4.41812 8.29646,-6.62717 z"
+     id="path358"
+     style="stroke-width:0.0259394" />
+</svg>

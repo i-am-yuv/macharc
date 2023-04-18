@@ -4,6 +4,7 @@ import { MessageService } from '@splenta/vezo';
 import { GenericComponent } from '../utils/genericcomponent';
 import { Workflow } from './workflow';
 import { WorkflowService } from './workflow.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-workflow',
@@ -18,7 +19,8 @@ export class WorkflowComponent extends GenericComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     wfService: WorkflowService,
-    messageService: MessageService) {
+    messageService: MessageService,
+    private router: Router) {
     super(wfService, messageService);
     this.form = this.fb.group({
       id: '',
@@ -29,4 +31,9 @@ export class WorkflowComponent extends GenericComponent implements OnInit {
   ngOnInit(): void {
     this.getAllData();
   }
+
+  showDesigner(wf: Workflow) {
+    this.router.navigate(['/builder/workflows/designer/' + wf.id]);
+  }
+
 }

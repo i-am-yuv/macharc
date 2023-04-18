@@ -3,8 +3,7 @@
         <div class="grid grid-cols-2 justify-content items-center">
             <div class="text-xl">WORKFLOWS</div>
             <div class="text-right">
-                <vezo-button label="Add New Microservice" icon="plus" className="mr-2"
-                    (click)="addData()"></vezo-button>
+                <vezo-button label="Add New Workflow" icon="plus" className="mr-2" (click)="addData()"></vezo-button>
                 <vezo-button label="Filter" icon="funnel" className="bg-green-100"></vezo-button>
             </div>
         </div>
@@ -15,7 +14,7 @@
             <th class="w-4"><input type="checkbox" class="w-4 h-4" /></th>
             <th>Workflow Code</th>
             <th>Workflow Name</th>
-            <th [width]="100">Actions</th>
+            <th [width]="150">Actions</th>
         </tr>
     </ng-template>
     <ng-template vTemplate="body">
@@ -24,6 +23,8 @@
             <td>{{ ms.workflowCode }}</td>
             <td>{{ ms.workflowName }}</td>
             <td>
+                <vezo-icon icon="queueList" (click)="showDesigner(ms)"
+                    className="mr-5 w-4 h-4 text-indigo-400 cursor-pointer"></vezo-icon>
                 <vezo-icon icon="pencil" (click)="editData(ms)"
                     className="mr-5 w-4 h-4 text-indigo-400 cursor-pointer"></vezo-icon>
                 <vezo-icon icon="trash" (click)="deleteData(ms)"
