@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./workflow.component.scss']
 })
 export class WorkflowComponent extends GenericComponent implements OnInit {
-  componentName: string = 'Microservice';
+  componentName: string = 'Workflow';
   form: FormGroup;
   data: Workflow[] = [];
 

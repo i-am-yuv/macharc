@@ -43,6 +43,10 @@ import { FileuploadModule } from '@splenta/vezo/fileupload';
 import { FlowComponent } from './flow/flow.component';
 import { MxflowComponent } from './workflow/mxflow/mxflow.component';
 import { SequentialWorkflowDesignerModule } from 'sequential-workflow-designer-angular';
+import { ProcessesComponent } from './processes/processes.component';
+import { MarketplaceComponent } from './marketplace/marketplace.component';
+import { ReleasesComponent } from './releases/releases.component';
+import { ApidocComponent } from './microservice/apidoc/apidoc.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +66,11 @@ import { SequentialWorkflowDesignerModule } from 'sequential-workflow-designer-a
     DesignerComponent,
     WorkflowDesignerComponent,
     FlowComponent,
-    MxflowComponent
+    MxflowComponent,
+    ProcessesComponent,
+    MarketplaceComponent,
+    ReleasesComponent,
+    ApidocComponent
   ],
   imports: [
     BrowserModule,

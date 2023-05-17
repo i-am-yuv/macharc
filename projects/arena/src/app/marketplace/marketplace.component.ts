@@ -1,18 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MessageService } from '@splenta/vezo';
 import { GenericComponent } from '../utils/genericcomponent';
-import { MicroService } from './microservice';
-import { MicroserviceService } from './microservice.service';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { MessageService } from '@splenta/vezo';
+import { MicroService } from '../microservice/microservice';
+import { MicroserviceService } from '../microservice/microservice.service';
 
 @Component({
-  selector: 'app-microservice',
-  templateUrl: './microservice.component.html',
-  styleUrls: ['./microservice.component.scss']
+  selector: 'app-marketplace',
+  templateUrl: './marketplace.component.html',
+  styleUrls: ['./marketplace.component.scss']
 })
-export class MicroserviceComponent extends GenericComponent implements OnInit {
+export class MarketplaceComponent extends GenericComponent implements OnInit {
 
-  componentName: string = 'Microservice';
+  componentName: string = 'Marketplace';
   form: FormGroup;
   data: MicroService[] = [];
 
@@ -27,7 +27,6 @@ export class MicroserviceComponent extends GenericComponent implements OnInit {
       id: '',
       microServiceCode: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
       microServiceName: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
-      packageName: ['']
     })
   }
   ngOnInit(): void {

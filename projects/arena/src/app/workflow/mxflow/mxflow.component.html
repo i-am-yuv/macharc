@@ -38,13 +38,21 @@
             <div class="props-block">
                 <div><b>Actions</b></div>
                 <div>
+                    <button (click)="undo()" class="action-btn">Undo</button>
                     <button (click)="sendBack()" class="action-btn">To Back</button>
-                    <button (click)="sendBack()" class="action-btn">Send Backward</button>
+                    <!-- <button (click)="sendBack()" class="action-btn">Send Backward</button> -->
                     <button (click)="bringFront()" class="action-btn">To Front</button>
-                    <button (click)="bringFront()" class="action-btn">Bring Forward</button>
-
+                    <!-- <button (click)="bringFront()" class="action-btn">Bring Forward</button> -->
+                    <button (click)="getXmlModel()" class="action-btn">Get XML</button>
                 </div>
             </div>
         </aside>
     </div>
 </div>
+<vezo-modal [(visible)]="showXml">
+    <ng-template vTemplate="header"> XML </ng-template>
+    <ng-template vTemplate="content">
+        {{ xmlData }}
+    </ng-template>
+    <ng-template vTemplate="footer"></ng-template>
+</vezo-modal>

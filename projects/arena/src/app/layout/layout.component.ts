@@ -20,10 +20,10 @@ export class LayoutComponent {
         // { label: 'Widgets', icon: 'clipboard', routerLink: ['/builder/widgets'] },
         // { label: 'Process', icon: 'clipboard', routerLink: ['/builder/processes'] },
         // { label: 'BPM', icon: 'clipboard', routerLink: ['/builder/flow'] },
-        { label: 'BPM Modeler', icon: 'clipboard', routerLink: ['/builder/workflows/mx'] },
+        { label: 'Process', icon: 'clipboard', routerLink: ['/builder/processes'] },
         { label: 'Workflows', icon: 'clipboard', routerLink: ['/builder/workflows'] },
-        { label: 'Releases', icon: 'clipboard', routerLink: ['/builder/releases'] },
-        { label: 'Integrations', icon: 'clipboard', routerLink: ['/builder/integrations'] },
+        { label: 'Releases', icon: 'clipboard', routerLink: ['/releases'] },
+        { label: 'Integrations', icon: 'clipboard', routerLink: ['/marketplace'] },
       ],
       showSubMenu: true
     },

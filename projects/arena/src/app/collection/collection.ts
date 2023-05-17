@@ -5,5 +5,8 @@ export interface Collection {
     collectionName?: string;
     customTableName?: string;
     cacheable?: boolean;
-    microService?: MicroService
+    microService?: MicroService;
+    crud?: boolean;
+    readonly?: boolean;
+    hasService?: boolean;
 }

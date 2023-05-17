@@ -1,0 +1,41 @@
+<div class="grid  grid-cols-4 gap-4">
+    <vezo-card className="bg-white" *ngFor="let ms of data">
+        <ng-template vTemplate="media">
+            <div class="grid grid-cols-5 items-center justify-content bg-indigo-50 hover:bg-indigo-100">
+                <div class="col-span-1 p-4">
+                    <div class="border border-indigo-500 rounded-full w-8 h-8 flex justify-center items-center">
+                        <p class="text-indigo-500">{{ ms.microServiceCode?.charAt(0) }}</p>
+                    </div>
+                </div>
+                <div class="col-span-3 pl-4">
+                    {{ ms.microServiceCode }}
+                </div>
+                <div class="col-span-1">
+                    <vezo-icon icon="arrowDownTray" className="text-indigo-400"></vezo-icon>
+                    <!-- <vezo-icon icon="ellipsisVertical" className="text-indigo-400"></vezo-icon> -->
+                </div>
+            </div>
+        </ng-template>
+        <ng-template vTemplate="header">
+
+        </ng-template>
+        <ng-template vTemplate="body">
+            <div class="p-5 min-h-[14rem]">
+                <p class="mb-4">{{ ms.microServiceName }}</p>
+                <label class="text-xs uppercase text-gray-400">Package</label>
+                <p class="mb-4">com.nexomaxer.neoledger</p>
+                <label class="text-xs uppercase text-gray-400">Packaging</label>
+                <p>Jar</p>
+            </div>
+        </ng-template>
+        <ng-template vTemplate="footer">
+            <div class="text-center p-3 border-t">
+                <a [routerLink]="['/builder/collections/'+ms.id]" class="text-indigo-400 cursor-pointer"><vezo-icon
+                        icon="queueList" className="w-4 h-4 mr-2">
+                    </vezo-icon>Manage
+                    Collections</a>
+                <!-- <vezo-button label="Manage Collections" (click)="addData()"></vezo-button> -->
+            </div>
+        </ng-template>
+    </vezo-card>
+</div>

@@ -10,8 +10,9 @@
         <!-- <ul class="menu indent-4 mt-3 mb-3" [@dropDownMenu] *ngIf="item.showSubMenu"> -->
         <ul class="menu mt-3 mb-3">
             <!-- <li *ngFor="let subitem of item.items" class="menu-item border-l pt-2 pb-2 hover:bg-gray-50 cursor-pointer"> -->
-            <li *ngFor="let subitem of item.items" class="menu-item pt-2 pb-2 hover:bg-gray-50 cursor-pointer">
-                <a [routerLink]="subitem.routerLink" class="align-baseline">
+            <li *ngFor="let subitem of item.items" [routerLink]="subitem.routerLink"
+                class="menu-item pt-2 pb-2 hover:bg-gray-50 cursor-pointer">
+                <a class="align-baseline">
                     <vezo-icon className="w-4 h-4" [icon]="subitem.icon"></vezo-icon> <span class="ml-2">{{
                         subitem.label }}</span>
                 </a>

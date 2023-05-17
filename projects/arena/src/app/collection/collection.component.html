@@ -15,7 +15,9 @@
         <tr>
             <th class="w-4"><input type="checkbox" class="w-4 h-4" /></th>
             <th>Collection Name</th>
-            <th> Custom Table Name</th>
+            <th>Custom Table Name</th>
+            <th>CRUD</th>
+            <th>Readonly</th>
             <th [width]="150">Actions</th>
         </tr>
     </ng-template>
@@ -24,6 +26,9 @@
             <td><input type="checkbox" class="w-4 h-4" /></td>
             <td>{{ ds.collectionName }}</td>
             <td>{{ ds.customTableName }}</td>
+            <td><span *ngIf="ds.crud"><vezo-icon icon="checkCircle" className="text-green-500"></vezo-icon></span>
+            <td><span *ngIf="ds.readonly"><vezo-icon icon="checkCircle" className="text-green-500"></vezo-icon></span>
+            </td>
             <td>
                 <vezo-icon icon="queueList" (click)="editFields(ds)"
                     className="mr-5 w-4 h-4 text-purple-400 cursor-pointer"></vezo-icon>
@@ -45,8 +50,13 @@
         <form [formGroup]="form">
             <vezo-input label="Collection Name" formControlName="collectionName"></vezo-input>
             <error-message [controlName]="form.controls['collectionName']"></error-message>
-            <vezo-input label="Collection Name" formControlName="customTableName"></vezo-input>
+            <vezo-input label="Custom Table Name" formControlName="customTableName"></vezo-input>
             <error-message [controlName]="form.controls['customTableName']"></error-message>
+            <vezo-checkbox formControlName="crud" label="Generate CRUD Endpoints"></vezo-checkbox>
+            <error-message [controlName]="form.controls['crud']"></error-message><br />
+            <vezo-checkbox formControlName="readonly" label="Generate Readonly Endpoints"></vezo-checkbox><br />
+            <vezo-checkbox formControlName="hasService"
+                label="Generate Service Class for Business Logic"></vezo-checkbox>
         </form>
     </ng-template>
     <ng-template vTemplate="footer">

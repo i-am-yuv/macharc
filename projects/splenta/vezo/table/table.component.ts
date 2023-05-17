@@ -8,6 +8,7 @@ import { VTemplateDirective } from '@splenta/vezo';
 })
 export class TableComponent implements OnInit {
 
+
   @ContentChildren(VTemplateDirective) templates!: QueryList<any>;
 
   @Input() actionBar = false;
@@ -23,6 +24,8 @@ export class TableComponent implements OnInit {
   body!: TemplateRef<any>;
 
   footer!: TemplateRef<any>;
+  showPageOpts: boolean = false;
+  @Input() pageSize: number = 10;
 
   constructor() { }
 
@@ -49,6 +52,15 @@ export class TableComponent implements OnInit {
           break;
       }
     })
+  }
+
+  selectOpts(opt: any) {
+    this.pageSize = opt;
+    this.showPageOpts = false;
+
+  }
+  closeOpts() {
+    this.showPageOpts = false;
   }
 }
 

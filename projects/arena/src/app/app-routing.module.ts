@@ -13,23 +13,35 @@ import { DesignerComponent } from './screen/designer/designer.component';
 import { ScreenComponent } from './screen/screen.component';
 import { FlowComponent } from './flow/flow.component';
 import { MxflowComponent } from './workflow/mxflow/mxflow.component';
+import { ProcessesComponent } from './processes/processes.component';
+import { MarketplaceComponent } from './marketplace/marketplace.component';
+import { ReleasesComponent } from './releases/releases.component';
+import { ApidocComponent } from './microservice/apidoc/apidoc.component';
 
 const routes: Routes = [
   {
     path: '', component: LayoutComponent, children: [
       { path: '', component: FrontComponent },
+      { path: 'releases', component: ReleasesComponent },
+      { path: 'marketplace', component: MarketplaceComponent },
       {
         path: 'builder', children: [
           { path: 'microservices', component: MicroserviceComponent },
+          { path: 'microservices/apidoc', component: ApidocComponent },
           { path: 'datasources', component: DatasourceComponent },
           { path: 'flow', component: FlowComponent },
           { path: 'collections', component: CollectionComponent },
           { path: 'collections/:id', component: CollectionComponent },
           { path: 'fields/:id', component: FieldsComponent },
           {
+            path: 'processes', component: DispatcherComponent, children: [
+              { path: '', component: ProcessesComponent },
+              { path: 'modeler/:id', component: MxflowComponent },
+            ]
+          },
+          {
             path: 'workflows', component: DispatcherComponent, children: [
               { path: '', component: WorkflowComponent },
-              { path: 'mx', component: MxflowComponent },
               { path: 'designer/:id', component: WorkflowDesignerComponent }
             ]
           },

@@ -62,14 +62,14 @@
                         <error-message [controlName]="form.controls['fieldName']"></error-message>
                     </div>
                     <div>
-                        <vezo-select label="Validation" formControlName="dataType" [items]="dataTypes"></vezo-select>
+                        <vezo-select label="Datatype" formControlName="dataType" [items]="dataTypes"></vezo-select>
                         <error-message [controlName]="form.controls['dataType']"></error-message>
                     </div>
                 </div>
-                <div>
+                <!-- <div>
                     <vezo-input label="Pattern" formControlName="fieldName"></vezo-input>
                     <error-message [controlName]="form.controls['fieldName']"></error-message>
-                </div>
+                </div> -->
                 <div class="my-2">
                     <label>Field Type</label>
                 </div>
@@ -197,7 +197,7 @@
 
                 </div>
                 <div class="text-right">
-                    <vezo-button label="Cancel" (click)="visible=false"></vezo-button>
+                    <vezo-button label="Cancel" (click)="visible=false" className="mr-2"></vezo-button>
                     <vezo-button label="Save" [disabled]="!form.valid" (click)="saveData()"></vezo-button>
                 </div>
             </form>
