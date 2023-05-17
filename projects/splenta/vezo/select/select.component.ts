@@ -28,7 +28,15 @@ export class SelectComponent implements OnInit, ControlValueAccessor {
 
   comboOpen: boolean = false;
 
-  comboValue: any = { label: '', value: '' };
+  comboValue: any = {};
+
+  isObj: boolean = false;
+
+  displayValue: string = '';
+
+  @Input() optionLabel: string = '';
+
+  @Input() optionValue: string = '';
 
   onChange = (_comboValue: any) => { };
 
@@ -58,9 +66,18 @@ export class SelectComponent implements OnInit, ControlValueAccessor {
   }
   selectComboItem(item: any) {
     this.markAsTouched();
-    this.comboValue = { ...item };
     this.comboOpen = false;
-    this.onChange(this.comboValue.value);
+    if (this.isObj) {
+      this.comboValue = { ...item };
+      this.displayValue = this.comboValue[this.optionLabel];
+      if (this.optionValue) {
+        this.comboValue = this.comboValue[this.optionValue];
+      }
+    } else {
+      this.displayValue = item;
+      this.comboValue = item;
+    }
+    this.onChange(this.comboValue);
   }
 
   clearCombo(event: any) {
@@ -71,10 +88,30 @@ export class SelectComponent implements OnInit, ControlValueAccessor {
   }
 
   writeValue(item: any) {
-    if (!item) {
-      item = { label: '', value: '' }
+    this.isObj = false;
+    if (Array.isArray(this.items) && this.items.length > 0 && typeof this.items[0] === 'object' && !this.optionLabel) {
+      console.log("If select items are objects label field is required");
+    } else {
+      this.isObj = true;
     }
-    this.comboValue = item;
+    if (!item) {
+      return;
+    } else if (typeof item === 'object' && item !== null && !this.optionLabel) {
+      console.log("If select items are objects label field is required");
+      return;
+    } else if (typeof item === 'object' && item !== null && this.optionLabel) {
+      this.comboValue = this.items.find((t: any) => {
+        return t[this.optionLabel] === item[this.optionLabel]
+      });
+      this.displayValue = this.comboValue[this.optionLabel];
+      this.isObj = true;
+    } else if (typeof item !== 'object' && item !== null) {
+      console.log(item);
+      this.comboValue = item;
+      this.displayValue = item;
+    } else {
+      console.log('Not handled select option');
+    }
   }
 
   registerOnChange(onChange: any) {

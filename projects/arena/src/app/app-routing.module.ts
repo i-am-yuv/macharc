@@ -17,6 +17,7 @@ import { ProcessesComponent } from './processes/processes.component';
 import { MarketplaceComponent } from './marketplace/marketplace.component';
 import { ReleasesComponent } from './releases/releases.component';
 import { ApidocComponent } from './microservice/apidoc/apidoc.component';
+import { MsDatasourceComponent } from './microservice/ms-datasource/ms-datasource.component';
 
 const routes: Routes = [
   {
@@ -29,6 +30,7 @@ const routes: Routes = [
           { path: 'microservices', component: MicroserviceComponent },
           { path: 'microservices/apidoc', component: ApidocComponent },
           { path: 'datasources', component: DatasourceComponent },
+          { path: 'datasources/:id', component: MsDatasourceComponent },
           { path: 'flow', component: FlowComponent },
           { path: 'collections', component: CollectionComponent },
           { path: 'collections/:id', component: CollectionComponent },

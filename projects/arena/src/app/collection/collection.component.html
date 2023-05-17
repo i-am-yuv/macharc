@@ -14,6 +14,7 @@
     <ng-template vTemplate="header">
         <tr>
             <th class="w-4"><input type="checkbox" class="w-4 h-4" /></th>
+            <th>Microservice</th>
             <th>Collection Name</th>
             <th>Custom Table Name</th>
             <th>CRUD</th>
@@ -24,6 +25,7 @@
     <ng-template vTemplate="body">
         <tr *ngFor="let ds of data">
             <td><input type="checkbox" class="w-4 h-4" /></td>
+            <td>{{ ds.microService?.microServiceName }}</td>
             <td>{{ ds.collectionName }}</td>
             <td>{{ ds.customTableName }}</td>
             <td><span *ngIf="ds.crud"><vezo-icon icon="checkCircle" className="text-green-500"></vezo-icon></span>
@@ -48,6 +50,8 @@
     <ng-template vTemplate="header">Collection</ng-template>
     <ng-template vTemplate="content">
         <form [formGroup]="form">
+            <vezo-select labelField="microServiceName" [items]="microserviceItems" formControlName="microService"
+                label="Microservice" *ngIf="!microserviceId"></vezo-select>
             <vezo-input label="Collection Name" formControlName="collectionName"></vezo-input>
             <error-message [controlName]="form.controls['collectionName']"></error-message>
             <vezo-input label="Custom Table Name" formControlName="customTableName"></vezo-input>

@@ -40,6 +40,7 @@ export class FieldsComponent extends GenericComponent implements OnInit {
   ) {
     super(fieldService, messageService);
     this.collectionId = this.route.snapshot.paramMap.get('id');
+    console.log(this.collectionId);
     this.form = this.fb.group({
       id: '',
       fieldName: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
@@ -48,6 +49,9 @@ export class FieldsComponent extends GenericComponent implements OnInit {
         id: this.collectionId
       })
     })
+  }
+  override preSave(): void {
+    this.form.patchValue({ collection: { id: this.collectionId } });
   }
   ngOnInit(): void {
     if (this.collectionId) {

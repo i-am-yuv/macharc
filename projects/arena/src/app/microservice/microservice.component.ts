@@ -17,6 +17,7 @@ export class MicroserviceComponent extends GenericComponent implements OnInit {
   data: MicroService[] = [];
 
   showGrid: boolean = true;
+  packaging: any[] = ['Jar', 'War'];
 
   constructor(
     private fb: FormBuilder,
@@ -27,7 +28,8 @@ export class MicroserviceComponent extends GenericComponent implements OnInit {
       id: '',
       microServiceCode: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
       microServiceName: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
-      packageName: ['']
+      packageName: [''],
+      packaging: ['Jar']
     })
   }
   ngOnInit(): void {

@@ -24,6 +24,8 @@ export class DatasourceComponent extends GenericComponent implements OnInit {
       id: '',
       dataSourceName: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
       dbUrl: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
+      username: [''],
+      password: [''],
     })
   }
   ngOnInit(): void {

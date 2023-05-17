@@ -47,6 +47,7 @@ import { ProcessesComponent } from './processes/processes.component';
 import { MarketplaceComponent } from './marketplace/marketplace.component';
 import { ReleasesComponent } from './releases/releases.component';
 import { ApidocComponent } from './microservice/apidoc/apidoc.component';
+import { MsDatasourceComponent } from './microservice/ms-datasource/ms-datasource.component';
 
 @NgModule({
   declarations: [
@@ -70,7 +71,8 @@ import { ApidocComponent } from './microservice/apidoc/apidoc.component';
     ProcessesComponent,
     MarketplaceComponent,
     ReleasesComponent,
-    ApidocComponent
+    ApidocComponent,
+    MsDatasourceComponent
   ],
   imports: [
     BrowserModule,

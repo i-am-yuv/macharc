@@ -9,6 +9,8 @@ export abstract class GenericComponent {
 
     abstract data: any[];
 
+    dataSingle: any = {};
+
     dataService: GenericService;
 
     messageService: any;
@@ -33,10 +35,12 @@ export abstract class GenericComponent {
 
     getData(ds: any) {
         this.dataService.getData(ds).then((res: any) => {
-            this.data = res;
+            this.dataSingle = res;
         })
     }
+    preSave() { }
     saveData() {
+        this.preSave();
         const formData = this.form.value
         if (!formData.id) {
             this.dataService.createData(formData).then((res: any) => {

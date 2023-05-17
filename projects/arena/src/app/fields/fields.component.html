@@ -62,7 +62,8 @@
                         <error-message [controlName]="form.controls['fieldName']"></error-message>
                     </div>
                     <div>
-                        <vezo-select label="Datatype" formControlName="dataType" [items]="dataTypes"></vezo-select>
+                        <vezo-select label="Datatype" optionLabel="label" optionValue="value" formControlName="dataType"
+                            [items]="dataTypes"></vezo-select>
                         <error-message [controlName]="form.controls['dataType']"></error-message>
                     </div>
                 </div>

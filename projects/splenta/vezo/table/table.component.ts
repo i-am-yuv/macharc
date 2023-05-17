@@ -27,6 +27,8 @@ export class TableComponent implements OnInit {
   showPageOpts: boolean = false;
   @Input() pageSize: number = 10;
 
+  math = Math;
+
   constructor() { }
 
   ngOnInit(): void {

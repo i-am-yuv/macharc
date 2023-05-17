@@ -1,7 +1,7 @@
 <div class="py-3" *ngIf="this.caption">
     <ng-container [ngTemplateOutlet]="caption"></ng-container>
 </div>
-<div *ngIf="data.length > 0">
+<div *ngIf="data && data.length > 0">
     <div class="bg-gray-200 text-slate-500" *ngIf="toolBar">
         <div class="text-right">
             <button class="hover:bg-gray-300 p-3 pr-3">
@@ -67,8 +67,8 @@
 
             <div class=" col-span-4 p-3">1 - 10 of {{ data.length }} Items
             </div>
-            <div class="col-span-2 p-3"> 1 of <span class="ml-2 mr-2">19 <vezo-icon icon="chevron-down"
-                        className="w-4 h-4">
+            <div class="col-span-2 p-3"> 1 of <span class="ml-2 mr-2">{{ math.ceil(data.length / pageSize) }} <vezo-icon
+                        icon="chevron-down" className="w-4 h-4">
                     </vezo-icon>
                 </span> pages</div>
             <div class="col-span-2 text-right">
@@ -83,7 +83,7 @@
     </div>
 </div>
 
-<div class="grid place-items-center bg-white shadow-md h-96 p-5" *ngIf="data.length === 0">
+<div class="grid place-items-center bg-white h-96 p-5" *ngIf="data && data.length === 0">
     <div class="text-center">
         <vezo-icon icon="archiveBoxXMark" strokeWidth="0.5" className="w-24 h-24 text-indigo-300"></vezo-icon>
         <div class="p-5"> No Records to display</div>

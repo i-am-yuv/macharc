@@ -21,8 +21,8 @@
                         {{ ms.microServiceCode }}
                     </div>
                     <div class="col-span-1">
-                        <vezo-icon icon="heart" className="text-indigo-400"></vezo-icon>
-                        <vezo-icon icon="ellipsisVertical" className="text-indigo-400"></vezo-icon>
+                        <vezo-button icon="pencil" (click)="editData(ms)" label="Edit"
+                            className="mr-2 border-0 float-right"></vezo-button>
                     </div>
                 </div>
             </ng-template>
@@ -35,14 +35,14 @@
                     <label class="text-xs uppercase text-gray-400">Package</label>
                     <p class="mb-4">{{ ms.packageName }}</p>
                     <label class="text-xs uppercase text-gray-400">Packaging</label>
-                    <p>Jar</p>
+                    <p>{{ ms.packaging }}</p>
                 </div>
             </ng-template>
             <ng-template vTemplate="footer">
                 <div class="text-center p-3 border-t grid grid-cols-2">
                     <vezo-button icon="queueList" [routerLink]="['/builder/collections/'+ms.id]" label="Collections"
                         className="bg-white border-0"></vezo-button>
-                    <vezo-button icon="pencil" (click)="editData(ms)" label="Edit"
+                    <vezo-button icon="circleStack" [routerLink]="['/builder/datasources/'+ms.id]" label="Datasources"
                         className="bg-white border-0 float-right"></vezo-button>
 
 
@@ -82,7 +82,7 @@
             <td>{{ ms.microServiceCode }}</td>
             <td>{{ ms.microServiceName }}</td>
             <td>{{ ms.packageName }}</td>
-            <td>Jar</td>
+            <td>{{ ms.packaging }}</td>
             <td>
                 <vezo-icon icon="pencil" (click)="editData(ms)"
                     className="mr-5 w-4 h-4 text-indigo-400 cursor-pointer"></vezo-icon>
@@ -104,6 +104,7 @@
             <error-message [controlName]="form.controls['microServiceCode']"></error-message>
             <vezo-input label="Package Name" formControlName="packageName"></vezo-input>
             <error-message [controlName]="form.controls['packageName']"></error-message>
+            <vezo-select [items]="packaging" label="Packaging" formControlName="packaging"></vezo-select>
             <vezo-textarea label="Service Name" formControlName="microServiceName"></vezo-textarea>
             <error-message [controlName]="form.controls['microServiceName']"></error-message>
         </form>

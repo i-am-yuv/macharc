@@ -43,6 +43,10 @@
             <error-message [controlName]="form.controls['dataSourceName']"></error-message>
             <vezo-input label="DB URL" formControlName="dbUrl"></vezo-input>
             <error-message [controlName]="form.controls['dbUrl']"></error-message>
+            <vezo-input label="Username" formControlName="username"></vezo-input>
+            <error-message [controlName]="form.controls['username']"></error-message>
+            <vezo-input label="Password" type="password" formControlName="password"></vezo-input>
+            <error-message [controlName]="form.controls['password']"></error-message>
         </form>
     </ng-template>
     <ng-template vTemplate="footer">

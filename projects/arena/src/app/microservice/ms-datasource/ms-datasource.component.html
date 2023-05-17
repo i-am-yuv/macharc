@@ -1,0 +1,72 @@
+<div class="grid grid-cols-12 border min-h-full bg-white">
+    <div class="col-span-3 border-r">
+
+        <div class="p-4 border-b">
+            <h2 class="text-lg">Association
+            </h2>
+        </div>
+
+
+        <div class="p-4">
+            <div><label>Microservice</label></div>
+            <div>
+                <span class="text-indigo-400 text-lg"> {{ dataSingle.microServiceName }}</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-span-9">
+        <div class="grid grid-cols-2 border-b justify-center items-center">
+            <div class="p-4">
+                <h2 class="text-lg">Datasources linked to Microservice</h2>
+            </div>
+            <div class="text-right p-2">
+                <vezo-button icon="link" label="Link Datasource" className="mr-2" (click)="addData()"
+                    *ngIf="!visible"></vezo-button>
+            </div>
+        </div>
+        <vezo-table [data]="dataSingle.datasources" *ngIf="!visible">
+            <ng-template vTemplate="header">
+                <tr>
+                    <th class="w-4"><input type="checkbox" class="w-4 h-4" /></th>
+                    <th>Datasource Name</th>
+                    <th>Datasource URL</th>
+                    <th [width]="150">Actions</th>
+                </tr>
+            </ng-template>
+            <ng-template vTemplate="body">
+                <tr *ngFor="let ds of dataSingle.datasources">
+                    <td><input type="checkbox" class="w-4 h-4" /></td>
+                    <td>{{ ds.fieldName }}</td>
+                    <td>{{ ds.dataType }}</td>
+                    <td>
+                        <vezo-icon icon="trash" (click)="deleteData(ds)"
+                            className="w-4 h-4 text-red-400 cursor-pointer"></vezo-icon>
+                    </td>
+                </tr>
+            </ng-template>
+        </vezo-table>
+
+        <div class="p-4" *ngIf="visible">
+            <form [formGroup]="form">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <vezo-input label="Field Name" formControlName="fieldName"></vezo-input>
+                        <error-message [controlName]="form.controls['fieldName']"></error-message>
+                    </div>
+
+                </div>
+                <!-- <div>
+                    <vezo-input label="Pattern" formControlName="fieldName"></vezo-input>
+                    <error-message [controlName]="form.controls['fieldName']"></error-message>
+                </div> -->
+
+
+                <div class="text-right">
+                    <vezo-button label="Cancel" (click)="visible=false" className="mr-2"></vezo-button>
+                    <vezo-button label="Save" [disabled]="!form.valid" (click)="saveData()"></vezo-button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>

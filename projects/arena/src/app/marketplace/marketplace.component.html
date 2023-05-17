@@ -1,17 +1,28 @@
+<div class="grid  grid-cols-2 items-center justify-content">
+    <h1 class="text-xl py-3">Marketplace</h1>
+    <div class="text-right">
+        <vezo-button label="Add New Integration" icon="plus" className="mr-2" (click)="addData()"></vezo-button>
+        <!-- <vezo-button label="Filter" icon="funnel" className="bg-green-100"></vezo-button> -->
+    </div>
+</div>
+<div *ngIf="data.length===0" class="text-center text-xl bg-white py-[12rem] mt-4">
+    We do not have any integrations yet! We will soon add some!
+</div>
 <div class="grid  grid-cols-4 gap-4">
     <vezo-card className="bg-white" *ngFor="let ms of data">
         <ng-template vTemplate="media">
             <div class="grid grid-cols-5 items-center justify-content bg-indigo-50 hover:bg-indigo-100">
                 <div class="col-span-1 p-4">
                     <div class="border border-indigo-500 rounded-full w-8 h-8 flex justify-center items-center">
-                        <p class="text-indigo-500">{{ ms.microServiceCode?.charAt(0) }}</p>
+                        <p class="text-indigo-500">{{ ms.integrationName?.charAt(0) }}</p>
                     </div>
                 </div>
                 <div class="col-span-3 pl-4">
-                    {{ ms.microServiceCode }}
+                    {{ ms.integrationCode }}
                 </div>
                 <div class="col-span-1">
-                    <vezo-icon icon="arrowDownTray" className="text-indigo-400"></vezo-icon>
+                    <vezo-icon icon="arrowDownOnSquareStack"
+                        className="w-6 h-6 text-indigo-400 cursor-pointer"></vezo-icon>
                     <!-- <vezo-icon icon="ellipsisVertical" className="text-indigo-400"></vezo-icon> -->
                 </div>
             </div>
@@ -21,21 +32,47 @@
         </ng-template>
         <ng-template vTemplate="body">
             <div class="p-5 min-h-[14rem]">
-                <p class="mb-4">{{ ms.microServiceName }}</p>
-                <label class="text-xs uppercase text-gray-400">Package</label>
-                <p class="mb-4">com.nexomaxer.neoledger</p>
-                <label class="text-xs uppercase text-gray-400">Packaging</label>
-                <p>Jar</p>
+                <p class="mb-4">{{ ms.integrationName }}</p>
+                <label class="text-xs uppercase text-gray-400">Description</label>
+                <p class="mb-4">{{ ms.description }}</p>
+                <label class="text-xs uppercase text-gray-400">Provider</label>
+                <p>{{ms.partnerName}}</p>
             </div>
         </ng-template>
         <ng-template vTemplate="footer">
             <div class="text-center p-3 border-t">
                 <a [routerLink]="['/builder/collections/'+ms.id]" class="text-indigo-400 cursor-pointer"><vezo-icon
-                        icon="queueList" className="w-4 h-4 mr-2">
-                    </vezo-icon>Manage
-                    Collections</a>
+                        icon="plus" className="w-4 h-4 mr-2">
+                    </vezo-icon>Add to bundle
+                </a>
                 <!-- <vezo-button label="Manage Collections" (click)="addData()"></vezo-button> -->
             </div>
         </ng-template>
     </vezo-card>
 </div>
+
+
+<vezo-modal [(visible)]="visible">
+    <ng-template vTemplate="header">Microservice</ng-template>
+    <ng-template vTemplate="content">
+        <form [formGroup]="form">
+            <vezo-input label="Integration Code" formControlName="integrationCode"></vezo-input>
+            <error-message [controlName]="form.controls['integrationCode']"></error-message>
+            <vezo-input label="Integration Name" formControlName="integrationName"></vezo-input>
+            <error-message [controlName]="form.controls['integrationName']"></error-message>
+            <vezo-input label="Integration Type" formControlName="integrationType"></vezo-input>
+            <error-message [controlName]="form.controls['integrationType']"></error-message>
+            <vezo-input label="Partner Name" formControlName="partnerName"></vezo-input>
+            <error-message [controlName]="form.controls['partnerName']"></error-message>
+            <vezo-textarea label="Description" formControlName="description"></vezo-textarea>
+            <error-message [controlName]="form.controls['description']"></error-message>
+        </form>
+    </ng-template>
+    <ng-template vTemplate="footer">
+        <div class="text-right">
+            <vezo-button label="Save" [disabled]="!form.valid" (click)="saveData()"></vezo-button>
+        </div>
+    </ng-template>
+</vezo-modal>
+
+<vezo-toast></vezo-toast>
