@@ -1,0 +1,110 @@
+<ng-container *ngIf="props?.name === 'heading'">
+    <vezo-input label="Heading" [(ngModel)]="props.data.text"></vezo-input>
+</ng-container>
+<ng-container *ngIf="props?.name === 'button'">
+    <vezo-input label="Label" [(ngModel)]="props.data.label"></vezo-input>
+    <vezo-input label="Process" [(ngModel)]="props.data.process"></vezo-input>
+</ng-container>
+<ng-container *ngIf="props?.name === 'input'">
+    <vezo-input label="Label" [(ngModel)]="props.data.label"></vezo-input>
+    <vezo-select label="Field" optionLabel="fieldName" [items]="fields" [(ngModel)]="props.data.field"></vezo-select>
+    <vezo-select label="Validation" [items]="validations" [(ngModel)]="props.data.validation"></vezo-select>
+</ng-container>
+<ng-container *ngIf="props?.name === 'textarea'">
+    <vezo-input label="Label" [(ngModel)]="props.data.label"></vezo-input>
+    <vezo-select label="Field" optionLabel="fieldName" [items]="fields" [(ngModel)]="props.data.field"></vezo-select>
+    <vezo-select label="Validation" [items]="validations" [(ngModel)]="props.data.validation"></vezo-select>
+</ng-container>
+<ng-container *ngIf="props?.name === 'dropdown'">
+    <vezo-input label="Label" [(ngModel)]="props.data.label"></vezo-input>
+    <vezo-select label="Field" optionLabel="fieldName" [items]="fields" [(ngModel)]="props.data.field"></vezo-select>
+    <vezo-select label="Collection" optionLabel="fieldName" [items]="fields"
+        [(ngModel)]="props.data.field"></vezo-select>
+    <vezo-select label="Validation" [items]="validations" [(ngModel)]="props.data.validation"></vezo-select>
+</ng-container>
+<ng-container *ngIf="props?.name === 'checkbox'">
+    <vezo-input label="Label" [(ngModel)]="props.data.label"></vezo-input>
+    <vezo-select label="Field" optionLabel="fieldName" [items]="fields" [(ngModel)]="props.data.field"></vezo-select>
+    <vezo-select label="Validation" [items]="validations" [(ngModel)]="props.data.validation"></vezo-select>
+</ng-container>
+<ng-container *ngIf="props?.name === 'radio'">
+    <vezo-input label="Label" [(ngModel)]="props.data.label"></vezo-input>
+    <vezo-select label="Field" optionLabel="fieldName" [items]="fields" [(ngModel)]="props.data.field"></vezo-select>
+    <vezo-select label="Validation" [items]="validations" [(ngModel)]="props.data.validation"></vezo-select>
+</ng-container>
+<ng-container *ngIf="props?.name === 'switch'">
+    <vezo-input label="Label" [(ngModel)]="props.data.label"></vezo-input>
+    <vezo-select label="Field" optionLabel="fieldName" [items]="fields" [(ngModel)]="props.data.field"></vezo-select>
+    <vezo-select label="Validation" [items]="validations" [(ngModel)]="props.data.validation"></vezo-select>
+</ng-container>
+<ng-container *ngIf="props?.name === 'table'">
+    <vezo-input label="Caption" [(ngModel)]="props.data.caption"></vezo-input>
+    <vezo-select label="Collection" optionLabel="fieldName" [items]="fields"
+        [(ngModel)]="props.data.field"></vezo-select>
+    <table class="border-collapse table-auto w-full text-sm bg-white my-4">
+        <tr class="bg-gray-50">
+            <td class="border p-2 font-semibold">Heading</td>
+            <td class="border p-2 font-semibold">Field</td>
+            <td class="border p-2 font-semibold">Sortable</td>
+            <td class="border p-2 font-semibold">Filterable</td>
+        </tr>
+        <tr>
+            <td class="border p-2">Code</td>
+            <td class="border p-2"></td>
+            <td class="border p-2"></td>
+            <td class="border p-2"></td>
+        </tr>
+        <tr>
+            <td class="border p-2">Name</td>
+            <td class="border p-2"></td>
+            <td class="border p-2"></td>
+            <td class="border p-2"></td>
+        </tr>
+    </table>
+    <div class="mt-8">
+        <div>
+            <vezo-input label="Heading" [(ngModel)]="props.data.columnheading"></vezo-input>
+        </div>
+        <div>
+            <vezo-input label="Field" [(ngModel)]="props.data.columnfield"></vezo-input>
+        </div>
+        <div>
+            <vezo-checkbox label="Sortable" [(ngModel)]="props.data.sortable"></vezo-checkbox>
+        </div>
+        <div>
+            <vezo-checkbox label="Filterable" [(ngModel)]="props.data.filterable"></vezo-checkbox>
+        </div>
+        <div class="text-right">
+            <vezo-button label="Add"></vezo-button>
+        </div>
+    </div>
+    <div class="mt-8">
+        <div class="grid grid-cols-3">
+            <div class="col-span-1 font-semibold mb-2">Actions</div>
+            <div class="col-span-2 font-semibold mb-2">Process</div>
+
+            <div class="col-span-1">
+                <vezo-checkbox label="Edit" [(ngModel)]="props.data.edit"></vezo-checkbox>
+            </div>
+            <div class="col-span-2">
+                <vezo-input label="" [(ngModel)]="props.data.editprocess"></vezo-input>
+            </div>
+            <div class="col-span-1">
+                <vezo-checkbox label="Delete" [(ngModel)]="props.data.delete"></vezo-checkbox>
+            </div>
+            <div class="col-span-2">
+                <vezo-input label="" [(ngModel)]="props.data.deleteprocess"></vezo-input>
+            </div>
+            <div class="col-span-1">
+                <vezo-checkbox label="Forward" [(ngModel)]="props.data.forward"></vezo-checkbox>
+            </div>
+            <div class="col-span-2">
+                <vezo-input label="" [(ngModel)]="props.data.forwardprocess"></vezo-input>
+            </div>
+
+        </div>
+    </div>
+</ng-container>
+<div class="text-right mb-8 pt-4" *ngIf="props">
+    <vezo-button label="Save" className="bg-gray-50"></vezo-button>
+</div>

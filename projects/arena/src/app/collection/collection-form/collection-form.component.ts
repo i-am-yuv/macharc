@@ -6,5 +6,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./collection-form.component.scss']
 })
 export class CollectionFormComponent {
+  constructor() {
+
+  }
 
 }

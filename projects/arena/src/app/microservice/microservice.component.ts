@@ -22,17 +22,27 @@ export class MicroserviceComponent extends GenericComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     msService: MicroserviceService,
-    messageService: MessageService) {
+    messageService: MessageService,
+    private micrService: MicroserviceService,
+    private msgService: MessageService) {
     super(msService, messageService);
     this.form = this.fb.group({
       id: '',
       microServiceCode: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
       microServiceName: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
       packageName: [''],
-      packaging: ['Jar']
+      packaging: ['Jar'],
+      portNumber: ['', [Validators.required]],
     })
   }
   ngOnInit(): void {
     this.getAllData();
+  }
+  generateService(ms: MicroService) {
+    this.micrService.generateCode(ms).then((res: any) => {
+      if (res) {
+        this.msgService.add({ severity: 'success', summary: 'Generated', detail: 'Zip created' });
+      }
+    })
   }
 }

@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Definition, Designer, GlobalEditorContext, Properties, Step, StepEditorContext, StepsConfiguration, ToolboxConfiguration } from 'sequential-workflow-designer';
+import { WorkflowService } from '../workflow.service';
+import { ActivatedRoute } from '@angular/router';
+import { Workflow } from '../workflow';
+import { MessageService } from '@splenta/vezo';
 function createDefinition() {
   return {
     properties: {
@@ -20,6 +24,16 @@ export class WorkflowDesignerComponent implements OnInit {
   public definition: Definition = createDefinition();
   public definitionJSON?: string;
 
+  wfId: string | null = '';
+  wf: Workflow = {};
+  dataDef: string | undefined = '';
+  constructor(
+    private workflowService: WorkflowService,
+    private route: ActivatedRoute,
+    private msgService: MessageService,
+  ) {
+
+  }
   public readonly toolboxConfiguration: ToolboxConfiguration = {
     groups: [
       // {
@@ -50,6 +64,17 @@ export class WorkflowDesignerComponent implements OnInit {
 
   public ngOnInit() {
     this.updateDefinitionJSON();
+    this.wfId = this.route.snapshot.paramMap.get('id');
+    this.workflowService.getData({ id: this.wfId }).then(
+      (res: any) => {
+        if (res) {
+          this.wf = res;
+          this.dataDef = this.wf.workflowDefinition;
+          if (this.dataDef) {
+            this.definition = JSON.parse(this.dataDef);
+          }
+        }
+      })
   }
 
   public onDesignerReady(designer: Designer) {
@@ -126,4 +151,12 @@ export class WorkflowDesignerComponent implements OnInit {
       ]
     };
   }
+
+  saveDefinition() {
+    this.wf.workflowDefinition = this.definitionJSON;
+    this.workflowService.updateData(this.wf).then((res: any) => {
+      this.msgService.add({ severity: 'success', summary: 'Updated', detail: 'Definition updated' });
+    })
+  }
+
 }

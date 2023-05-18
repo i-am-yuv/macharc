@@ -138,6 +138,7 @@
 </div>
 </div> -->
 <div class="h-screen">
+    <h2 class="text-lg mb-4">{{wf.workflowName}}</h2>
     <sqd-designer theme="light" [undoStackSize]="10" [definition]="definition"
         [toolboxConfiguration]="toolboxConfiguration" [stepsConfiguration]="stepsConfiguration" [controlBar]="true"
         [areEditorsHidden]="false" [globalEditor]="globalEditor" [stepEditor]="stepEditor"
@@ -145,28 +146,45 @@
     </sqd-designer>
 </div>
 <ng-template #globalEditor let-editor>
-    <h2>Global Editor</h2>
+    <div class="p-4">
+        <h2 class="text-lg">Global Editor</h2>
 
-    <h3>Velocity</h3>
-    <input type="number" [value]="editor.definition.properties.velocity"
-        (input)="updateProperty(editor.definition.properties, 'velocity', $event, editor.context)" />
+        <h3 class="my-4 font-semibold">Velocity</h3>
+        <input type="number" [value]="editor.definition.properties.velocity"
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            (input)="updateProperty(editor.definition.properties, 'velocity', $event, editor.context)" />
+        <vezo-button (click)="saveDefinition()" label="Save" className="my-4 float-right"></vezo-button>
+        <vezo-button (click)="reloadDefinitionClicked()" label="Reload" className="m-4 float-right"></vezo-button>
+    </div>
 </ng-template>
 
 <ng-template #stepEditor let-editor>
-    <h2>Step Editor</h2>
+    <div class="p-4">
+        <h2 class="text-lg">Step Editor</h2>
 
-    <h3>Name</h3>
-    <input type="text" [value]="editor.step.name" (input)="updateName(editor.step, $event, editor.context)" />
+        <h3 class="my-4 font-semibold">Name</h3>
 
-    <h3>Velocity</h3>
-    <input type="number" [value]="editor.step.properties.velocity"
-        (input)="updateProperty(editor.step.properties, 'velocity', $event, editor.context)" />
+        <input type="text" [value]="editor.step.name"
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            (input)="updateName(editor.step, $event, editor.context)" />
+
+        <h3 class="my-4 font-semibold">Velocity</h3>
+        <input type="number" [value]="editor.step.properties.velocity"
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            (input)="updateProperty(editor.step.properties, 'velocity', $event, editor.context)" />
+        <vezo-button (click)="saveDefinition()" label="Save" className="my-4 float-right"></vezo-button>
+        <vezo-button (click)="reloadDefinitionClicked()" label="Reload" className="m-4 float-right"></vezo-button>
+    </div>
 </ng-template>
 
 <br />
 
-<button (click)="reloadDefinitionClicked()">Reload definition</button>
 
-<br />
+
 
 <textarea cols="60" rows="18">{{ definitionJSON }}</textarea>
+<br />
+<vezo-button (click)="reloadDefinitionClicked()" label="Reload definition" className="my-4"></vezo-button>
+<br />
+
+<vezo-toast></vezo-toast>

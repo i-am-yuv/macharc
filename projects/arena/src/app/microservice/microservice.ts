@@ -6,5 +6,6 @@ export interface MicroService {
     microServiceName?: string;
     packageName?: string;
     packaging?: string;
+    portNumber?: string;
     datasources?: Datasource[];
 }

@@ -35,6 +35,7 @@ export class FieldsComponent extends GenericComponent implements OnInit {
     private fb: FormBuilder,
     fieldService: FieldService,
     private collectionService: CollectionService,
+    private msgService: MessageService,
     messageService: MessageService,
     private route: ActivatedRoute
   ) {
@@ -60,6 +61,24 @@ export class FieldsComponent extends GenericComponent implements OnInit {
       this.getAllData();
       this.collectionService.getData({ id: this.collectionId }).then((res) => {
         this.collection = res;
+      })
+    }
+  }
+
+  generateFromTable() {
+    if (this.collectionId) {
+      this.collectionService.generateFromTable(this.collectionId).then((res: any) => {
+        this.msgService.add({ severity: 'success', summary: 'Generated', detail: 'All fields imported and apis created' });
+        this.getAllData();
+      })
+    }
+  }
+
+  generateCode() {
+    if (this.collectionId) {
+      this.collectionService.generateCode(this.collectionId).then((res: any) => {
+        this.msgService.add({ severity: 'success', summary: 'Generated', detail: 'All apis created' });
+        this.getAllData();
       })
     }
   }

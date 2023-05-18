@@ -1,11 +1,11 @@
-<vezo-table>
+<vezo-table [data]="data">
     <ng-template vTemplate="caption">
         <div class="grid grid-cols-2 justify-content items-center">
             <div class="text-xl">SCREENS</div>
             <div class="text-right">
-                <!-- <vezo-button label="Add New Project" icon="plus"
-                                className="bg-primary text-white hover:text-gray-700 mr-2"></vezo-button> -->
-                <vezo-button [routerLink]="['designer']" label="Designer" className="mr-2"></vezo-button>
+                <vezo-button label="Add New Screen" icon="plus" (click)="addData()"
+                    className="bg-primary text-white hover:text-gray-700 mr-2"></vezo-button>
+                <!-- <vezo-button [routerLink]="['designer']" label="Designer" className="mr-2"></vezo-button> -->
                 <vezo-button label="Filter" icon="funnel" className="bg-green-100"></vezo-button>
             </div>
         </div>
@@ -14,20 +14,45 @@
     <ng-template vTemplate="header">
         <tr>
             <th class="w-4"><input type="checkbox" class="w-4 h-4" /></th>
-            <th>Code</th>
-            <th>Name</th>
-            <th [width]="100">Actions</th>
+            <th>Microservice</th>
+            <th>Collection</th>
+            <th>Screen Name</th>
+            <th [width]="150">Actions</th>
         </tr>
     </ng-template>
     <ng-template vTemplate="body">
-        <tr *ngFor="let i of [1,2,3,4,5,6,7,8,9,10]">
+        <tr *ngFor="let item of data">
             <td><input type="checkbox" class="w-4 h-4" /></td>
-            <td>{{ i }}</td>
-            <td>Name</td>
+            <td>{{ item.collection?.microService?.microServiceName }}</td>
+            <td>{{ item.collection?.collectionName }}</td>
+            <td>{{ item.screenName }}</td>
             <td>
-                <vezo-icon icon="pencil" className="mr-5 w-4 h-4 text-blue-400"></vezo-icon>
-                <vezo-icon icon="trash" className="w-4 h-4 text-red-400"></vezo-icon>
+                <vezo-icon icon="queueList" (click)="designScreen(item)"
+                    className="mr-5 w-4 h-4 text-purple-400 cursor-pointer"></vezo-icon>
+                <vezo-icon icon="pencil" (click)="editData(item)"
+                    className="mr-5 w-4 h-4 text-indigo-400 cursor-pointer"></vezo-icon>
+                <vezo-icon icon="trash" (click)="deleteData(item)"
+                    className="w-4 h-4 text-red-400 cursor-pointer"></vezo-icon>
             </td>
         </tr>
     </ng-template>
 </vezo-table>
+
+<vezo-modal [(visible)]="visible">
+    <ng-template vTemplate="header">Collection</ng-template>
+    <ng-template vTemplate="content">
+        <form [formGroup]="form">
+            <vezo-select optionLabel="collectionName" [items]="collectionItems" formControlName="collection"
+                label="Collection" *ngIf="!collectionId"></vezo-select>
+            <vezo-input label="Screen Name" formControlName="screenName"></vezo-input>
+            <error-message [controlName]="form.controls['screenName']"></error-message>
+        </form>
+    </ng-template>
+    <ng-template vTemplate="footer">
+        <div class="text-right">
+            <vezo-button label="Save" [disabled]="!form.valid" (click)="saveData()"></vezo-button>
+        </div>
+    </ng-template>
+</vezo-modal>
+
+<vezo-toast></vezo-toast>

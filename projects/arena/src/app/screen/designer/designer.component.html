@@ -1,6 +1,6 @@
 <div class="">
     <div class="grid grid-cols-12">
-        <div class="col-span-3">
+        <div class="col-span-2">
             <div class="border-b p-3">
                 <div class="grid grid-cols-2">
                     <div>
@@ -36,15 +36,20 @@
 
             </div>
         </div>
-        <div class="col-span-9 border-l border-r">
+        <div class="col-span-7 border-l border-r">
             <div class="p-3 border-b">
-                <div class="grid grid-cols-2">
-                    <div>
-                        <span>Screen: Screen Name</span>
-
+                <div class="grid grid-cols-12">
+                    <div class="col-span-4">
+                        Microservice: <span class="text-indigo-400">{{
+                            screenData.collection?.microService?.microServiceName }}</span>
                     </div>
-                    <div class="text-right">
-                        <span>Back</span>
+                    <div class="col-span-4">
+                        Screen: <span class="text-indigo-400">{{ screenData.screenName }}</span>
+                    </div>
+                    <div class="col-span-4 text-indigo-700 border-l cursor-pointer text-right">
+
+                        <vezo-icon icon="cursorArrowRays" className="w-6 h-6 mr-2 text-orange-400"></vezo-icon>
+                        <span class="text-orange-400">Generate Code</span>
                     </div>
                 </div>
             </div>
@@ -54,12 +59,12 @@
                 dndEffectAllowed="copyMove">
                 <div class="dndPlaceholder h-16 p-5 border bg-blue-400 bg-opacity-25" dndPlaceholderRef>
                 </div>
-                <div *ngFor="let item of draggableListRight" [dndDraggable]="item"
+                <div *ngFor="let item of draggableListRight" [dndDraggable]="item" (click)="activeItem=item"
                     (dndCanceled)="onDragged(item, draggableListRight, 'none')"
                     (dndCopied)="onDragged(item, draggableListRight, 'move')"
                     (dndLinked)="onDragged(item, draggableListRight, 'link')"
                     (dndMoved)="onDragged(item, draggableListRight, 'move')">
-                    <div class="draggable-item mb-2 p-5 border border-dashed border-indigo-300">
+                    <div class="draggable-item mb-2 p-5 border border-dashed border-indigo-300 cursor-pointer">
                         <ng-container *ngIf="item.name === 'section'">
                             <div (dndDrop)="onDrop($event, item.children)"
                                 class="name p-2 gap-4 grid grid-cols-{{item.data.columns}} justify-content items-center"
@@ -79,6 +84,21 @@
                         <app-blocks [block]="item"></app-blocks>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="col-span-3">
+            <div class="border-b p-3">
+                <div class="inline-block mr-4">Properties</div>
+                <div class="inline-block float-right text-indigo-500 cursor-pointer" routerLink="../../"><vezo-icon
+                        icon="arrowUturnLeft" className="w-4 h-4 mr-2"></vezo-icon>Back</div>
+                <div class="inline-block float-right text-indigo-500 cursor-pointer">
+                    <vezo-icon icon="cog8Tooth" className="w-4 h-4 mr-2"></vezo-icon>
+                    <span class="mr-6">Screen Config</span>
+                </div>
+
+            </div>
+            <div class="p-3">
+                <app-properties [fields]="fields" [props]="activeItem"></app-properties>
             </div>
         </div>
     </div>

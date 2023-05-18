@@ -15,7 +15,6 @@ import { MicroserviceService } from '../microservice/microservice.service';
 })
 export class CollectionComponent extends GenericComponent implements OnInit {
 
-
   form: FormGroup<any>;
   data: Collection[] = [];
   componentName: string = 'Collection';
@@ -27,6 +26,8 @@ export class CollectionComponent extends GenericComponent implements OnInit {
     private fb: FormBuilder,
     collectionService: CollectionService,
     messageService: MessageService,
+    private msgService: MessageService,
+    private collectService: CollectionService,
     private route: ActivatedRoute,
     private router: Router,
     private microserviceService: MicroserviceService
@@ -60,8 +61,6 @@ export class CollectionComponent extends GenericComponent implements OnInit {
   }
   override preSave(): void {
     if (!this.form.value.microService) {
-      console.log('here');
-
       this.form.patchValue({ microservice: this.microService });
     }
   }
@@ -70,4 +69,6 @@ export class CollectionComponent extends GenericComponent implements OnInit {
   editFields(collection: Collection) {
     this.router.navigate(['/builder/fields/' + collection.id]);
   }
+
+
 }

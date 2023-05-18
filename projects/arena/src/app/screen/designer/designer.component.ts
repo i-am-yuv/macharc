@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Item } from './item';
 import { DndDropEvent, DropEffect, EffectAllowed } from 'ngx-drag-drop';
+import { ScreenService } from '../screen.service';
+import { ActivatedRoute } from '@angular/router';
+import { Screen } from '../screen';
+import { FieldService } from '../../fields/field.service';
+import { FilterBuilder } from '../../utils/FilterBuilder';
+import { Field } from '../../fields/field';
 
 interface DropzoneLayout {
   container: string;
@@ -24,6 +29,21 @@ interface DraggableItem {
 export class DesignerComponent implements OnInit {
   draggableListLeft: DraggableItem[] = [
     {
+      name: 'table',
+      content: 'Table',
+      effectAllowed: 'copy',
+      disable: false,
+      handle: false,
+      data: { caption: 'Table Heading' }
+    },
+    {
+      name: 'heading',
+      content: 'Heading',
+      data: { text: 'Heading' },
+      effectAllowed: 'copy',
+      disable: false,
+      handle: false
+    }, {
       name: 'section',
       content: 'Section 2 columns',
       data: { columns: 2 },
@@ -47,6 +67,7 @@ export class DesignerComponent implements OnInit {
       effectAllowed: 'copy',
       disable: false,
       handle: false,
+      data: { label: 'Input Label' }
     },
     {
       name: 'dropdown',
@@ -54,6 +75,7 @@ export class DesignerComponent implements OnInit {
       effectAllowed: 'copy',
       disable: false,
       handle: false,
+      data: { label: 'Input Label' }
     },
     {
       name: 'textarea',
@@ -61,6 +83,7 @@ export class DesignerComponent implements OnInit {
       effectAllowed: 'copy',
       disable: false,
       handle: false,
+      data: { label: 'Input Label' }
     },
     {
       name: 'button',
@@ -68,13 +91,7 @@ export class DesignerComponent implements OnInit {
       effectAllowed: 'copy',
       disable: false,
       handle: true,
-    },
-    {
-      name: 'table',
-      content: 'Table',
-      effectAllowed: 'copy',
-      disable: false,
-      handle: false,
+      data: { label: 'Input Label' }
     },
     {
       name: 'checkbox',
@@ -82,6 +99,7 @@ export class DesignerComponent implements OnInit {
       effectAllowed: 'copy',
       disable: false,
       handle: false,
+      data: { label: 'Input Label' }
     },
     {
       name: 'radio',
@@ -89,6 +107,7 @@ export class DesignerComponent implements OnInit {
       effectAllowed: 'copy',
       disable: false,
       handle: false,
+      data: { label: 'Input Label' }
     },
     {
       name: 'switch',
@@ -96,12 +115,16 @@ export class DesignerComponent implements OnInit {
       effectAllowed: 'copy',
       disable: false,
       handle: false,
+      data: { label: 'Input Label' }
     },
+
   ];
 
   draggableListRight: DraggableItem[] = [
 
   ];
+
+  screenData: Screen = {};
 
   private readonly verticalLayout: DropzoneLayout = {
     container: 'row',
@@ -110,9 +133,25 @@ export class DesignerComponent implements OnInit {
   };
   layout: DropzoneLayout = this.verticalLayout;
   showProps: boolean = false;
+  activeItem: any;
+  screenId: string | null = '';
+  fields: Field[] = [];
 
+  constructor(private screenService: ScreenService, private fieldService: FieldService, private route: ActivatedRoute) {
 
+  }
   public ngOnInit() {
+    this.screenId = this.route.snapshot.paramMap.get('id');
+    this.screenService.getData({ id: this.screenId }).then(res => {
+      this.screenData = res;
+
+      if (this.screenData) {
+        var filterStr = FilterBuilder.equal('collection.id', this.screenData?.collection?.id!);
+        this.fieldService.getAllData(undefined, undefined, undefined, undefined, filterStr).then((res: any) => {
+          this.fields = res.content;
+        });
+      }
+    })
 
   }
   onDragged(item: any, list: any[], effect: DropEffect) {
@@ -132,6 +171,8 @@ export class DesignerComponent implements OnInit {
       }
 
       list.splice(index, 0, event.data);
+
+      this.activeItem = event.data;
 
     }
   }

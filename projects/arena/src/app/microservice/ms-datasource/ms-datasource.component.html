@@ -20,7 +20,7 @@
                 <h2 class="text-lg">Datasources linked to Microservice</h2>
             </div>
             <div class="text-right p-2">
-                <vezo-button icon="link" label="Link Datasource" className="mr-2" (click)="addData()"
+                <vezo-button icon="link" label="Link Datasource" className="mr-2" (click)="editData(dataSingle)"
                     *ngIf="!visible"></vezo-button>
             </div>
         </div>
@@ -36,8 +36,8 @@
             <ng-template vTemplate="body">
                 <tr *ngFor="let ds of dataSingle.datasources">
                     <td><input type="checkbox" class="w-4 h-4" /></td>
-                    <td>{{ ds.fieldName }}</td>
-                    <td>{{ ds.dataType }}</td>
+                    <td>{{ ds.dataSourceName }}</td>
+                    <td>{{ ds.dbUrl }}</td>
                     <td>
                         <vezo-icon icon="trash" (click)="deleteData(ds)"
                             className="w-4 h-4 text-red-400 cursor-pointer"></vezo-icon>
@@ -47,25 +47,20 @@
         </vezo-table>
 
         <div class="p-4" *ngIf="visible">
-            <form [formGroup]="form">
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <vezo-input label="Field Name" formControlName="fieldName"></vezo-input>
-                        <error-message [controlName]="form.controls['fieldName']"></error-message>
-                    </div>
 
-                </div>
-                <!-- <div>
-                    <vezo-input label="Pattern" formControlName="fieldName"></vezo-input>
-                    <error-message [controlName]="form.controls['fieldName']"></error-message>
-                </div> -->
+            <div class="grid grid-cols-2 gap-4">
+
+                <vezo-select label="Datasource" [(ngModel)]="ds" [items]="datasources"
+                    optionLabel="dataSourceName"></vezo-select>
+            </div>
 
 
-                <div class="text-right">
-                    <vezo-button label="Cancel" (click)="visible=false" className="mr-2"></vezo-button>
-                    <vezo-button label="Save" [disabled]="!form.valid" (click)="saveData()"></vezo-button>
-                </div>
-            </form>
+
+            <div class="text-left">
+                <vezo-button label="Cancel" (click)="visible=false" className="mr-2"></vezo-button>
+                <vezo-button label="Save" [disabled]="!form.valid" (click)="linkData()"></vezo-button>
+            </div>
+
         </div>
 
     </div>

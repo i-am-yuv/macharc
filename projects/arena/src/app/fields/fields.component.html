@@ -20,14 +20,18 @@
         </div>
     </div>
     <div class="col-span-9">
-        <div class="grid grid-cols-2 border-b justify-center items-center">
-            <div class="p-4">
+        <div class="grid grid-cols-3 border-b justify-center items-center">
+            <div class="p-4 col-span-1">
                 <h2 class="text-lg">Fields</h2>
             </div>
-            <div class="text-right p-2">
+            <div class="text-right p-2 col-span-2">
                 <vezo-button icon="plus" label="Add Field" className="mr-2" (click)="addData()"
                     *ngIf="!visible"></vezo-button>
-                <vezo-button icon="cursorArrowRays" label="Generate Code"></vezo-button>
+                <vezo-button icon="cursorArrowRays" label="Generate Code" className="mr-2"
+                    (click)="generateCode()"></vezo-button>
+                <vezo-button label="Generate from Table" icon="cursorArrowRipple"
+                    className="bg-indigo-700 hover:bg-indigo-900 text-white"
+                    (click)="generateFromTable()"></vezo-button>
             </div>
         </div>
         <vezo-table [data]="data" *ngIf="!visible">
@@ -206,3 +210,4 @@
 
     </div>
 </div>
+<vezo-toast></vezo-toast>

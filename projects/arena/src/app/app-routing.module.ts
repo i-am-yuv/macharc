@@ -28,7 +28,7 @@ const routes: Routes = [
       {
         path: 'builder', children: [
           { path: 'microservices', component: MicroserviceComponent },
-          { path: 'microservices/apidoc', component: ApidocComponent },
+          { path: 'microservices/apidoc/:id', component: ApidocComponent },
           { path: 'datasources', component: DatasourceComponent },
           { path: 'datasources/:id', component: MsDatasourceComponent },
           { path: 'flow', component: FlowComponent },
@@ -55,16 +55,17 @@ const routes: Routes = [
                 path: '',
                 component: ScreenComponent
               },
-              {
-                path: 'designer',
-                component: DesignerComponent
-              },
+
             ]
           },
         ]
       }
     ]
-  }
+  },
+  {
+    path: 'builder/screens/designer/:id',
+    component: DesignerComponent
+  },
 ];
 
 @NgModule({

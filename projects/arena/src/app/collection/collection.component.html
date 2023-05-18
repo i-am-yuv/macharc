@@ -6,7 +6,7 @@
                 <!-- <vezo-button label="Add New Project" icon="plus"
                             className="bg-primary text-white hover:text-gray-700 mr-2"></vezo-button> -->
                 <vezo-button label="Add New Collection" icon="plus" className="mr-2" (click)="addData()"></vezo-button>
-                <vezo-button label="Filter" icon="funnel" className="bg-green-100"></vezo-button>
+
             </div>
         </div>
 
@@ -50,7 +50,7 @@
     <ng-template vTemplate="header">Collection</ng-template>
     <ng-template vTemplate="content">
         <form [formGroup]="form">
-            <vezo-select labelField="microServiceName" [items]="microserviceItems" formControlName="microService"
+            <vezo-select optionLabel="microServiceName" [items]="microserviceItems" formControlName="microService"
                 label="Microservice" *ngIf="!microserviceId"></vezo-select>
             <vezo-input label="Collection Name" formControlName="collectionName"></vezo-input>
             <error-message [controlName]="form.controls['collectionName']"></error-message>

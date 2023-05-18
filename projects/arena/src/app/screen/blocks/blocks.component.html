@@ -1,30 +1,33 @@
+<ng-container *ngIf="block.name === 'heading'">
+    <div class="text-xl">{{ block.data?.text }}</div>
+</ng-container>
 <ng-container *ngIf="block.name === 'button'">
     <div class="text-{{ block.data?.align ? block.data.align : 'right' }}">
-        <vezo-button label="Button"></vezo-button>
+        <vezo-button [label]="block.data?.label"></vezo-button>
     </div>
 </ng-container>
 <ng-container *ngIf="block.name === 'input'">
-    <vezo-input label="Input Label"></vezo-input>
+    <vezo-input [label]="block.data?.label"></vezo-input>
 </ng-container>
 <ng-container *ngIf="block.name === 'textarea'">
-    <vezo-textarea label="Textarea Label"></vezo-textarea>
+    <vezo-textarea [label]="block.data?.label"></vezo-textarea>
 </ng-container>
 <ng-container *ngIf="block.name === 'dropdown'">
-    <vezo-select label="Dropdown Label"></vezo-select>
+    <vezo-select [label]="block.data?.label"></vezo-select>
 </ng-container>
 <ng-container *ngIf="block.name === 'checkbox'">
-    <vezo-checkbox label="Checkbox Label"></vezo-checkbox>
+    <vezo-checkbox [label]="block.data?.label"></vezo-checkbox>
 </ng-container>
 <ng-container *ngIf="block.name === 'radio'">
-    <vezo-radiobutton label="Radio Label"></vezo-radiobutton>
+    <vezo-radiobutton [label]="block.data?.label"></vezo-radiobutton>
 </ng-container>
 <ng-container *ngIf="block.name === 'switch'">
-    <vezo-switch label="Switch Label"></vezo-switch>
+    <vezo-switch [label]="block.data?.label"></vezo-switch>
 </ng-container>
 <ng-container *ngIf="block.name === 'table'">
     <vezo-table [data]="[1,2,3,4,5,6,7,8,9,10]">
         <ng-template vTemplate="caption">
-            Table
+            {{ block.data?.caption}}
         </ng-template>
         <ng-template vTemplate="header">
             <tr>

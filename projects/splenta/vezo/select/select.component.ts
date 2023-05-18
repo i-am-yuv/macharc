@@ -81,7 +81,8 @@ export class SelectComponent implements OnInit, ControlValueAccessor {
   }
 
   clearCombo(event: any) {
-    this.comboValue = { label: '', value: '' };
+    this.comboValue = {};
+    this.displayValue = '';
     this.comboOpen = false;
     this.onChange(this.comboValue);
     event.stopPropagation();
@@ -91,7 +92,7 @@ export class SelectComponent implements OnInit, ControlValueAccessor {
     this.isObj = false;
     if (Array.isArray(this.items) && this.items.length > 0 && typeof this.items[0] === 'object' && !this.optionLabel) {
       console.log("If select items are objects label field is required");
-    } else {
+    } else if (Array.isArray(this.items) && this.items.length > 0 && typeof this.items[0] === 'object' && this.optionLabel) {
       this.isObj = true;
     }
     if (!item) {
@@ -103,7 +104,8 @@ export class SelectComponent implements OnInit, ControlValueAccessor {
       this.comboValue = this.items.find((t: any) => {
         return t[this.optionLabel] === item[this.optionLabel]
       });
-      this.displayValue = this.comboValue[this.optionLabel];
+      if (this.comboValue)
+        this.displayValue = this.comboValue[this.optionLabel];
       this.isObj = true;
     } else if (typeof item !== 'object' && item !== null) {
       console.log(item);
@@ -112,6 +114,7 @@ export class SelectComponent implements OnInit, ControlValueAccessor {
     } else {
       console.log('Not handled select option');
     }
+    // console.log(this.displayValue);
   }
 
   registerOnChange(onChange: any) {

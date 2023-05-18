@@ -39,6 +39,9 @@ export abstract class GenericComponent {
         })
     }
     preSave() { }
+
+    postSave() { }
+
     saveData() {
         this.preSave();
         const formData = this.form.value
@@ -48,6 +51,7 @@ export abstract class GenericComponent {
                     this.visible = false;
                     this.messageService.add({ severity: 'success', detail: this.componentName + ' created', summary: this.componentName + ' created' });
                     this.getAllData();
+                    this.postSave();
                 }
             })
 
@@ -57,6 +61,7 @@ export abstract class GenericComponent {
                     this.visible = false;
                     this.messageService.add({ severity: 'success', detail: this.componentName + ' updated', summary: this.componentName + ' updated' });
                     this.getAllData();
+                    this.postSave();
                 }
             })
         }

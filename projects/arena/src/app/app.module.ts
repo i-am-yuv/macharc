@@ -48,6 +48,8 @@ import { MarketplaceComponent } from './marketplace/marketplace.component';
 import { ReleasesComponent } from './releases/releases.component';
 import { ApidocComponent } from './microservice/apidoc/apidoc.component';
 import { MsDatasourceComponent } from './microservice/ms-datasource/ms-datasource.component';
+import { PropertiesComponent } from './screen/properties/properties.component';
+import { InputnumberModule } from '@splenta/vezo/inputnumber';
 
 @NgModule({
   declarations: [
@@ -72,7 +74,8 @@ import { MsDatasourceComponent } from './microservice/ms-datasource/ms-datasourc
     MarketplaceComponent,
     ReleasesComponent,
     ApidocComponent,
-    MsDatasourceComponent
+    MsDatasourceComponent,
+    PropertiesComponent
   ],
   imports: [
     BrowserModule,
@@ -85,6 +88,7 @@ import { MsDatasourceComponent } from './microservice/ms-datasource/ms-datasourc
     ModalModule,
     VezoModule,
     InputModule,
+    InputnumberModule,
     IconModule,
     MenuModule,
     TableModule,
