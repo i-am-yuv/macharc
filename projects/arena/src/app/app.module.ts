@@ -41,7 +41,7 @@ import { AccordionModule } from '@splenta/vezo/accordion';
 import { DatepickerModule } from '@splenta/vezo/datepicker';
 import { FileuploadModule } from '@splenta/vezo/fileupload';
 import { FlowComponent } from './flow/flow.component';
-import { MxflowComponent } from './workflow/mxflow/mxflow.component';
+
 import { SequentialWorkflowDesignerModule } from 'sequential-workflow-designer-angular';
 import { ProcessesComponent } from './processes/processes.component';
 import { MarketplaceComponent } from './marketplace/marketplace.component';
@@ -50,6 +50,7 @@ import { ApidocComponent } from './microservice/apidoc/apidoc.component';
 import { MsDatasourceComponent } from './microservice/ms-datasource/ms-datasource.component';
 import { PropertiesComponent } from './screen/properties/properties.component';
 import { InputnumberModule } from '@splenta/vezo/inputnumber';
+import { MxflowComponent } from './processes/mxflow/mxflow.component';
 
 @NgModule({
   declarations: [

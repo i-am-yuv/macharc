@@ -1,5 +1,9 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { type CellStyle, Graph, MaxToolbar, gestureUtils, xmlUtils, Cell, Geometry, KeyHandler, SelectionHandler, InternalEvent, ObjectCodec, Codec, utils, UndoManager, EdgeStyle } from '@maxgraph/core';
+import { Process } from '../process';
+import { ProcessesService } from '../processes.service';
+import { ActivatedRoute } from '@angular/router';
+import { MessageService } from '@splenta/vezo';
 
 @Component({
   selector: 'app-mxflow',
@@ -15,13 +19,25 @@ export class MxflowComponent implements OnInit {
   graph!: Graph;
   jsonData: any = {};
   xmlData: string = '';
+  process: Process = {};
 
-  // fromXml = '<GraphDataModel><root><Cell id="0"><Object as="style"/></Cell><Cell id="1" parent="0"><Object as="style"/></Cell><Cell id="2" value="" vertex="1" parent="1"><Geometry _x="212" _y="110" _width="50" _height="50" as="geometry"/><Object shape="ellipse" fillColor="#23d67d" aspect="fixed" fontColor="#ffffff" as="style"/></Cell><Cell id="3" value="Make Document" vertex="1" parent="1"><Geometry _x="380" _y="184" _width="100" _height="40" as="geometry"/><Object shape="rectangle" rounded="1" as="style"/></Cell><Cell id="4" edge="1" parent="1" source="2" target="3"><Geometry relative="1" as="geometry"/><Object as="style"/></Cell><Cell id="5" value="" vertex="1" parent="1"><Geometry _x="571" _y="373" _width="60" _height="60" as="geometry"/><Object shape="doubleEllipse" fillColor="#db3e00" strokeColor="#ffffff" as="style"/></Cell><Cell id="6" edge="1" parent="1" source="10" target="5"><Geometry relative="1" as="geometry"/><Object as="style"/></Cell><Cell id="7" value="Branch User" vertex="1" parent="1"><Geometry _x="126" _y="33" _width="693" _height="249" as="geometry"/><Object shape="swimlane" horizontal="0" as="style"/></Cell><Cell id="8" value="Branch Manager" vertex="1" parent="1"><Geometry _x="126" _y="284" _width="692" _height="201" as="geometry"/><Object shape="swimlane" horizontal="0" as="style"/></Cell><Cell id="10" value="Check Document" vertex="1" parent="1"><Geometry _x="264" _y="372" _width="100" _height="40" as="geometry"/><Object shape="rectangle" rounded="1" as="style"/></Cell><Cell id="11" edge="1"  parent="1" source="3" target="10"><Geometry relative="1" as="geometry"/><Object as="style"/></Cell></root></GraphDataModel>';
-  fromXml = '<GraphDataModel><root><Cell id="0"><Object as="style"/></Cell><Cell id="1" parent="0"><Object as="style"/></Cell><Cell id="2" value="" vertex="1" parent="1"><Geometry _x="212" _y="110" _width="50" _height="50" as="geometry"/><Object shape="ellipse" fillColor="#23d67d" aspect="fixed" fontColor="#ffffff" as="style"/></Cell><Cell id="3" value="Make Document" vertex="1" parent="1"><Geometry _x="380" _y="184" _width="100" _height="40" as="geometry"/><Object shape="rectangle" rounded="1" as="style"/></Cell><Cell id="5" value="" vertex="1" parent="1"><Geometry _x="571" _y="373" _width="60" _height="60" as="geometry"/><Object shape="doubleEllipse" fillColor="#db3e00" strokeColor="#ffffff" as="style"/></Cell><Cell id="7" value="Branch User" vertex="1" parent="1"><Geometry _x="126" _y="33" _width="693" _height="249" as="geometry"/><Object shape="swimlane" horizontal="0" as="style"/></Cell><Cell id="8" value="Branch Manager" vertex="1" parent="1"><Geometry _x="126" _y="284" _width="692" _height="201" as="geometry"/><Object shape="swimlane" horizontal="0" as="style"/></Cell><Cell id="10" value="Check Document" vertex="1" parent="1"><Geometry _x="264" _y="372" _width="100" _height="40" as="geometry"/><Object shape="rectangle" rounded="1" as="style"/></Cell><Cell id="4" edge="1" parent="1" source="2" target="3"><Geometry relative="1" as="geometry"/><Object as="style"/></Cell><Cell id="11" edge="1" parent="1" source="3" target="10"><Geometry relative="1" as="geometry"/><Object as="style"/></Cell><Cell id="12" value="" vertex="1" parent="1"><Geometry _x="458" _y="304" _width="60" _height="60" as="geometry"/><Object shape="rhombus" as="style"/></Cell><Cell id="" edge="1" parent="1" source="10" target="12"><Geometry relative="1" as="geometry"/><Object as="style"/></Cell><Cell id="13" edge="1" parent="1" source="12" target="5"><Geometry relative="1" as="geometry"/><Object as="style"/></Cell></root></GraphDataModel>';
+  fromXml: string | undefined = '';
   showXml: boolean = false;
+  processId: string | null = '';
 
+  constructor(
+    private processService: ProcessesService,
+    private route: ActivatedRoute,
+    private msgService: MessageService
+  ) {
 
+  }
   ngOnInit(): void {
+
+    this.processId = this.route.snapshot.paramMap.get('id');
+
+
+    // Graph definitions
 
     const tbContainer = document.createElement('div');
     tbContainer.className = 'toolbar';
@@ -62,7 +78,7 @@ export class MxflowComponent implements OnInit {
       this.addToolbarItem(type, this.graph, toolbar, vertex, icon);
     };
 
-    addVertex('start-event', null, '/assets/start-event.svg', 50, 50, { shape: 'ellipse', fillColor: '#23d67d', aspect: 'fixed', fontColor: '#ffffff', labelPosition: 'right' });
+    addVertex('start-event', null, '/assets/start-event.svg', 50, 50, { shape: 'ellipse', fillColor: '#23d67d', aspect: 'fixed', fontColor: '#ffffff' });
     addVertex('swimlane', 'Lane', '/assets/lane.svg', 600, 200, { shape: 'swimlane', horizontal: false });
     addVertex('task', 'Task', '/assets/task.svg', 100, 40, { shape: 'rectangle', rounded: true });
     // addVertex('connection', null, '/assets/connection.svg', 40, 40, { shape: 'ellipse' });
@@ -79,7 +95,17 @@ export class MxflowComponent implements OnInit {
     // is normally the first child of the root (ie. layer 0).
     const parent = this.graph.getDefaultParent();
 
-    this.renderXml();
+    this.processService.getData({ id: this.processId }).then(
+      (res: any) => {
+        if (res) {
+          this.process = res;
+          if (this.process) {
+            this.fromXml = this.process.processDefinition;
+            this.renderXml();
+          }
+
+        }
+      })
 
 
     // Adds cells to the model in a single step
@@ -192,25 +218,6 @@ export class MxflowComponent implements OnInit {
   }
 
   getXmlModel() {
-    // var m = this.graph.getDataModel();
-    // var c = m.root?.getChildren();
-    // if (c) {
-    //   c.forEach(cell => {
-    //     cell.children.forEach(ccell => {
-    //       //console.log('Loop', ccell.children);
-    //       //console.log(ccell.geometry);
-    //       if (ccell.style.shape) {
-    //         console.log(ccell.style);
-    //         console.log(ccell.style.shape);
-    //         ccell.edges.forEach(e => {
-    //           console.log('source', e.source?.id);
-    //           console.log('target', e.target?.id);
-    //         })
-    //       }
-    //       // console.log(ccell.edges);
-    //     })
-    //   });
-    // }
     var encoder = new Codec();
     var node = encoder.encode(this.graph.getDataModel());
     if (node) {
@@ -221,8 +228,10 @@ export class MxflowComponent implements OnInit {
   }
 
   renderXml() {
-    let doc = xmlUtils.parseXml(this.fromXml);
-    this.parseXmlToGraph(doc, this.graph);
+    if (this.fromXml) {
+      let doc = xmlUtils.parseXml(this.fromXml);
+      this.parseXmlToGraph(doc, this.graph);
+    }
   }
 
   undo() {
@@ -296,6 +305,14 @@ export class MxflowComponent implements OnInit {
         )
       }
     }
+  }
+
+  saveDefinition() {
+    this.process.processDefinition = this.xmlData;
+    this.processService.updateData(this.process).then((res: any) => {
+      this.msgService.add({ severity: 'success', summary: 'Updated', detail: 'Definition updated' });
+    })
+    this.showXml = false;
   }
 
 }

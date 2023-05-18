@@ -12,12 +12,13 @@ import { WorkflowDesignerComponent } from './workflow/workflow-designer/workflow
 import { DesignerComponent } from './screen/designer/designer.component';
 import { ScreenComponent } from './screen/screen.component';
 import { FlowComponent } from './flow/flow.component';
-import { MxflowComponent } from './workflow/mxflow/mxflow.component';
+
 import { ProcessesComponent } from './processes/processes.component';
 import { MarketplaceComponent } from './marketplace/marketplace.component';
 import { ReleasesComponent } from './releases/releases.component';
 import { ApidocComponent } from './microservice/apidoc/apidoc.component';
 import { MsDatasourceComponent } from './microservice/ms-datasource/ms-datasource.component';
+import { MxflowComponent } from './processes/mxflow/mxflow.component';
 
 const routes: Routes = [
   {

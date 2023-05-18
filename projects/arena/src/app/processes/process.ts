@@ -4,4 +4,5 @@ export interface Process {
     processName?: string;
     processDescription?: string;
     module?: any;
+    processDefinition?: string;
 }

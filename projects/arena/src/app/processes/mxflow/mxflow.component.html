@@ -11,6 +11,7 @@
                 </div>
             </div>
             <div class="props-block">
+                <h2 class="font-semibold text-indigo-400 mb-4">{{process.processName}}</h2>
                 <div><b>Element Name: {{ activeElement?.mxObjectId }}</b></div>
             </div>
             <div class="p-2" *ngIf="activeElement.mxObjectId && tabactive === 1">
@@ -54,5 +55,11 @@
     <ng-template vTemplate="content">
         {{ xmlData }}
     </ng-template>
-    <ng-template vTemplate="footer"></ng-template>
+    <ng-template vTemplate="footer">
+        <div class="text-right">
+            <vezo-button label="Save" (click)="saveDefinition()"></vezo-button>
+        </div>
+    </ng-template>
 </vezo-modal>
+
+<vezo-toast></vezo-toast>
