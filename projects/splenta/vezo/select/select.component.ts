@@ -52,6 +52,12 @@ export class SelectComponent implements OnInit, ControlValueAccessor {
     this.className = twMerge('border border-slate-300 p-1 pl-2 pr-2 mt-2 mb-2 w-full', this.className);
   }
 
+  ngOnChanges() {
+    if (this.items.length > 0) {
+      this.checkIfObj();
+    }
+  }
+
   toggleCombo(event: any) {
     this.comboOpen = !this.comboOpen;
     event.stopPropagation();
@@ -88,16 +94,31 @@ export class SelectComponent implements OnInit, ControlValueAccessor {
     event.stopPropagation();
   }
 
-  writeValue(item: any) {
+  checkIfObj() {
     this.isObj = false;
     if (Array.isArray(this.items) && this.items.length > 0 && typeof this.items[0] === 'object' && !this.optionLabel) {
       console.log("If select items are objects label field is required");
     } else if (Array.isArray(this.items) && this.items.length > 0 && typeof this.items[0] === 'object' && this.optionLabel) {
-      this.isObj = true;
+      var item = this.items[0];
+      if (typeof item === 'object' && item !== null && !this.optionLabel) {
+        console.log("If select items are objects label field is required");
+        return;
+      } else if (typeof item === 'object' && item !== null && this.optionLabel) {
+        this.isObj = true;
+        return;
+      } else {
+        console.log('Not handled select option');
+      }
+    } else {
+      console.log('Not handled select option');
     }
+    console.log(this.isObj);
+  }
+  writeValue(item: any) {
     if (!item) {
       return;
-    } else if (typeof item === 'object' && item !== null && !this.optionLabel) {
+    }
+    if (typeof item === 'object' && item !== null && !this.optionLabel) {
       console.log("If select items are objects label field is required");
       return;
     } else if (typeof item === 'object' && item !== null && this.optionLabel) {
@@ -106,7 +127,6 @@ export class SelectComponent implements OnInit, ControlValueAccessor {
       });
       if (this.comboValue)
         this.displayValue = this.comboValue[this.optionLabel];
-      this.isObj = true;
     } else if (typeof item !== 'object' && item !== null) {
       console.log(item);
       this.comboValue = item;
@@ -114,7 +134,7 @@ export class SelectComponent implements OnInit, ControlValueAccessor {
     } else {
       console.log('Not handled select option');
     }
-    // console.log(this.displayValue);
+    // console.log(this.isObj);
   }
 
   registerOnChange(onChange: any) {

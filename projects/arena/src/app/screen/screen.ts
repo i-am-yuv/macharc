@@ -8,4 +8,5 @@ export interface Screen {
     screenDescription?: string;
     process?: Process;
     collection?: Collection;
+    screenDefinition?: string;
 }

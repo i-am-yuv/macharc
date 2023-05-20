@@ -112,7 +112,7 @@ export class WorkflowDesignerComponent implements OnInit {
       componentType: 'task',
       type,
       name,
-      properties: properties || {}
+      properties: properties || { velocity: 0, endpoint: '' }
     };
   }
   createIfStep(id: null, _true: never[], _false: never[]) {

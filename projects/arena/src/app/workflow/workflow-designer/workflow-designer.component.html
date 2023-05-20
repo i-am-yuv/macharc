@@ -168,6 +168,11 @@
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             (input)="updateName(editor.step, $event, editor.context)" />
 
+        <h3 class="my-4 font-semibold">Endpoint</h3>
+        <input type="text" [value]="editor.step.properties.endpoint"
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            (input)="updateProperty(editor.step.properties, 'endpoint', $event, editor.context)" />
+
         <h3 class="my-4 font-semibold">Velocity</h3>
         <input type="number" [value]="editor.step.properties.velocity"
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"

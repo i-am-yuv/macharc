@@ -6,6 +6,7 @@ import { Screen } from '../screen';
 import { FieldService } from '../../fields/field.service';
 import { FilterBuilder } from '../../utils/FilterBuilder';
 import { Field } from '../../fields/field';
+import { MessageService } from '@splenta/vezo';
 
 interface DropzoneLayout {
   container: string;
@@ -137,14 +138,20 @@ export class DesignerComponent implements OnInit {
   screenId: string | null = '';
   fields: Field[] = [];
 
-  constructor(private screenService: ScreenService, private fieldService: FieldService, private route: ActivatedRoute) {
+  constructor(
+    private screenService: ScreenService,
+    private fieldService: FieldService,
+    private route: ActivatedRoute,
+    private msgService: MessageService
+  ) {
 
   }
   public ngOnInit() {
     this.screenId = this.route.snapshot.paramMap.get('id');
-    this.screenService.getData({ id: this.screenId }).then(res => {
+    this.screenService.getData({ id: this.screenId }).then((res: any) => {
       this.screenData = res;
-
+      if (res.screenDefinition)
+        this.draggableListRight = JSON.parse(res.screenDefinition);
       if (this.screenData) {
         var filterStr = FilterBuilder.equal('collection.id', this.screenData?.collection?.id!);
         this.fieldService.getAllData(undefined, undefined, undefined, undefined, filterStr).then((res: any) => {
@@ -177,7 +184,12 @@ export class DesignerComponent implements OnInit {
     }
   }
 
-
+  saveDefinition() {
+    this.screenData.screenDefinition = JSON.stringify(this.draggableListRight);
+    this.screenService.updateData(this.screenData).then((res: any) => {
+      this.msgService.add({ severity: 'success', summary: 'Updated', detail: 'Definition updated' });
+    })
+  }
 
 
 }

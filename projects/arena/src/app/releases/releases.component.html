@@ -2,89 +2,61 @@
     <div class="col-span-12">
         <h1 class="text-2xl text-indigo-500 my-4">Releases</h1>
         <div class="w-1/3">
-            <vezo-select label=" Filter by Microservice"></vezo-select>
+            <div class="inline-block w-4/5">
+                <vezo-select label="Filter by Microservice" [items]="msServices" [(ngModel)]="ms"
+                    optionLabel="microServiceName" (ngModelChange)="changeMs()"></vezo-select>
+            </div>
+            <div class="inline-block">
+                <vezo-button label="Set" className="bg-blue-600 hover:bg-blue-700 text-white"></vezo-button>
+            </div>
         </div>
         <div class="grid grid-cols-2 w-2/3">
             <vezo-datepicker label="Date From"></vezo-datepicker>
             <vezo-datepicker label="Date To"></vezo-datepicker>
         </div>
     </div>
-    <div class="col-span-8 space-y-4">
-        <div class="bg-white shadow-md grid grid-cols-5 p-4  cursor-pointer" routerLink="/builder/microservices">
-            <div class="col-span-1">
-                <vezo-icon icon="bolt" className="w-24 h-24 text-red-400 p-4" strokeWidth="0.5"></vezo-icon>
+    <div class="col-span-8 space-y-4 bg-white shadow shadow-1">
+
+
+        <div class="min-h-[30rem]">
+            <div *ngIf="loading" class="text-center pt-[8rem]">
+                <img src="assets/spinner.svg" class="w-16 h-16 block m-auto" />
             </div>
-            <div class="col-span-3">
-                <h3 class="mb-2 text-lg">RELEASE TAG #456789</h3>
-                <p>Repository Name: QuantiER</p>
-                <p>Branch Name: Main</p>
-                <p>Commit Name: b45786</p>
-            </div>
-            <div class="col-span-1 text-right">
-                <vezo-icon icon="chevronRight" className="w-12 h-12 m-6 text-indigo-400" strokeWidth="0.5"></vezo-icon>
-            </div>
+            <ng-container *ngIf="!loading">
+                <div *ngIf="releases.length === 0" class="text-center pt-[8rem]">
+                    <vezo-icon icon="inbox" className="w-24 h-24 mb-4 text-indigo-400"
+                        strokeWidth="0.5"></vezo-icon><br />
+                    There are no releases for this microservice yet!
+                </div>
+                <div class="bg-white border-b grid grid-cols-6 p-4" *ngFor="let release of releases">
+                    <div class="col-span-1">
+                        <vezo-icon icon="bolt" className="w-24 h-24 text-red-400 p-4" strokeWidth="0.5"></vezo-icon>
+                    </div>
+                    <div class="col-span-4">
+                        <h3 class="mb-2 text-lg">RELEASE TAG {{ release.tag_name }}</h3>
+                        <p>Name: {{ release.name }}</p>
+                        <p>Description: {{ release.description }}</p>
+                        <p>Commit No: {{ release.commit.short_id }}</p>
+                    </div>
+                    <div class="col-span-1 text-right">
+                        <a [href]="release.assets.sources[0].url" target="_blank">
+                            <vezo-icon icon="arrowDownTray" className="w-12 h-12 m-6 text-indigo-400"
+                                strokeWidth="0.5"></vezo-icon>
+                        </a>
+                    </div>
+                </div>
+            </ng-container>
         </div>
-        <div class="bg-white shadow-md grid grid-cols-5 p-4 cursor-pointer" routerLink="/builder/datasources">
-            <div class="col-span-1">
-                <vezo-icon icon="bolt" className="w-24 h-24 text-purple-400 p-4" strokeWidth="0.5"></vezo-icon>
-            </div>
-            <div class="col-span-3">
-                <h3 class="mb-2 text-lg">RELEASE TAG #Q1#6657</h3>
-                <p>Repository Name: QuantiER</p>
-                <p>Branch Name: Main</p>
-                <p>Commit Name: b45786</p>
-            </div>
-            <div class="col-span-1 text-right">
-                <vezo-icon icon="chevronRight" className="w-12 h-12 m-6 text-indigo-400" strokeWidth="0.5"></vezo-icon>
-            </div>
-        </div>
-        <div class="bg-white shadow-md grid grid-cols-5 p-4  cursor-pointer" routerLink="/builder/microservices">
-            <div class="col-span-1">
-                <vezo-icon icon="bolt" className="w-24 h-24 text-red-400 p-4" strokeWidth="0.5"></vezo-icon>
-            </div>
-            <div class="col-span-3">
-                <h3 class="mb-2 text-lg">RELEASE TAG #456789</h3>
-                <p>Repository Name: QuantiER</p>
-                <p>Branch Name: Main</p>
-                <p>Commit Name: b45786</p>
-            </div>
-            <div class="col-span-1 text-right">
-                <vezo-icon icon="chevronRight" className="w-12 h-12 m-6 text-indigo-400" strokeWidth="0.5"></vezo-icon>
-            </div>
-        </div>
-        <div class="bg-white shadow-md grid grid-cols-5 p-4 cursor-pointer" routerLink="/builder/datasources">
-            <div class="col-span-1">
-                <vezo-icon icon="bolt" className="w-24 h-24 text-purple-400 p-4" strokeWidth="0.5"></vezo-icon>
-            </div>
-            <div class="col-span-3">
-                <h3 class="mb-2 text-lg">RELEASE TAG #Q1#6657</h3>
-                <p>Repository Name: QuantiER</p>
-                <p>Branch Name: Main</p>
-                <p>Commit Name: b45786</p>
-            </div>
-            <div class="col-span-1 text-right">
-                <vezo-icon icon="chevronRight" className="w-12 h-12 m-6 text-indigo-400" strokeWidth="0.5"></vezo-icon>
-            </div>
-        </div>
-        <div class="bg-white shadow-md grid grid-cols-5 p-4  cursor-pointer" routerLink="/builder/microservices">
-            <div class="col-span-1">
-                <vezo-icon icon="bolt" className="w-24 h-24 text-red-400 p-4" strokeWidth="0.5"></vezo-icon>
-            </div>
-            <div class="col-span-3">
-                <h3 class="mb-2 text-lg">RELEASE TAG #456789</h3>
-                <p>Repository Name: QuantiER</p>
-                <p>Branch Name: Main</p>
-                <p>Commit Name: b45786</p>
-            </div>
-            <div class="col-span-1 text-right">
-                <vezo-icon icon="chevronRight" className="w-12 h-12 m-6 text-indigo-400" strokeWidth="0.5"></vezo-icon>
-            </div>
-        </div>
-        <div class="text-right">
-            <vezo-button label="View All" className="my-4"></vezo-button>
+        <div class="text-right pr-4">
+            <a [href]="gitServerurl + '/'+ms.repoGroup+'/'+ms.repoName+'/-/releases'" target="_blank">
+                <vezo-button label="View releases in Gitlab" className="mr-2"></vezo-button>
+            </a>
+            <a [href]="gitServerurl + '/'+ms.repoGroup+'/'+ms.repoName+'/-/releases/new'" target="_blank">
+                <vezo-button label="New Release"
+                    className="my-5 bg-blue-600 hover:bg-blue-700 text-white "></vezo-button>
+            </a>
 
         </div>
-
 
     </div>
     <div class="col-span-4">
@@ -94,19 +66,19 @@
                     <div class="space-y-2  col-span-1">
                         <div class="h-32 bg-blue-400 p-2">
                             <div>Jobs Completed</div>
-                            <div class="text-5xl py-3">24</div>
+                            <div class="text-5xl py-3">{{ jobsTotal }}</div>
                         </div>
                         <div class="h-32 bg-blue-400 p-2">
                             <div>Jobs In Queue</div>
-                            <div class="text-5xl py-3">16</div>
+                            <div class="text-5xl py-3">{{ queuedPipeline }}</div>
                         </div>
                     </div>
                     <div class="col-span-2">
                         <div class="bg-indigo-700 p-4 h-full">
                             <div>Pipeline Success</div>
-                            <div class="text-8xl py-3">74</div>
+                            <div class="text-8xl py-3">{{ suceessPipeline || 0 }}</div>
                             <div>Pipeline Failures</div>
-                            <div class="text-4xl py-3">3</div>
+                            <div class="text-4xl py-3">{{ failedPipeline || 0 }}</div>
                         </div>
                     </div>
                 </div>
@@ -116,45 +88,15 @@
                 <h3 class="text-lg text-indigo-500 p-3">Pipeline Status</h3>
             </ng-template>
             <ng-template vTemplate="body">
-                <div class="space-y-4 p-3">
-                    <p></p>
-                    <div class="grid grid-cols-6">
-                        <div class="col-span-1">
-                            <vezo-icon icon="clock" className="text-blue-400"></vezo-icon>
+                <div class="space-y-4 p-3 min-h-[12rem]">
+                    <div class="" *ngFor="let pipeline of pipelines">
+                        <div class="inline-block mr-4">
+                            <vezo-icon icon="clock"
+                                className="text-{{(pipeline.status === 'failed')? 'red' : (pipeline.status === 'pending')? 'orange': (pipeline.status==='success') ? 'green' : 'blue' }}-400"></vezo-icon>
                         </div>
-                        <div class="col-span-5">
+                        <div class="inline-block">
                             <p>
-                                Release #848859 Main Build In Progess
-                            </p>
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-6">
-                        <div class="col-span-1">
-                            <vezo-icon icon="clock" className="text-red-400"></vezo-icon>
-                        </div>
-                        <div class="col-span-5">
-                            <p>
-                                Release #848859 Dev Build Failure
-                            </p>
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-6">
-                        <div class="col-span-1">
-                            <vezo-icon icon="clock" className="text-blue-400"></vezo-icon>
-                        </div>
-                        <div class="col-span-5">
-                            <p>
-                                Release #848859 UAT Build In Progress
-                            </p>
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-6">
-                        <div class="col-span-1">
-                            <vezo-icon icon="clock" className="text-green-400"></vezo-icon>
-                        </div>
-                        <div class="col-span-5">
-                            <p>
-                                Release #848859 Main Build Success
+                                Pipeline #{{ pipeline.id }} on {{ pipeline.ref }} branch {{ pipeline.status }}
                             </p>
                         </div>
                     </div>
@@ -162,9 +104,33 @@
             </ng-template>
             <ng-template vTemplate="footer">
                 <div class="text-right p-3">
-                    <vezo-button label="View Older Builds"></vezo-button>
+                    <a href="gitserverUrl" target="_blank">
+                        <vezo-button className="bg-orange-400 hover:bg-orange-500 text-white mr-4"
+                            label="Open Gitlab Server"></vezo-button>
+                    </a>
+                    <vezo-button label="Create new pipeline" (click)="visible=true"
+                        className="bg-blue-600 hover:bg-blue-700 text-white mr-4"></vezo-button>
+
                 </div>
             </ng-template>
         </vezo-card>
     </div>
 </div>
+
+<vezo-modal [(visible)]="visible">
+    <ng-template vTemplate="header">New Pipeline</ng-template>
+    <ng-template vTemplate="content">
+        <div class="text-center py-16">
+            <vezo-icon icon="cog" className="w-24 h-24 mb-4 text-indigo-400" strokeWidth="0.5"></vezo-icon><br />
+            <p class="text-indigo-400 font-semibold">New {{ ms.microServiceName }} Pipeline</p>
+            <p>This will create a new commit and push code to repo. </p>
+            <p>Are you sure you want to commit code, run build and tests?</p>
+        </div>
+    </ng-template>
+    <ng-template vTemplate="footer">
+        <div class="text-right">
+            <vezo-button label="Cancel" className="mr-2" (click)="visible=false"></vezo-button>
+            <vezo-button label="Commit" className="bg-blue-600 hover:bg-blue-700 text-white"></vezo-button>
+        </div>
+    </ng-template>
+</vezo-modal>

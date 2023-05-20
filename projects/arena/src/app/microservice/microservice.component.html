@@ -34,22 +34,25 @@
 
             </ng-template>
             <ng-template vTemplate="body">
-                <div class="p-5 min-h-[18rem]">
+                <div class="p-5 min-h-[14rem]">
                     <p class="mb-4">{{ ms.microServiceName }}</p>
-                    <div class="mb-2">
-                        <vezo-button icon="cursorArrowRays" label="Generate Microservice" (click)="generateService(ms)"
-                            className=""></vezo-button>
-                    </div>
+
                     <label class="text-xs uppercase text-gray-400">Package</label>
                     <p class="mb-4">{{ ms.packageName }}</p>
-                    <label class="text-xs uppercase text-gray-400">Packaging</label>
-                    <p>{{ ms.packaging }}</p>
-                    <label class="text-xs uppercase text-gray-400">Port</label>
-                    <p>{{ ms.portNumber }}</p>
+                    <div class=" grid grid-cols-2">
+                        <div>
+                            <label class="text-xs uppercase text-gray-400">Packaging</label>
+                            <p>{{ ms.packaging }}</p>
+                        </div>
+                        <div>
+                            <label class="text-xs uppercase text-gray-400">Port</label>
+                            <p>{{ ms.portNumber }}</p>
+                        </div>
+                    </div>
                 </div>
             </ng-template>
             <ng-template vTemplate="footer">
-                <div class="text-center p-3 border-t grid grid-cols-2">
+                <div class="text-center p-3  grid grid-cols-2">
                     <vezo-button icon="queueList" [routerLink]="['/builder/collections/'+ms.id]" label="Collections"
                         className="bg-white border-0"></vezo-button>
                     <vezo-button icon="circleStack" [routerLink]="['/builder/datasources/'+ms.id]" label="Datasources"
@@ -58,6 +61,10 @@
 
 
                     <!-- <vezo-button label="Manage Collections" (click)="addData()"></vezo-button> -->
+                </div>
+                <div class="mb-2 border-t p-3 text-center">
+                    <vezo-button icon="cursorArrowRays" label="Generate Microservice" (click)="generateService(ms)"
+                        className=""></vezo-button>
                 </div>
             </ng-template>
         </vezo-card>
@@ -83,6 +90,7 @@
             <th>Service Name</th>
             <th>Package</th>
             <th>Packaging</th>
+            <th>Port</th>
             <th [width]="150">Actions</th>
         </tr>
     </ng-template>
@@ -93,6 +101,7 @@
             <td>{{ ms.microServiceName }}</td>
             <td>{{ ms.packageName }}</td>
             <td>{{ ms.packaging }}</td>
+            <td>{{ ms.portNumber }}</td>
             <td>
                 <vezo-icon icon="pencil" (click)="editData(ms)"
                     className="mr-5 w-4 h-4 text-indigo-400 cursor-pointer"></vezo-icon>
