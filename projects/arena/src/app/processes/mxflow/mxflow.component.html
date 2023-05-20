@@ -12,10 +12,14 @@
             </div>
             <div class="props-block">
                 <h2 class="font-semibold text-indigo-400 mb-4">{{process.processName}}</h2>
-                <div><b>Element Name: {{ activeElement?.mxObjectId }}</b></div>
+                <div><b>Element Name: {{ activeElement.mxObjectId }}</b></div>
             </div>
             <div class="p-2" *ngIf="activeElement.mxObjectId && tabactive === 1">
                 <vezo-input label="Text" [(ngModel)]="activeElement.value" (ngModelChange)="setText()"></vezo-input>
+                <vezo-input label="Process Code" [(ngModel)]="activeElement.style.process"
+                    (ngModelChange)="setStyle()"></vezo-input>
+                <vezo-input label="Endpoint" [(ngModel)]="activeElement.style.endpoint"
+                    (ngModelChange)="setStyle()"></vezo-input>
             </div>
             <div class="p-2" *ngIf="activeElement.mxObjectId && tabactive === 2">
                 <vezo-input label="Fill Color" [(ngModel)]="activeElement.style.fillColor"

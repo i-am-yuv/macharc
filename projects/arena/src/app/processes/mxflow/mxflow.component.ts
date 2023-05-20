@@ -5,6 +5,13 @@ import { ProcessesService } from '../processes.service';
 import { ActivatedRoute } from '@angular/router';
 import { MessageService } from '@splenta/vezo';
 
+export interface ActiveElement {
+  mxObjectId?: string;
+  value?: string;
+  style?: any;
+  data?: any;
+}
+
 @Component({
   selector: 'app-mxflow',
   templateUrl: './mxflow.component.html',
@@ -15,7 +22,7 @@ export class MxflowComponent implements OnInit {
   @ViewChild('graphContainer', { read: ElementRef, static: true })
   container!: ElementRef;
   tabactive: number = 1;
-  activeElement: any = { value: '', style: {} };
+  activeElement: ActiveElement = {};
   graph!: Graph;
   jsonData: any = {};
   xmlData: string = '';
@@ -126,6 +133,8 @@ export class MxflowComponent implements OnInit {
 
       console.log(prototype);
       this.activeElement = prototype;
+
+      console.log(prototype);
 
       const pt = graph.getPointForEvent(evt);
       const vertex = graph.getDataModel().cloneCell(prototype);
