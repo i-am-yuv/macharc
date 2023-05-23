@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MicroserviceService } from '../microservice.service';
 import { MicroService } from '../microservice';
@@ -11,7 +11,10 @@ declare let Redoc: any
 export class ApidocComponent implements OnInit {
   msId: string | null = '';
   ms: MicroService = {};
-  constructor(private route: ActivatedRoute, private msService: MicroserviceService) {
+  constructor(
+    private elRef: ElementRef,
+    private route: ActivatedRoute,
+    private msService: MicroserviceService) {
 
   }
   ngOnInit(): void {

@@ -19,12 +19,16 @@ import { ReleasesComponent } from './releases/releases.component';
 import { ApidocComponent } from './microservice/apidoc/apidoc.component';
 import { MsDatasourceComponent } from './microservice/ms-datasource/ms-datasource.component';
 import { MxflowComponent } from './processes/mxflow/mxflow.component';
+import { AclComponent } from './acl/acl.component';
+import { SettingsComponent } from './settings/settings.component';
 
 const routes: Routes = [
   {
     path: '', component: LayoutComponent, children: [
       { path: '', component: FrontComponent },
       { path: 'releases', component: ReleasesComponent },
+      { path: 'acl', component: AclComponent },
+      { path: 'settings', component: SettingsComponent },
       { path: 'marketplace', component: MarketplaceComponent },
       {
         path: 'builder', children: [

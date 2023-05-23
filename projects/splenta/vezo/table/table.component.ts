@@ -13,6 +13,8 @@ export class TableComponent implements OnInit {
 
   @Input() actionBar = false;
 
+  @Input() pagination = true;
+
   @Input() toolBar = false;
 
   @Input() data: any[] = [];

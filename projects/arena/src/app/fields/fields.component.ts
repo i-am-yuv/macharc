@@ -16,6 +16,7 @@ import { FieldService } from './field.service';
 })
 export class FieldsComponent extends GenericComponent implements OnInit {
 
+
   form: FormGroup<any>;
   data: Field[] = [];
   componentName: string = 'Field';
@@ -23,13 +24,24 @@ export class FieldsComponent extends GenericComponent implements OnInit {
   dataTypes: any[] = [
     { label: 'String', value: 'String' },
     { label: 'Integer', value: 'int' },
+    { label: 'Date', value: 'Date' },
     { label: 'Decimal', value: 'BigDecimal' },
     { label: 'Boolean', value: 'boolean' },
     { label: 'Foreign Key', value: 'fk' },
   ];
+
+  validations: any[] = [
+    { label: 'Required', value: 'Required' },
+    { label: 'Alpha', value: 'Alpha' },
+    { label: 'AlphaNumeric', value: 'AlphaNumeric' },
+    { label: 'Email', value: 'Email' },
+    { label: 'Numbers Only', value: 'Numeric' },
+    { label: 'Pattern', value: 'Pattern' },
+  ];
   collectionId: string | null;
 
   showForm: boolean = false;
+  fieldType: string = 'String';
 
   constructor(
     private fb: FormBuilder,
@@ -41,18 +53,22 @@ export class FieldsComponent extends GenericComponent implements OnInit {
   ) {
     super(fieldService, messageService);
     this.collectionId = this.route.snapshot.paramMap.get('id');
-    console.log(this.collectionId);
+    // console.log(this.collectionId);
     this.form = this.fb.group({
       id: '',
       fieldName: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
       dataType: ['', [Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
+      fieldType: [''],
+      validation: [''],
+      pattern: [''],
       collection: this.fb.group({
-        id: this.collectionId
+        id: ''
       })
     })
   }
   override preSave(): void {
     this.form.patchValue({ collection: { id: this.collectionId } });
+    this.fieldType = '';
   }
   ngOnInit(): void {
     if (this.collectionId) {
@@ -81,5 +97,10 @@ export class FieldsComponent extends GenericComponent implements OnInit {
         this.getAllData();
       })
     }
+  }
+
+  setFieldType(ft: string) {
+    this.fieldType = ft;
+    this.form.patchValue({ fieldType: ft });
   }
 }

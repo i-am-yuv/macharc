@@ -57,7 +57,9 @@
 <vezo-modal [(visible)]="showXml">
     <ng-template vTemplate="header"> XML </ng-template>
     <ng-template vTemplate="content">
-        {{ xmlData }}
+        <ngx-monaco-editor [options]="editorOptions" [(ngModel)]="xmlData" style="height: 350px"
+            (onInit)="editInit($event)"></ngx-monaco-editor>
+        <!-- {{ xmlData }} -->
     </ng-template>
     <ng-template vTemplate="footer">
         <div class="text-right">

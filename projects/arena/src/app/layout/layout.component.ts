@@ -30,8 +30,8 @@ export class LayoutComponent {
     {
       label: 'Admin',
       items: [
-        { label: 'ACL', icon: 'clipboard' },
-        { label: 'Settings', icon: 'clipboard' }
+        { label: 'ACL', icon: 'clipboard', routerLink: ['/acl'] },
+        { label: 'Settings', icon: 'clipboard', routerLink: ['/settings'] }
       ],
       showSubMenu: true
     }

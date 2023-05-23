@@ -1,9 +1,16 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { type CellStyle, Graph, MaxToolbar, gestureUtils, xmlUtils, Cell, Geometry, KeyHandler, SelectionHandler, InternalEvent, ObjectCodec, Codec, utils, UndoManager, EdgeStyle } from '@maxgraph/core';
+import { type CellStyle, Graph, MaxToolbar, gestureUtils, xmlUtils, Cell, Geometry, KeyHandler, InternalEvent, Codec, UndoManager, CellRenderer } from '@maxgraph/core';
 import { Process } from '../process';
 import { ProcessesService } from '../processes.service';
 import { ActivatedRoute } from '@angular/router';
 import { MessageService } from '@splenta/vezo';
+import { registerCustomShapes } from './CustomShapes';
+
+
+
+
+
+
 
 export interface ActiveElement {
   mxObjectId?: string;
@@ -32,6 +39,8 @@ export class MxflowComponent implements OnInit {
   showXml: boolean = false;
   processId: string | null = '';
 
+  editorOptions = { theme: 'vs-dark', language: 'xml', formatOnPaste: true };
+
   constructor(
     private processService: ProcessesService,
     private route: ActivatedRoute,
@@ -44,11 +53,14 @@ export class MxflowComponent implements OnInit {
     this.processId = this.route.snapshot.paramMap.get('id');
 
 
+
     // Graph definitions
 
     const tbContainer = document.createElement('div');
     tbContainer.className = 'toolbar';
     this.graph = new Graph(this.container.nativeElement);
+
+
 
     const vertexStyle = this.graph.getStylesheet().getDefaultVertexStyle();
     const edgeStyle = this.graph.getStylesheet().getDefaultEdgeStyle();
@@ -56,6 +68,8 @@ export class MxflowComponent implements OnInit {
     edgeStyle!.edgeStyle = 'orthogonalEdgeStyle';
     edgeStyle!.backgroundColor = '#ffffff';
     vertexStyle!.fillColor = 'white';
+
+    registerCustomShapes();
 
     this.container.nativeElement.appendChild(tbContainer);
 
@@ -66,6 +80,8 @@ export class MxflowComponent implements OnInit {
     this.graph.setAllowDanglingEdges(false);
     this.graph.setDisconnectOnMove(false);
     this.graph.gridSize = 1;
+
+
 
     var undoManager = new UndoManager();
     // var listener = function (sender: any, evt: any) {
@@ -89,12 +105,18 @@ export class MxflowComponent implements OnInit {
     addVertex('swimlane', 'Lane', '/assets/lane.svg', 600, 200, { shape: 'swimlane', horizontal: false });
     addVertex('task', 'Task', '/assets/task.svg', 100, 40, { shape: 'rectangle', rounded: true });
     // addVertex('connection', null, '/assets/connection.svg', 40, 40, { shape: 'ellipse' });
-    addVertex('gateway-parallel', null, '/assets/gateway-parallel.svg', 60, 60, { shape: 'rhombus' });
-    addVertex('gateway-xor', null, '/assets/gateway-xor.svg', 60, 60, { shape: 'triangle' });
-    addVertex('service', null, '/assets/service.svg', 100, 40, { shape: 'rectangle', rounded: true });
-    addVertex('data-store', null, '/assets/data-store.svg', 60, 80, { shape: 'cylinder' });
-    addVertex('start-event-message', null, '/assets/start-event-message.svg', 30, 40, { shape: 'actor' });
-    addVertex('end-event', null, '/assets/end-event.svg', 60, 60, { shape: 'doubleEllipse', fillColor: '#db3e00', strokeColor: '#ffffff' });
+    // @ts-ignore
+    addVertex('gateway-parallel', null, '/assets/gateway-parallel.svg', 50, 50, { shape: 'gatewayParallel', strokeColor: '#000000', fillColor: '#000000' });
+    // @ts-ignore
+    addVertex('gateway-xor', null, '/assets/gateway-xor.svg', 50, 50, { shape: 'gatewayXor', strokeColor: '#000000', fillColor: '#000000', strokeWidth: 0.5 });
+    // @ts-ignore
+    addVertex('service', null, '/assets/service.svg', 50, 50, { shape: 'service', strokeColor: '#000000', fillColor: '#000000' });
+    // @ts-ignore
+    addVertex('data-store', null, '/assets/data-store.svg', 50, 50, { shape: 'dataStore', strokeColor: '#000000', fillColor: '#000000' });
+    // @ts-ignore
+    addVertex('start-event-message', null, '/assets/start-event-message.svg', 50, 50, { shape: 'startEventMessage', strokeColor: '#000000', fillColor: '#000000' });
+    // @ts-ignore
+    addVertex('end-event', null, '/assets/end-event.svg', 50, 50, { shape: 'doubleEllipse', fillColor: '#db3e00', strokeColor: '#ffffff' });
     toolbar.addLine();
 
     this.graph.setPanning(true); // Use mouse right button for panning
@@ -122,6 +144,11 @@ export class MxflowComponent implements OnInit {
     //   graph.insertEdge(parent, null, null, vertex01, vertex02, <EdgeStyle>{ edgeStyle: 'orthogonalEdgeStyle', rounded: 0, orthogonalLoop: 1, jettySize: 'auto', html: 1 });
 
     // });
+  }
+
+  createGatewayShape() {
+
+
   }
 
   addToolbarItem(type: string, graph: any, toolbar: MaxToolbar, prototype: any, image: any) {
@@ -180,6 +207,9 @@ export class MxflowComponent implements OnInit {
     });
   }
 
+
+
+
   sendBack() {
     var cells = this.graph.getSelectionCells();
     this.graph.orderCells(true, cells);
@@ -231,10 +261,33 @@ export class MxflowComponent implements OnInit {
     var node = encoder.encode(this.graph.getDataModel());
     if (node) {
       var xmlSerializer = new XMLSerializer();
-      this.xmlData = xmlSerializer.serializeToString(node);
+      this.xmlData = this.prettifyXml(xmlSerializer.serializeToString(node));
     }
     this.showXml = true;
   }
+
+  prettifyXml(sourceXml: string) {
+    var xmlDoc = new DOMParser().parseFromString(sourceXml, 'application/xml');
+    var xsltDoc = new DOMParser().parseFromString([
+      // describes how we want to modify the XML - indent everything
+      '<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform">',
+      '  <xsl:strip-space elements="*"/>',
+      '  <xsl:template match="para[content-style][not(text())]">', // change to just text() to strip space in text nodes
+      '    <xsl:value-of select="normalize-space(.)"/>',
+      '  </xsl:template>',
+      '  <xsl:template match="node()|@*">',
+      '    <xsl:copy><xsl:apply-templates select="node()|@*"/></xsl:copy>',
+      '  </xsl:template>',
+      '  <xsl:output indent="yes"/>',
+      '</xsl:stylesheet>',
+    ].join('\n'), 'application/xml');
+
+    var xsltProcessor = new XSLTProcessor();
+    xsltProcessor.importStylesheet(xsltDoc);
+    var resultDoc = xsltProcessor.transformToDocument(xmlDoc);
+    var resultXml = new XMLSerializer().serializeToString(resultDoc);
+    return resultXml;
+  };
 
   renderXml() {
     if (this.fromXml) {
@@ -324,5 +377,9 @@ export class MxflowComponent implements OnInit {
     this.showXml = false;
   }
 
+  editInit(editor: any) {
+    editor.formatOnPaste(true);
+
+  }
 }
 

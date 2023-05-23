@@ -191,5 +191,10 @@ export class DesignerComponent implements OnInit {
     })
   }
 
+  generateComponent() {
+    this.screenService.generateComponent(this.screenData).then((res: any) => {
+      this.msgService.add({ severity: 'success', summary: 'Generated', detail: 'Code Generated' });
+    })
+  }
 
 }

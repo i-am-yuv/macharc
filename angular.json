@@ -76,7 +76,12 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "projects/arena/src/favicon.ico",
-              "projects/arena/src/assets"
+              "projects/arena/src/assets",
+              {
+                "glob": "**/*",
+                "input": "node_modules/monaco-editor",
+                "output": "/assets/monaco/"
+              }
             ],
             "styles": [
               "projects/arena/src/styles.scss",

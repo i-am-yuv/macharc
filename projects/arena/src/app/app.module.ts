@@ -51,6 +51,9 @@ import { MsDatasourceComponent } from './microservice/ms-datasource/ms-datasourc
 import { PropertiesComponent } from './screen/properties/properties.component';
 import { InputnumberModule } from '@splenta/vezo/inputnumber';
 import { MxflowComponent } from './processes/mxflow/mxflow.component';
+import { AclComponent } from './acl/acl.component';
+import { SettingsComponent } from './settings/settings.component';
+import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
 
 @NgModule({
   declarations: [
@@ -76,7 +79,9 @@ import { MxflowComponent } from './processes/mxflow/mxflow.component';
     ReleasesComponent,
     ApidocComponent,
     MsDatasourceComponent,
-    PropertiesComponent
+    PropertiesComponent,
+    AclComponent,
+    SettingsComponent
   ],
   imports: [
     BrowserModule,
@@ -107,7 +112,8 @@ import { MxflowComponent } from './processes/mxflow/mxflow.component';
     FileuploadModule,
     TabsModule,
     DndModule,
-    SequentialWorkflowDesignerModule
+    SequentialWorkflowDesignerModule,
+    MonacoEditorModule.forRoot()
   ],
   providers: [HttpClientModule, MessageService],
   bootstrap: [AppComponent]

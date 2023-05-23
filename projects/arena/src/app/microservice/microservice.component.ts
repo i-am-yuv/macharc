@@ -18,6 +18,7 @@ export class MicroserviceComponent extends GenericComponent implements OnInit {
 
   showGrid: boolean = true;
   packaging: any[] = ['Jar', 'War'];
+  loading: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -39,10 +40,14 @@ export class MicroserviceComponent extends GenericComponent implements OnInit {
     this.getAllData();
   }
   generateService(ms: MicroService) {
+    this.loading = true;
     this.micrService.generateCode(ms).then((res: any) => {
       if (res) {
-        this.msgService.add({ severity: 'success', summary: 'Generated', detail: 'Zip created' });
+        this.msgService.add({ severity: 'success', summary: 'Generated', detail: 'Microservice created' });
       }
+      this.loading = false;
+    }).catch(e => {
+      this.loading = false;
     })
   }
 }

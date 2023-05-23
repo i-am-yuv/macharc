@@ -8,6 +8,9 @@
             <!-- <vezo-button label="Filter" icon="funnel" className="bg-green-100"></vezo-button> -->
         </div>
     </div>
+    <div *ngIf="loading" class="text-center px-[2rem]">
+        <img src="assets/spinner.svg" class="w-16 h-16 block m-auto" />
+    </div>
     <div class="grid  grid-cols-4 gap-4">
         <vezo-card className="bg-white" *ngFor="let ms of data">
             <ng-template vTemplate="media">

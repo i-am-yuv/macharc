@@ -83,6 +83,7 @@ export class SelectComponent implements OnInit, ControlValueAccessor {
       this.displayValue = item;
       this.comboValue = item;
     }
+
     this.onChange(this.comboValue);
   }
 
@@ -128,7 +129,7 @@ export class SelectComponent implements OnInit, ControlValueAccessor {
       if (this.comboValue)
         this.displayValue = this.comboValue[this.optionLabel];
     } else if (typeof item !== 'object' && item !== null) {
-      console.log(item);
+      // console.log(item);
       this.comboValue = item;
       this.displayValue = item;
     } else {

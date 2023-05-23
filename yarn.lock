@@ -9823,6 +9823,11 @@ mobx-react@^7.2.0:
   dependencies:
     mobx-react-lite "^3.4.0"
 
+monaco-editor@^0.38.0:
+  version "0.38.0"
+  resolved "https://registry.yarnpkg.com/monaco-editor/-/monaco-editor-0.38.0.tgz#7b3cd16f89b1b8867fcd3c96e67fccee791ff05c"
+  integrity sha512-11Fkh6yzEmwx7O0YoLxeae0qEGFwmyPRlVxpg7oF9czOOCB/iCjdJrG5I67da5WiXK3YJCxoz9TJFE8Tfq/v9A==
+
 morgan@^1.10.0:
   version "1.10.0"
   resolved "https://registry.npmjs.org/morgan/-/morgan-1.10.0.tgz"
@@ -9983,6 +9988,13 @@ ngx-drag-drop@^15.1.0:
   integrity sha512-ZTAMrKMv7Fqdybvt+2sEtbT0LlOwsaFCNwFQ/CnKXrXEBkbs5K1jx2rN8HXx9BMlVAfa4ovOmtkJXtx/9XYqrA==
   dependencies:
     tslib "^2.3.0"
+
+ngx-monaco-editor-v2@^15.0.1:
+  version "15.0.1"
+  resolved "https://registry.yarnpkg.com/ngx-monaco-editor-v2/-/ngx-monaco-editor-v2-15.0.1.tgz#769e0536ade7a32dbf31c9e368af432e6ac0165f"
+  integrity sha512-QDj4XJO7o+XcYqbUrbIWhJdSRUnbAXltShsLveyVug+yw7ThS3DcE+FBuDUnAO67czTWta0paQPsyrH5DUfnkg==
+  dependencies:
+    tslib "^2.1.0"
 
 nice-napi@^1.0.2:
   version "1.0.2"

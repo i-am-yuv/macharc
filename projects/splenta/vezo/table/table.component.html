@@ -48,7 +48,7 @@
             <ng-container [ngTemplateOutlet]="footer"></ng-container>
         </tfoot>
     </table>
-    <div class="pagination bg-indigo-50 text-indigo-500">
+    <div class="pagination bg-indigo-50 text-indigo-500" *ngIf="pagination">
         <div class="grid grid-cols-12">
             <div class="col-span-4 p-3" (clickOutside)="closeOpts()">
                 <div>
