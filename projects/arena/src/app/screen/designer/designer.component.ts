@@ -28,6 +28,7 @@ interface DraggableItem {
   styleUrls: ['./designer.component.scss']
 })
 export class DesignerComponent implements OnInit {
+
   draggableListLeft: DraggableItem[] = [
     {
       name: 'table',
@@ -176,7 +177,7 @@ export class DesignerComponent implements OnInit {
       if (typeof index === 'undefined') {
         index = list.length;
       }
-
+      event.data['id'] = Math.floor(Math.random() * 1000000);
       list.splice(index, 0, event.data);
 
       this.activeItem = event.data;
@@ -195,6 +196,10 @@ export class DesignerComponent implements OnInit {
     this.screenService.generateComponent(this.screenData).then((res: any) => {
       this.msgService.add({ severity: 'success', summary: 'Generated', detail: 'Code Generated' });
     })
+  }
+
+  deleteActiveItem(val: boolean) {
+    this.draggableListRight.splice(this.draggableListRight.findIndex((a: any) => a.id === this.activeItem.id), 1);
   }
 
 }

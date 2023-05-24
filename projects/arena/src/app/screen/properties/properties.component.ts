@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-properties',
@@ -7,5 +7,9 @@ import { Component, Input } from '@angular/core';
 export class PropertiesComponent {
   @Input() props: any = {};
   @Input() fields: any = {};
+  @Output() deleteProp = new EventEmitter<boolean>();
   validations: any[] = ['Required', 'Alpha', 'Alpha Numeric', 'Numbers', 'Password', 'Email', 'Telephone', 'Pattern'];
+  deleteProperty() {
+    this.deleteProp.emit(true);
+  }
 }

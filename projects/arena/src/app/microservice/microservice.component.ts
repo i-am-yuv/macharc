@@ -50,4 +50,17 @@ export class MicroserviceComponent extends GenericComponent implements OnInit {
       this.loading = false;
     })
   }
+
+  generateFrontend(ms: MicroService) {
+    this.loading = true;
+    this.micrService.generateFrontendCode(ms).then((res: any) => {
+      if (res) {
+        this.msgService.add({ severity: 'success', summary: 'Generated', detail: 'Microservice Frontend created' });
+      }
+      this.loading = false;
+    }).catch(e => {
+      this.loading = false;
+    })
+  }
+
 }

@@ -105,3 +105,6 @@
         </div>
     </div>
 </ng-container>
+<div *ngIf="props?.name" class="text-right" (click)="deleteProperty()">
+    <vezo-button label="Delete"></vezo-button>
+</div>

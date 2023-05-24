@@ -103,7 +103,8 @@
             </div>
             <div class="p-3">
                 <div class="min-h-[24rem]">
-                    <app-properties [fields]="fields" [props]="activeItem"></app-properties>
+                    <app-properties [fields]="fields" [props]="activeItem"
+                        (deleteProp)="deleteActiveItem($event)"></app-properties>
                     <div class="text-center m-8" *ngIf="!activeItem">Drag and drop from blocks to center panel to create
                         screen. </div>
                 </div>
