@@ -60,7 +60,7 @@
                 dndEffectAllowed="copyMove">
                 <div class="dndPlaceholder h-16 p-5 border bg-blue-400 bg-opacity-25" dndPlaceholderRef>
                 </div>
-                <div *ngFor="let item of draggableListRight" [dndDraggable]="item" (click)="activeItem=item"
+                <div *ngFor="let item of draggableListRight" [dndDraggable]="item" (click)="handleClick($event, item)"
                     (dndCanceled)="onDragged(item, draggableListRight, 'none')"
                     (dndCopied)="onDragged(item, draggableListRight, 'move')"
                     (dndLinked)="onDragged(item, draggableListRight, 'link')"
@@ -79,13 +79,13 @@
                                     (dndCopied)="onDragged(child, item.children!, 'move')"
                                     (dndLinked)="onDragged(child, item.children!, 'link')"
                                     (dndMoved)="onDragged(child, item.children!, 'move')" class="name">
-                                    <app-blocks [block]="child"></app-blocks>
+                                    <app-blocks [block]="child" (click)="handleClick($event, child)"></app-blocks>
                                 </div>
                                 <div class="dndPlaceholder h-16 p-5 border bg-blue-400 bg-opacity-25" dndPlaceholderRef>
                                 </div>
                             </div>
                         </ng-container>
-                        <app-blocks [block]="item"></app-blocks>
+                        <app-blocks [block]="item" (click)="handleClick($event, item)"></app-blocks>
                     </div>
                 </div>
             </div>

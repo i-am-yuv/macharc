@@ -29,6 +29,7 @@ interface DraggableItem {
 })
 export class DesignerComponent implements OnInit {
 
+
   draggableListLeft: DraggableItem[] = [
     {
       name: 'table',
@@ -200,6 +201,11 @@ export class DesignerComponent implements OnInit {
 
   deleteActiveItem(val: boolean) {
     this.draggableListRight.splice(this.draggableListRight.findIndex((a: any) => a.id === this.activeItem.id), 1);
+  }
+
+  handleClick(event: MouseEvent, item: any) {
+    event.stopPropagation();
+    this.activeItem = item;
   }
 
 }
