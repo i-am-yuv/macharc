@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
@@ -113,8 +113,9 @@ import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
     TabsModule,
     DndModule,
     SequentialWorkflowDesignerModule,
-    MonacoEditorModule.forRoot()
+    MonacoEditorModule.forRoot(),
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [HttpClientModule, MessageService],
   bootstrap: [AppComponent]
 })

@@ -30,10 +30,10 @@ const routes: Routes = [
       { path: 'acl', component: AclComponent },
       { path: 'settings', component: SettingsComponent },
       { path: 'marketplace', component: MarketplaceComponent },
+      { path: 'microservices/apidoc/:id', component: ApidocComponent },
       {
         path: 'builder', children: [
           { path: 'microservices', component: MicroserviceComponent },
-          { path: 'microservices/apidoc/:id', component: ApidocComponent },
           { path: 'datasources', component: DatasourceComponent },
           { path: 'datasources/:id', component: MsDatasourceComponent },
           { path: 'flow', component: FlowComponent },

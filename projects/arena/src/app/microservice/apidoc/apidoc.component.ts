@@ -1,7 +1,8 @@
-import { Component, ElementRef, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MicroserviceService } from '../microservice.service';
 import { MicroService } from '../microservice';
+import { environment } from 'projects/arena/src/environments/environment';
 declare let Redoc: any
 
 @Component({
@@ -11,10 +12,15 @@ declare let Redoc: any
 export class ApidocComponent implements OnInit {
   msId: string | null = '';
   ms: MicroService = {};
+  apiDescriptionUrl = '';
+  basePath: string = '';
+
+  @ViewChild('el') div: ElementRef | undefined;
+
   constructor(
     private elRef: ElementRef,
     private route: ActivatedRoute,
-    private msService: MicroserviceService) {
+    private msService: MicroserviceService, private router: Router) {
 
   }
   ngOnInit(): void {
@@ -28,12 +34,19 @@ export class ApidocComponent implements OnInit {
       });
     }
 
+
+
+
+
   }
 
+
   initDocs() {
-    Redoc.init('http://localhost:' + this.ms.portNumber + '/v3/api-docs', {
-      scrollYOffset: 60,
-      hideDownloadButton: true
-    }, document.getElementById('redoc'))
+    this.apiDescriptionUrl = 'http://localhost:' + this.ms.portNumber + '/v3/api-docs';
+    this.basePath = this.router.url;
+    // Redoc.init('http://localhost:' + this.ms.portNumber + '/v3/api-docs', {
+    //   scrollYOffset: 60,
+    //   hideDownloadButton: true
+    // }, document.getElementById('redoc'))
   }
 }

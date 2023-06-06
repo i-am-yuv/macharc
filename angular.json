@@ -87,10 +87,12 @@
               "projects/arena/src/styles.scss",
               "./node_modules/sequential-workflow-designer/css/designer.css",
               "./node_modules/sequential-workflow-designer/css/designer-light.css",
-              "./node_modules/sequential-workflow-designer/css/designer-dark.css"
+              "./node_modules/sequential-workflow-designer/css/designer-dark.css",
+              "node_modules/@stoplight/elements/styles.min.css"
             ],
             "scripts": [
-              "./node_modules/redoc/bundles/redoc.standalone.js"
+              "./node_modules/redoc/bundles/redoc.standalone.js",
+              "node_modules/@stoplight/elements/web-components.min.js"
             ]
           },
           "configurations": {
