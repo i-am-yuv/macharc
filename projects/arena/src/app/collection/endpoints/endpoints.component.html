@@ -1,0 +1,128 @@
+<div class="grid grid-cols-12 border min-h-full bg-white">
+    <div class="col-span-3 border-r">
+
+        <div class="p-4 border-b">
+            <h2 class="heading">Collection
+            </h2>
+        </div>
+
+        <div class="p-4">
+            <div><label>Collection Name</label></div>
+            <div>
+                <span class="text-indigo-400 text-lg"> {{ collection.collectionName }}</span>
+            </div>
+        </div>
+        <div class="p-4">
+            <div class="mb-2">Endpoints</div>
+            <vezo-accordion>
+                <vezo-accordion-section header="CUSTOM" [showSection]="true">
+                    <div class="my-2 subheading">NONE</div>
+                </vezo-accordion-section>
+                <vezo-accordion-section header="PROCESSES">
+                    <div class="my-2 subheading">NONE</div>
+                </vezo-accordion-section>
+                <vezo-accordion-section header="CRUD">
+                    <div class="divide-y">
+                        <div class="py-4 grid grid-cols-12">
+                            <div class="col-span-9 w-full space-y-2">
+                                <p class="subheading">Get All</p>
+                                <p><span class="bg-gray-200 px-3 py-1 text-xs rounded-lg mr-2">GET</span>
+                                </p>
+                                <p class="break-all"> /beneficiaries
+                                </p>
+                            </div>
+                            <div class="col-span-3 w-full text-right">
+                                <vezo-icon icon="chevronRight" className="w-12 h-12 text-indigo-400"
+                                    strokeWidth="0.5"></vezo-icon>
+                            </div>
+                        </div>
+                        <div class="py-4 grid grid-cols-12">
+                            <div class="col-span-9 w-full space-y-2">
+                                <p class="subheading">Get One</p>
+                                <p><span class="bg-gray-200 px-3 py-1 text-xs rounded-lg mr-2">GET</span>
+                                </p>
+                                <p class="break-all">
+                                    /beneficiaries/{{ '{id}' }}</p>
+                            </div>
+                            <div class="col-span-3 w-full text-right">
+                                <vezo-icon icon="chevronRight" className="w-12 h-12 text-indigo-400"
+                                    strokeWidth="0.5"></vezo-icon>
+                            </div>
+                        </div>
+                        <div class="py-4 grid grid-cols-12">
+                            <div class="col-span-9 w-full space-y-2">
+                                <p class="subheading">Create</p>
+                                <p><span class="bg-green-200 px-3 py-1 text-xs rounded-lg mr-2">POST</span></p>
+                                <p class="break-all">
+                                    /beneficiaries
+                                </p>
+                            </div>
+                            <div class="col-span-3 w-full text-right">
+                                <vezo-icon icon="chevronRight" className="w-12 h-12 text-indigo-400"
+                                    strokeWidth="0.5"></vezo-icon>
+                            </div>
+                        </div>
+                        <div class="py-4 grid grid-cols-12">
+                            <div class="col-span-9 w-full space-y-2">
+                                <p class="subheading">Update</p>
+                                <p><span class="bg-orange-200 px-3 py-1 text-xs rounded-lg mr-2">PUT</span></p>
+                                <p class="break-all">
+                                    /beneficiaries/{{ '{id}' }}
+                                </p>
+                            </div>
+                            <div class="col-span-3 w-full text-right">
+                                <vezo-icon icon="chevronRight" className="w-12 h-12 text-indigo-400"
+                                    strokeWidth="0.5"></vezo-icon>
+                            </div>
+                        </div>
+                        <div class="py-4 grid grid-cols-12">
+                            <div class="col-span-9 w-full space-y-2">
+                                <p class="subheading">Delete</p>
+                                <p><span class="bg-red-200 px-3 py-1 text-xs rounded-lg mr-2">GET</span></p>
+                                <p class="break-all">
+                                    /beneficiaries/{{ '{id}' }}</p>
+                            </div>
+                            <div class="col-span-3 w-full text-right">
+                                <vezo-icon icon="chevronRight" className="w-12 h-12 text-indigo-400"
+                                    strokeWidth="0.5"></vezo-icon>
+                            </div>
+                        </div>
+                    </div>
+
+                </vezo-accordion-section>
+
+
+            </vezo-accordion>
+
+        </div>
+    </div>
+    <div class="col-span-9">
+        <div class="grid grid-cols-3 border-b justify-center items-center">
+            <div class="p-4 col-span-1">
+                <h2 class="heading">Endpoint</h2>
+            </div>
+
+            <div class="text-right p-2 col-span-2">
+                <vezo-button icon="plus" label="Add Custom"></vezo-button>
+            </div>
+        </div>
+        <div class="grid grid-cols-2 p-4 gap-6">
+            <vezo-input label="Endpoint Name"></vezo-input>
+            <vezo-input label="Endpoint Type"></vezo-input>
+            <vezo-input label="Endpoint Details"></vezo-input>
+            <vezo-input label="Endpoint Path"></vezo-input>
+            <vezo-select label="Return Type"></vezo-select>
+            <div></div>
+            <h2 class="font-semibold">Path Variables</h2>
+            <div class="text-right"><vezo-button label="" icon="plus" className="bg-white"></vezo-button></div>
+            <vezo-input label="Variable"></vezo-input>
+            <vezo-select label="Variable Type"></vezo-select>
+            <vezo-input label="Variable"></vezo-input>
+            <vezo-select label="Variable Type"></vezo-select>
+            <div></div>
+            <div class="text-right">
+                <vezo-button label="Save"></vezo-button>
+            </div>
+        </div>
+    </div>
+</div>

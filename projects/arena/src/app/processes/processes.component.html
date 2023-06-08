@@ -1,7 +1,7 @@
 <vezo-table [data]="data">
     <ng-template vTemplate="caption">
         <div class="grid grid-cols-2 justify-content items-center">
-            <div class="text-xl">PROCESSES</div>
+            <div class="title">PROCESSES</div>
             <div class="text-right">
                 <!-- <vezo-button label="Add New Project" icon="plus"
                                 className="bg-primary text-white hover:text-gray-700 mr-2"></vezo-button> -->
@@ -16,6 +16,7 @@
             <th class="w-4"><input type="checkbox" class="w-4 h-4" /></th>
             <th>Code</th>
             <th>Name</th>
+            <th>Micro Service</th>
             <th [width]="150">Actions</th>
         </tr>
     </ng-template>
@@ -24,6 +25,7 @@
             <td><input type="checkbox" class="w-4 h-4" /></td>
             <td>{{ ms.processCode }}</td>
             <td>{{ ms.processName }}</td>
+            <td>{{ ms.microService?.microServiceName }}</td>
             <td>
                 <vezo-icon icon="eye" (click)="showModeler(ms)"
                     className="mr-5 w-4 h-4 text-indigo-400 cursor-pointer"></vezo-icon>
@@ -42,6 +44,8 @@
     <ng-template vTemplate="header">Process</ng-template>
     <ng-template vTemplate="content">
         <form [formGroup]="form">
+            <vezo-select label="Micro Service" formControlName="microService" [items]="microServices"
+                optionLabel="microServiceName"></vezo-select>
             <vezo-input label="Process Code" formControlName="processCode"></vezo-input>
             <error-message [controlName]="form.controls['processCode']"></error-message>
             <vezo-input label="Process Name" formControlName="processName"></vezo-input>

@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { type CellStyle, Graph, MaxToolbar, gestureUtils, xmlUtils, Cell, Geometry, KeyHandler, InternalEvent, Codec, UndoManager, CellRenderer } from '@maxgraph/core';
+import { type CellStyle, Graph, MaxToolbar, gestureUtils, xmlUtils, Cell, Geometry, KeyHandler, InternalEvent, Codec, UndoManager, EventObject, UndoableEdit, CellTracker, CellHighlight, RubberBandHandler } from '@maxgraph/core';
 import { Process } from '../process';
 import { ProcessesService } from '../processes.service';
 import { ActivatedRoute } from '@angular/router';
@@ -40,6 +40,7 @@ export class MxflowComponent implements OnInit {
   processId: string | null = '';
 
   editorOptions = { theme: 'vs-dark', language: 'xml', formatOnPaste: true };
+  bpmnXml: string | null = '';
 
   constructor(
     private processService: ProcessesService,
@@ -60,16 +61,22 @@ export class MxflowComponent implements OnInit {
     tbContainer.className = 'toolbar';
     this.graph = new Graph(this.container.nativeElement);
 
-
-
     const vertexStyle = this.graph.getStylesheet().getDefaultVertexStyle();
     const edgeStyle = this.graph.getStylesheet().getDefaultEdgeStyle();
 
     edgeStyle!.edgeStyle = 'orthogonalEdgeStyle';
     edgeStyle!.backgroundColor = '#ffffff';
     vertexStyle!.fillColor = 'white';
+    vertexStyle!.swimlaneFillColor = 'rgba(0, 182, 255, 0.1)';
+
+    var highlight = new CellHighlight(this.graph, '#ff0000', 2);
+    new CellTracker(this.graph, 'rgba(0, 182, 255, 0.4)');
+
+    var rubberband = new RubberBandHandler(this.graph);
 
     registerCustomShapes();
+
+
 
     this.container.nativeElement.appendChild(tbContainer);
 
@@ -84,12 +91,19 @@ export class MxflowComponent implements OnInit {
 
 
     var undoManager = new UndoManager();
-    // var listener = function (sender: any, evt: any) {
-    //   console.log(evt)
-    //   undoManager.undoableEditHappened(evt.getProperty('edit'));
-    // };
-    // this.graph.getDataModel().addListener(InternalEvent.UNDO, listener);
+    var undoListener = function (sender: any, evt: any) {
+      console.log('undo', evt)
+      undoManager.undo();
+      // undoManager.undoableEditHappened(evt.getProperty('edit'));
+    };
+    var redoListener = function (sender: any, evt: any) {
+      console.log('redo', evt)
+      undoManager.redo();
+    }
+    // this.graph.getDataModel().addListener(InternalEvent.UNDO, undoListener);
     // this.graph.getView().addListener(InternalEvent.UNDO, listener);
+    this.graph.addListener(InternalEvent.UNDO, undoListener);
+    this.graph.addListener(InternalEvent.REDO, redoListener);
     // graph.dropEnabled = true;
 
     const addVertex = (type: string, label: string | null, icon: any, w: any, h: any, style: CellStyle) => {
@@ -102,15 +116,15 @@ export class MxflowComponent implements OnInit {
     };
 
     addVertex('start-event', null, '/assets/start-event.svg', 50, 50, { shape: 'ellipse', fillColor: '#23d67d', aspect: 'fixed', fontColor: '#ffffff' });
-    addVertex('swimlane', 'Lane', '/assets/lane.svg', 600, 200, { shape: 'swimlane', horizontal: false });
-    addVertex('task', 'Task', '/assets/task.svg', 100, 40, { shape: 'rectangle', rounded: true });
+    addVertex('swim-lane', 'Lane', '/assets/lane.svg', 600, 200, { shape: 'swimlane', horizontal: false });
+    addVertex('user-task', 'Task', '/assets/task.svg', 100, 40, { shape: 'rectangle', rounded: true });
     // addVertex('connection', null, '/assets/connection.svg', 40, 40, { shape: 'ellipse' });
     // @ts-ignore
     addVertex('gateway-parallel', null, '/assets/gateway-parallel.svg', 50, 50, { shape: 'gatewayParallel', strokeColor: '#000000', fillColor: '#000000' });
     // @ts-ignore
     addVertex('gateway-xor', null, '/assets/gateway-xor.svg', 50, 50, { shape: 'gatewayXor', strokeColor: '#000000', fillColor: '#000000', strokeWidth: 0.5 });
     // @ts-ignore
-    addVertex('service', null, '/assets/service.svg', 50, 50, { shape: 'service', strokeColor: '#000000', fillColor: '#000000' });
+    addVertex('service-task', null, '/assets/service.svg', 50, 50, { shape: 'service', strokeColor: '#000000', fillColor: '#000000' });
     // @ts-ignore
     addVertex('data-store', null, '/assets/data-store.svg', 50, 50, { shape: 'dataStore', strokeColor: '#000000', fillColor: '#000000' });
     // @ts-ignore
@@ -161,12 +175,17 @@ export class MxflowComponent implements OnInit {
       console.log(prototype);
       this.activeElement = prototype;
 
-      console.log(prototype);
-
       const pt = graph.getPointForEvent(evt);
       const vertex = graph.getDataModel().cloneCell(prototype);
       vertex.geometry.x = pt.x;
       vertex.geometry.y = pt.y;
+      vertex['type'] = type;
+
+      // var vs = vertex.getStyle();
+      // if (type !== 'user-task' && type !== 'swim-lane') {
+      //   vs['resizable'] = 0;
+      // }
+
 
       graph.setSelectionCells(graph.importCells([vertex], 0, 0, cell));
     };
@@ -183,6 +202,12 @@ export class MxflowComponent implements OnInit {
     });
 
     var keyHandler = new KeyHandler(graph);
+    keyHandler.bindControlKey(90, () => {
+      this.undo();
+    })
+    keyHandler.bindControlKey(89, () => {
+      this.redo();
+    })
     keyHandler.bindKey(46, function (evt: any) {
       var cells = graph.getSelectionCells();
       graph.removeCells(cells);
@@ -213,29 +238,15 @@ export class MxflowComponent implements OnInit {
   sendBack() {
     var cells = this.graph.getSelectionCells();
     this.graph.orderCells(true, cells);
+    this.graph.refresh();
   }
 
   bringFront() {
     var cells = this.graph.getSelectionCells();
     this.graph.orderCells(false, cells);
+    this.graph.refresh();
   }
-  // @HostListener('document:keyup', ['$event'])
-  delete(event: KeyboardEvent) {
 
-    if (event.key === 'Delete' || event.key === 'Backspace') {
-
-      var cells = this.graph.getSelectionCells();
-      this.graph.removeCells(cells);
-
-      cells.forEach(cell => {
-        this.graph.view.clear(cell, true, false);
-      })
-
-
-      this.graph.refresh();
-    }
-
-  }
   setTabActive(t: any) {
     this.tabactive = t;
   }
@@ -262,6 +273,7 @@ export class MxflowComponent implements OnInit {
     if (node) {
       var xmlSerializer = new XMLSerializer();
       this.xmlData = this.prettifyXml(xmlSerializer.serializeToString(node));
+      this.saveDefinition();
     }
     this.showXml = true;
   }
@@ -297,8 +309,23 @@ export class MxflowComponent implements OnInit {
   }
 
   undo() {
-    var undoManager = new UndoManager();
-    undoManager.undo();
+    // var undoManager = new UndoManager();
+    // undoManager.undo();
+
+    console.log('undo');
+
+    const edit = new UndoableEdit(this.graph, false);
+    this.graph.fireEvent(new EventObject(InternalEvent.UNDO, { edit }))
+  }
+
+  redo() {
+    // var undoManager = new UndoManager();
+    // undoManager.undo();
+
+    console.log('redo');
+
+    const edit = new UndoableEdit(this.graph, false);
+    this.graph.fireEvent(new EventObject(InternalEvent.REDO, { edit }))
   }
 
 
@@ -348,7 +375,10 @@ export class MxflowComponent implements OnInit {
         const yPos = Number(geom._y.nodeValue)
         const height = Number(geom._height.nodeValue)
         const width = Number(geom._width.nodeValue)
-        graph.insertVertex(parent, vertexId, vertexName, xPos, yPos, width, height, <CellStyle>attrs)
+        var c2 = graph.insertVertex(parent, vertexId, vertexName, xPos, yPos, width, height, <CellStyle>attrs)
+        if (cellAttrs.type) {
+          c2['type'] = cellAttrs.type.value;
+        }
       }
     }
     for (let i = 0; i < cells.length; i++) {
@@ -373,13 +403,15 @@ export class MxflowComponent implements OnInit {
     this.process.processDefinition = this.xmlData;
     this.processService.updateData(this.process).then((res: any) => {
       this.msgService.add({ severity: 'success', summary: 'Updated', detail: 'Definition updated' });
+      this.getBpmnXml();
     })
     this.showXml = false;
   }
 
-  editInit(editor: any) {
-    editor.formatOnPaste(true);
-
+  getBpmnXml() {
+    this.processService.mxXmltoBpmn(this.process).then((res: any) => {
+      this.bpmnXml = res.message;
+    })
   }
 }
 

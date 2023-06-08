@@ -147,14 +147,29 @@
 </div>
 <ng-template #globalEditor let-editor>
     <div class="p-4">
-        <h2 class="text-lg">Global Editor</h2>
+        <h2 class="heading inline-block my-3">Service Config</h2>
+        <vezo-button (click)="generateServiceCode()" label="Generate Code"
+            className="inline-block float-right"></vezo-button>
 
-        <h3 class="my-4 font-semibold">Velocity</h3>
+        <h3 class="my-4 font-semibold">Collections</h3>
+        <input [(ngModel)]="editor.definition.properties.collections"
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            (input)="updateProperty(editor.definition.properties, 'collections', $event, editor.context)" />
+        <p class="my-2 text-slate-400">Enter comma separated collection names</p>
+
+        <h3 class="my-4 font-semibold">Return Type</h3>
+        <input [(ngModel)]="editor.definition.properties.returnType"
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            (input)="updateProperty(editor.definition.properties, 'returnType', $event, editor.context)" />
+
+        <h3 class="my-4 font-semibold">Schedule</h3>
         <input type="number" [value]="editor.definition.properties.velocity"
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             (input)="updateProperty(editor.definition.properties, 'velocity', $event, editor.context)" />
+        <p class="my-2 text-slate-400">Enter time delay to execute in seconds</p>
         <vezo-button (click)="saveDefinition()" label="Save" className="my-4 float-right"></vezo-button>
-        <vezo-button (click)="reloadDefinitionClicked()" label="Reload" className="m-4 float-right"></vezo-button>
+        <vezo-button (click)="reloadDefinitionClicked()" label="Clear"
+            className="m-4 bg-slate-50 float-right"></vezo-button>
     </div>
 </ng-template>
 
@@ -168,15 +183,22 @@
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             (input)="updateName(editor.step, $event, editor.context)" />
 
-        <h3 class="my-4 font-semibold">Endpoint</h3>
-        <input type="text" [value]="editor.step.properties.endpoint"
+        <h3 class="my-4 font-semibold">Expression</h3>
+        <textarea [value]="editor.step.properties.expression" rows="6"
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            (input)="updateProperty(editor.step.properties, 'endpoint', $event, editor.context)" />
+            (input)="updateProperty(editor.step.properties, 'expression', $event, editor.context)"></textarea>
+        <p class="my-2 text-slate-400">Enter the expression to be evaluated to proceed to next step.</p> <a href=""
+            target="_blank" class="text-blue-400">Refer
+            docs
+            on how to write expressions</a>
 
-        <h3 class="my-4 font-semibold">Velocity</h3>
+
+        <h3 class="my-4 font-semibold">Schedule</h3>
         <input type="number" [value]="editor.step.properties.velocity"
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             (input)="updateProperty(editor.step.properties, 'velocity', $event, editor.context)" />
+        <p class="my-2 text-slate-400">Enter time delay to execute in seconds</p>
+
         <vezo-button (click)="saveDefinition()" label="Save" className="my-4 float-right"></vezo-button>
         <vezo-button (click)="reloadDefinitionClicked()" label="Reload" className="m-4 float-right"></vezo-button>
     </div>

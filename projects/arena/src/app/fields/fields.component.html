@@ -18,6 +18,15 @@
                 <span class="text-indigo-400 text-lg"> {{ collection.microService?.microServiceName }}</span>
             </div>
         </div>
+
+        <div class="p-4">
+
+            <div routerLink="/builder/collections/endpoints/{{ collection.id }}">
+                <span class="bg-indigo-500 hover:bg-indigo-700 cursor-pointer text-white px-3 py-1 text-xs rounded-xl">
+                    View
+                    Endpoints</span>
+            </div>
+        </div>
     </div>
     <div class="col-span-9">
         <div class="grid grid-cols-3 border-b justify-center items-center">

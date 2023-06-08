@@ -21,6 +21,7 @@ import { MsDatasourceComponent } from './microservice/ms-datasource/ms-datasourc
 import { MxflowComponent } from './processes/mxflow/mxflow.component';
 import { AclComponent } from './acl/acl.component';
 import { SettingsComponent } from './settings/settings.component';
+import { EndpointsComponent } from './collection/endpoints/endpoints.component';
 
 const routes: Routes = [
   {
@@ -38,6 +39,7 @@ const routes: Routes = [
           { path: 'datasources/:id', component: MsDatasourceComponent },
           { path: 'flow', component: FlowComponent },
           { path: 'collections', component: CollectionComponent },
+          { path: 'collections/endpoints/:id', component: EndpointsComponent },
           { path: 'collections/:id', component: CollectionComponent },
           { path: 'fields/:id', component: FieldsComponent },
           {

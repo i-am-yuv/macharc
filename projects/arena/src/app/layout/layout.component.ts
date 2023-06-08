@@ -21,7 +21,7 @@ export class LayoutComponent {
         // { label: 'Process', icon: 'clipboard', routerLink: ['/builder/processes'] },
         // { label: 'BPM', icon: 'clipboard', routerLink: ['/builder/flow'] },
         { label: 'Process', icon: 'clipboard', routerLink: ['/builder/processes'] },
-        { label: 'Business Logic', icon: 'clipboard', routerLink: ['/builder/workflows'] },
+        { label: 'Service', icon: 'clipboard', routerLink: ['/builder/workflows'] },
         { label: 'Releases', icon: 'clipboard', routerLink: ['/releases'] },
         { label: 'Integrations', icon: 'clipboard', routerLink: ['/marketplace'] },
       ],

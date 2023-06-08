@@ -17,6 +17,12 @@
         padding-bottom: 15px !important;
     }
 }
+.mxRubberband {
+	position: absolute;
+    background-color: rgb(15, 144, 236);
+    border: 1px solid #17659e;
+}
+
 }
 #props-panel {
     width: 245px;

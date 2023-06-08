@@ -7,7 +7,9 @@ import { MessageService } from '@splenta/vezo';
 function createDefinition() {
   return {
     properties: {
-      velocity: 0
+      collections: '',
+      velocity: 0,
+      returnType: 'void',
     },
     sequence: []
   };
@@ -72,6 +74,7 @@ export class WorkflowDesignerComponent implements OnInit {
           this.dataDef = this.wf.workflowDefinition;
           if (this.dataDef) {
             this.definition = JSON.parse(this.dataDef);
+            this.updateDefinitionJSON();
           }
         }
       })
@@ -79,7 +82,7 @@ export class WorkflowDesignerComponent implements OnInit {
 
   public onDesignerReady(designer: Designer) {
     this.designer = designer;
-    console.log('designer ready', this.designer);
+    // console.log('designer ready', this.designer);
   }
 
   public onDefinitionChanged(definition: Definition) {
@@ -112,7 +115,7 @@ export class WorkflowDesignerComponent implements OnInit {
       componentType: 'task',
       type,
       name,
-      properties: properties || { velocity: 0, endpoint: '' }
+      properties: properties || { velocity: 0, expression: '' }
     };
   }
   createIfStep(id: null, _true: never[], _false: never[]) {
@@ -143,7 +146,7 @@ export class WorkflowDesignerComponent implements OnInit {
     return {
       name,
       steps: [
-        this.createTaskStep(null, 'task1', 'Task', null),
+        this.createTaskStep(null, 'task', 'Task', null),
         this.createIfStep(null, [], []),
         this.createContainerStep(null, []),
         this.createTaskStep(null, 'text', 'Send email', null),
@@ -158,5 +161,14 @@ export class WorkflowDesignerComponent implements OnInit {
       this.msgService.add({ severity: 'success', summary: 'Updated', detail: 'Definition updated' });
     })
   }
+
+  generateServiceCode() {
+    this.updateDefinitionJSON();
+    this.wf.workflowDefinition = this.definitionJSON;
+    this.workflowService.generateServiceCode(this.wf).then((res: any) => {
+      this.msgService.add({ severity: 'success', summary: 'Generated', detail: 'Code generated' });
+    })
+  }
+
 
 }

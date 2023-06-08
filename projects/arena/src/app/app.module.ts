@@ -54,6 +54,7 @@ import { MxflowComponent } from './processes/mxflow/mxflow.component';
 import { AclComponent } from './acl/acl.component';
 import { SettingsComponent } from './settings/settings.component';
 import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
+import { EndpointsComponent } from './collection/endpoints/endpoints.component';
 
 @NgModule({
   declarations: [
@@ -81,7 +82,8 @@ import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
     MsDatasourceComponent,
     PropertiesComponent,
     AclComponent,
-    SettingsComponent
+    SettingsComponent,
+    EndpointsComponent
   ],
   imports: [
     BrowserModule,
