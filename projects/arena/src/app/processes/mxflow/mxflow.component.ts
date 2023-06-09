@@ -41,6 +41,7 @@ export class MxflowComponent implements OnInit {
 
   editorOptions = { theme: 'vs-dark', language: 'xml', formatOnPaste: true };
   bpmnXml: string | null = '';
+  undoManager: UndoManager = new UndoManager;
 
   constructor(
     private processService: ProcessesService,
@@ -90,20 +91,23 @@ export class MxflowComponent implements OnInit {
 
 
 
-    var undoManager = new UndoManager();
-    var undoListener = function (sender: any, evt: any) {
-      console.log('undo', evt)
-      undoManager.undo();
-      // undoManager.undoableEditHappened(evt.getProperty('edit'));
+    var undoManager = this.undoManager;
+    var listener = function (sender: any, evt: any) {
+      undoManager.undoableEditHappened(evt.getProperty('edit'));
     };
-    var redoListener = function (sender: any, evt: any) {
-      console.log('redo', evt)
-      undoManager.redo();
-    }
+    this.graph.getDataModel().addListener(InternalEvent.UNDO, listener);
+    this.graph.getView().addListener(InternalEvent.UNDO, listener);
+    this.graph.getDataModel().addListener(InternalEvent.REDO, listener);
+    this.graph.getView().addListener(InternalEvent.REDO, listener);
+    // this.graph.addListener(InternalEvent.UNDO, listener);
+    // var redoListener = function (sender: any, evt: any) {
+    //   console.log('redo', evt)
+    //   undoManager.redo();
+    // }
     // this.graph.getDataModel().addListener(InternalEvent.UNDO, undoListener);
-    // this.graph.getView().addListener(InternalEvent.UNDO, listener);
-    this.graph.addListener(InternalEvent.UNDO, undoListener);
-    this.graph.addListener(InternalEvent.REDO, redoListener);
+    // this.graph.getView().addListener(InternalEvent.UNDO, undoListener);
+    // this.graph.addListener(InternalEvent.UNDO, undoListener);
+    // this.graph.addListener(InternalEvent.REDO, redoListener);
     // graph.dropEnabled = true;
 
     const addVertex = (type: string, label: string | null, icon: any, w: any, h: any, style: CellStyle) => {
@@ -171,7 +175,7 @@ export class MxflowComponent implements OnInit {
     // the mousepointer if there is one.
     const funct = (graph: any, evt: any, cell: any) => {
       graph.stopEditing(false);
-
+      graph.getDataModel().beginUpdate();
       console.log(prototype);
       this.activeElement = prototype;
 
@@ -181,13 +185,8 @@ export class MxflowComponent implements OnInit {
       vertex.geometry.y = pt.y;
       vertex['type'] = type;
 
-      // var vs = vertex.getStyle();
-      // if (type !== 'user-task' && type !== 'swim-lane') {
-      //   vs['resizable'] = 0;
-      // }
-
-
       graph.setSelectionCells(graph.importCells([vertex], 0, 0, cell));
+      graph.getDataModel().endUpdate();
     };
 
     // Creates the image which is used as the drag icon (preview)
@@ -203,10 +202,11 @@ export class MxflowComponent implements OnInit {
 
     var keyHandler = new KeyHandler(graph);
     keyHandler.bindControlKey(90, () => {
-      this.undo();
+      console.log('cz')
+      this.undoManager.undo();
     })
     keyHandler.bindControlKey(89, () => {
-      this.redo();
+      this.undoManager.redo();
     })
     keyHandler.bindKey(46, function (evt: any) {
       var cells = graph.getSelectionCells();
@@ -309,23 +309,11 @@ export class MxflowComponent implements OnInit {
   }
 
   undo() {
-    // var undoManager = new UndoManager();
-    // undoManager.undo();
-
-    console.log('undo');
-
-    const edit = new UndoableEdit(this.graph, false);
-    this.graph.fireEvent(new EventObject(InternalEvent.UNDO, { edit }))
+    this.undoManager.undo();
   }
 
   redo() {
-    // var undoManager = new UndoManager();
-    // undoManager.undo();
-
-    console.log('redo');
-
-    const edit = new UndoableEdit(this.graph, false);
-    this.graph.fireEvent(new EventObject(InternalEvent.REDO, { edit }))
+    this.undoManager.redo();
   }
 
 
