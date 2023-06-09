@@ -55,6 +55,7 @@ import { AclComponent } from './acl/acl.component';
 import { SettingsComponent } from './settings/settings.component';
 import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
 import { EndpointsComponent } from './collection/endpoints/endpoints.component';
+import { TemplatesComponent } from './screen/templates/templates.component';
 
 @NgModule({
   declarations: [
@@ -83,7 +84,8 @@ import { EndpointsComponent } from './collection/endpoints/endpoints.component';
     PropertiesComponent,
     AclComponent,
     SettingsComponent,
-    EndpointsComponent
+    EndpointsComponent,
+    TemplatesComponent
   ],
   imports: [
     BrowserModule,

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 import { twMerge } from 'tailwind-merge';
 
@@ -12,7 +12,8 @@ import { twMerge } from 'tailwind-merge';
       multi: true,
       useExisting: SelectComponent
     }
-  ]
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SelectComponent implements OnInit, ControlValueAccessor {
 
@@ -46,13 +47,16 @@ export class SelectComponent implements OnInit, ControlValueAccessor {
 
   disabled = false;
 
-  constructor() { }
+  constructor(private changeDetectorRef: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.className = twMerge('border border-slate-300 p-1 pl-2 pr-2 mt-2 mb-2 w-full', this.className);
   }
 
   ngOnChanges() {
+    this.comboValue = {};
+    this.displayValue = '';
+    this.comboOpen = false;
     if (this.items.length > 0) {
       this.checkIfObj();
     }
@@ -71,6 +75,7 @@ export class SelectComponent implements OnInit, ControlValueAccessor {
     this.comboOpen = false;
   }
   selectComboItem(item: any) {
+
     this.markAsTouched();
     this.comboOpen = false;
     if (this.isObj) {
@@ -136,6 +141,7 @@ export class SelectComponent implements OnInit, ControlValueAccessor {
       console.log('Not handled select option');
     }
     // console.log(this.isObj);
+    this.changeDetectorRef.detectChanges();
   }
 
   registerOnChange(onChange: any) {

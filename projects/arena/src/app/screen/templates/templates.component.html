@@ -1,0 +1,82 @@
+<div class="grid grid-cols-2 justify-content items-center">
+    <div class="title">TEMPLATES</div>
+    <div class="text-right">
+
+    </div>
+</div>
+<div class="p-6 bg-white mt-4 min-h-full">
+    <h1 class="text-lg font-light mb-8 text-indigo-500">Choose from any of the below templates to create screen quickly
+    </h1>
+    <div class="grid grid-cols-4 gap-6">
+        <vezo-card (click)="designScreen('blank')">
+            <ng-template vTemplate="body">
+                <div class="h-36 cursor-pointer grid grid-cols-3 place-items-center">
+                    <div class="col-span-1 heading">
+                        <vezo-icon icon="inbox" className="w-16 h-16 " strokeWidth="0.5"></vezo-icon>
+                    </div>
+                    <div class="col-span-2 heading w-full">Blank</div>
+                </div>
+            </ng-template>
+        </vezo-card>
+        <vezo-card (click)="designScreen('list')">
+            <ng-template vTemplate="body">
+                <div class="h-36 cursor-pointer grid grid-cols-3 place-items-center">
+                    <div class="col-span-1 heading">
+                        <vezo-icon icon="serverStack" className="w-16 h-16" strokeWidth="0.5"></vezo-icon>
+                    </div>
+                    <div class="col-span-2 heading w-full">Collection List</div>
+                </div>
+            </ng-template>
+        </vezo-card>
+        <vezo-card (click)="designScreen('form')">
+            <ng-template vTemplate="body">
+                <div class="h-36 cursor-pointer grid grid-cols-3 place-items-center">
+                    <div class="col-span-1 heading">
+                        <vezo-icon icon="documentMinus" className="w-16 h-16" strokeWidth="0.5"></vezo-icon>
+                    </div>
+                    <div class="col-span-2 heading w-full">Form</div>
+                </div>
+            </ng-template>
+        </vezo-card>
+        <vezo-card (click)="designScreen('data')">
+            <ng-template vTemplate="body">
+                <div class="h-36 cursor-pointer grid grid-cols-3 place-items-center">
+                    <div class="col-span-1 heading">
+                        <vezo-icon icon="bars3CenterLeft" className="w-16 h-16" strokeWidth="0.5"></vezo-icon>
+                    </div>
+                    <div class="col-span-2 heading w-full">Data Display</div>
+                </div>
+            </ng-template>
+        </vezo-card>
+        <vezo-card (click)="designScreen('dashboard')">
+            <ng-template vTemplate="body">
+                <div class="h-36 cursor-pointer grid grid-cols-3 place-items-center">
+                    <div class="col-span-1 heading">
+                        <vezo-icon icon="presentationChartBar" className="w-16 h-16" strokeWidth="0.5"></vezo-icon>
+                    </div>
+                    <div class="col-span-2 heading w-full">Dashboard</div>
+                </div>
+            </ng-template>
+        </vezo-card>
+        <vezo-card (click)="designScreen('report')">
+            <ng-template vTemplate="body">
+                <div class="h-36 cursor-pointer grid grid-cols-3 place-items-center">
+                    <div class="col-span-1 heading">
+                        <vezo-icon icon="document" className="w-16 h-16" strokeWidth="0.5"></vezo-icon>
+                    </div>
+                    <div class="col-span-2 heading w-full">Web Page</div>
+                </div>
+            </ng-template>
+        </vezo-card>
+        <vezo-card>
+            <ng-template vTemplate="body">
+                <div class="h-36 cursor-pointer grid grid-cols-3 place-items-center">
+                    <div class="col-span-1 heading">
+                        <vezo-icon icon="documentText" className="w-16 h-16" strokeWidth="0.5"></vezo-icon>
+                    </div>
+                    <div class="col-span-2 heading w-full">Report</div>
+                </div>
+            </ng-template>
+        </vezo-card>
+    </div>
+</div>

@@ -22,6 +22,7 @@ import { MxflowComponent } from './processes/mxflow/mxflow.component';
 import { AclComponent } from './acl/acl.component';
 import { SettingsComponent } from './settings/settings.component';
 import { EndpointsComponent } from './collection/endpoints/endpoints.component';
+import { TemplatesComponent } from './screen/templates/templates.component';
 
 const routes: Routes = [
   {
@@ -62,7 +63,13 @@ const routes: Routes = [
                 path: '',
                 component: ScreenComponent
               },
-
+              {
+                path: 'templates',
+                component: TemplatesComponent
+              }, {
+                path: 'templates/:id',
+                component: TemplatesComponent
+              },
             ]
           },
         ]

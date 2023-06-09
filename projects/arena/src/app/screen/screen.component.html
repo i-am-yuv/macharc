@@ -5,7 +5,8 @@
             <div class="text-right">
                 <vezo-button label="Add New Screen" icon="plus" (click)="addData()"
                     className="bg-primary text-white hover:text-gray-700 mr-2"></vezo-button>
-                <!-- <vezo-button [routerLink]="['designer']" label="Designer" className="mr-2"></vezo-button> -->
+                <!-- <vezo-button [routerLink]="['templates']" icon="plus" label="Add New Screen"
+                    className="mr-2"></vezo-button> -->
                 <vezo-button label="Filter" icon="funnel" className="bg-green-100"></vezo-button>
             </div>
         </div>
@@ -39,9 +40,11 @@
 </vezo-table>
 
 <vezo-modal [(visible)]="visible">
-    <ng-template vTemplate="header">Collection</ng-template>
+    <ng-template vTemplate="header">Screen</ng-template>
     <ng-template vTemplate="content">
         <form [formGroup]="form">
+            <vezo-select optionLabel="microServiceName" [items]="microserviceItems" formControlName="microService"
+                label="Microservice" *ngIf="!collectionId" (ngModelChange)="getCollectionItems()"></vezo-select>
             <vezo-select optionLabel="collectionName" [items]="collectionItems" formControlName="collection"
                 label="Collection" *ngIf="!collectionId"></vezo-select>
             <vezo-input label="Screen Name" formControlName="screenName"></vezo-input>

@@ -7,6 +7,9 @@ import { MessageService } from '@splenta/vezo';
 import { Collection } from '../collection/collection';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CollectionService } from '../collection/collection.service';
+import { MicroserviceService } from '../microservice/microservice.service';
+import { MicroService } from '../microservice/microservice';
+import { FilterBuilder } from '../utils/FilterBuilder';
 
 @Component({
   selector: 'app-screen',
@@ -22,6 +25,7 @@ export class ScreenComponent extends GenericComponent implements OnInit {
   collectionId: string | null | undefined = '';
   collectionItems: Collection[] = [];
   collection: Collection = {};
+  microserviceItems: MicroService[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -30,6 +34,7 @@ export class ScreenComponent extends GenericComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private collectionService: CollectionService,
+    private microserviceService: MicroserviceService,
   ) {
     super(screenService, messageService);
     this.form = this.fb.group({
@@ -38,6 +43,7 @@ export class ScreenComponent extends GenericComponent implements OnInit {
       screenCode: ['', [Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
       screenDescription: [],
       collection: [],
+      microService: [],
       process: [],
     })
   }
@@ -50,14 +56,23 @@ export class ScreenComponent extends GenericComponent implements OnInit {
         this.form.patchValue({ collection: res });
       })
     } else {
-      this.collectionService.getAllData().then((res: any) => {
+      this.microserviceService.getAllData().then((res: any) => {
         if (res) {
-          this.collectionItems = res.content;
+          this.microserviceItems = res.content;
         }
       })
+
     }
   }
-
+  getCollectionItems() {
+    this.form.patchValue({ collection: null });
+    var filterStr = FilterBuilder.equal('microService.id', this.form.value.microService.id);
+    this.collectionService.getAllData(undefined, undefined, undefined, undefined, filterStr).then((res: any) => {
+      if (res) {
+        this.collectionItems = res.content;
+      }
+    })
+  }
   saveFormData() {
     console.log(this.form.value);
   }
@@ -75,7 +90,12 @@ export class ScreenComponent extends GenericComponent implements OnInit {
     }
   }
   designScreen(scr: Screen) {
-    this.router.navigate(['/builder/screens/designer/' + scr.id]);
+
+    if (scr.screenDefinition && JSON.parse(scr.screenDefinition).length !== 0) {
+      this.router.navigate(['/builder/screens/designer/' + scr.id]);
+    } else {
+      this.router.navigate(['/builder/screens/templates/' + scr.id]);
+    }
   }
 
 }
