@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { type CellStyle, Graph, MaxToolbar, gestureUtils, xmlUtils, Cell, Geometry, KeyHandler, InternalEvent, Codec, UndoManager, EventObject, UndoableEdit, CellTracker, CellHighlight, RubberBandHandler } from '@maxgraph/core';
+import { type CellStyle, Graph, MaxToolbar, gestureUtils, xmlUtils, Cell, Geometry, KeyHandler, InternalEvent, Codec, UndoManager, EventObject, UndoableEdit, CellTracker, CellHighlight, RubberBandHandler, EdgeStyle } from '@maxgraph/core';
 import { Process } from '../process';
 import { ProcessesService } from '../processes.service';
 import { ActivatedRoute } from '@angular/router';
@@ -61,21 +61,25 @@ export class MxflowComponent implements OnInit {
     const tbContainer = document.createElement('div');
     tbContainer.className = 'toolbar';
     this.graph = new Graph(this.container.nativeElement);
+    this.graph.setGridEnabled(true);
+    this.graph.setPanning(true);
 
     const vertexStyle = this.graph.getStylesheet().getDefaultVertexStyle();
     const edgeStyle = this.graph.getStylesheet().getDefaultEdgeStyle();
 
     edgeStyle!.edgeStyle = 'orthogonalEdgeStyle';
+    // edgeStyle!.rounded = true;
+
     edgeStyle!.backgroundColor = '#ffffff';
     vertexStyle!.fillColor = 'white';
     vertexStyle!.swimlaneFillColor = 'rgba(0, 182, 255, 0.1)';
 
-    var highlight = new CellHighlight(this.graph, '#ff0000', 2);
+    new CellHighlight(this.graph, '#ff0000', 2);
     new CellTracker(this.graph, 'rgba(0, 182, 255, 0.4)');
 
-    var rubberband = new RubberBandHandler(this.graph);
+    new RubberBandHandler(this.graph);
 
-    registerCustomShapes();
+    // registerCustomShapes();
 
 
 
@@ -119,22 +123,22 @@ export class MxflowComponent implements OnInit {
       this.addToolbarItem(type, this.graph, toolbar, vertex, icon);
     };
 
-    addVertex('start-event', null, '/assets/start-event.svg', 50, 50, { shape: 'ellipse', fillColor: '#23d67d', aspect: 'fixed', fontColor: '#ffffff' });
+    addVertex('start-event', null, '/assets/start-event.svg', 50, 50, { shape: 'ellipse', fillColor: '#23d67d', aspect: 'fixed', fontColor: '#333333', labelPosition: 'left', align: 'center' });
     addVertex('swim-lane', 'Lane', '/assets/lane.svg', 600, 200, { shape: 'swimlane', horizontal: false });
-    addVertex('user-task', 'Task', '/assets/task.svg', 100, 40, { shape: 'rectangle', rounded: true });
+    addVertex('user-task', 'Task', '/assets/usertask.svg', 100, 40, { shape: 'rectangle', rounded: true });
     // addVertex('connection', null, '/assets/connection.svg', 40, 40, { shape: 'ellipse' });
     // @ts-ignore
-    addVertex('gateway-parallel', null, '/assets/gateway-parallel.svg', 50, 50, { shape: 'gatewayParallel', strokeColor: '#000000', fillColor: '#000000' });
+    addVertex('gateway-parallel', null, '/assets/gateway-parallel.svg', 50, 50, { shape: 'image', image: '/assets/gateway-parallel.svg', verticalLabelPosition: 'bottom', verticalAlign: 'top' });
     // @ts-ignore
-    addVertex('gateway-xor', null, '/assets/gateway-xor.svg', 50, 50, { shape: 'gatewayXor', strokeColor: '#000000', fillColor: '#000000', strokeWidth: 0.5 });
+    addVertex('gateway-xor', null, '/assets/gateway-xor.svg', 50, 50, { shape: 'image', image: '/assets/gateway-xor.svg', verticalLabelPosition: 'bottom', verticalAlign: 'top' });
     // @ts-ignore
-    addVertex('service-task', null, '/assets/service.svg', 50, 50, { shape: 'service', strokeColor: '#000000', fillColor: '#000000' });
+    addVertex('service-task', null, '/assets/service.svg', 50, 50, { shape: 'image', image: '/assets/service.svg', verticalLabelPosition: 'bottom', verticalAlign: 'top' });
     // @ts-ignore
-    addVertex('data-store', null, '/assets/data-store.svg', 50, 50, { shape: 'dataStore', strokeColor: '#000000', fillColor: '#000000' });
+    addVertex('data-store', null, '/assets/data-store.svg', 50, 50, { shape: 'image', image: '/assets/data-store.svg', verticalLabelPosition: 'bottom', verticalAlign: 'top' });
     // @ts-ignore
-    addVertex('start-event-message', null, '/assets/start-event-message.svg', 50, 50, { shape: 'startEventMessage', strokeColor: '#000000', fillColor: '#000000' });
+    addVertex('start-event-message', null, '/assets/start-event-message.svg', 50, 50, { shape: 'image', image: '/assets/start-event-message.svg', verticalLabelPosition: 'bottom', verticalAlign: 'top' });
     // @ts-ignore
-    addVertex('end-event', null, '/assets/end-event.svg', 50, 50, { shape: 'doubleEllipse', fillColor: '#db3e00', strokeColor: '#ffffff' });
+    addVertex('end-event', null, '/assets/end-event.svg', 50, 50, { shape: 'doubleEllipse', fillColor: '#db3e00', strokeColor: '#ffffff', labelPosition: 'left', align: 'center' });
     toolbar.addLine();
 
     this.graph.setPanning(true); // Use mouse right button for panning
@@ -267,15 +271,22 @@ export class MxflowComponent implements OnInit {
     }
   }
 
+  getBpmnXml() {
+    this.getXmlModel();
+    this.process.processDefinition = this.xmlData;
+    this.processService.mxXmltoBpmn(this.process).then((res: any) => {
+      this.bpmnXml = res.message;
+      this.showXml = true;
+    })
+  }
+
   getXmlModel() {
     var encoder = new Codec();
     var node = encoder.encode(this.graph.getDataModel());
     if (node) {
       var xmlSerializer = new XMLSerializer();
       this.xmlData = this.prettifyXml(xmlSerializer.serializeToString(node));
-      this.saveDefinition();
     }
-    this.showXml = true;
   }
 
   prettifyXml(sourceXml: string) {
@@ -388,18 +399,14 @@ export class MxflowComponent implements OnInit {
   }
 
   saveDefinition() {
+    this.showXml = false;
+    this.getXmlModel();
     this.process.processDefinition = this.xmlData;
     this.processService.updateData(this.process).then((res: any) => {
       this.msgService.add({ severity: 'success', summary: 'Updated', detail: 'Definition updated' });
-      this.getBpmnXml();
     })
-    this.showXml = false;
   }
 
-  getBpmnXml() {
-    this.processService.mxXmltoBpmn(this.process).then((res: any) => {
-      this.bpmnXml = res.message;
-    })
-  }
+
 }
 

@@ -1,11 +1,13 @@
-<div class="grid grid-cols-12">
-    <div class="col-span-2 relative">
+<div [ngClass]="{'grid grid-cols-12': showSideBar, 'flex': !showSideBar }">
+    <div class="col-span-2 relative" *ngIf="showSideBar">
         <div class="p-5 grid grid-cols-12 border-b cursor-pointer" routerLink="/">
             <div class="col-span-3">
-                <!-- <img src="/assets/v.png" class="w-8" /> -->
-                <div class="border border-indigo-500 rounded-full w-8 h-8 flex justify-center items-center">
-                    <p class="text-indigo-500">M</p>
-                </div>
+                <img src="assets/macharc_icon.svg" class="w-8" />
+                <!-- <div class="border border-indigo-500 rounded-full w-8 h-8 flex justify-center items-center">
+                    <p class="text-indigo-500">
+                        M
+                    </p>
+                </div> -->
             </div>
             <div class="col-span-9">
                 <div class="font-semibold">MACHARC</div>
@@ -15,20 +17,30 @@
         <div class="">
             <vezo-menu [items]="menuItems"></vezo-menu>
         </div>
-        <div class="p-5 grid grid-cols-12 absolute w-full bg-white border-t bottom-0">
-            <div class="col-span-3">
-                <div class="w-8 h-8 bg-indigo-700 rounded-full text-white flex items-center justify-center">PY</div>
+        <div class="absolute bottom-0">
+            <div class="p-4 text-right bg-gray-100 cursor-pointer" (click)="showSideBar=!showSideBar">
+                <vezo-icon icon="chevronLeft"></vezo-icon>
             </div>
-            <div class="col-span-8">
-                <div class="">PARTHASARATHY</div>
-                <div class="text-gray-400 text-xs font-light uppercase">SUPER ADMIN</div>
-            </div>
-            <div class="col-span-1">
-                <vezo-icon icon="arrowRightOnRectangle"></vezo-icon>
+            <div class="p-5 grid grid-cols-12  w-full bg-white border-t">
+                <div class="col-span-3">
+                    <div class="w-8 h-8 bg-indigo-700 rounded-full text-white flex items-center justify-center">PY</div>
+                </div>
+                <div class="col-span-8">
+                    <div class="">PARTHASARATHY</div>
+                    <div class="text-gray-400 text-xs font-light uppercase">SUPER ADMIN</div>
+                </div>
+                <div class="col-span-1">
+                    <vezo-icon icon="arrowRightOnRectangle"></vezo-icon>
+                </div>
             </div>
         </div>
     </div>
-    <div class="col-span-10 p-10 bg-gray-50 h-screen overflow-x-scroll">
+    <div class="p-4 text-right bg-gray-100 cursor-pointer flex-none" *ngIf="!showSideBar"
+        (click)="showSideBar=!showSideBar">
+        <vezo-icon icon="chevronRight"></vezo-icon>
+    </div>
+    <div class="p-10 bg-gray-50 h-screen overflow-x-scroll  w-full"
+        [ngClass]="{'col-span-10': showSideBar, 'flex-grow': !showSideBar }">
         <router-outlet></router-outlet>
     </div>
 </div>

@@ -156,7 +156,7 @@ export class DesignerComponent implements OnInit {
         this.draggableListRight = JSON.parse(res.screenDefinition);
       if (this.screenData) {
         var filterStr = FilterBuilder.equal('collection.id', this.screenData?.collection?.id!);
-        this.fieldService.getAllData(undefined, undefined, undefined, undefined, filterStr).then((res: any) => {
+        this.fieldService.getAllData(undefined, filterStr).then((res: any) => {
           this.fields = res.content;
         });
       }

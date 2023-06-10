@@ -1,4 +1,4 @@
-<vezo-table [data]="data">
+<vezo-table [data]="data" [pageData]="pageData" (pageDataChange)="getAllData()">
     <ng-template vTemplate="caption">
         <div class="grid grid-cols-2 justify-content items-center">
             <div class="title">COLLECTIONS</div>
@@ -23,6 +23,25 @@
         </tr>
     </ng-template>
     <ng-template vTemplate="body">
+        <tr>
+            <td></td>
+            <td>
+                <vezo-input label=""></vezo-input>
+            </td>
+            <td>
+                <vezo-input label=""></vezo-input>
+            </td>
+            <td>
+                <vezo-input label=""></vezo-input>
+            </td>
+            <td>
+                <vezo-switch label="" [(ngModel)]="crud"></vezo-switch>
+            </td>
+            <td>
+                <vezo-switch label=""></vezo-switch>
+            </td>
+            <td></td>
+        </tr>
         <tr *ngFor="let ds of data">
             <td><input type="checkbox" class="w-4 h-4" /></td>
             <td>{{ ds.microService?.microServiceName }}</td>

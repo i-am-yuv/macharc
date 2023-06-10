@@ -14,6 +14,7 @@ export class DatasourceComponent extends GenericComponent implements OnInit {
   form: FormGroup<any>;
   data: Datasource[] = [];
   componentName: string = 'Datasource';
+  override pageData = {};
 
   constructor(
     private fb: FormBuilder,

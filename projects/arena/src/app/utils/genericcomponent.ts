@@ -1,6 +1,9 @@
 import { FormGroup } from "@angular/forms";
-import { MessageService } from "@splenta/vezo";
+import { MessageService, Pagination } from "@splenta/vezo";
 import { GenericService } from "./genericservice";
+
+
+
 
 export abstract class GenericComponent {
     visible: boolean = false;
@@ -17,19 +20,37 @@ export abstract class GenericComponent {
 
     abstract componentName: string;
 
-    pageNo?: number;
-    pageSize?: number;
-    sortField?: string;
-    sortDir?: string;
     search?: string;
+
+    pageData?: Pagination = {};
 
     constructor(dataService: GenericService, messageService: MessageService) {
         this.dataService = dataService;
         this.messageService = messageService;
     }
     getAllData() {
-        this.dataService.getAllData(this.pageNo, this.pageSize, this.sortField, this.sortDir, this.search).then((res: any) => {
+        this.dataService.getAllData(this.pageData, this.search).then((res: any) => {
             this.data = res.content;
+            this.pageData!.totalElements = res.totalElements;
+            this.pageData!.pageNo = res.pageable.pageNumber;
+            this.pageData!.pageSize = res.pageable.pageSize;
+            this.pageData!.offset = res.pageable.offset;
+            this.pageData!.sortField = '';
+            this.pageData!.sortDir = '';
+            // {
+            //     "sort": {
+            //       "sorted": false,
+            //       "unsorted": true,
+            //       "empty": true
+            //     },
+            //     "pageNumber": 1,
+            //     "pageSize": 10,
+            //     "offset": 10,
+            //     "paged": true,
+            //     "unpaged": false
+            //   }
+
+
         })
     }
 

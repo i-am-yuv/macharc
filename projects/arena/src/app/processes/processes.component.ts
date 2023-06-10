@@ -21,6 +21,8 @@ export class ProcessesComponent extends GenericComponent implements OnInit {
   data: Process[] = [];
   microServices: MicroService[] = [];
 
+  override pageData = {};
+
   constructor(
     private fb: FormBuilder,
     processService: ProcessesService,

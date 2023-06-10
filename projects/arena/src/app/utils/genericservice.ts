@@ -1,6 +1,8 @@
 import { HttpClient } from "@angular/common/http";
 import { lastValueFrom } from "rxjs";
 import { environment } from "../../environments/environment";
+import { Pagination } from "@splenta/vezo";
+
 
 export abstract class GenericService {
 
@@ -15,16 +17,16 @@ export abstract class GenericService {
     //     const res: any = await lastValueFrom(this.http.get<any>(url));
     //     return res;
     // }
-    async getAllData(pageNo?: number, pageSize?: number, sortField?: string, sortDir?: string, search?: string) {
+    async getAllData(pagination?: Pagination, search?: string) {
         var params = [];
-        if (pageNo) {
-            params.push('page=' + pageNo);
+        if (pagination?.pageNo) {
+            params.push('page=' + pagination.pageNo);
         }
-        if (pageSize) {
-            params.push('size=' + pageSize);
+        if (pagination?.pageSize) {
+            params.push('size=' + pagination.pageSize);
         }
-        if (sortField) {
-            params.push('sort=' + sortField + ',' + sortDir);
+        if (pagination?.sortField) {
+            params.push('sort=' + pagination.sortField + ',' + pagination.sortDir);
         }
         if (search) {
             params.push('filter=' + search);

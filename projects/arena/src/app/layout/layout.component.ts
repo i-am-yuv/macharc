@@ -6,6 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./layout.component.scss']
 })
 export class LayoutComponent {
+  showSideBar = true;
   menuItems: any[] = [
     {
       label: 'Builder',
@@ -13,13 +14,7 @@ export class LayoutComponent {
         { label: 'Microservices', icon: 'clipboard', routerLink: ['/builder/microservices'] },
         { label: 'Datasources', icon: 'clipboard', routerLink: ['/builder/datasources'] },
         { label: 'Collection', icon: 'clipboard', routerLink: ['/builder/collections'] },
-        // { label: 'Projects', icon: 'clipboard', routerLink: ['/builder/projects'] },
-        // { label: 'Modules', icon: 'clipboard', routerLink: ['/builder/modules'] },
-        // { label: 'Collections', icon: 'clipboard', routerLink: ['/builder/collections'] },
         { label: 'Screens', icon: 'clipboard', routerLink: ['/builder/screens'] },
-        // { label: 'Widgets', icon: 'clipboard', routerLink: ['/builder/widgets'] },
-        // { label: 'Process', icon: 'clipboard', routerLink: ['/builder/processes'] },
-        // { label: 'BPM', icon: 'clipboard', routerLink: ['/builder/flow'] },
         { label: 'Process', icon: 'clipboard', routerLink: ['/builder/processes'] },
         { label: 'Service', icon: 'clipboard', routerLink: ['/builder/workflows'] },
         { label: 'Releases', icon: 'clipboard', routerLink: ['/releases'] },

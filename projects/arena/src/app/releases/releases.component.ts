@@ -27,6 +27,7 @@ export class ReleasesComponent implements OnInit {
   loading = false;
   gitServerurl: string = environment.gitServerUrl;
   visible: boolean = false;
+  gitNotReachable: boolean = false;
 
   constructor(
     private msService: MicroserviceService,
@@ -49,6 +50,7 @@ export class ReleasesComponent implements OnInit {
       this.loading = true;
       this.releasesService.getRelease(this.ms.repoId!).then((res: any) => {
         this.releases = res;
+        this.gitNotReachable = false;
 
         this.releasesService.getPipelines(this.ms.repoId!).then((res: any) => {
           this.pipelines = res;
@@ -62,6 +64,9 @@ export class ReleasesComponent implements OnInit {
             this.loading = false;
           });
         });
+      }).catch(() => {
+        this.loading = false;
+        this.gitNotReachable = true;
       });
     }
   }

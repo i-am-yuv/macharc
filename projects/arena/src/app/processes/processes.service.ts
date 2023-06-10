@@ -16,8 +16,8 @@ export class ProcessesService extends GenericService {
   }
 
   async mxXmltoBpmn(process: Process) {
-    var url = this.apiurl + '/' + this.endpoint + '/mxXmltoBpmn/' + encodeURIComponent(process.id!);
-    const res = await lastValueFrom(this.httpClient.get<any>(url));
+    var url = this.apiurl + '/' + this.endpoint + '/mxXmltoBpmn';
+    const res = await lastValueFrom(this.httpClient.post<any>(url, process));
     return res;
   }
 }

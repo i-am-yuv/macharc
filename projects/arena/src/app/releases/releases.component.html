@@ -23,7 +23,12 @@
                 <img src="assets/spinner.svg" class="w-16 h-16 block m-auto" />
             </div>
             <ng-container *ngIf="!loading">
-                <div *ngIf="releases.length === 0" class="text-center pt-[8rem]">
+                <div *ngIf="gitNotReachable" class="text-center pt-[8rem]">
+                    <vezo-icon icon="inbox" className="w-24 h-24 mb-4 text-indigo-400"
+                        strokeWidth="0.5"></vezo-icon><br />
+                    Unable to reach the git server!
+                </div>
+                <div *ngIf="!gitNotReachable && releases.length === 0" class="text-center pt-[8rem]">
                     <vezo-icon icon="inbox" className="w-24 h-24 mb-4 text-indigo-400"
                         strokeWidth="0.5"></vezo-icon><br />
                     There are no releases for this microservice yet!

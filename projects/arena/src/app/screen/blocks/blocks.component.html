@@ -1,5 +1,5 @@
 <ng-container *ngIf="block.name === 'heading'">
-    <div class="text-lg">{{ block.data?.text }}</div>
+    <div class="text-lg" contenteditable [(ngModel)]="block.data.text">{{ block.data?.text }}</div>
 </ng-container>
 <ng-container *ngIf="block.name === 'button'">
     <div class="text-{{ block.data?.align ? block.data.align : 'right' }}">

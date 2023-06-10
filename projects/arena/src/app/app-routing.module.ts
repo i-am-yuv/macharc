@@ -23,6 +23,7 @@ import { AclComponent } from './acl/acl.component';
 import { SettingsComponent } from './settings/settings.component';
 import { EndpointsComponent } from './collection/endpoints/endpoints.component';
 import { TemplatesComponent } from './screen/templates/templates.component';
+import { LoginComponent } from './auth/login/login.component';
 
 const routes: Routes = [
   {
@@ -80,6 +81,10 @@ const routes: Routes = [
     path: 'builder/screens/designer/:id',
     component: DesignerComponent
   },
+  {
+    path: 'auth/login',
+    component: LoginComponent
+  }
 ];
 
 @NgModule({

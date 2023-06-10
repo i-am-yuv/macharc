@@ -1,71 +1,78 @@
-<div class="grid grid-cols-12">
-    <div class="col-span-9">
-        <div #graphContainer id="graphContainer" class="h-full border"></div>
+<div class="-m-4">
+    <div class="mb-3">
+        <button (click)="undo()" class="action-btn">Undo</button>
+        <button (click)="redo()" class="action-btn">Redo</button>
+        <button (click)="graph.zoomIn()" class="action-btn">Zoom In</button>
+        <button (click)="graph.zoomOut()" class="action-btn">Zoom Out</button>
+        <button (click)="sendBack()" class="action-btn">To Back</button>
+        <!-- <button (click)="sendBack()" class="action-btn">Send Backward</button> -->
+        <button (click)="bringFront()" class="action-btn">To Front</button>
+        <!-- <button (click)="bringFront()" class="action-btn">Bring Forward</button> -->
+        <button (click)="getBpmnXml()" class="action-btn">Get BPMN XML </button>
+        <button (click)="saveDefinition()" class="action-btn">Save </button>
     </div>
-    <div class="col-span-3">
-        <aside id="props-panel">
-            <div class="tabs">
-                <div class="tab-heading" [ngClass]="{'tab-active': tabactive === 1}" (click)="setTabActive(1)">
-                    Properties</div>
-                <div class="tab-heading" [ngClass]="{'tab-active': tabactive === 2}" (click)="setTabActive(2)">Style
-                </div>
-            </div>
-            <div class="props-block">
-                <h2 class="font-semibold text-indigo-400 mb-4">{{process.processName}}</h2>
-                <div><b>Element Name: {{ activeElement.mxObjectId }}</b></div>
-            </div>
-            <div class="p-2" *ngIf="activeElement.mxObjectId && tabactive === 1">
-                <vezo-input label="Text" [(ngModel)]="activeElement.value" (ngModelChange)="setText()"></vezo-input>
-                <vezo-input label="Business Logic Code" [(ngModel)]="activeElement.style.process"
-                    (ngModelChange)="setStyle()"></vezo-input>
-                <vezo-input label="Endpoint" [(ngModel)]="activeElement.style.endpoint"
-                    (ngModelChange)="setStyle()"></vezo-input>
-            </div>
-            <div class="p-2" *ngIf="activeElement.mxObjectId && tabactive === 2">
-                <vezo-input label="Fill Color" [(ngModel)]="activeElement.style.fillColor"
-                    (ngModelChange)="setStyle()"></vezo-input>
-                <vezo-input label="Font Color" [(ngModel)]="activeElement.style.fontColor"
-                    (ngModelChange)="setStyle()"></vezo-input>
-
-                <table class="props-table p-2" *ngIf="tabactive === 2">
-                    <thead>
-                        <th>Property</th>
-                        <th>Value</th>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let item of activeElement.style | keyvalue">
-                            <td *ngIf="item.key!=='name'" class="prop-key">{{item.key}}</td>
-                            <td *ngIf="item.key!=='name'">{{item.value}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="props-block">
-                <div><b>Actions</b></div>
-                <div>
-                    <button (click)="undo()" class="action-btn">Undo</button>
-                    <button (click)="redo()" class="action-btn">Redo</button><br />
-                    <button (click)="sendBack()" class="action-btn">To Back</button>
-                    <!-- <button (click)="sendBack()" class="action-btn">Send Backward</button> -->
-                    <button (click)="bringFront()" class="action-btn">To Front</button>
-                    <!-- <button (click)="bringFront()" class="action-btn">Bring Forward</button> -->
-                    <button (click)="getXmlModel()" class="action-btn">Get BPMN XML </button>
-                </div>
-            </div>
-        </aside>
-    </div>
-</div>
-<vezo-modal [(visible)]="showXml">
-    <ng-template vTemplate="header"> XML </ng-template>
-    <ng-template vTemplate="content">
-        <ngx-monaco-editor [options]="editorOptions" [(ngModel)]="bpmnXml" style="height: 350px"></ngx-monaco-editor>
-        <!-- {{ xmlData }} -->
-    </ng-template>
-    <ng-template vTemplate="footer">
-        <div class="text-right">
-            <vezo-button label="Save" (click)="saveDefinition()"></vezo-button>
+    <div class="grid grid-cols-12">
+        <div class="col-span-9">
+            <div #graphContainer id="graphContainer" class="h-full border"></div>
         </div>
-    </ng-template>
-</vezo-modal>
+        <div class="col-span-3">
+            <aside id="props-panel">
+                <div class="tabs">
+                    <div class="tab-heading" [ngClass]="{'tab-active': tabactive === 1}" (click)="setTabActive(1)">
+                        Properties</div>
+                    <div class="tab-heading" [ngClass]="{'tab-active': tabactive === 2}" (click)="setTabActive(2)">Style
+                    </div>
+                </div>
+                <div class="props-block">
+                    <h2 class="font-semibold text-indigo-400 mb-4">{{process.processName}}</h2>
+                    <div><b>Element Name: {{ activeElement.mxObjectId }}</b></div>
+                </div>
+                <div class="p-2" *ngIf="activeElement.mxObjectId && tabactive === 1">
+                    <vezo-input label="Text" [(ngModel)]="activeElement.value" (ngModelChange)="setText()"></vezo-input>
+                    <vezo-input label="Business Logic Code" [(ngModel)]="activeElement.style.process"
+                        (ngModelChange)="setStyle()"></vezo-input>
+                    <vezo-input label="Endpoint" [(ngModel)]="activeElement.style.endpoint"
+                        (ngModelChange)="setStyle()"></vezo-input>
+                </div>
+                <div class="p-2" *ngIf="activeElement.mxObjectId && tabactive === 2">
+                    <vezo-input label="Fill Color" [(ngModel)]="activeElement.style.fillColor"
+                        (ngModelChange)="setStyle()"></vezo-input>
+                    <vezo-input label="Font Color" [(ngModel)]="activeElement.style.fontColor"
+                        (ngModelChange)="setStyle()"></vezo-input>
 
-<vezo-toast></vezo-toast>
+                    <table class="props-table p-2" *ngIf="tabactive === 2">
+                        <thead>
+                            <th>Property</th>
+                            <th>Value</th>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of activeElement.style | keyvalue">
+                                <td *ngIf="item.key!=='name'" class="prop-key">{{item.key}}</td>
+                                <td *ngIf="item.key!=='name'">{{item.value}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="props-block">
+                    <div><b>Actions</b></div>
+                </div>
+            </aside>
+        </div>
+    </div>
+    <vezo-modal [(visible)]="showXml">
+        <ng-template vTemplate="header"> XML </ng-template>
+        <ng-template vTemplate="content">
+            <ngx-monaco-editor [options]="editorOptions" [(ngModel)]="bpmnXml"
+                style="height: 350px"></ngx-monaco-editor>
+            <!-- {{ xmlData }} -->
+        </ng-template>
+        <ng-template vTemplate="footer">
+            <div class="text-right">
+                <vezo-button label="Close" (click)="showXml=false" className="bg-gray-100 mr-2"></vezo-button>
+                <vezo-button label="Save" (click)="saveDefinition()"></vezo-button>
+            </div>
+        </ng-template>
+    </vezo-modal>
+
+    <vezo-toast></vezo-toast>
+</div>

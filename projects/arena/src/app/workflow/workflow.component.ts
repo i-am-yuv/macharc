@@ -18,6 +18,7 @@ export class WorkflowComponent extends GenericComponent implements OnInit {
   form: FormGroup;
   data: Workflow[] = [];
   microServices: MicroService[] = [];
+  override pageData = {};
 
   constructor(
     private fb: FormBuilder,

@@ -9,3 +9,4 @@ export * from './lib/numbers-only.directive';
 export * from './lib/v-template.directive';
 export * from './lib/message.service';
 export * from './lib/message';
+export * from './lib/pagination';

@@ -37,7 +37,7 @@ export class MsDatasourceComponent extends GenericComponent implements OnInit {
     this.getData({ id: this.microserviceId });
     this.form.patchValue({ id: this.microserviceId });
 
-    this.datasourceService.getAllData(undefined, undefined, undefined, undefined, undefined).then((res: any) => {
+    this.datasourceService.getAllData().then((res: any) => {
       this.datasources = res.content;
     });
   }

@@ -26,6 +26,7 @@ export class ScreenComponent extends GenericComponent implements OnInit {
   collectionItems: Collection[] = [];
   collection: Collection = {};
   microserviceItems: MicroService[] = [];
+  override pageData = {};
 
   constructor(
     private fb: FormBuilder,
@@ -67,7 +68,7 @@ export class ScreenComponent extends GenericComponent implements OnInit {
   getCollectionItems() {
     this.form.patchValue({ collection: null });
     var filterStr = FilterBuilder.equal('microService.id', this.form.value.microService.id);
-    this.collectionService.getAllData(undefined, undefined, undefined, undefined, filterStr).then((res: any) => {
+    this.collectionService.getAllData(undefined, filterStr).then((res: any) => {
       if (res) {
         this.collectionItems = res.content;
       }

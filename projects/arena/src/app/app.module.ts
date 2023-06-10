@@ -56,6 +56,8 @@ import { SettingsComponent } from './settings/settings.component';
 import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
 import { EndpointsComponent } from './collection/endpoints/endpoints.component';
 import { TemplatesComponent } from './screen/templates/templates.component';
+import { ContenteditableValueAccessor } from './utils/constenteditable.directive';
+import { LoginComponent } from './auth/login/login.component';
 
 @NgModule({
   declarations: [
@@ -85,7 +87,9 @@ import { TemplatesComponent } from './screen/templates/templates.component';
     AclComponent,
     SettingsComponent,
     EndpointsComponent,
-    TemplatesComponent
+    TemplatesComponent,
+    ContenteditableValueAccessor,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

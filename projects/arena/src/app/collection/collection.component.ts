@@ -21,7 +21,9 @@ export class CollectionComponent extends GenericComponent implements OnInit {
   microService: any = {};
   microserviceItems: any[] = [];
   microserviceId: string | undefined | null;
+  crud: boolean = false;
 
+  override pageData = {};
   constructor(
     private fb: FormBuilder,
     collectionService: CollectionService,

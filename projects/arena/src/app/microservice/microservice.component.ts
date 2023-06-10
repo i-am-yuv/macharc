@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MessageService } from '@splenta/vezo';
+import { MessageService, Pagination } from '@splenta/vezo';
 import { GenericComponent } from '../utils/genericcomponent';
 import { MicroService } from './microservice';
 import { MicroserviceService } from './microservice.service';
@@ -16,9 +16,11 @@ export class MicroserviceComponent extends GenericComponent implements OnInit {
   form: FormGroup;
   data: MicroService[] = [];
 
-  showGrid: boolean = true;
+  showGrid: boolean = false;
   packaging: any[] = ['Jar', 'War'];
   loading: boolean = false;
+
+  override pageData: Pagination = { pageNo: 0, pageSize: 10, sortDir: '', sortField: '', totalElements: 0, offset: 0 };
 
   constructor(
     private fb: FormBuilder,

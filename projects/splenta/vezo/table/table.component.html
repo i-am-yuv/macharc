@@ -36,7 +36,6 @@
         </div>
     </div>
 
-
     <table class="border-collapse border table-auto w-full text-sm bg-white">
         <thead class="border-b">
             <ng-container [ngTemplateOutlet]="header"></ng-container>
@@ -54,28 +53,46 @@
                 <div>
                     <div class="inline-block">Items per page :</div>
                     <div class="inline-block relative">
-                        <div (click)="showPageOpts=!showPageOpts"> <span class="ml-2">{{
-                                pageSize }}
+                        <div (click)="showPageOpts=!showPageOpts" class="cursor-pointer"> <span class="ml-2">
+                                {{ pageData.pageSize }}
                                 <vezo-icon icon="chevron-down" className="w-4 h-4"></vezo-icon>
                             </span></div>
-                        <ul class="w-10 bg-white text-center divide-y absolute" *ngIf="showPageOpts">
-                            <li *ngFor="let opt of [10,20,30,40,50]" (click)="selectOpts(opt)">{{ opt }}</li>
+                        <ul class="w-10 bg-white text-center divide-y absolute mt-1" *ngIf="showPageOpts">
+                            <li *ngFor="let opt of [10,20,30,40,50]" (click)="selectOpts(opt)" class="cursor-pointer">
+                                {{ opt }}
+                            </li>
                         </ul>
                     </div>
                 </div>
             </div>
 
-            <div class=" col-span-4 p-3">1 - 10 of {{ data.length }} Items
+            <div class=" col-span-4 p-3">
+                {{ getPageRange() }}
             </div>
-            <div class="col-span-2 p-3"> 1 of <span class="ml-2 mr-2">{{ math.ceil(data.length / pageSize) }} <vezo-icon
-                        icon="chevron-down" className="w-4 h-4">
-                    </vezo-icon>
-                </span> pages</div>
+            <div class="col-span-2 p-3 relative" (clickOutside)="showPageNos=false">
+                <div (click)="showPageNos=!showPageNos" class="cursor-pointer">
+                    <span class="">
+                        {{ (pageData.pageNo !==undefined ) ? pageData.pageNo + 1 : 0}}
+                    </span> of
+                    <span class=" mr-2">{{
+                        getTotalPages() }}
+                        <vezo-icon icon="chevron-down" className="w-4 h-4">
+                        </vezo-icon>
+                    </span> pages
+                </div>
+                <ul class="w-10 bg-white text-center divide-y absolute ml-4 mt-1" *ngIf="showPageNos">
+                    <li *ngFor="let n of [].constructor(getTotalPages()); let i = index" (click)="changePage(i)"
+                        class="cursor-pointer">
+                        {{ i + 1 }}
+                    </li>
+                </ul>
+            </div>
             <div class="col-span-2 text-right">
-                <button class="p-3 hover:bg-gray-200">
+                <button class="p-3 hover:bg-gray-200" (click)="pageDecrement()" *ngIf="pageData.pageNo! > 0">
                     <vezo-icon icon="chevron-left" className="w-4 h-4"></vezo-icon>
                 </button>
-                <button class="p-3 hover:bg-gray-200">
+                <button class="p-3 hover:bg-gray-200" (click)="pageIncrement()"
+                    *ngIf="pageData.pageNo! +1 < getTotalPages()">
                     <vezo-icon icon="chevron-right" className="w-4 h-4"></vezo-icon>
                 </button>
             </div>
