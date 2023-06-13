@@ -42,6 +42,7 @@ export class FieldsComponent extends GenericComponent implements OnInit {
 
   showForm: boolean = false;
   fieldType: string = 'String';
+  collections: any[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -61,9 +62,8 @@ export class FieldsComponent extends GenericComponent implements OnInit {
       fieldType: [''],
       validation: [''],
       pattern: [''],
-      collection: this.fb.group({
-        id: ''
-      })
+      collection: [],
+      foreignKey: []
     })
   }
   override preSave(): void {
@@ -75,6 +75,9 @@ export class FieldsComponent extends GenericComponent implements OnInit {
       var filterStr = FilterBuilder.equal('collection.id', this.collectionId);
       this.search = filterStr;
       this.getAllData();
+      this.collectionService.getAllData().then((res: any) => {
+        this.collections = res.content;
+      })
       this.collectionService.getData({ id: this.collectionId }).then((res) => {
         this.collection = res;
       })

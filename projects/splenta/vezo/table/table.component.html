@@ -35,18 +35,19 @@
             </div>
         </div>
     </div>
-
-    <table class="border-collapse border table-auto w-full text-sm bg-white">
-        <thead class="border-b">
-            <ng-container [ngTemplateOutlet]="header"></ng-container>
-        </thead>
-        <tbody class="divide-y">
-            <ng-container [ngTemplateOutlet]="body"></ng-container>
-        </tbody>
-        <tfoot *ngIf="this.caption">
-            <ng-container [ngTemplateOutlet]="footer"></ng-container>
-        </tfoot>
-    </table>
+    <div class="border min-h-[26rem] bg-white">
+        <table class="border-collapse table-auto w-full text-sm bg-white">
+            <thead class="border-b bg-gray-50">
+                <ng-container [ngTemplateOutlet]="header"></ng-container>
+            </thead>
+            <tbody class="divide-y">
+                <ng-container [ngTemplateOutlet]="body"></ng-container>
+            </tbody>
+            <tfoot *ngIf="this.caption">
+                <ng-container [ngTemplateOutlet]="footer"></ng-container>
+            </tfoot>
+        </table>
+    </div>
     <div class="pagination bg-indigo-50 text-indigo-500" *ngIf="pagination">
         <div class="grid grid-cols-12">
             <div class="col-span-4 p-3" (clickOutside)="closeOpts()">

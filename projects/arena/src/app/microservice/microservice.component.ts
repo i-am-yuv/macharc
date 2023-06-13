@@ -16,7 +16,7 @@ export class MicroserviceComponent extends GenericComponent implements OnInit {
   form: FormGroup;
   data: MicroService[] = [];
 
-  showGrid: boolean = false;
+  showGrid: boolean = true;
   packaging: any[] = ['Jar', 'War'];
   loading: boolean = false;
 

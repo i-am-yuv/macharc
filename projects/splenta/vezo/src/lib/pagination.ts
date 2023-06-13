@@ -4,4 +4,5 @@ export interface Pagination {
     sortField?: string;
     sortDir?: string;
     totalElements?: number;
+    offset?: number;
 }

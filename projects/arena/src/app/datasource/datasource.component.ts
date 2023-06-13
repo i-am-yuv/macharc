@@ -16,6 +16,8 @@ export class DatasourceComponent extends GenericComponent implements OnInit {
   componentName: string = 'Datasource';
   override pageData = {};
 
+  dbTypes: string[] = ['PostgreSQL', 'MySQL', 'Oracle', 'Mongo', 'MSSQL'];
+
   constructor(
     private fb: FormBuilder,
     dsService: DatasourceService,
@@ -23,10 +25,12 @@ export class DatasourceComponent extends GenericComponent implements OnInit {
     super(dsService, messageService);
     this.form = this.fb.group({
       id: '',
+      dbType: [],
       dataSourceName: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
       dbUrl: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
       username: [''],
       password: [''],
+      authToken: ['']
     })
   }
   ngOnInit(): void {

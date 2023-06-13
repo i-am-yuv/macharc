@@ -11,13 +11,13 @@ export class ProcessesService extends GenericService {
 
   endpoint: string = 'process';
 
-  constructor(http: HttpClient, private httpClient: HttpClient) {
+  constructor(http: HttpClient) {
     super(http);
   }
 
   async mxXmltoBpmn(process: Process) {
     var url = this.apiurl + '/' + this.endpoint + '/mxXmltoBpmn';
-    const res = await lastValueFrom(this.httpClient.post<any>(url, process));
+    const res = await lastValueFrom(this.http.post<any>(url, process));
     return res;
   }
 }

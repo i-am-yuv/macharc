@@ -12,19 +12,19 @@ export class CollectionService extends GenericService {
 
   endpoint: string = 'collection';
 
-  constructor(http: HttpClient, private httpClient: HttpClient) {
+  constructor(http: HttpClient) {
     super(http);
   }
 
   async generateFromTable(collectionId: string) {
     var url = this.apiurl + '/' + this.endpoint + '/generateFromTable/' + encodeURIComponent(collectionId);
-    const res = await lastValueFrom(this.httpClient.get<any>(url));
+    const res = await lastValueFrom(this.http.get<any>(url));
     return res;
   }
 
   async generateCode(collectionId: string) {
     var url = this.apiurl + '/' + this.endpoint + '/generateCode/' + encodeURIComponent(collectionId);
-    const res = await lastValueFrom(this.httpClient.get<any>(url));
+    const res = await lastValueFrom(this.http.get<any>(url));
     return res;
   }
 }

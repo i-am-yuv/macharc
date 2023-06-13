@@ -25,7 +25,7 @@
                 </div>
                 <div class="props-block">
                     <h2 class="font-semibold text-indigo-400 mb-4">{{process.processName}}</h2>
-                    <div><b>Element Name: {{ activeElement.mxObjectId }}</b></div>
+                    <div *ngIf="activeElement.mxObjectId"><b>Element Name: {{ activeElement.mxObjectId }}</b></div>
                 </div>
                 <div class="p-2" *ngIf="activeElement.mxObjectId && tabactive === 1">
                     <vezo-input label="Text" [(ngModel)]="activeElement.value" (ngModelChange)="setText()"></vezo-input>
@@ -53,9 +53,9 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="props-block">
+                <!-- <div class="props-block">
                     <div><b>Actions</b></div>
-                </div>
+                </div> -->
             </aside>
         </div>
     </div>

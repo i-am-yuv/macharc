@@ -10,7 +10,7 @@ export abstract class GenericService {
 
     abstract endpoint: string;
 
-    constructor(private http: HttpClient) { }
+    constructor(public http: HttpClient) { }
 
     // async getAllData() {
     //     var url = this.apiurl + '/' + this.endpoint;
