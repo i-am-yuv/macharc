@@ -115,13 +115,14 @@ export class SelectComponent implements OnInit, ControlValueAccessor {
       } else {
         console.log('Not handled select option');
       }
-    } else {
-      console.log('Not handled select option');
     }
-    console.log(this.isObj);
+    // console.log(this.isObj);
   }
   writeValue(item: any) {
+    console.log(item);
     if (!item) {
+      this.comboValue = {};
+      this.displayValue = '';
       return;
     }
     if (typeof item === 'object' && item !== null && !this.optionLabel) {
