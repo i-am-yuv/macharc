@@ -119,7 +119,6 @@ export class SelectComponent implements OnInit, ControlValueAccessor {
     // console.log(this.isObj);
   }
   writeValue(item: any) {
-    console.log(item);
     if (!item) {
       this.comboValue = {};
       this.displayValue = '';
