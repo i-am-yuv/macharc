@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService } from '@splenta/vezo';
+import { MessageService, Pagination } from '@splenta/vezo';
 import { GenericComponent } from '../utils/genericcomponent';
 import { Collection } from './collection';
 import { CollectionService } from './collection.service';
@@ -42,7 +42,8 @@ export class CollectionComponent extends GenericComponent implements OnInit {
       crud: [],
       readonly: [],
       hasService: [],
-      microService: []
+      microService: [],
+      dataSource: []
     })
   }
   ngOnInit(): void {
@@ -54,7 +55,8 @@ export class CollectionComponent extends GenericComponent implements OnInit {
         this.form.patchValue({ microservice: res });
       })
     } else {
-      this.microserviceService.getAllData().then((res: any) => {
+      var pagination: Pagination = { pageSize: 1000 }
+      this.microserviceService.getAllData(pagination).then((res: any) => {
         if (res) {
           this.microserviceItems = res.content;
         }

@@ -24,10 +24,9 @@
                     *ngIf="!visible"></vezo-button>
             </div>
         </div>
-        <vezo-table [data]="dataSingle.datasources" *ngIf="!visible">
+        <vezo-table [data]="dataSingle.datasources" *ngIf="!visible" [pagination]="false">
             <ng-template vTemplate="header">
                 <tr>
-                    <th class="w-4"><input type="checkbox" class="w-4 h-4" /></th>
                     <th>Datasource Name</th>
                     <th>Datasource URL</th>
                     <th [width]="150">Actions</th>
@@ -35,12 +34,11 @@
             </ng-template>
             <ng-template vTemplate="body">
                 <tr *ngFor="let ds of dataSingle.datasources">
-                    <td><input type="checkbox" class="w-4 h-4" /></td>
                     <td>{{ ds.dataSourceName }}</td>
                     <td>{{ ds.dbUrl }}</td>
                     <td>
-                        <vezo-icon icon="trash" (click)="deleteData(ds)"
-                            className="w-4 h-4 text-red-400 cursor-pointer"></vezo-icon>
+                        <vezo-icon icon="trash" className="w-4 h-4 text-red-400 cursor-pointer"
+                            (click)="unlinkData(ds)"></vezo-icon>
                     </td>
                 </tr>
             </ng-template>
@@ -53,7 +51,6 @@
                 <vezo-select label="Datasource" [(ngModel)]="ds" [items]="datasources"
                     optionLabel="dataSourceName"></vezo-select>
             </div>
-
 
 
             <div class="text-left">

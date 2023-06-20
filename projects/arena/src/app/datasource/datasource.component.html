@@ -45,16 +45,47 @@
     <ng-template vTemplate="header">Data</ng-template>
     <ng-template vTemplate="content">
         <form [formGroup]="form">
-            <vezo-input label="Data Source Name" formControlName="dataSourceName"></vezo-input>
-            <error-message [controlName]="form.controls['dataSourceName']"></error-message>
-            <vezo-select label="Datasource Type" formControlName="dbType" [items]="dbTypes"></vezo-select>
-            <error-message [controlName]="form.controls['dbType']"></error-message>
-            <vezo-input label="Datasource URL" formControlName="dbUrl"></vezo-input>
-            <error-message [controlName]="form.controls['dbUrl']"></error-message>
-            <vezo-input label="Username" formControlName="username"></vezo-input>
-            <error-message [controlName]="form.controls['username']"></error-message>
-            <vezo-input label="Password" type="password" formControlName="password"></vezo-input>
-            <error-message [controlName]="form.controls['password']"></error-message>
+            <div class="flex">
+                <div class="mr-4">
+                    <vezo-input label="Data Source Name" formControlName="dataSourceName"></vezo-input>
+                    <error-message [controlName]="form.controls['dataSourceName']"></error-message>
+                </div>
+                <div class="flex-grow">
+                    <vezo-select label="Datasource Type" formControlName="dbType" [items]="dbTypes"></vezo-select>
+                    <error-message [controlName]="form.controls['dbType']"></error-message>
+                </div>
+            </div>
+            <div class="my-4" *ngIf="form.value.dbUrl">
+                <span class="font-semibold"> DB Url:</span> {{ form.value.dbUrl}}
+            </div>
+            <div class="flex">
+                <div class="mr-4">
+                    <vezo-input label="Datasource Host" formControlName="dbHost"></vezo-input>
+                    <error-message [controlName]="form.controls['dbDatabaseName']"></error-message>
+                </div>
+                <div class="mr-4">
+                    <vezo-input label="Datasource Port" formControlName="dbPort"></vezo-input>
+                    <error-message [controlName]="form.controls['dbDatabaseName']"></error-message>
+                </div>
+                <div class="">
+                    <vezo-input label="Datasource DB Name" formControlName="dbDatabaseName"></vezo-input>
+                    <error-message [controlName]="form.controls['dbDatabaseName']"></error-message>
+                </div>
+            </div>
+            <div class="my-4" *ngIf="form.value.driverClassName">
+                <span class="font-semibold"> Driver Class Name:</span> {{ form.value.driverClassName}}
+            </div>
+            <div class="flex">
+                <div class="mr-4">
+                    <vezo-input label="Username" formControlName="username"></vezo-input>
+                    <error-message [controlName]="form.controls['username']"></error-message>
+                </div>
+
+                <div class="mr-4">
+                    <vezo-input label="Password" type="password" formControlName="password"></vezo-input>
+                    <error-message [controlName]="form.controls['password']"></error-message>
+                </div>
+            </div>
             <vezo-textarea label="Token" formControlName="authToken"></vezo-textarea>
         </form>
     </ng-template>

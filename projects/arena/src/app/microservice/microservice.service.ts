@@ -9,6 +9,7 @@ import { lastValueFrom } from 'rxjs';
 export class MicroserviceService extends GenericService {
 
 
+
   endpoint: string = 'micro-services';
 
   constructor(http: HttpClient) {
@@ -22,6 +23,17 @@ export class MicroserviceService extends GenericService {
   }
   async generateFrontendCode(ms: any) {
     var url = this.apiurl + '/' + this.endpoint + '/generateFrontend/' + encodeURIComponent(ms.id!);
+    const res = await lastValueFrom(this.http.get<any>(url));
+    return res;
+  }
+  async linkDs(msId: string, dsId: string) {
+    var url = this.apiurl + '/' + this.endpoint + '/addDataSource/' + encodeURIComponent(msId) + '/' + encodeURIComponent(dsId!);
+    const res = await lastValueFrom(this.http.get<any>(url));
+    return res;
+  }
+
+  async unLinkDs(msId: string, dsId: string) {
+    var url = this.apiurl + '/' + this.endpoint + '/removeDataSource/' + encodeURIComponent(msId) + '/' + encodeURIComponent(dsId!);
     const res = await lastValueFrom(this.http.get<any>(url));
     return res;
   }

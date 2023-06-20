@@ -22,7 +22,7 @@ export class MsDatasourceComponent extends GenericComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    msService: MicroserviceService,
+    private msService: MicroserviceService,
     messageService: MessageService,
     private datasourceService: DatasourceService
   ) {
@@ -43,10 +43,22 @@ export class MsDatasourceComponent extends GenericComponent implements OnInit {
   }
 
   linkData() {
-    let controlArray = <FormArray>this.form.controls['datasources'];
-    const fb = this.fb.group(this.ds);
-    controlArray.push(fb);
-    this.saveData();
+    // let controlArray = <FormArray>this.form.controls['datasources'];
+    // const fb = this.fb.group(this.ds);
+    // controlArray.push(fb);
+    // this.saveData();
+    this.msService.linkDs(this.microserviceId!, this.ds.id!).then((res) => {
+      this.getData({ id: this.microserviceId });
+      this.visible = false;
+      this.messageService.add({ severity: 'success', detail: this.componentName + ' linked', summary: this.componentName + ' linked' });
+    });
+
+  }
+  unlinkData(ds: any) {
+    this.msService.unLinkDs(this.microserviceId!, ds.id!).then((res) => {
+      this.getData({ id: this.microserviceId });
+      this.messageService.add({ severity: 'success', detail: this.componentName + ' unlinked', summary: this.componentName + ' unlinked' });
+    });
   }
 
   override postSave(): void {

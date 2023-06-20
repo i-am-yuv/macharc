@@ -27,10 +27,14 @@ export class DatasourceComponent extends GenericComponent implements OnInit {
       id: '',
       dbType: [],
       dataSourceName: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
-      dbUrl: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
+      dbUrl: [''],
+      dbHost: [''],
+      dbPort: [''],
+      dbDatabaseName: [''],
       username: [''],
       password: [''],
-      authToken: ['']
+      authToken: [''],
+      driverClassName: [''],
     })
   }
   ngOnInit(): void {

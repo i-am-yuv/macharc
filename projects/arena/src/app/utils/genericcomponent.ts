@@ -14,9 +14,9 @@ export abstract class GenericComponent {
 
     dataSingle: any = {};
 
-    dataService: GenericService;
+    // dataService: GenericService;
 
-    messageService: any;
+    // messageService: any;
 
     abstract componentName: string;
 
@@ -24,7 +24,7 @@ export abstract class GenericComponent {
 
     pageData?: Pagination = {};
 
-    constructor(dataService: GenericService, messageService: MessageService) {
+    constructor(public dataService: GenericService, public messageService: MessageService) {
         this.dataService = dataService;
         this.messageService = messageService;
     }
