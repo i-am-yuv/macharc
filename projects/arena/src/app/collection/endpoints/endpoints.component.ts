@@ -17,11 +17,11 @@ import { WorkflowService } from '../../workflow/workflow.service';
 export class EndpointsComponent extends GenericComponent implements OnInit {
   getEpColor(type: any) {
     const colors = [
-      { type: 'Get', color: 'green' },
-      { type: 'Post', color: 'orange' },
-      { type: 'Put', color: 'purple' },
-      { type: 'Patch', color: 'yellow' },
-      { type: 'Delete', color: 'red' },
+      { type: 'GET', color: 'green' },
+      { type: 'POST', color: 'orange' },
+      { type: 'PUT', color: 'purple' },
+      { type: 'PATCH', color: 'yellow' },
+      { type: 'DELETE', color: 'red' },
     ];
 
     return colors.find(t => t.type === type)?.color;
@@ -52,7 +52,7 @@ export class EndpointsComponent extends GenericComponent implements OnInit {
     { label: 'Boolean', value: 'boolean' },
     { label: 'Collection', value: 'collection' },
   ];
-  httpMethods: any[] = ['Get', 'Post', 'Put', 'Patch', 'Delete'];
+  httpMethods: any[] = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
   pathVariables: any[] = [];
 
   constructor(
@@ -71,7 +71,9 @@ export class EndpointsComponent extends GenericComponent implements OnInit {
       endpointType: [''],
       description: [''],
       returnType: [''],
-      pathVariables: ['']
+      pathVariables: [''],
+      service: [''],
+      crud: [false]
     })
   }
   ngOnInit(): void {
@@ -80,6 +82,8 @@ export class EndpointsComponent extends GenericComponent implements OnInit {
         this.collection = res;
       })
     }
+    var filterStr = FilterBuilder.equal('collection.id', this.collectionId!);
+    this.search = filterStr;
     this.getAllData();
     // TODO: Filter by microservice
     this.workflowService.getAllData().then((res: any) => {
