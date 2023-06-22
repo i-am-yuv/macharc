@@ -24,6 +24,8 @@ import { SettingsComponent } from './settings/settings.component';
 import { EndpointsComponent } from './collection/endpoints/endpoints.component';
 import { TemplatesComponent } from './screen/templates/templates.component';
 import { LoginComponent } from './auth/login/login.component';
+import { DataFormComponent } from './data-form/data-form.component';
+import { FormDesignerComponent } from './data-form/form-designer/form-designer.component';
 
 const routes: Routes = [
   {
@@ -73,6 +75,23 @@ const routes: Routes = [
               },
             ]
           },
+          {
+            path: 'forms',
+            component: DispatcherComponent,
+            children: [
+              {
+                path: '',
+                component: DataFormComponent
+              },
+              {
+                path: 'templates',
+                component: TemplatesComponent
+              }, {
+                path: 'templates/:id',
+                component: TemplatesComponent
+              },
+            ]
+          },
         ]
       }
     ]
@@ -80,6 +99,10 @@ const routes: Routes = [
   {
     path: 'builder/screens/designer/:id',
     component: DesignerComponent
+  },
+  {
+    path: 'builder/forms/designer/:id',
+    component: FormDesignerComponent
   },
   {
     path: 'auth/login',

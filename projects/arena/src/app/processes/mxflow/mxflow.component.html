@@ -28,11 +28,20 @@
                     <div *ngIf="activeElement.mxObjectId"><b>Element Name: {{ activeElement.mxObjectId }}</b></div>
                 </div>
                 <div class="p-2" *ngIf="activeElement.mxObjectId && tabactive === 1">
-                    <vezo-input label="Text" [(ngModel)]="activeElement.value" (ngModelChange)="setText()"></vezo-input>
-                    <vezo-input label="Business Logic Code" [(ngModel)]="activeElement.style.process"
-                        (ngModelChange)="setStyle()"></vezo-input>
-                    <vezo-input label="Endpoint" [(ngModel)]="activeElement.style.endpoint"
-                        (ngModelChange)="setStyle()"></vezo-input>
+                    <vezo-input label="Text" [(ngModel)]="activeElement.value" (ngModelChange)="setText()"
+                        className="bg-white"></vezo-input>
+
+                    <vezo-select label="Screen" [(ngModel)]="activeElement.screen" [items]="screens"
+                        className="bg-white" optionLabel="screenName" optionValue="id"
+                        *ngIf="activeElement.type==='user-task'" (ngModelChange)="setStyle()"></vezo-select>
+
+                    <vezo-select label="Service" [(ngModel)]="activeElement.service" className="bg-white"
+                        [items]="workflows" optionLabel="workflowName" optionValue="id"
+                        *ngIf="activeElement.type?.includes('gateway')" (ngModelChange)="setStyle()"></vezo-select>
+
+                    <vezo-input label="Endpoint (overrides service)" [(ngModel)]="activeElement.endpoint"
+                        className="bg-white" (ngModelChange)="setStyle()"
+                        *ngIf="activeElement.type?.includes('gateway')"></vezo-input>
                 </div>
                 <div class="p-2" *ngIf="activeElement.mxObjectId && tabactive === 2">
                     <vezo-input label="Fill Color" [(ngModel)]="activeElement.style.fillColor"

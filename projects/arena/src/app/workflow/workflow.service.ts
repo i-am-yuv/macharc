@@ -9,15 +9,21 @@ import { lastValueFrom } from 'rxjs';
 })
 export class WorkflowService extends GenericService {
 
+
   endpoint: string = 'workflow';
 
-  constructor(http: HttpClient, private client: HttpClient) {
+  constructor(http: HttpClient) {
     super(http);
   }
 
   async generateServiceCode(wf: Workflow) {
     var url = this.apiurl + '/' + this.endpoint + '/generateServiceCode';
-    const res = await lastValueFrom(this.client.post<any>(url, wf));
+    const res = await lastValueFrom(this.http.post<any>(url, wf));
+    return res;
+  }
+  async getWorkflowsByMicroService(id: string | undefined) {
+    var url = this.apiurl + '/' + this.endpoint + '/getWorkflowsByMicroService/' + encodeURIComponent(id!);
+    const res = await lastValueFrom(this.http.get<any>(url));
     return res;
   }
 }

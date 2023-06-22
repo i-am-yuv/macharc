@@ -74,7 +74,7 @@
     <ng-template vTemplate="content">
         <form [formGroup]="form">
             <vezo-select optionLabel="microServiceName" [items]="microserviceItems" formControlName="microService"
-                label="Microservice" *ngIf="!microserviceId"></vezo-select>
+                label="Microservice"></vezo-select>
             <vezo-select optionLabel="dataSourceName" [items]="form.value.microService?.datasources"
                 *ngIf="form.value.microService" formControlName="dataSource" label="Datasource"></vezo-select>
             <vezo-input label="Collection Name" formControlName="collectionName"></vezo-input>

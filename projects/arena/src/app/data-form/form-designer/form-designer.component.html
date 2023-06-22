@@ -41,10 +41,10 @@
                 <div class="grid grid-cols-12">
                     <div class="col-span-4">
                         Microservice: <span class="text-indigo-400">{{
-                            screenData.collection?.microService?.microServiceCode }}</span>
+                            formData.collection?.microService?.microServiceCode }}</span>
                     </div>
                     <div class="col-span-4">
-                        Screen: <span class="text-indigo-400">{{ screenData.screenName }}</span>
+                        Form: <span class="text-indigo-400">{{ formData.formName }}</span>
                     </div>
                     <div class="col-span-4 text-indigo-700 border-l text-right">
                         <div class="inline-block cursor-pointer">
@@ -85,28 +85,6 @@
                                 </div>
                             </div>
                         </ng-container>
-                        <ng-container *ngIf="item.name === 'form'">
-                            <div (dndDrop)="onDrop($event, item.children)"
-                                class="name p-2 gap-4 grid grid-cols-{{item.data.columns}} justify-content items-center"
-                                dndDropzone dndEffectAllowed="copyMove">
-
-                                <div *ngFor="let child of item.children" class="name">
-                                    <ng-container *ngIf="child.name === 'section'">
-                                        <div
-                                            class="name gap-4 grid grid-cols-{{child.data.columns}} justify-content items-center">
-
-                                            <div *ngFor="let subChild of child.children" class="name">
-                                                <app-blocks [block]="subChild"
-                                                    (click)="handleClick($event, subChild)"></app-blocks>
-                                            </div>
-                                        </div>
-                                    </ng-container>
-                                    <app-blocks [block]="child" (click)="handleClick($event, child)"></app-blocks>
-                                </div>
-                                <div class="dndPlaceholder h-16 p-5 border bg-blue-400 bg-opacity-25" dndPlaceholderRef>
-                                </div>
-                            </div>
-                        </ng-container>
                         <app-blocks [block]="item" (click)="handleClick($event, item)"></app-blocks>
                     </div>
                 </div>
@@ -119,22 +97,22 @@
                         icon="arrowUturnLeft" className="w-4 h-4 mr-2"></vezo-icon>Back</div>
                 <!-- <div class="inline-block float-right text-indigo-500 cursor-pointer">
                     <vezo-icon icon="cog8Tooth" className="w-4 h-4 mr-2"></vezo-icon>
-                    <span class="mr-6">Screen Config</span>
+                    <span class="mr-6">Form Config</span>
                 </div> -->
 
             </div>
             <div class="p-3">
                 <div class="min-h-[24rem]">
-                    <app-properties [fields]="fields" [forms]="forms" [props]="activeItem" [collections]="collections"
+                    <app-properties [fields]="fields" [props]="activeItem" [collections]="collections"
                         (deleteProp)="deleteActiveItem($event)"></app-properties>
                     <div class="text-center m-8" *ngIf="!activeItem">Drag and drop from blocks to center panel to create
-                        screen. </div>
+                        form. </div>
                 </div>
                 <div>
-                    <div class="bg-gray-50 border-b p-2 font-semibold">Page Properties</div>
+                    <div class="bg-gray-50 border-b p-2 font-semibold">Form Properties</div>
                     <div class="p-4">
-                        <vezo-input label="Page URL"></vezo-input>
-                        <vezo-input label="Primary Collection"></vezo-input>
+                        <!-- <vezo-switch label="Has Workflow"></vezo-switch> -->
+                        <vezo-select label="Process"></vezo-select>
                         <div class="text-right mb-8 pt-4">
                             <vezo-button label="Save" className="bg-gray-50" (click)="saveDefinition()"></vezo-button>
                         </div>
@@ -146,5 +124,4 @@
     <!-- <pre>
         {{ draggableListRight | json }}
     </pre> -->
-    {{ activeItem | json }}
     <vezo-toast></vezo-toast>

@@ -32,16 +32,17 @@
         <ng-template vTemplate="header">
             <tr>
                 <th class="w-4"><input type="checkbox" class="w-4 h-4" /></th>
-                <th>Code</th>
-                <th>Name</th>
+                <th *ngFor="let col of block.data.columns">{{ col.heading }}</th>
+                <!-- <th>Name</th> -->
                 <th [width]="100">Actions</th>
             </tr>
         </ng-template>
         <ng-template vTemplate="body">
-            <tr *ngFor="let i of [1,2,3,4,5,6,7,8,9,10]">
+            <tr *ngFor="let row of block.data.rows">
                 <td><input type="checkbox" class="w-4 h-4" /></td>
-                <td>{{ i }}</td>
-                <td>Name</td>
+                <td *ngFor="let col of block.data.columns">
+                    {{ row[col.field] }}
+                </td>
                 <td>
                     <vezo-icon icon="pencil" className="mr-5 w-4 h-4 text-blue-400"></vezo-icon>
                     <vezo-icon icon="trash" className="w-4 h-4 text-red-400"></vezo-icon>

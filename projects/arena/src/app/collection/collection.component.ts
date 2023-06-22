@@ -54,14 +54,14 @@ export class CollectionComponent extends GenericComponent implements OnInit {
         this.microService = res;
         this.form.patchValue({ microservice: res });
       })
-    } else {
-      var pagination: Pagination = { pageSize: 1000 }
-      this.microserviceService.getAllData(pagination).then((res: any) => {
-        if (res) {
-          this.microserviceItems = res.content;
-        }
-      })
     }
+    var pagination: Pagination = { pageSize: 1000 }
+    this.microserviceService.getAllData(pagination).then((res: any) => {
+      if (res) {
+        this.microserviceItems = res.content;
+      }
+    })
+
   }
   override preSave(): void {
     if (!this.form.value.microService) {

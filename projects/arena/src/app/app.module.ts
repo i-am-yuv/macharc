@@ -58,6 +58,8 @@ import { EndpointsComponent } from './collection/endpoints/endpoints.component';
 import { TemplatesComponent } from './screen/templates/templates.component';
 import { ContenteditableValueAccessor } from './utils/constenteditable.directive';
 import { LoginComponent } from './auth/login/login.component';
+import { DataFormComponent } from './data-form/data-form.component';
+import { FormDesignerComponent } from './data-form/form-designer/form-designer.component';
 
 @NgModule({
   declarations: [
@@ -89,7 +91,9 @@ import { LoginComponent } from './auth/login/login.component';
     EndpointsComponent,
     TemplatesComponent,
     ContenteditableValueAccessor,
-    LoginComponent
+    LoginComponent,
+    DataFormComponent,
+    FormDesignerComponent
   ],
   imports: [
     BrowserModule,

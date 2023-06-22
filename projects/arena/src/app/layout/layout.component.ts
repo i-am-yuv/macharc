@@ -15,6 +15,7 @@ export class LayoutComponent {
         { label: 'Datasources', icon: 'clipboard', routerLink: ['/builder/datasources'] },
         { label: 'Collection', icon: 'clipboard', routerLink: ['/builder/collections'] },
         { label: 'Screens', icon: 'clipboard', routerLink: ['/builder/screens'] },
+        { label: 'Forms', icon: 'clipboard', routerLink: ['/builder/forms'] },
         { label: 'Process', icon: 'clipboard', routerLink: ['/builder/processes'] },
         { label: 'Service', icon: 'clipboard', routerLink: ['/builder/workflows'] },
         { label: 'Releases', icon: 'clipboard', routerLink: ['/releases'] },

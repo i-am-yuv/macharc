@@ -1,22 +1,21 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { type CellStyle, Graph, MaxToolbar, gestureUtils, xmlUtils, Cell, Geometry, KeyHandler, InternalEvent, Codec, UndoManager, EventObject, UndoableEdit, CellTracker, CellHighlight, RubberBandHandler, EdgeStyle } from '@maxgraph/core';
+import { type CellStyle, Graph, MaxToolbar, gestureUtils, xmlUtils, Cell, Geometry, KeyHandler, InternalEvent, Codec, UndoManager, CellTracker, CellHighlight, RubberBandHandler, VertexHandler, constants, EdgeHandler, SelectionHandler, eventUtils } from '@maxgraph/core';
 import { Process } from '../process';
 import { ProcessesService } from '../processes.service';
 import { ActivatedRoute } from '@angular/router';
 import { MessageService } from '@splenta/vezo';
-import { registerCustomShapes } from './CustomShapes';
-
-
-
-
-
-
+import { ScreenService } from '../../screen/screen.service';
+import { WorkflowService } from '../../workflow/workflow.service';
 
 export interface ActiveElement {
   mxObjectId?: string;
   value?: string;
   style?: any;
   data?: any;
+  type?: string;
+  service?: string;
+  endpoint?: string;
+  screen?: string;
 }
 
 @Component({
@@ -42,9 +41,13 @@ export class MxflowComponent implements OnInit {
   editorOptions = { theme: 'vs-dark', language: 'xml', formatOnPaste: true };
   bpmnXml: string | null = '';
   undoManager: UndoManager = new UndoManager;
+  screens: any;
+  workflows: any;
 
   constructor(
     private processService: ProcessesService,
+    private screenService: ScreenService,
+    private workflowService: WorkflowService,
     private route: ActivatedRoute,
     private msgService: MessageService
   ) {
@@ -60,9 +63,17 @@ export class MxflowComponent implements OnInit {
 
     const tbContainer = document.createElement('div');
     tbContainer.className = 'toolbar';
+
+    SelectionHandler.prototype.useGuidesForEvent = function (me) {
+      return !eventUtils.isAltDown(me.getEvent());
+    };
+
+    SelectionHandler.prototype.guidesEnabled = true;
+
     this.graph = new Graph(this.container.nativeElement);
     this.graph.setGridEnabled(true);
     this.graph.setPanning(true);
+    this.graph.gridSize = 10;
 
     const vertexStyle = this.graph.getStylesheet().getDefaultVertexStyle();
     const edgeStyle = this.graph.getStylesheet().getDefaultEdgeStyle();
@@ -70,18 +81,19 @@ export class MxflowComponent implements OnInit {
     edgeStyle!.edgeStyle = 'orthogonalEdgeStyle';
     // edgeStyle!.rounded = true;
 
-    edgeStyle!.backgroundColor = '#ffffff';
+    edgeStyle!.labelBackgroundColor = '#ffffff';
     vertexStyle!.fillColor = 'white';
     vertexStyle!.swimlaneFillColor = 'rgba(0, 182, 255, 0.1)';
 
     new CellHighlight(this.graph, '#ff0000', 2);
     new CellTracker(this.graph, 'rgba(0, 182, 255, 0.4)');
 
+
     new RubberBandHandler(this.graph);
 
     // registerCustomShapes();
 
-
+    EdgeHandler.prototype.snapToTerminals = true;
 
     this.container.nativeElement.appendChild(tbContainer);
 
@@ -92,6 +104,7 @@ export class MxflowComponent implements OnInit {
     this.graph.setAllowDanglingEdges(false);
     this.graph.setDisconnectOnMove(false);
     this.graph.gridSize = 1;
+
 
 
 
@@ -150,6 +163,8 @@ export class MxflowComponent implements OnInit {
       (res: any) => {
         if (res) {
           this.process = res;
+          this.getScreens();
+          this.getWorkflows();
           if (this.process) {
             this.fromXml = this.process.processDefinition;
             this.renderXml();
@@ -166,11 +181,18 @@ export class MxflowComponent implements OnInit {
     //   graph.insertEdge(parent, null, null, vertex01, vertex02, <EdgeStyle>{ edgeStyle: 'orthogonalEdgeStyle', rounded: 0, orthogonalLoop: 1, jettySize: 'auto', html: 1 });
 
     // });
+
+  }
+  getScreens() {
+    this.screenService.getScreensByMicroService(this.process.microService?.id).then((res: any) => {
+      this.screens = res;
+    })
   }
 
-  createGatewayShape() {
-
-
+  getWorkflows() {
+    this.workflowService.getWorkflowsByMicroService(this.process.microService?.id).then((res: any) => {
+      this.workflows = res;
+    })
   }
 
   addToolbarItem(type: string, graph: any, toolbar: MaxToolbar, prototype: any, image: any) {
@@ -188,6 +210,9 @@ export class MxflowComponent implements OnInit {
       vertex.geometry.x = pt.x;
       vertex.geometry.y = pt.y;
       vertex['type'] = type;
+      vertex['service'] = '';
+      vertex['screen'] = '';
+      vertex['endpoint'] = '';
 
       graph.setSelectionCells(graph.importCells([vertex], 0, 0, cell));
       graph.getDataModel().endUpdate();
@@ -203,10 +228,9 @@ export class MxflowComponent implements OnInit {
         this.activeElement = evt.properties.cell;
       }
     });
-
+    graph.container.focus();
     var keyHandler = new KeyHandler(graph);
     keyHandler.bindControlKey(90, () => {
-      console.log('cz')
       this.undoManager.undo();
     })
     keyHandler.bindControlKey(89, () => {
@@ -234,6 +258,43 @@ export class MxflowComponent implements OnInit {
 
       graph.refresh();
     });
+    var nudge = function (keyCode: number) {
+      if (!graph.isSelectionEmpty()) {
+        var dx = 0;
+        var dy = 0;
+
+        if (keyCode == 37) {
+          dx = -1;
+        }
+        else if (keyCode == 38) {
+          dy = -1;
+        }
+        else if (keyCode == 39) {
+          dx = 1;
+        }
+        else if (keyCode == 40) {
+          dy = 1;
+        }
+
+        graph.moveCells(graph.getSelectionCells(), dx, dy);
+      }
+    };
+    keyHandler.bindKey(37, function () {
+      nudge(37);
+    });
+
+    keyHandler.bindKey(38, function () {
+      nudge(38);
+    });
+
+    keyHandler.bindKey(39, function () {
+      nudge(39);
+    });
+
+    keyHandler.bindKey(40, function () {
+      nudge(40);
+    });
+
   }
 
 
