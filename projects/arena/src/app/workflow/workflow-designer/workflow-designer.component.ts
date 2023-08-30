@@ -9,6 +9,7 @@ function createDefinition() {
     properties: {
       collections: '',
       velocity: 0,
+      declarations: '',
       returnType: 'void',
     },
     sequence: []

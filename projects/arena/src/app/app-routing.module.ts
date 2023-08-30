@@ -26,6 +26,9 @@ import { TemplatesComponent } from './screen/templates/templates.component';
 import { LoginComponent } from './auth/login/login.component';
 import { DataFormComponent } from './data-form/data-form.component';
 import { FormDesignerComponent } from './data-form/form-designer/form-designer.component';
+import { DiagramComponent } from './diagram/diagram.component';
+import { ReportsComponent } from './reports/reports.component';
+import { ReportDesignerComponent } from './reports/report-designer/report-designer.component';
 
 const routes: Routes = [
   {
@@ -39,6 +42,7 @@ const routes: Routes = [
       {
         path: 'builder', children: [
           { path: 'microservices', component: MicroserviceComponent },
+          { path: 'diagram', component: DiagramComponent },
           { path: 'datasources', component: DatasourceComponent },
           { path: 'datasources/:id', component: MsDatasourceComponent },
           { path: 'flow', component: FlowComponent },
@@ -92,6 +96,23 @@ const routes: Routes = [
               },
             ]
           },
+          {
+            path: 'reports',
+            component: DispatcherComponent,
+            children: [
+              {
+                path: '',
+                component: ReportsComponent
+              },
+              {
+                path: 'templates',
+                component: TemplatesComponent
+              }, {
+                path: 'templates/:id',
+                component: TemplatesComponent
+              },
+            ]
+          },
         ]
       }
     ]
@@ -103,6 +124,10 @@ const routes: Routes = [
   {
     path: 'builder/forms/designer/:id',
     component: FormDesignerComponent
+  },
+  {
+    path: 'builder/reports/designer/:id',
+    component: ReportDesignerComponent
   },
   {
     path: 'auth/login',

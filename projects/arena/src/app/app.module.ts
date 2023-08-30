@@ -60,6 +60,9 @@ import { ContenteditableValueAccessor } from './utils/constenteditable.directive
 import { LoginComponent } from './auth/login/login.component';
 import { DataFormComponent } from './data-form/data-form.component';
 import { FormDesignerComponent } from './data-form/form-designer/form-designer.component';
+import { DiagramComponent } from './diagram/diagram.component';
+import { ReportsComponent } from './reports/reports.component';
+import { ReportDesignerComponent } from './reports/report-designer/report-designer.component';
 
 @NgModule({
   declarations: [
@@ -93,7 +96,10 @@ import { FormDesignerComponent } from './data-form/form-designer/form-designer.c
     ContenteditableValueAccessor,
     LoginComponent,
     DataFormComponent,
-    FormDesignerComponent
+    FormDesignerComponent,
+    DiagramComponent,
+    ReportsComponent,
+    ReportDesignerComponent
   ],
   imports: [
     BrowserModule,

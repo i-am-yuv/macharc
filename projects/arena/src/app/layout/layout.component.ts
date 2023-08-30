@@ -18,6 +18,7 @@ export class LayoutComponent {
         { label: 'Forms', icon: 'clipboard', routerLink: ['/builder/forms'] },
         { label: 'Process', icon: 'clipboard', routerLink: ['/builder/processes'] },
         { label: 'Service', icon: 'clipboard', routerLink: ['/builder/workflows'] },
+        { label: 'Reports', icon: 'clipboard', routerLink: ['/builder/reports'] },
         { label: 'Releases', icon: 'clipboard', routerLink: ['/releases'] },
         { label: 'Integrations', icon: 'clipboard', routerLink: ['/marketplace'] },
       ],

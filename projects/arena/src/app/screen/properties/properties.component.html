@@ -3,7 +3,14 @@
 </ng-container>
 <ng-container *ngIf="props?.name === 'button'">
     <vezo-input label="Label" [(ngModel)]="props.data.label"></vezo-input>
-    <vezo-input label="Process" [(ngModel)]="props.data.process"></vezo-input>
+    <div>
+        <vezo-radiobutton [(ngModel)]="props.data.action" value="save" label="Save" name="action"
+            className="mr-2"></vezo-radiobutton>
+        <vezo-radiobutton [(ngModel)]="props.data.action" value="custom_save" label="Custom Save" name="action"
+            className="ml-4"></vezo-radiobutton>
+    </div>
+    <vezo-input label="Endpoint" [(ngModel)]="props.data.endpoint" *ngIf="props.data.action==='custom_save'"
+        className="mb-4"></vezo-input>
 </ng-container>
 <ng-container *ngIf="props?.name === 'input'">
     <vezo-input label="Label" [(ngModel)]="props.data.label"></vezo-input>
@@ -18,7 +25,7 @@
 <ng-container *ngIf="props?.name === 'dropdown'">
     <vezo-input label="Label" [(ngModel)]="props.data.label"></vezo-input>
     <vezo-select label="Field" optionLabel="fieldName" [items]="fields" [(ngModel)]="props.data.field"></vezo-select>
-    <vezo-select label="Collection" optionLabel="fieldName" [items]="fields"
+    <vezo-select label="Options" optionLabel="collectionName" [items]="collections"
         [(ngModel)]="props.data.field"></vezo-select>
     <vezo-select label="Validation" [items]="validations" [(ngModel)]="props.data.validation"></vezo-select>
 </ng-container>

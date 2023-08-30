@@ -1,16 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { DndDropEvent, DropEffect, EffectAllowed } from 'ngx-drag-drop';
-import { ScreenService } from '../screen.service';
+import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Screen } from '../screen';
-import { FieldService } from '../../fields/field.service';
-import { FilterBuilder } from '../../utils/FilterBuilder';
-import { Field } from '../../fields/field';
 import { MessageService } from '@splenta/vezo';
+import { DropEffect, DndDropEvent, EffectAllowed } from 'ngx-drag-drop';
 import { Collection } from '../../collection/collection';
 import { CollectionService } from '../../collection/collection.service';
-import { DataFormService } from '../../data-form/data-form.service';
-import { DataForm } from '../../data-form/data-form';
+import { Field } from '../../fields/field';
+import { FieldService } from '../../fields/field.service';
+import { FilterBuilder } from '../../utils/FilterBuilder';
+import { Report } from '../report';
+import { ReportService } from '../report.service';
+
 
 interface DropzoneLayout {
   container: string;
@@ -27,15 +26,13 @@ interface DraggableItem {
   children?: any[]
 }
 @Component({
-  selector: 'app-designer',
-  templateUrl: './designer.component.html',
-  styleUrls: ['./designer.component.scss']
+  selector: 'app-report-designer',
+  templateUrl: './report-designer.component.html',
+  styleUrls: ['./report-designer.component.scss']
 })
-export class DesignerComponent implements OnInit {
-
+export class ReportDesignerComponent {
 
   draggableListLeft: DraggableItem[] = [
-
     {
       name: 'heading',
       content: 'Heading',
@@ -62,77 +59,69 @@ export class DesignerComponent implements OnInit {
       children: []
     },
     {
-      name: 'card',
-      content: 'Card',
-      data: {},
+      name: 'input',
+      content: 'Input',
       effectAllowed: 'copy',
       disable: false,
       handle: false,
-      children: []
+      data: { label: 'Input Label' }
     },
     {
-      name: 'accordion',
-      content: 'Accordion',
-      data: {},
+      name: 'dropdown',
+      content: 'Dropdown',
       effectAllowed: 'copy',
       disable: false,
       handle: false,
-      children: []
+      data: { label: 'Input Label' }
     },
     {
-      name: 'form',
-      content: 'Data Form',
-      data: {},
+      name: 'textarea',
+      content: 'Textarea',
       effectAllowed: 'copy',
       disable: false,
       handle: false,
-      children: []
+      data: { label: 'Input Label' }
     },
     {
-      name: 'table',
-      content: 'Table',
+      name: 'button',
+      content: 'Button',
+      effectAllowed: 'copy',
+      disable: false,
+      handle: true,
+      data: { label: 'Input Label' }
+    },
+    {
+      name: 'checkbox',
+      content: 'Checkbox',
       effectAllowed: 'copy',
       disable: false,
       handle: false,
-      data: {
-        actions: [{
-          label: 'Edit',
-          icon: 'pencil'
-        }, {
-          label: 'Delete',
-          icon: 'trash'
-        }],
-        caption: 'Table Heading',
-        columns: [{
-          heading: 'Code',
-          field: 'code',
-          sortable: true,
-          filterable: true
-        }, {
-          heading: 'Name',
-          field: 'name',
-          sortable: true,
-          filterable: true
-        }],
-        rows: [{
-          code: 1,
-          name: 'Name 1'
-        }, {
-          code: 2,
-          name: 'Name 2'
-        }, {
-          code: 3,
-          name: 'Name 3'
-        }]
-      }
+      data: { label: 'Input Label' }
     },
+    {
+      name: 'radio',
+      content: 'Radio',
+      effectAllowed: 'copy',
+      disable: false,
+      handle: false,
+      data: { label: 'Input Label' }
+    },
+    {
+      name: 'switch',
+      content: 'Switch',
+      effectAllowed: 'copy',
+      disable: false,
+      handle: false,
+      data: { label: 'Input Label' }
+    },
+
   ];
 
   draggableListRight: DraggableItem[] = [
 
   ];
 
-  screenData: Screen = {};
+  formData: Report = {};
 
   private readonly verticalLayout: DropzoneLayout = {
     container: 'row',
@@ -142,37 +131,32 @@ export class DesignerComponent implements OnInit {
   layout: DropzoneLayout = this.verticalLayout;
   showProps: boolean = false;
   activeItem: any;
-  screenId: string | null = '';
+  formId: string | null = '';
   fields: Field[] = [];
   collections: Collection[] = [];
-  forms: DataForm[] = [];
 
   constructor(
-    private screenService: ScreenService,
+    private formService: ReportService,
     private fieldService: FieldService,
     private collectionService: CollectionService,
-    private formsService: DataFormService,
     private route: ActivatedRoute,
     private msgService: MessageService
   ) {
 
   }
   public ngOnInit() {
-    this.screenId = this.route.snapshot.paramMap.get('id');
-    this.screenService.getData({ id: this.screenId }).then((res: any) => {
-      this.screenData = res;
-      if (res.screenDefinition)
-        this.draggableListRight = JSON.parse(res.screenDefinition);
-      if (this.screenData) {
-        var filterStr = FilterBuilder.equal('collection.id', this.screenData?.collection?.id!);
+    this.formId = this.route.snapshot.paramMap.get('id');
+    this.formService.getData({ id: this.formId }).then((res: any) => {
+      this.formData = res;
+      if (res.formDefinition)
+        this.draggableListRight = JSON.parse(res.formDefinition);
+      if (this.formData) {
+        var filterStr = FilterBuilder.equal('collection.id', this.formData?.collection?.id!);
         this.fieldService.getAllData(undefined, filterStr).then((res: any) => {
           this.fields = res.content;
         });
         this.collectionService.getAllData().then((res: any) => {
           this.collections = res.content;
-        });
-        this.formsService.getAllData().then((res: any) => {
-          this.forms = res.content;
         })
       }
     })
@@ -202,14 +186,14 @@ export class DesignerComponent implements OnInit {
   }
 
   saveDefinition() {
-    this.screenData.screenDefinition = JSON.stringify(this.draggableListRight);
-    this.screenService.updateData(this.screenData).then((res: any) => {
+    this.formData.formDefinition = JSON.stringify(this.draggableListRight);
+    this.formService.updateData(this.formData).then((res: any) => {
       this.msgService.add({ severity: 'success', summary: 'Updated', detail: 'Definition updated' });
     })
   }
 
   generateComponent() {
-    this.screenService.generateComponent(this.screenData).then((res: any) => {
+    this.formService.generateComponent(this.formData).then((res: any) => {
       this.msgService.add({ severity: 'success', summary: 'Generated', detail: 'Code Generated' });
     })
   }
@@ -222,5 +206,7 @@ export class DesignerComponent implements OnInit {
     event.stopPropagation();
     this.activeItem = item;
   }
+
+
 
 }
