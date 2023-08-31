@@ -11,6 +11,7 @@ import { DatasourceService } from './datasource.service';
   styleUrls: ['./datasource.component.scss']
 })
 export class DatasourceComponent extends GenericComponent implements OnInit {
+
   form: FormGroup<any>;
   data: Datasource[] = [];
   componentName: string = 'Datasource';
@@ -21,7 +22,8 @@ export class DatasourceComponent extends GenericComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     dsService: DatasourceService,
-    messageService: MessageService) {
+    messageService: MessageService,
+    private dataSourceService: DatasourceService) {
     super(dsService, messageService);
     this.form = this.fb.group({
       id: '',
@@ -39,6 +41,15 @@ export class DatasourceComponent extends GenericComponent implements OnInit {
   }
   ngOnInit(): void {
     this.getAllData();
+  }
+
+  savFormData() {
+    if (!this.form.value.id) {
+      delete this.form.value.id;
+      this.dataSourceService.createDatasource(this.form.value).then((res: any) => {
+        this.messageService.add({ severity: 'success', summary: 'Generated', detail: 'DataSource Generated' });
+      })
+    }
   }
 
 }

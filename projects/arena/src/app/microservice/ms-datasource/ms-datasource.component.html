@@ -22,6 +22,8 @@
             <div class="text-right p-2">
                 <vezo-button icon="link" label="Link Datasource" className="mr-2" (click)="editData(dataSingle)"
                     *ngIf="!visible"></vezo-button>
+                <vezo-button icon="link" label="Regenerate Datasource" className="mr-2" (click)="regenerateDataSource()"
+                    *ngIf="!visible"></vezo-button>
             </div>
         </div>
         <vezo-table [data]="dataSingle.datasources" *ngIf="!visible" [pagination]="false">
@@ -62,3 +64,4 @@
 
     </div>
 </div>
+<vezo-toast></vezo-toast>

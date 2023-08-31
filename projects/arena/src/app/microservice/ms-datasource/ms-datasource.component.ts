@@ -61,6 +61,14 @@ export class MsDatasourceComponent extends GenericComponent implements OnInit {
     });
   }
 
+  regenerateDataSource() {
+
+    this.datasourceService.regenerateDatasource(this.microserviceId).then((res) => {
+      this.messageService.add({ severity: 'success', detail: this.componentName + ' regenerated', summary: this.componentName + ' regenerated' });
+    });
+  }
+
+
   override postSave(): void {
     this.getData({ id: this.microserviceId });
   }
