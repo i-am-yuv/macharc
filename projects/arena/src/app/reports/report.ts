@@ -1,12 +1,10 @@
-import { Collection } from "../collection/collection";
-import { Process } from "../processes/process";
+import { MicroService } from "../microservice/microservice";
 
 export interface Report {
     id?: string;
-    formName?: string;
-    formCode?: string;
-    formDescription?: string;
-    process?: Process;
-    collection?: Collection;
-    formDefinition?: string;
+    reportName?: string;
+    reportCode?: string;
+    reportDescription?: string;
+    reportDefinition?: string;
+    microService?: MicroService;
 }

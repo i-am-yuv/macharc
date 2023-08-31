@@ -7,20 +7,22 @@ import { lastValueFrom } from "rxjs";
     providedIn: 'root'
 })
 export class ReportService extends GenericService {
-    async getReportsByMicroService(id: string | undefined) {
-        var url = this.apiurl + '/' + this.endpoint + '/getReportsByMicroService/' + encodeURIComponent(id!);
-        const res = await lastValueFrom(this.httpClient.get<any>(url));
-        return res;
-    }
 
-    endpoint: string = 'data-forms';
+
+    endpoint: string = 'reports';
 
     constructor(http: HttpClient, private httpClient: HttpClient) {
         super(http);
     }
 
-    async generateComponent(screenData: Report) {
+    async generateReport(screenData: Report) {
         var url = this.apiurl + '/' + this.endpoint + '/generateFrontendCode/' + encodeURIComponent(screenData.id!);
+        const res = await lastValueFrom(this.httpClient.get<any>(url));
+        return res;
+    }
+
+    async getReportsByMicroService(id: string | undefined) {
+        var url = this.apiurl + '/' + this.endpoint + '/getReportsByMicroService/' + encodeURIComponent(id!);
         const res = await lastValueFrom(this.httpClient.get<any>(url));
         return res;
     }

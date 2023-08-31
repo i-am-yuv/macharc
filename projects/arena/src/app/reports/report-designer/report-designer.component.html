@@ -41,15 +41,15 @@
                 <div class="grid grid-cols-12">
                     <div class="col-span-4">
                         Microservice: <span class="text-indigo-400">{{
-                            formData.collection?.microService?.microServiceCode }}</span>
+                            reportData.microService?.microServiceCode }}</span>
                     </div>
                     <div class="col-span-4">
-                        Report: <span class="text-indigo-400">{{ formData.formName }}</span>
+                        Report: <span class="text-indigo-400">{{ reportData.reportName }}</span>
                     </div>
                     <div class="col-span-4 text-indigo-700 border-l text-right">
                         <div class="inline-block cursor-pointer">
                             <vezo-icon icon="cursorArrowRays" className="w-4 h-4 mr-2 text-orange-400"></vezo-icon>
-                            <span class="text-orange-400 mr-4" (click)="generateComponent()">Generate Code</span>
+                            <span class="text-orange-400 mr-4" (click)="generateReport()">Generate Report</span>
                         </div>
                     </div>
                 </div>
@@ -103,10 +103,10 @@
             </div>
             <div class="p-3">
                 <div class="min-h-[24rem]">
-                    <app-properties [fields]="fields" [props]="activeItem" [collections]="collections"
+                    <app-properties [fields]="fields" [props]="activeItem" [collections]="collections" [forms]="forms"
                         (deleteProp)="deleteActiveItem($event)"></app-properties>
                     <div class="text-center m-8" *ngIf="!activeItem">Drag and drop from blocks to center panel to create
-                        form. </div>
+                        report. </div>
                 </div>
                 <div>
                     <div class="bg-gray-50 border-b p-2 font-semibold">Form Properties</div>

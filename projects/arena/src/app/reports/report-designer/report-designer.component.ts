@@ -9,6 +9,8 @@ import { FieldService } from '../../fields/field.service';
 import { FilterBuilder } from '../../utils/FilterBuilder';
 import { Report } from '../report';
 import { ReportService } from '../report.service';
+import { DataFormService } from '../../data-form/data-form.service';
+import { DataForm } from '../../data-form/data-form';
 
 
 interface DropzoneLayout {
@@ -33,6 +35,7 @@ interface DraggableItem {
 export class ReportDesignerComponent {
 
   draggableListLeft: DraggableItem[] = [
+
     {
       name: 'heading',
       content: 'Heading',
@@ -59,69 +62,77 @@ export class ReportDesignerComponent {
       children: []
     },
     {
-      name: 'input',
-      content: 'Input',
+      name: 'card',
+      content: 'Card',
+      data: {},
       effectAllowed: 'copy',
       disable: false,
       handle: false,
-      data: { label: 'Input Label' }
+      children: []
     },
     {
-      name: 'dropdown',
-      content: 'Dropdown',
+      name: 'accordion',
+      content: 'Accordion',
+      data: {},
       effectAllowed: 'copy',
       disable: false,
       handle: false,
-      data: { label: 'Input Label' }
+      children: []
     },
     {
-      name: 'textarea',
-      content: 'Textarea',
+      name: 'form',
+      content: 'Data Form',
+      data: {},
       effectAllowed: 'copy',
       disable: false,
       handle: false,
-      data: { label: 'Input Label' }
+      children: []
     },
     {
-      name: 'button',
-      content: 'Button',
-      effectAllowed: 'copy',
-      disable: false,
-      handle: true,
-      data: { label: 'Input Label' }
-    },
-    {
-      name: 'checkbox',
-      content: 'Checkbox',
+      name: 'table',
+      content: 'Table',
       effectAllowed: 'copy',
       disable: false,
       handle: false,
-      data: { label: 'Input Label' }
+      data: {
+        actions: [{
+          label: 'Edit',
+          icon: 'pencil'
+        }, {
+          label: 'Delete',
+          icon: 'trash'
+        }],
+        caption: 'Table Heading',
+        columns: [{
+          heading: 'Code',
+          field: 'code',
+          sortable: true,
+          filterable: true
+        }, {
+          heading: 'Name',
+          field: 'name',
+          sortable: true,
+          filterable: true
+        }],
+        rows: [{
+          code: 1,
+          name: 'Name 1'
+        }, {
+          code: 2,
+          name: 'Name 2'
+        }, {
+          code: 3,
+          name: 'Name 3'
+        }]
+      }
     },
-    {
-      name: 'radio',
-      content: 'Radio',
-      effectAllowed: 'copy',
-      disable: false,
-      handle: false,
-      data: { label: 'Input Label' }
-    },
-    {
-      name: 'switch',
-      content: 'Switch',
-      effectAllowed: 'copy',
-      disable: false,
-      handle: false,
-      data: { label: 'Input Label' }
-    },
-
   ];
 
   draggableListRight: DraggableItem[] = [
 
   ];
 
-  formData: Report = {};
+  reportData: Report = {};
 
   private readonly verticalLayout: DropzoneLayout = {
     container: 'row',
@@ -131,13 +142,15 @@ export class ReportDesignerComponent {
   layout: DropzoneLayout = this.verticalLayout;
   showProps: boolean = false;
   activeItem: any;
-  formId: string | null = '';
+  reportId: string | null = '';
   fields: Field[] = [];
   collections: Collection[] = [];
+  forms: DataForm[] = [];
 
   constructor(
-    private formService: ReportService,
+    private reportService: ReportService,
     private fieldService: FieldService,
+    private formsService: DataFormService,
     private collectionService: CollectionService,
     private route: ActivatedRoute,
     private msgService: MessageService
@@ -145,20 +158,23 @@ export class ReportDesignerComponent {
 
   }
   public ngOnInit() {
-    this.formId = this.route.snapshot.paramMap.get('id');
-    this.formService.getData({ id: this.formId }).then((res: any) => {
-      this.formData = res;
-      if (res.formDefinition)
-        this.draggableListRight = JSON.parse(res.formDefinition);
-      if (this.formData) {
-        var filterStr = FilterBuilder.equal('collection.id', this.formData?.collection?.id!);
-        this.fieldService.getAllData(undefined, filterStr).then((res: any) => {
+    this.reportId = this.route.snapshot.paramMap.get('id');
+    this.reportService.getData({ id: this.reportId }).then((res: any) => {
+      this.reportData = res;
+      if (res.reportDefinition)
+        this.draggableListRight = JSON.parse(res.reportDefinition);
+      if (this.reportData) {
+        var filterStr = FilterBuilder.equal('microService.id', this.reportData?.microService?.id!);
+        this.reportService.getAllData(undefined, filterStr).then((res: any) => {
           this.fields = res.content;
         });
         this.collectionService.getAllData().then((res: any) => {
           this.collections = res.content;
         })
       }
+      this.formsService.getAllData().then((res: any) => {
+        this.forms = res.content;
+      })
     })
 
   }
@@ -186,14 +202,14 @@ export class ReportDesignerComponent {
   }
 
   saveDefinition() {
-    this.formData.formDefinition = JSON.stringify(this.draggableListRight);
-    this.formService.updateData(this.formData).then((res: any) => {
+    this.reportData.reportDefinition = JSON.stringify(this.draggableListRight);
+    this.reportService.updateData(this.reportData).then((res: any) => {
       this.msgService.add({ severity: 'success', summary: 'Updated', detail: 'Definition updated' });
     })
   }
 
-  generateComponent() {
-    this.formService.generateComponent(this.formData).then((res: any) => {
+  generateReport() {
+    this.reportService.generateReport(this.reportData).then((res: any) => {
       this.msgService.add({ severity: 'success', summary: 'Generated', detail: 'Code Generated' });
     })
   }
