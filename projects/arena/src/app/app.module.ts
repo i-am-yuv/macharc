@@ -39,6 +39,8 @@ import { RadiobuttonModule } from '@splenta/vezo/radiobutton';
 import { TabsModule } from '@splenta/vezo/tabs';
 import { AccordionModule } from '@splenta/vezo/accordion';
 import { DatepickerModule } from '@splenta/vezo/datepicker';
+import { ToolbarModule } from '@splenta/vezo/toolbar';
+
 import { FileuploadModule } from '@splenta/vezo/fileupload';
 import { FlowComponent } from './flow/flow.component';
 
@@ -99,7 +101,7 @@ import { ReportDesignerComponent } from './reports/report-designer/report-design
     FormDesignerComponent,
     DiagramComponent,
     ReportsComponent,
-    ReportDesignerComponent
+    ReportDesignerComponent,
   ],
   imports: [
     BrowserModule,
@@ -119,6 +121,7 @@ import { ReportDesignerComponent } from './reports/report-designer/report-design
     ButtonModule,
     ToastModule,
     SelectModule,
+    ToolbarModule,
     CardModule,
     TextareaModule,
     CheckboxModule,
@@ -135,6 +138,6 @@ import { ReportDesignerComponent } from './reports/report-designer/report-design
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [HttpClientModule, MessageService],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

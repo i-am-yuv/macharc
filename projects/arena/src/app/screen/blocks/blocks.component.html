@@ -1,53 +1,115 @@
 <ng-container *ngIf="block.name === 'heading'">
-    <div class="text-lg" contenteditable [(ngModel)]="block.data.text">{{ block.data?.text }}</div>
+  <div class="text-lg" contenteditable [(ngModel)]="block.data.text">
+    {{ block.data?.text }}
+  </div>
 </ng-container>
-<ng-container *ngIf="block.name === 'button'">
-    <div class="text-{{ block.data?.align ? block.data.align : 'right' }}">
-        <vezo-button [label]="block.data?.label"></vezo-button>
-    </div>
-</ng-container>
+
 <ng-container *ngIf="block.name === 'input'">
-    <vezo-input [label]="block.data?.label"></vezo-input>
+  <div class="text-sm" contenteditable [(ngModel)]="block.data.label"></div>
+  <vezo-input></vezo-input>
 </ng-container>
+
+<ng-container *ngIf="block.name === 'button'">
+  <div
+    class="text-{{ block.data?.align ? block.data.align : 'right' }}"
+    contenteditable
+    [(ngModel)]="block.data.label"
+  >
+    <vezo-button [label]="block.data?.label"></vezo-button>
+  </div>
+</ng-container>
+<!-- <ng-container *ngIf="block.name === 'input'">
+  <vezo-input [label]="block.data?.label"></vezo-input>
+</ng-container> -->
 <ng-container *ngIf="block.name === 'textarea'">
-    <vezo-textarea [label]="block.data?.label"></vezo-textarea>
+  <div class="text-sm" contenteditable [(ngModel)]="block.data.label"></div>
+  <vezo-textarea></vezo-textarea>
 </ng-container>
 <ng-container *ngIf="block.name === 'dropdown'">
-    <vezo-select [label]="block.data?.label"></vezo-select>
+  <div class="text-sm" contenteditable [(ngModel)]="block.data.label"></div>
+  <vezo-select></vezo-select>
 </ng-container>
 <ng-container *ngIf="block.name === 'checkbox'">
-    <vezo-checkbox [label]="block.data?.label"></vezo-checkbox>
+  <vezo-checkbox></vezo-checkbox>
+  <div class="text-sm" contenteditable [(ngModel)]="block.data.label"></div>
 </ng-container>
+<ng-container *ngIf="block.name === 'date'">
+  <div class="text-sm" contenteditable [(ngModel)]="block.data.label"></div>
+  <vezo-datepicker [label]="block.data?.label"></vezo-datepicker>
+</ng-container>
+
 <ng-container *ngIf="block.name === 'radio'">
-    <vezo-radiobutton [label]="block.data?.label"></vezo-radiobutton>
+  <vezo-radiobutton [label]="block.data?.label"></vezo-radiobutton>
 </ng-container>
 <ng-container *ngIf="block.name === 'switch'">
-    <vezo-switch [label]="block.data?.label"></vezo-switch>
+  <vezo-switch [label]="block.data?.label" contenteditable></vezo-switch>
+</ng-container>
+<ng-container *ngIf="block.name === 'toolbar'">
+  <vezo-toolbar [label]="block.data?.label">
+    <vezo-icon icon="check" className="mr-5 w-4 h-4 text-blue-400"></vezo-icon>
+    <vezo-icon icon="check" className="mr-5 w-4 h-4 text-blue-400"></vezo-icon>
+    <vezo-icon icon="check" className="mr-5 w-4 h-4 text-blue-400"></vezo-icon>
+  </vezo-toolbar>
 </ng-container>
 <ng-container *ngIf="block.name === 'table'">
-    <vezo-table [data]="[1,2,3,4,5,6,7,8,9,10]">
-        <ng-template vTemplate="caption">
-            {{ block.data?.caption}}
-        </ng-template>
-        <ng-template vTemplate="header">
-            <tr>
-                <th class="w-4"><input type="checkbox" class="w-4 h-4" /></th>
-                <th *ngFor="let col of block.data.columns">{{ col.heading }}</th>
-                <!-- <th>Name</th> -->
-                <th [width]="100">Actions</th>
-            </tr>
-        </ng-template>
-        <ng-template vTemplate="body">
-            <tr *ngFor="let row of block.data.rows">
-                <td><input type="checkbox" class="w-4 h-4" /></td>
-                <td *ngFor="let col of block.data.columns">
-                    {{ row[col.field] }}
-                </td>
-                <td>
-                    <vezo-icon icon="pencil" className="mr-5 w-4 h-4 text-blue-400"></vezo-icon>
-                    <vezo-icon icon="trash" className="w-4 h-4 text-red-400"></vezo-icon>
-                </td>
-            </tr>
-        </ng-template>
-    </vezo-table>
+  <vezo-table [data]="[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]">
+    <ng-template vTemplate="caption">
+      <div
+        class="text-sm"
+        contenteditable
+        [(ngModel)]="block.data.caption"
+      ></div>
+    </ng-template>
+
+    <ng-template vTemplate="header">
+      <tr>
+        <th class="w-4"><input type="checkbox" class="w-4 h-4" /></th>
+        <th *ngFor="let col of block.data.columns">{{ col.heading }}</th>
+        <!-- <th>Name</th> -->
+        <th [width]="100">Actions</th>
+      </tr>
+    </ng-template>
+    <ng-template vTemplate="body">
+      <tr *ngFor="let row of block.data.rows">
+        <td><input type="checkbox" class="w-4 h-4" /></td>
+        <td *ngFor="let col of block.data.columns">
+          {{ row[col.field] }}
+        </td>
+        <td>
+          <vezo-icon
+            icon="pencil"
+            className="mr-5 w-4 h-4 text-blue-400"
+          ></vezo-icon>
+          <vezo-icon icon="trash" className="w-4 h-4 text-red-400"></vezo-icon>
+        </td>
+      </tr>
+    </ng-template>
+  </vezo-table>
+</ng-container>
+<ng-container *ngIf="block.name === 'table-readonly'">
+  <vezo-table [data]="[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]">
+    <ng-template vTemplate="caption">
+      <div
+        class="text-sm"
+        contenteditable
+        [(ngModel)]="block.data.caption"
+      ></div>
+    </ng-template>
+
+    <ng-template vTemplate="header">
+      <tr>
+        <!-- <th class="w-4"><input type="checkbox" class="w-4 h-4" /></th> -->
+        <th *ngFor="let col of block.data.columns">{{ col.heading }}</th>
+        <!-- <th>Name</th> -->
+        <!-- <th [width]="100">Actions</th> -->
+      </tr>
+    </ng-template>
+    <ng-template vTemplate="body">
+      <tr *ngFor="let row of block.data.rows">
+        <td *ngFor="let col of block.data.columns">
+          {{ row[col.field] }}
+        </td>
+      </tr>
+    </ng-template>
+  </vezo-table>
 </ng-container>
