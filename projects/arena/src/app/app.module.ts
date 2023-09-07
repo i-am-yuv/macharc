@@ -63,6 +63,7 @@ import { FormDesignerComponent } from './data-form/form-designer/form-designer.c
 import { DiagramComponent } from './diagram/diagram.component';
 import { ReportsComponent } from './reports/reports.component';
 import { ReportDesignerComponent } from './reports/report-designer/report-designer.component';
+import { QueryBuilderComponent } from './reports/query-builder/query-builder.component';
 
 @NgModule({
   declarations: [
@@ -99,7 +100,8 @@ import { ReportDesignerComponent } from './reports/report-designer/report-design
     FormDesignerComponent,
     DiagramComponent,
     ReportsComponent,
-    ReportDesignerComponent
+    ReportDesignerComponent,
+    QueryBuilderComponent
   ],
   imports: [
     BrowserModule,
