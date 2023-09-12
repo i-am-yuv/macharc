@@ -1,1 +1,162 @@
-<ngx-monaco-editor [options]="editorOptions" [(ngModel)]="reportQuery" style="height: 80vh"></ngx-monaco-editor>
+<div class="flex">
+    <div class="title">Query Builder :: {{ activeQuery?.queryName }}</div>
+    <div class="flex-grow text-right">
+        <vezo-button label="Save" (click)="queryBuilder()" className="mr-2"></vezo-button>
+        <vezo-button label="Saved Queries" (click)="showQueries=true"></vezo-button>
+    </div>
+</div>
+<div class="mb-4 bg-white">
+    <vezo-tabs>
+        <vezo-tab header="Data">
+            <div class="flex">
+                <div class="flex-1">
+                    <div>DATA</div>
+                    <div class="flex place-items-center">
+                        <vezo-select className="w-48" [items]="primaryCollections" optionLabel="collectionName"
+                            [(ngModel)]="primaryCollection" (ngModelChange)="loadFields()"></vezo-select>
+                        <!-- <vezo-button icon="plus" className="ml-2 flex-2"></vezo-button> -->
+                    </div>
+                    <div class="flex flex-wrap py-4" *ngIf="queryDefinition.primaryCollection">
+                        <vezo-button [label]="queryDefinition.primaryCollection.collectionName!" icon="xMark"
+                            labelPosition="right" className="mr-2 my-2"></vezo-button>
+                    </div>
+                </div>
+                <div class="flex-1">
+                    <div>JOIN DATA</div>
+                    <div class="flex place-items-center">
+                        <vezo-select className="w-48"></vezo-select>
+                        <vezo-button icon="plus" className="ml-2 flex-2"></vezo-button>
+                    </div>
+                    <div class="flex flex-wrap py-4">
+                        <vezo-button label="MEASURE" icon="xMark" labelPosition="right" *ngFor="let i of [1,2]"
+                            className="mr-2 my-2"></vezo-button>
+                    </div>
+                </div>
+            </div>
+        </vezo-tab>
+        <vezo-tab header="Definition">
+            <div class="flex">
+                <div class="flex-1">
+                    <div>MEASURES</div>
+                    <div class="flex place-items-center">
+                        <vezo-select className="w-48" [(ngModel)]="measure" [items]="measures"
+                            optionLabel="measureName"></vezo-select>
+                        <vezo-button icon="plus" className="ml-2 flex-2" (click)="addMeasure()"></vezo-button>
+                    </div>
+                    <div class="flex flex-wrap py-4">
+                        <vezo-button [label]="m.measureType +' '+ m.measureName!" icon="xMark" labelPosition="right"
+                            *ngFor="let m of queryDefinition.measures" className="mr-2 my-2"></vezo-button>
+                    </div>
+                </div>
+                <div class="flex-1">
+                    <div>DIMENSIONS</div>
+                    <div class="flex place-items-center">
+                        <vezo-select className="w-48" [items]="dimensions" optionLabel="fieldName"
+                            optionValue="fieldName" [(ngModel)]="dimension"></vezo-select>
+                        <vezo-button icon="plus" className="ml-2 flex-2" (click)="addDimension()"></vezo-button>
+                    </div>
+                    <div class="flex flex-wrap py-4">
+                        <vezo-button [label]="dimensionName" icon="xMark" labelPosition="right"
+                            *ngFor="let dimensionName of queryDefinition.dimensions"
+                            className="mr-2 my-2"></vezo-button>
+                    </div>
+                </div>
+            </div>
+        </vezo-tab>
+        <vezo-tab header="Filters">
+            <div class="flex">
+                <div class="flex-1">
+                    <div>STATIC FILTERS</div>
+                    <div class="flex place-items-center">
+                        <vezo-select className="w-48"></vezo-select>
+                        <vezo-button icon="plus" className="ml-2 flex-2"></vezo-button>
+                    </div>
+                    <div class="flex flex-wrap" *ngFor="let i of [1]">
+                        <vezo-button label="FILTER" icon="xMark" labelPosition="right"
+                            className="bg-white mr-2 my-2"></vezo-button>
+                        <vezo-select className="w-48"></vezo-select>
+                        <vezo-input placeholder="condition" label="" className="ml-2"></vezo-input>
+                    </div>
+                </div>
+                <div class="flex-1">
+                    <div>DYNAMIC FILTERS</div>
+                    <div class="flex place-items-center">
+                        <vezo-select className="w-48"></vezo-select>
+                        <vezo-button icon="plus" className="ml-2 flex-2"></vezo-button>
+                    </div>
+                    <div class="flex flex-wrap" *ngFor="let i of [1,2]">
+                        <vezo-button label="FILTER" icon="xMark" labelPosition="right"
+                            className="bg-white mr-2 my-2"></vezo-button>
+                        <vezo-select className="w-48"></vezo-select>
+                    </div>
+
+                </div>
+            </div>
+        </vezo-tab>
+    </vezo-tabs>
+</div>
+<vezo-card className="bg-white">
+    <ng-template vTemplate="header">
+        <div class="grid grid-cols-12 w-full border-b">
+            <div class="text-lg p-2 pl-4 col-span-6">Output</div>
+            <div class="col-span-3 p-2 text-right">
+                <vezo-button [className]="(showSql)? 'mr-2': 'mr-2 bg-white'" label="SQL" icon="codeBracket"
+                    (click)="showSql=true"></vezo-button>
+                <vezo-button [className]="(!showSql)? 'mr-2': 'mr-2 bg-white'" label="CHART" icon="codeBracket"
+                    (click)="showSql=false"></vezo-button>
+            </div>
+            <div class="col-span-3 mr-2">
+                <vezo-select className="" [items]="['Line', 'Bar', 'Table']" [(ngModel)]="outputType"></vezo-select>
+            </div>
+        </div>
+    </ng-template>
+    <ng-template vTemplate="body">
+        <ngx-monaco-editor [options]="editorOptions" [(ngModel)]="reportQuery" *ngIf="showSql"
+            style="height: 80vh;"></ngx-monaco-editor>
+        <div *ngIf="!showSql" class="min-h-[80vh] flex place-items-center w-full">
+            <div class="flex-grow text-center p-4">
+                <vezo-button label="RUN" className="bg-blue-700 text-white" icon="play" (click)="setData()"
+                    *ngIf="lineChartData.datasets[0].data.length === 0"></vezo-button>
+                <canvas baseChart style="width:100%; height: 80vh" height="400" [type]="'line'" [data]="lineChartData"
+                    [options]="lineChartOptions" [legend]="lineChartLegend"
+                    *ngIf="lineChartData.datasets[0].data.length !==0">
+                </canvas>
+            </div>
+        </div>
+    </ng-template>
+</vezo-card>
+
+<vezo-sidebar [(visible)]="showQueries" position="right">
+    <ng-template vTemplate="header">
+        <div class="flex place-items-center">
+            <div>Queries</div>
+            <div class="flex-grow text-right">
+                <vezo-button label="Add New" (click)="showAddForm=true"></vezo-button>
+            </div>
+        </div>
+    </ng-template>
+    <ng-template vTemplate="content">
+        <form [formGroup]="form" *ngIf="showAddForm">
+            <div class="flex place-items-center">
+                <div class="flex-grow pr-4">
+                    <vezo-input formControlName="queryName" label="" placeholder="Query Name"></vezo-input>
+                </div>
+                <div class="flex-none">
+                    <vezo-button label="" icon="plus" (click)="saveData()"></vezo-button>
+                </div>
+            </div>
+        </form>
+        <div class="subheading my-4">SAVED QUERIES</div>
+        <div class="flex place-items-center cursor-pointer" *ngFor="let query of data"
+            (click)="queryItemSelected(query)">
+            <div class="flex-none p-2">
+                <vezo-icon icon="clipboard"></vezo-icon>
+            </div>
+            <div class="flex-grow">
+                {{ query.queryName }}
+            </div>
+        </div>
+    </ng-template>
+</vezo-sidebar>
+
+<vezo-toast></vezo-toast>

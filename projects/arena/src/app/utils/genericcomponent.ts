@@ -28,7 +28,7 @@ export abstract class GenericComponent {
         this.dataService = dataService;
         this.messageService = messageService;
     }
-    getAllData() {
+    getAllData(callBack?: any) {
         this.dataService.getAllData(this.pageData, this.search).then((res: any) => {
             this.data = res.content;
             this.pageData!.totalElements = res.totalElements;
@@ -37,6 +37,9 @@ export abstract class GenericComponent {
             this.pageData!.offset = res.pageable.offset;
             this.pageData!.sortField = '';
             this.pageData!.sortDir = '';
+            if (callBack) {
+                callBack();
+            }
             // {
             //     "sort": {
             //       "sorted": false,

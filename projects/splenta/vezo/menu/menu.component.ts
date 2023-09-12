@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { DropDownAnimation } from './animate';
 
 @Component({
@@ -18,6 +18,8 @@ export class MenuComponent implements OnInit {
 
   @Input() items: any[] = [];
 
+  @Output() itemClick: EventEmitter<any> = new EventEmitter();
+
   toggleSubMenu(item: any) {
     if (item.showSubMenu === true) {
       this.items.forEach(t => t.showSubMenu = false);
@@ -26,6 +28,10 @@ export class MenuComponent implements OnInit {
       this.items.forEach(t => t.showSubMenu = false);
       item.showSubMenu = true;
     }
+  }
+
+  clickHandler(item: any) {
+    this.itemClick.emit(item);
   }
 
 }

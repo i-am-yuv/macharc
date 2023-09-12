@@ -6,14 +6,14 @@ import { SideBarAnimationEnterLeave, SideBarAnimationInOut } from './animate';
 @Component({
   selector: 'vezo-sidebar',
   templateUrl: './sidebar.component.html',
-  styleUrls: ['./sidebar.component.scss'],
-  animations: [
-    SideBarAnimationEnterLeave, SideBarAnimationInOut
-  ]
+  styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent implements OnInit {
 
+
   @Input() visible: boolean = false;
+
+  @Input() position: string = 'left';
 
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
@@ -26,6 +26,8 @@ export class SidebarComponent implements OnInit {
   footer!: TemplateRef<any>;
 
   move = false
+
+  positionClz: string = '';
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -51,6 +53,7 @@ export class SidebarComponent implements OnInit {
       this.renderer.removeStyle(this.document.body, 'position');
       this.move = false;
     }
+    this.positionClasses();
   }
 
   ngOnDestroy(): void {
@@ -75,4 +78,22 @@ export class SidebarComponent implements OnInit {
     })
   }
 
+  positionClasses() {
+
+    switch (this.position) {
+      case ('left'):
+        this.positionClz = 'left-0 top-0 h-screen min-w-[30vw]';
+        break;
+      case ('right'):
+        this.positionClz = 'right-0 top-0 h-screen min-w-[30vw]';
+        break;
+      case ('bottom'):
+        this.positionClz = 'bottom-0 w-full min-h-[20vw]';
+        break;
+      case ('top'):
+        this.positionClz = 'top-0 w-full min-h-[20vw]';
+        break;
+    }
+
+  }
 }

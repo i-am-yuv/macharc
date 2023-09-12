@@ -64,6 +64,8 @@ import { DiagramComponent } from './diagram/diagram.component';
 import { ReportsComponent } from './reports/reports.component';
 import { ReportDesignerComponent } from './reports/report-designer/report-designer.component';
 import { QueryBuilderComponent } from './reports/query-builder/query-builder.component';
+import { NgChartsModule } from 'ng2-charts';
+import { SidebarModule } from '@splenta/vezo/sidebar';
 
 @NgModule({
   declarations: [
@@ -112,6 +114,7 @@ import { QueryBuilderComponent } from './reports/query-builder/query-builder.com
     BrowserAnimationsModule,
     AppRoutingModule,
     ModalModule,
+    SidebarModule,
     VezoModule,
     InputModule,
     InputnumberModule,
@@ -134,6 +137,7 @@ import { QueryBuilderComponent } from './reports/query-builder/query-builder.com
     DndModule,
     SequentialWorkflowDesignerModule,
     MonacoEditorModule.forRoot(),
+    NgChartsModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [HttpClientModule, MessageService],

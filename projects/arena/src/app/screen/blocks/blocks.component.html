@@ -32,7 +32,7 @@
         <ng-template vTemplate="header">
             <tr>
                 <th class="w-4"><input type="checkbox" class="w-4 h-4" /></th>
-                <th *ngFor="let col of block.data.columns">{{ col.heading }}</th>
+                <th *ngFor="let col of block.data.cols">{{ col.heading }}</th>
                 <!-- <th>Name</th> -->
                 <th [width]="100">Actions</th>
             </tr>
@@ -40,7 +40,7 @@
         <ng-template vTemplate="body">
             <tr *ngFor="let row of block.data.rows">
                 <td><input type="checkbox" class="w-4 h-4" /></td>
-                <td *ngFor="let col of block.data.columns">
+                <td *ngFor="let col of block.data.cols">
                     {{ row[col.field] }}
                 </td>
                 <td>

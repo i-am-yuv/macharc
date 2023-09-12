@@ -1,6 +1,9 @@
 <button class="{{ className }}" [disabled]="disabled" [ngClass]="disabled ? 'opacity-25 cursor-not-allowed': ''">
-    <div class="flex place-items-center"> <vezo-icon [icon]="icon" className="w-4 h-4" [ngClass]="{'mr-2': label!=''}"
-            *ngIf="icon"></vezo-icon>
+    <div class="flex place-items-center">
+        <vezo-icon [icon]="icon" className="w-4 h-4" [ngClass]="{'mr-2': label!=''}"
+            *ngIf="icon && labelPosition==='left'"></vezo-icon>
         <div class="text-xs" *ngIf="label!==''">{{ label }}</div>
+        <vezo-icon [icon]="icon" className="w-4 h-4" [ngClass]="{'ml-2': label!=''}"
+            *ngIf="icon && labelPosition==='right'"></vezo-icon>
     </div>
 </button>

@@ -55,7 +55,7 @@
             <td class="border p-2 font-semibold">Sort</td>
             <td class="border p-2 font-semibold">Filter</td>
         </tr>
-        <tr *ngFor="let col of props.data.columns" (click)="setColumn(col)">
+        <tr *ngFor="let col of props.data.cols" (click)="setColumn(col)">
             <td class="border p-2">{{ col.heading }}</td>
             <td class="border p-2">{{ col.field }}</td>
             <td class="border p-2">{{ col.sortable ? 'Y': 'N' }}</td>
@@ -76,6 +76,8 @@
             <vezo-checkbox label="Filterable" [(ngModel)]="column.filterable"></vezo-checkbox>
         </div>
         <div class="text-right">
+            <vezo-button label="Delete" (click)="deleteColumn()" className="mr-2"></vezo-button>
+            <vezo-button label="New" (click)="newColumn()" className="mr-2"></vezo-button>
             <vezo-button label="Add" (click)="addColumn()"></vezo-button>
         </div>
     </div>
@@ -101,3 +103,4 @@
 <div *ngIf="props?.name" class="text-right" (click)="deleteProperty()">
     <vezo-button label="Delete"></vezo-button>
 </div>
+<vezo-toast></vezo-toast>

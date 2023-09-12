@@ -57,7 +57,7 @@ export class SelectComponent implements OnInit, ControlValueAccessor {
     this.comboValue = {};
     this.displayValue = '';
     this.comboOpen = false;
-    if (this.items.length > 0) {
+    if (this.items && this.items.length > 0) {
       this.checkIfObj();
     }
   }
@@ -127,7 +127,7 @@ export class SelectComponent implements OnInit, ControlValueAccessor {
     if (typeof item === 'object' && item !== null && !this.optionLabel) {
       console.log("If select items are objects label field is required");
       return;
-    } else if (typeof item === 'object' && item !== null && this.optionLabel) {
+    } else if (typeof item === 'object' && item !== null && this.optionLabel && this.items) {
       this.comboValue = this.items.find((t: any) => {
         return t[this.optionLabel] === item[this.optionLabel]
       });
