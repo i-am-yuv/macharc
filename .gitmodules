@@ -1,0 +1,4 @@
+[submodule "projects/splenta"]
+	path = projects/splenta
+	url = https://repo.splenta.com/Splenta/splenta.git
+	branch = main
