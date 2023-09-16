@@ -89,6 +89,15 @@ export class ReportDesignerComponent {
       children: []
     },
     {
+      name: 'chart',
+      content: 'Chart',
+      data: {},
+      effectAllowed: 'copy',
+      disable: false,
+      handle: false,
+      children: []
+    },
+    {
       name: 'table',
       content: 'Table',
       effectAllowed: 'copy',

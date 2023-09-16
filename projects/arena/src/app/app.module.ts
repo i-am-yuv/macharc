@@ -66,6 +66,7 @@ import { ReportDesignerComponent } from './reports/report-designer/report-design
 import { QueryBuilderComponent } from './reports/query-builder/query-builder.component';
 import { NgChartsModule } from 'ng2-charts';
 import { SidebarModule } from '@splenta/vezo/sidebar';
+import { ChartModule } from '@splenta/vezo/chart';
 
 @NgModule({
   declarations: [
@@ -138,6 +139,7 @@ import { SidebarModule } from '@splenta/vezo/sidebar';
     SequentialWorkflowDesignerModule,
     MonacoEditorModule.forRoot(),
     NgChartsModule,
+    ChartModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [HttpClientModule, MessageService],

@@ -1,9 +1,0 @@
-<div class="upload-btn-wrapper p-5 my-2 w-full border-2 border-dashed hover:bg-gray-50">
-    <button class="{{ className }}">{{ label
-        }}</button>
-    <span *ngFor="let file of files; let isLast=last">
-        {{ file.name }}{{isLast ? '' : ' , '}}
-    </span>
-    <span *ngIf="files && files.length===0"> or drag drop here</span>
-    <input type="file" name="file" multiple [(ngModel)]="fileVal" (change)="sendData($event)" />
-</div>

@@ -36,22 +36,6 @@
         }
       }
     },
-    "storybook": {
-      "projectType": "application",
-      "root": "stories",
-      "sourceRoot": "stories",
-      "architect": {
-        "build": {
-          "options": {
-            "tsConfig": "tsconfig.json",
-            "styles": [
-              "projects/splenta/vezo/src/styles/styles.scss"
-            ],
-            "scripts": []
-          }
-        }
-      }
-    },
     "arena": {
       "projectType": "application",
       "schematics": {

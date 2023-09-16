@@ -64,6 +64,23 @@ export class QueryBuilderComponent extends GenericComponent implements OnInit {
   measures: any[] = [];
   primaryCollection: any = {};
 
+  staticFilter: string = '';
+  staticFilters: any[] = [];
+
+  dynamicFilter: string = '';
+  dynamicFilters: any[] = [];
+
+  conditions: any[] = [
+    { value: 'EQ', label: 'equal to' },
+    { value: 'SW', label: 'starts with' },
+    { value: 'EW', label: 'ends with' },
+    { value: 'HAS', label: 'contains' },
+    { value: 'GT', label: 'greater than' },
+    { value: 'LT', label: 'less than' },
+    { value: 'GTE', label: 'greater than equals' },
+    { value: 'LTE', label: 'less than equals' },
+  ]
+
   constructor(
     private fb: FormBuilder,
     messageService: MessageService,
@@ -171,6 +188,61 @@ export class QueryBuilderComponent extends GenericComponent implements OnInit {
     }
   }
 
+  deleteMeasure(m: any) {
+    this.queryDefinition.measures?.splice(this.queryDefinition.measures?.findIndex((t: any) =>
+      t.measureName === m.measureName
+    ), 1);
+  }
+
+  deleteDimension(m: any) {
+    this.queryDefinition.dimensions?.splice(this.queryDefinition.dimensions?.findIndex((t: any) =>
+      t === m
+    ), 1);
+  }
+
+  addStaticFilter() {
+    if (!this.queryDefinition.staticFilters) {
+      this.queryDefinition['staticFilters'] = [];
+    }
+    if (this.staticFilter) {
+      this.queryDefinition.staticFilters.push(
+        {
+          filterName: this.staticFilter.split(/\.?(?=[A-Z])/).join('_'), filterCondition: '',
+          filterOperator: undefined
+        }
+      );
+      console.log(this.queryDefinition);
+      this.queryBuilder();
+    }
+    console.log(this.queryDefinition)
+  }
+  addDynamicFilter() {
+    if (!this.queryDefinition.dynamicFilters) {
+      this.queryDefinition['dynamicFilters'] = [];
+    }
+    if (this.dynamicFilter) {
+      this.queryDefinition.dynamicFilters.push(
+        {
+          filterName: this.staticFilter.split(/\.?(?=[A-Z])/).join('_'), filterCondition: '',
+          filterOperator: undefined
+        }
+      );
+      console.log(this.queryDefinition);
+      this.queryBuilder();
+    }
+  }
+
+  deleteStaticFilter(sf: any) {
+    this.queryDefinition.staticFilters?.splice(this.queryDefinition.staticFilters?.findIndex((t: any) =>
+      t.filterName === sf.filterName.split(/\.?(?=[A-Z])/).join('_')
+    ), 1);
+  }
+
+  deleteDynamicFilter(df: any) {
+    this.queryDefinition.dynamicFilters?.splice(this.queryDefinition.dynamicFilters?.findIndex((t: any) =>
+      t.filterName === df.filterName.split(/\.?(?=[A-Z])/).join('_')
+    ), 1);
+  }
   buildMeasures() {
     var msrs: any[] = [];
     const pc = this.primaryCollection;

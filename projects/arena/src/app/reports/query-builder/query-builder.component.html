@@ -45,7 +45,8 @@
                     </div>
                     <div class="flex flex-wrap py-4">
                         <vezo-button [label]="m.measureType +' '+ m.measureName!" icon="xMark" labelPosition="right"
-                            *ngFor="let m of queryDefinition.measures" className="mr-2 my-2"></vezo-button>
+                            *ngFor="let m of queryDefinition.measures" className="mr-2 my-2"
+                            (click)="deleteMeasure(m)"></vezo-button>
                     </div>
                 </div>
                 <div class="flex-1">
@@ -57,8 +58,8 @@
                     </div>
                     <div class="flex flex-wrap py-4">
                         <vezo-button [label]="dimensionName" icon="xMark" labelPosition="right"
-                            *ngFor="let dimensionName of queryDefinition.dimensions"
-                            className="mr-2 my-2"></vezo-button>
+                            *ngFor="let dimensionName of queryDefinition.dimensions" className="mr-2 my-2"
+                            (click)="deleteDimension(dimensionName)"></vezo-button>
                     </div>
                 </div>
             </div>
@@ -68,26 +69,31 @@
                 <div class="flex-1">
                     <div>STATIC FILTERS</div>
                     <div class="flex place-items-center">
-                        <vezo-select className="w-48"></vezo-select>
-                        <vezo-button icon="plus" className="ml-2 flex-2"></vezo-button>
+                        <vezo-select className="w-48" [items]="dimensions" optionLabel="fieldName"
+                            optionValue="fieldName" [(ngModel)]="staticFilter"></vezo-select>
+                        <vezo-button icon="plus" className="ml-2 flex-2" (click)="addStaticFilter()"></vezo-button>
                     </div>
-                    <div class="flex flex-wrap" *ngFor="let i of [1]">
-                        <vezo-button label="FILTER" icon="xMark" labelPosition="right"
-                            className="bg-white mr-2 my-2"></vezo-button>
-                        <vezo-select className="w-48"></vezo-select>
-                        <vezo-input placeholder="condition" label="" className="ml-2"></vezo-input>
+                    <div class="flex flex-wrap" *ngFor="let filter of queryDefinition.staticFilters">
+                        <vezo-button [label]="filter.filterName!" icon="xMark" labelPosition="right"
+                            className="mr-2 my-2" (click)="deleteStaticFilter(filter)"></vezo-button>
+                        <vezo-select className="w-48" [items]="conditions" optionLabel="label" optionValue="value"
+                            [(ngModel)]="filter.filterOperator"></vezo-select>
+                        <vezo-input placeholder="condition" label="" className="ml-2"
+                            [(ngModel)]="filter.filterCondition"></vezo-input>
                     </div>
                 </div>
                 <div class="flex-1">
                     <div>DYNAMIC FILTERS</div>
                     <div class="flex place-items-center">
-                        <vezo-select className="w-48"></vezo-select>
-                        <vezo-button icon="plus" className="ml-2 flex-2"></vezo-button>
+                        <vezo-select className="w-48" [items]="dimensions" optionLabel="fieldName"
+                            optionValue="fieldName" [(ngModel)]="dynamicFilter"></vezo-select>
+                        <vezo-button icon="plus" className="ml-2 flex-2" (click)="addDynamicFilter()"></vezo-button>
                     </div>
-                    <div class="flex flex-wrap" *ngFor="let i of [1,2]">
-                        <vezo-button label="FILTER" icon="xMark" labelPosition="right"
-                            className="bg-white mr-2 my-2"></vezo-button>
-                        <vezo-select className="w-48"></vezo-select>
+                    <div class="flex flex-wrap" *ngFor="let filter of queryDefinition.dynamicFilters">
+                        <vezo-button [label]="filter.filterName!" icon="xMark" labelPosition="right"
+                            className="mr-2 my-2" (click)="deleteDynamicFilter(filter)"></vezo-button>
+                        <vezo-select className="w-48" [items]="conditions" optionLabel="label" optionValue="value"
+                            [(ngModel)]="filter.filterOperator"></vezo-select>
                     </div>
 
                 </div>

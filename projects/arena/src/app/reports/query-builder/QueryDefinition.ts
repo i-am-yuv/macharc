@@ -5,6 +5,14 @@ export interface QueryDefinition {
     secondaryCollections?: Collection[];
     measures?: Measure[];
     dimensions?: string[];
+    staticFilters?: Filter[];
+    dynamicFilters?: Filter[];
+}
+
+export interface Filter {
+    filterName?: string | undefined;
+    filterCondition?: string;
+    filterOperator?: string;
 }
 
 export interface Measure {
