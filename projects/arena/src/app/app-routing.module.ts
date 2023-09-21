@@ -30,10 +30,12 @@ import { DiagramComponent } from './diagram/diagram.component';
 import { ReportsComponent } from './reports/reports.component';
 import { ReportDesignerComponent } from './reports/report-designer/report-designer.component';
 import { QueryBuilderComponent } from './reports/query-builder/query-builder.component';
+import { MsFormComponent } from './microservice/ms-form/ms-form.component';
+import { AuthGuard } from './auth/auth.guard';
 
 const routes: Routes = [
   {
-    path: '', component: LayoutComponent, children: [
+    path: '', component: LayoutComponent, canActivate: [AuthGuard], children: [
       { path: '', component: FrontComponent },
       { path: 'releases', component: ReleasesComponent },
       { path: 'acl', component: AclComponent },
@@ -42,7 +44,15 @@ const routes: Routes = [
       { path: 'microservices/apidoc/:id', component: ApidocComponent },
       {
         path: 'builder', children: [
-          { path: 'microservices', component: MicroserviceComponent },
+          {
+            path: 'microservices',
+            component: DispatcherComponent,
+            children: [
+              { path: '', component: MicroserviceComponent },
+              { path: 'create', component: MsFormComponent },
+              { path: 'edit/:id', component: MsFormComponent }
+            ]
+          },
           { path: 'diagram', component: DiagramComponent },
           { path: 'datasources', component: DatasourceComponent },
           { path: 'datasources/:id', component: MsDatasourceComponent },
@@ -136,6 +146,10 @@ const routes: Routes = [
   },
   {
     path: 'auth/login',
+    component: LoginComponent
+  },
+  {
+    path: 'login',
     component: LoginComponent
   }
 ];

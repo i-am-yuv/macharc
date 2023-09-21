@@ -1,6 +1,7 @@
 import { FormGroup } from "@angular/forms";
 import { MessageService, Pagination } from "@splenta/vezo";
 import { GenericService } from "./genericservice";
+import { ActivatedRoute, Router } from "@angular/router";
 
 
 
@@ -28,7 +29,7 @@ export abstract class GenericComponent {
         this.dataService = dataService;
         this.messageService = messageService;
     }
-    getAllData(callBack?: any) {
+    getAllData(callBack?: (resData: any) => void) {
         this.dataService.getAllData(this.pageData, this.search).then((res: any) => {
             this.data = res.content;
             this.pageData!.totalElements = res.totalElements;
@@ -38,7 +39,7 @@ export abstract class GenericComponent {
             this.pageData!.sortField = '';
             this.pageData!.sortDir = '';
             if (callBack) {
-                callBack();
+                callBack(res);
             }
             // {
             //     "sort": {
@@ -57,9 +58,10 @@ export abstract class GenericComponent {
         })
     }
 
-    getData(ds: any) {
+    getData(ds: any, callBack?: (resData: any) => void) {
         this.dataService.getData(ds).then((res: any) => {
             this.dataSingle = res;
+            if (callBack) callBack(res);
         })
     }
     preSave() { }
@@ -106,4 +108,6 @@ export abstract class GenericComponent {
             }
         })
     }
+
+
 }

@@ -1,0 +1,33 @@
+<div class="bg-white p-4 my-4  flex place-items-center">
+    <div class="mr-6">
+        <vezo-icon icon="arrowLeft" routerLink="/builder/microservices" className="cursor-pointer"></vezo-icon>
+    </div>
+    <div>
+        <h1 class="title">Microservice</h1>
+    </div>
+</div>
+
+<div class="bg-white p-16">
+
+    <form [formGroup]="form">
+        <vezo-input label="Service Code" formControlName="microServiceCode"></vezo-input>
+        <error-message [controlName]="form.controls['microServiceCode']"></error-message>
+        <vezo-input label="Package Name" formControlName="packageName"></vezo-input>
+        <error-message [controlName]="form.controls['packageName']"></error-message>
+        <div>
+            <div class="inline-block w-1/2 pr-4">
+                <vezo-inputnumber label="Port Number" formControlName="portNumber"></vezo-inputnumber>
+                <error-message [controlName]="form.controls['portNumber']"></error-message>
+            </div>
+            <div class="inline-block w-1/2">
+                <vezo-select [items]="packaging" label="Packaging" formControlName="packaging"></vezo-select>
+            </div>
+        </div>
+        <vezo-textarea label="Service Name" formControlName="microServiceName"></vezo-textarea>
+        <error-message [controlName]="form.controls['microServiceName']"></error-message>
+        <div class="text-right">
+            <vezo-button label="Save" [disabled]="!form.valid" (click)="saveData()"></vezo-button>
+        </div>
+    </form>
+</div>
+<vezo-toast></vezo-toast>

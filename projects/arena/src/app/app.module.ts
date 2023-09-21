@@ -67,6 +67,8 @@ import { QueryBuilderComponent } from './reports/query-builder/query-builder.com
 import { NgChartsModule } from 'ng2-charts';
 import { SidebarModule } from '@splenta/vezo/sidebar';
 import { ChartModule } from '@splenta/vezo/chart';
+import { MsFormComponent } from './microservice/ms-form/ms-form.component';
+import { AuthService } from './auth/auth.service';
 
 @NgModule({
   declarations: [
@@ -104,7 +106,8 @@ import { ChartModule } from '@splenta/vezo/chart';
     DiagramComponent,
     ReportsComponent,
     ReportDesignerComponent,
-    QueryBuilderComponent
+    QueryBuilderComponent,
+    MsFormComponent
   ],
   imports: [
     BrowserModule,
@@ -142,7 +145,7 @@ import { ChartModule } from '@splenta/vezo/chart';
     ChartModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  providers: [HttpClientModule, MessageService],
+  providers: [HttpClientModule, MessageService, AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

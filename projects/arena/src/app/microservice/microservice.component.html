@@ -7,7 +7,9 @@
     <div class="text-right">
         <vezo-button icon="squares2x2" (click)="showGrid=true"></vezo-button>
         <vezo-button icon="tableCells" className="mr-3" (click)="showGrid=false"></vezo-button>
-        <vezo-button label="Add New Microservice" icon="plus" className="mr-2" (click)="addData()"></vezo-button>
+        <!-- <vezo-button label="Add New Microservice" icon="plus" className="mr-2" (click)="addData()"></vezo-button> -->
+        <vezo-button label="Add New Microservice" icon="plus" className="mr-2" [routerLink]="'create'"></vezo-button>
+
         <!-- <vezo-button label="Filter" icon="funnel" className="bg-green-100"></vezo-button> -->
     </div>
 </div>
@@ -35,8 +37,10 @@
                         <vezo-icon icon="documentText" [routerLink]="'/microservices/apidoc/'+ms.id"
                             className="w-4 h-4 text-indigo-700 cursor-pointer mr-4"></vezo-icon>
 
-                        <vezo-icon icon="pencil" (click)="editData(ms)"
-                            className="w-4 h-4 text-indigo-700 cursor-pointer mr-4"></vezo-icon>
+                        <!-- <vezo-icon icon="pencil" (click)="editData(ms)"
+                            className="w-4 h-4 text-indigo-700 cursor-pointer mr-4"></vezo-icon> -->
+                        <vezo-icon icon="pencil" [routerLink]="'edit/'+ms.id"
+                            className="mr-5 w-4 h-4 text-indigo-400 cursor-pointer"></vezo-icon>
                     </div>
                 </div>
             </ng-template>
@@ -108,7 +112,9 @@
             <td>{{ ms.packaging }}</td>
             <td>{{ ms.portNumber }}</td>
             <td>
-                <vezo-icon icon="pencil" (click)="editData(ms)"
+                <!-- <vezo-icon icon="pencil" (click)="editData(ms)"
+                    className="mr-5 w-4 h-4 text-indigo-400 cursor-pointer"></vezo-icon> -->
+                <vezo-icon icon="pencil" [routerLink]="'edit/'+ms.id"
                     className="mr-5 w-4 h-4 text-indigo-400 cursor-pointer"></vezo-icon>
                 <vezo-icon icon="trash" (click)="deleteData(ms)"
                     className="w-4 h-4 text-red-400 cursor-pointer"></vezo-icon>

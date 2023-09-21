@@ -1,24 +1,29 @@
 <div class="grid place-items-center h-screen w-screen bg-gray-50">
     <div class="w-1/3 bg-white">
-        <vezo-card>
-            <ng-template vTemplate="header">
-                <div class="flex place-items-center p-6 border-b">
-                    <div class="title"><img src="assets/macharc_icon.svg" class="w-12 m-auto" /></div>
-                    <div class="heading text-center flex-grow">Welcome Back to MACHARC</div>
-                </div>
-            </ng-template>
-            <ng-template vTemplate="body">
-                <div class="p-6 min-h-[12rem]">
-                    <vezo-input label="Username"></vezo-input>
+        <form [formGroup]="loginForm">
 
-                    <vezo-input type="password" label="Password"></vezo-input>
-                </div>
-            </ng-template>
-            <ng-template vTemplate="footer">
-                <div class="text-right px-6 py-3 border-t">
-                    <vezo-button label="Login"></vezo-button>
-                </div>
-            </ng-template>
-        </vezo-card>
+            <vezo-card>
+                <ng-template vTemplate="header">
+                    <div class="flex place-items-center p-6 border-b">
+                        <div class="title"><img src="assets/macharc_icon.svg" class="w-12 m-auto" /></div>
+                        <div class="heading text-center flex-grow">Welcome Back to MACHARC</div>
+                    </div>
+                </ng-template>
+                <ng-template vTemplate="body">
+                    <div class="p-6 min-h-[12rem]">
+                        <vezo-input label="Username" formControlName="username"></vezo-input>
+
+                        <vezo-input type="password" label="Password" formControlName="password"></vezo-input>
+                    </div>
+                </ng-template>
+                <ng-template vTemplate="footer">
+                    <div class="text-right px-6 py-3 border-t">
+                        <vezo-button label="Login" (click)="onSubmit()"></vezo-button>
+                    </div>
+                </ng-template>
+            </vezo-card>
+        </form>
+
     </div>
 </div>
+<vezo-toast></vezo-toast>

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-layout',
@@ -13,7 +14,7 @@ export class LayoutComponent {
       items: [
         { label: 'Microservices', icon: 'clipboard', routerLink: ['/builder/microservices'] },
         { label: 'Datasources', icon: 'clipboard', routerLink: ['/builder/datasources'] },
-        { label: 'Collection', icon: 'clipboard', routerLink: ['/builder/collections'] },
+        { label: 'Collections', icon: 'clipboard', routerLink: ['/builder/collections'] },
         { label: 'Screens', icon: 'clipboard', routerLink: ['/builder/screens'] },
         { label: 'Forms', icon: 'clipboard', routerLink: ['/builder/forms'] },
         { label: 'Process', icon: 'clipboard', routerLink: ['/builder/processes'] },
@@ -33,4 +34,11 @@ export class LayoutComponent {
       showSubMenu: true
     }
   ];
+  constructor(
+    private router: Router,
+  ) { }
+  logout() {
+    sessionStorage.clear();
+    this.router.navigate(['/login']);
+  }
 }
