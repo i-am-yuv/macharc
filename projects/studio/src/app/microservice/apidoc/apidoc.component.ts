@@ -2,7 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MicroserviceService } from '../microservice.service';
 import { MicroService } from '../microservice';
-import { environment } from 'projects/arena/src/environments/environment';
+import { environment } from 'projects/studio/src/environments/environment';
 declare let Redoc: any
 
 @Component({

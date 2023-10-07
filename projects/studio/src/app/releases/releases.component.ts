@@ -51,6 +51,7 @@ export class ReleasesComponent implements OnInit {
       this.releasesService.getRelease(this.ms.repoId!).then((res: any) => {
         this.releases = res;
         this.gitNotReachable = false;
+        console.log('h');
 
         this.releasesService.getPipelines(this.ms.repoId!).then((res: any) => {
           this.pipelines = res;
@@ -65,6 +66,8 @@ export class ReleasesComponent implements OnInit {
           });
         });
       }).catch(() => {
+        console.log('h1');
+
         this.loading = false;
         this.gitNotReachable = true;
       });

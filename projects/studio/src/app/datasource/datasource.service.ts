@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { Datasource } from '../datasource/datasource';
+import { Datasource } from './datasource';
 import { GenericService } from '../utils/genericservice';
 import { FormGroup } from '@angular/forms';
 

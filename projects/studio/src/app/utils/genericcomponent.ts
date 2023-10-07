@@ -95,6 +95,7 @@ export abstract class GenericComponent {
     addData() {
         this.visible = true;
         this.form.reset();
+        this.form.patchValue({ dbHost: 'localhost' });
     }
     editData(ds: any) {
         this.visible = true;

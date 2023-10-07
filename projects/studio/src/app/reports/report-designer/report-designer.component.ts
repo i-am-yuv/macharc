@@ -112,7 +112,7 @@ export class ReportDesignerComponent {
           icon: 'trash'
         }],
         caption: 'Table Heading',
-        columns: [{
+        cols: [{
           heading: 'Code',
           field: 'code',
           sortable: true,

@@ -12,12 +12,19 @@ import { DatasourceService } from './datasource.service';
 })
 export class DatasourceComponent extends GenericComponent implements OnInit {
 
+
   form: FormGroup<any>;
   data: Datasource[] = [];
   componentName: string = 'Datasource';
   override pageData = {};
 
-  dbTypes: string[] = ['PostgreSQL', 'MySQL', 'Oracle', 'Mongo', 'MSSQL'];
+  dbTypes: any[] = [
+    { name: 'PostgreSQL', defaultPort: '5432' },
+    { name: 'MySQL', defaultPort: '3306' },
+    { name: 'Oracle', defaultPort: '1521' },
+    { name: 'Mongo', defaultPort: '27017' },
+    { name: 'MSSQL', defaultPort: '1433' },
+    { name: 'API', defaultPort: '' }];
 
   constructor(
     private fb: FormBuilder,
@@ -30,11 +37,12 @@ export class DatasourceComponent extends GenericComponent implements OnInit {
       dbType: [],
       dataSourceName: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
       dbUrl: [''],
-      dbHost: [''],
+      dbHost: ['localhost'],
       dbPort: [''],
       dbDatabaseName: [''],
       username: [''],
       password: [''],
+      apiUrl: [''],
       authToken: [''],
       driverClassName: [''],
     })
@@ -51,5 +59,8 @@ export class DatasourceComponent extends GenericComponent implements OnInit {
       })
     }
   }
-
+  setDefaultPort() {
+    this.form.patchValue({ dbPort: this.form.value.dbType.defaultPort });
+    console.log(this.form.value);
+  }
 }

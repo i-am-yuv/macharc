@@ -36,31 +36,31 @@
         }
       }
     },
-    "arena": {
+    "studio": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
           "style": "scss"
         }
       },
-      "root": "projects/arena",
-      "sourceRoot": "projects/arena/src",
+      "root": "projects/studio",
+      "sourceRoot": "projects/studio/src",
       "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/arena",
-            "index": "projects/arena/src/index.html",
-            "main": "projects/arena/src/main.ts",
+            "outputPath": "dist/studio",
+            "index": "projects/studio/src/index.html",
+            "main": "projects/studio/src/main.ts",
             "polyfills": [
               "zone.js"
             ],
-            "tsConfig": "projects/arena/tsconfig.app.json",
+            "tsConfig": "projects/studio/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
-              "projects/arena/src/favicon.ico",
-              "projects/arena/src/assets",
+              "projects/studio/src/favicon.ico",
+              "projects/studio/src/assets",
               {
                 "glob": "**/*",
                 "input": "node_modules/monaco-editor",
@@ -68,7 +68,7 @@
               }
             ],
             "styles": [
-              "projects/arena/src/styles.scss",
+              "projects/studio/src/styles.scss",
               "./node_modules/sequential-workflow-designer/css/designer.css",
               "./node_modules/sequential-workflow-designer/css/designer-light.css",
               "./node_modules/sequential-workflow-designer/css/designer-dark.css",
@@ -85,7 +85,7 @@
                 {
                   "type": "initial",
                   "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumError": "10mb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -110,10 +110,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "arena:build:production"
+              "browserTarget": "studio:build:production"
             },
             "development": {
-              "browserTarget": "arena:build:development"
+              "browserTarget": "studio:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -121,7 +121,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "arena:build"
+            "browserTarget": "studio:build"
           }
         },
         "test": {
@@ -131,14 +131,14 @@
               "zone.js",
               "zone.js/testing"
             ],
-            "tsConfig": "projects/arena/tsconfig.spec.json",
+            "tsConfig": "projects/studio/tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": [
-              "projects/arena/src/favicon.ico",
-              "projects/arena/src/assets"
+              "projects/studio/src/favicon.ico",
+              "projects/studio/src/assets"
             ],
             "styles": [
-              "projects/arena/src/styles.scss"
+              "projects/studio/src/styles.scss"
             ],
             "scripts": []
           }

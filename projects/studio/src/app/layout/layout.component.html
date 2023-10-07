@@ -26,8 +26,8 @@
                     <div class="w-8 h-8 bg-indigo-700 rounded-full text-white flex items-center justify-center">PY</div>
                 </div>
                 <div class="col-span-8">
-                    <div class="">PARTHASARATHY</div>
-                    <div class="text-gray-400 text-xs font-light uppercase">SUPER ADMIN</div>
+                    <div class="uppercase">{{ username }}</div>
+                    <div class=" text-gray-400 text-xs font-light uppercase">{{ roles }}</div>
                 </div>
                 <div class="col-span-1 cursor-pointer" (click)="logout()">
                     <vezo-icon icon="arrowRightOnRectangle"></vezo-icon>

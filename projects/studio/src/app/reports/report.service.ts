@@ -15,8 +15,8 @@ export class ReportService extends GenericService {
         super(http);
     }
 
-    async generateReport(screenData: Report) {
-        var url = this.apiurl + '/' + this.endpoint + '/generateFrontendCode/' + encodeURIComponent(screenData.id!);
+    async generateReport(reportData: Report) {
+        var url = this.apiurl + '/' + this.endpoint + '/generateReportFrontendCode/' + encodeURIComponent(reportData.id!);
         const res = await lastValueFrom(this.httpClient.get<any>(url));
         return res;
     }
