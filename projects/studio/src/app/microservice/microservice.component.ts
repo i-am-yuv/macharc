@@ -50,6 +50,7 @@ export class MicroserviceComponent extends GenericComponent implements OnInit {
       this.loading = false;
     }).catch(e => {
       this.loading = false;
+      this.msgService.add({ severity: 'error', summary: 'Error Generating', detail: 'Sorry, there was an error generating the microservice' });
     })
   }
 

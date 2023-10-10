@@ -14,22 +14,24 @@
                 <div class="text-gray-400 text-xs font-light uppercase">Workspace</div>
             </div>
         </div>
-        <div class="">
+        <div class="h-[80vh] overflow-y-scroll">
             <vezo-menu [items]="menuItems"></vezo-menu>
         </div>
-        <div class="absolute bottom-0">
-            <div class="p-4 text-right bg-gray-100 cursor-pointer" (click)="showSideBar=!showSideBar">
-                <vezo-icon icon="chevronLeft"></vezo-icon>
-            </div>
-            <div class="p-5 grid grid-cols-12  w-full bg-white border-t">
-                <div class="col-span-3">
-                    <div class="w-8 h-8 bg-indigo-700 rounded-full text-white flex items-center justify-center">PY</div>
+        <div class="absolute bottom-0 w-full bg-white">
+            <div class="flex place-items-center border-t">
+                <div class="py-4 px-2 text-right bg-gray-100 cursor-pointer flex-none"
+                    (click)="showSideBar=!showSideBar">
+                    <vezo-icon icon="chevronLeft"></vezo-icon>
                 </div>
-                <div class="col-span-8">
+                <div class="flex-none px-2">
+                    <div class="w-8 h-8 bg-indigo-700 rounded-full text-white flex items-center justify-center">PY
+                    </div>
+                </div>
+                <div class="px-2 bg-white flex-grow">
                     <div class="uppercase">{{ username }}</div>
                     <div class=" text-gray-400 text-xs font-light uppercase">{{ roles }}</div>
                 </div>
-                <div class="col-span-1 cursor-pointer" (click)="logout()">
+                <div class="px-2 flex-none cursor-pointer" (click)="logout()">
                     <vezo-icon icon="arrowRightOnRectangle"></vezo-icon>
                 </div>
             </div>
@@ -39,8 +41,18 @@
         (click)="showSideBar=!showSideBar">
         <vezo-icon icon="chevronRight"></vezo-icon>
     </div>
-    <div class="p-10 bg-gray-50 h-screen overflow-x-scroll  w-full"
-        [ngClass]="{'col-span-10': showSideBar, 'flex-grow': !showSideBar }">
-        <router-outlet></router-outlet>
+    <div class="w-full" [ngClass]="{'col-span-10': showSideBar, 'flex-grow': !showSideBar }">
+        <div class="bg-white px-8 py-5 border-b border-l">
+            <div class="flex">
+                <div class="flex border place-items-center">
+                    <div class="subheading px-4 py-2 bg-indigo-50">PROJECT</div>
+                    <div class="heading text-indigo-400 mx-10"> {{ activeProject.projectName }}</div>
+                    <vezo-button icon="arrowsRightLeft" label="" routerLink="/projects"></vezo-button>
+                </div>
+            </div>
+        </div>
+        <div class="p-10 bg-gray-50 h-screen overflow-x-scroll">
+            <router-outlet></router-outlet>
+        </div>
     </div>
 </div>

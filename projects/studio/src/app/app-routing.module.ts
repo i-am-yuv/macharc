@@ -32,11 +32,21 @@ import { ReportDesignerComponent } from './reports/report-designer/report-design
 import { QueryBuilderComponent } from './reports/query-builder/query-builder.component';
 import { MsFormComponent } from './microservice/ms-form/ms-form.component';
 import { AuthGuard } from './auth/auth.guard';
+import { ProjectComponent } from './project/project.component';
+import { WizardComponent } from './project/wizard/wizard.component';
 
 const routes: Routes = [
   {
     path: '', component: LayoutComponent, canActivate: [AuthGuard], children: [
       { path: '', component: FrontComponent },
+      {
+        path: 'projects', component: DispatcherComponent,
+        children: [
+          { path: '', component: ProjectComponent },
+          { path: 'create', component: WizardComponent, data: { step: 0 } },
+          { path: 'manage/:id', component: WizardComponent, data: { step: 1 } }
+        ]
+      },
       { path: 'releases', component: ReleasesComponent },
       { path: 'acl', component: AclComponent },
       { path: 'settings', component: SettingsComponent },

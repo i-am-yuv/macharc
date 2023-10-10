@@ -33,6 +33,7 @@ interface DraggableItem {
 })
 export class DesignerComponent implements OnInit {
 
+  loading: boolean = false;
 
   draggableListLeft: DraggableItem[] = [
 
@@ -209,8 +210,13 @@ export class DesignerComponent implements OnInit {
   }
 
   generateComponent() {
+    this.loading = true;
     this.screenService.generateComponent(this.screenData).then((res: any) => {
+      this.loading = false;
       this.msgService.add({ severity: 'success', summary: 'Generated', detail: 'Code Generated' });
+    }).catch(e => {
+      this.msgService.add({ severity: 'error', summary: 'Error Generating', detail: 'Sorry, there was an error generating the screen' });
+      this.loading = false;
     })
   }
 
@@ -222,5 +228,10 @@ export class DesignerComponent implements OnInit {
     event.stopPropagation();
     this.activeItem = item;
   }
-
+  getFields(collectionId: string) {
+    var filterStr = FilterBuilder.equal('collection.id', collectionId);
+    this.fieldService.getAllData(undefined, filterStr).then((res: any) => {
+      this.fields = res.content;
+    });
+  }
 }

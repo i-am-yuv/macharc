@@ -70,6 +70,8 @@ import { ChartModule } from '@splenta/vezo/chart';
 import { MsFormComponent } from './microservice/ms-form/ms-form.component';
 import { AuthService } from './auth/auth.service';
 import { JwtInterceptor } from './auth/JwtInterceptor';
+import { ProjectComponent } from './project/project.component';
+import { WizardComponent } from './project/wizard/wizard.component';
 
 @NgModule({
   declarations: [
@@ -108,7 +110,9 @@ import { JwtInterceptor } from './auth/JwtInterceptor';
     ReportsComponent,
     ReportDesignerComponent,
     QueryBuilderComponent,
-    MsFormComponent
+    MsFormComponent,
+    ProjectComponent,
+    WizardComponent
   ],
   imports: [
     BrowserModule,

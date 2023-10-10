@@ -10,6 +10,7 @@ import { CollectionService } from '../collection/collection.service';
 import { MicroserviceService } from '../microservice/microservice.service';
 import { MicroService } from '../microservice/microservice';
 import { FilterBuilder } from '../utils/FilterBuilder';
+import { FieldService } from '../fields/field.service';
 
 @Component({
   selector: 'app-screen',
@@ -35,6 +36,7 @@ export class ScreenComponent extends GenericComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private collectionService: CollectionService,
+    private fieldService: FieldService,
     private microserviceService: MicroserviceService,
   ) {
     super(screenService, messageService);
@@ -65,8 +67,13 @@ export class ScreenComponent extends GenericComponent implements OnInit {
 
     }
   }
+
+  override editData(ds: any): void {
+    super.editData(ds);
+    this.getCollectionItems();
+  }
   getCollectionItems() {
-    this.form.patchValue({ collection: null });
+    // this.form.patchValue({ collection: null });
     var filterStr = FilterBuilder.equal('microService.id', this.form.value.microService.id);
     this.collectionService.getAllData(undefined, filterStr).then((res: any) => {
       if (res) {

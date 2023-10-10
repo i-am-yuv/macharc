@@ -9,17 +9,31 @@ import { AuthService } from '../auth/auth.service';
 })
 export class LayoutComponent {
   showSideBar = true;
+  activeProject = { projectName: 'NeoSell' };
   menuItems: any[] = [
     {
-      label: 'Builder',
+      label: 'Backend',
       items: [
-        { label: 'Microservices', icon: 'clipboard', routerLink: ['/builder/microservices'] },
         { label: 'Datasources', icon: 'clipboard', routerLink: ['/builder/datasources'] },
+        { label: 'Microservices', icon: 'clipboard', routerLink: ['/builder/microservices'] },
         { label: 'Collections', icon: 'clipboard', routerLink: ['/builder/collections'] },
-        { label: 'Screens', icon: 'clipboard', routerLink: ['/builder/screens'] },
+        { label: 'Services', icon: 'clipboard', routerLink: ['/builder/workflows'] },
+      ],
+      showSubMenu: true
+    },
+    {
+      label: 'Frontend',
+      items: [
+        { label: 'Applications', icon: 'clipboard', routerLink: ['/builder/collections'] },
         { label: 'Forms', icon: 'clipboard', routerLink: ['/builder/forms'] },
-        { label: 'Process', icon: 'clipboard', routerLink: ['/builder/processes'] },
-        { label: 'Service', icon: 'clipboard', routerLink: ['/builder/workflows'] },
+        { label: 'Screens', icon: 'clipboard', routerLink: ['/builder/screens'] },
+      ],
+      showSubMenu: true
+    },
+    {
+      label: 'Utilities',
+      items: [
+        { label: 'Processes', icon: 'clipboard', routerLink: ['/builder/processes'] },
         { label: 'Reports', icon: 'clipboard', routerLink: ['/builder/reports'] },
         { label: 'Releases', icon: 'clipboard', routerLink: ['/releases'] },
         { label: 'Integrations', icon: 'clipboard', routerLink: ['/marketplace'] },

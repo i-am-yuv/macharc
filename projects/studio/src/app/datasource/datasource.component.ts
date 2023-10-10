@@ -51,6 +51,11 @@ export class DatasourceComponent extends GenericComponent implements OnInit {
     this.getAllData();
   }
 
+  override addData(): void {
+    super.addData();
+    this.form.patchValue({ dbHost: 'localhost' });
+  }
+
   savFormData() {
     if (!this.form.value.id) {
       delete this.form.value.id;

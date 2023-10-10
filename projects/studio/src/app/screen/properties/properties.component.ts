@@ -12,6 +12,8 @@ export class PropertiesComponent {
   @Input() collections: any[] = [];
   @Input() forms: any[] = [];
 
+  @Output() getCollectionFields: EventEmitter<string> = new EventEmitter<string>();;
+
   column: any = {};
 
   constructor(
@@ -63,5 +65,8 @@ export class PropertiesComponent {
   setForm() {
     this.props.children = JSON.parse(this.formData.formDefinition);
     console.log(this.props);
+  }
+  getFields() {
+    this.getCollectionFields.emit(this.props.data.collection.id);
   }
 }

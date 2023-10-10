@@ -47,7 +47,7 @@
 <ng-container *ngIf="props?.name === 'table'">
     <vezo-input label="Caption" [(ngModel)]="props.data.caption"></vezo-input>
     <vezo-select label="Collection" optionLabel="collectionName" [items]="collections"
-        [(ngModel)]="props.data.collection"></vezo-select>
+        [(ngModel)]="props.data.collection" (ngModelChange)="getFields()"></vezo-select>
     <table class="border-collapse table-auto w-full text-sm bg-white my-4">
         <tr class="bg-gray-50">
             <td class="border p-2 w-72 font-semibold">Heading</td>
@@ -67,7 +67,9 @@
             <vezo-input label="Heading" [(ngModel)]="column.heading"></vezo-input>
         </div>
         <div>
-            <vezo-input label="Field" [(ngModel)]="column.field"></vezo-input>
+            <!-- <vezo-input label="Field" [(ngModel)]="column.field"></vezo-input> -->
+            <vezo-select label="Field" [items]="fields" [(ngModel)]="column.field" optionLabel="fieldName"
+                optionValue="fieldName" (ngModelChange)="column.heading=column.field"></vezo-select>
         </div>
         <div>
             <vezo-checkbox label="Sortable" [(ngModel)]="column.sortable"></vezo-checkbox>

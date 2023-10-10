@@ -48,9 +48,9 @@
     <ng-template vTemplate="content">
         <form [formGroup]="form">
             <vezo-select optionLabel="microServiceName" [items]="microserviceItems" formControlName="microService"
-                label="Microservice" *ngIf="!collectionId" (ngModelChange)="getCollectionItems()"></vezo-select>
+                label="Microservice" (ngModelChange)="getCollectionItems()"></vezo-select>
             <vezo-select optionLabel="collectionName" [items]="collectionItems" formControlName="collection"
-                label="Collection" *ngIf="!collectionId"></vezo-select>
+                label="Collection" optionValue="id"></vezo-select>
             <vezo-input label="Screen Name" formControlName="screenName"></vezo-input>
             <error-message [controlName]="form.controls['screenName']"></error-message>
         </form>
