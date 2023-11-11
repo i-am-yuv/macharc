@@ -56,7 +56,9 @@ export class DatasourceComponent extends GenericComponent implements OnInit {
     this.form.patchValue({ dbHost: 'localhost' });
   }
 
+
   savFormData() {
+    this.form.patchValue({ dbType: this.form.value.dbType.name });
     if (!this.form.value.id) {
       delete this.form.value.id;
       this.dataSourceService.createDatasource(this.form.value).then((res: any) => {
@@ -65,7 +67,7 @@ export class DatasourceComponent extends GenericComponent implements OnInit {
     }
   }
   setDefaultPort() {
-    this.form.patchValue({ dbPort: this.form.value.dbType.defaultPort });
-    console.log(this.form.value);
+    var dbType = this.dbTypes.find((t: any) => t.name === this.form.value.dbType);
+    this.form.patchValue({ dbPort: dbType.defaultPort });
   }
 }

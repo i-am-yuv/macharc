@@ -10,6 +10,8 @@
 <div class="bg-white p-16">
 
     <form [formGroup]="form">
+        <vezo-select [items]="projects" optionLabel="projectName" label="Project"
+            formControlName="project"></vezo-select>
         <vezo-input label="Service Code" formControlName="microServiceCode"></vezo-input>
         <error-message [controlName]="form.controls['microServiceCode']"></error-message>
         <vezo-input label="Package Name" formControlName="packageName"></vezo-input>

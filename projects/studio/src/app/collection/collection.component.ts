@@ -24,6 +24,11 @@ export class CollectionComponent extends GenericComponent implements OnInit {
   crud: boolean = false;
 
   override pageData = {};
+  collectionTypeItems: any[] = [
+    { value: 'CRUD', label: 'CRUD Collection' },
+    { value: 'READONLY', label: 'Readonly Collection' },
+    { value: 'POJO', label: 'POJO Collection' }
+  ];
   constructor(
     private fb: FormBuilder,
     collectionService: CollectionService,
@@ -39,6 +44,7 @@ export class CollectionComponent extends GenericComponent implements OnInit {
       id: '',
       collectionName: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
       customTableName: ['', [Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
+      collectionKind: [''],
       crud: [],
       readonly: [],
       hasService: [],

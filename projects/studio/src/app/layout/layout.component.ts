@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
+import { ProjectService } from '../project/project.service';
+import { FilterBuilder } from '../utils/FilterBuilder';
 
 @Component({
   selector: 'app-layout',
@@ -9,7 +11,7 @@ import { AuthService } from '../auth/auth.service';
 })
 export class LayoutComponent {
   showSideBar = true;
-  activeProject = { projectName: 'NeoSell' };
+  activeProject = { projectName: 'SELECT PROJECT' };
   menuItems: any[] = [
     {
       label: 'Backend',
@@ -24,7 +26,7 @@ export class LayoutComponent {
     {
       label: 'Frontend',
       items: [
-        { label: 'Applications', icon: 'clipboard', routerLink: ['/builder/collections'] },
+        { label: 'Applications', icon: 'clipboard', routerLink: ['/applications'] },
         { label: 'Forms', icon: 'clipboard', routerLink: ['/builder/forms'] },
         { label: 'Screens', icon: 'clipboard', routerLink: ['/builder/screens'] },
       ],
@@ -52,13 +54,21 @@ export class LayoutComponent {
   roles: any;
   username: string = '';
 
+
   constructor(
     private router: Router,
     private authService: AuthService,
+    private projectService: ProjectService
   ) { }
   ngOnInit() {
     this.username = this.authService.getUserName();
     this.roles = this.authService.getRoles();
+    var search = FilterBuilder.boolEqual('isdefault', true);
+    this.projectService.getAllData(undefined, search).then((res: any) => {
+      if (res)
+        this.activeProject.projectName = res.content[0].projectName;
+    })
+
   }
 
   logout() {

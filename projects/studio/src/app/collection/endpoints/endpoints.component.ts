@@ -15,6 +15,9 @@ import { WorkflowService } from '../../workflow/workflow.service';
   styleUrls: ['./endpoints.component.scss']
 })
 export class EndpointsComponent extends GenericComponent implements OnInit {
+  editorOptions = { theme: 'vs-dark', language: 'json', formatOnPaste: true };
+  requestJson = '';
+  responseJson = '';
   getEpColor(type: any) {
     const colors = [
       { type: 'GET', color: 'green' },

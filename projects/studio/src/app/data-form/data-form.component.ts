@@ -10,6 +10,8 @@ import { FilterBuilder } from '../utils/FilterBuilder';
 import { DataForm } from './data-form';
 import { DataFormService } from './data-form.service';
 import { GenericComponent } from '../utils/genericcomponent';
+import { ApplicationService } from '../application/application.service';
+import { Application } from '../application/application';
 
 @Component({
   selector: 'app-data-form',
@@ -25,6 +27,7 @@ export class DataFormComponent extends GenericComponent {
   collectionItems: Collection[] = [];
   collection: Collection = {};
   microserviceItems: MicroService[] = [];
+  applicationItems: Application[] = [];
   override pageData = {};
 
   constructor(
@@ -35,6 +38,7 @@ export class DataFormComponent extends GenericComponent {
     private router: Router,
     private collectionService: CollectionService,
     private microserviceService: MicroserviceService,
+    private applicationService: ApplicationService
   ) {
     super(formService, messageService);
     this.form = this.fb.group({
@@ -44,6 +48,7 @@ export class DataFormComponent extends GenericComponent {
       formDescription: [],
       collection: [],
       microService: [],
+      application: [],
       process: [],
     })
   }
@@ -61,8 +66,12 @@ export class DataFormComponent extends GenericComponent {
           this.microserviceItems = res.content;
         }
       })
-
     }
+    this.applicationService.getAllData().then((res: any) => {
+      if (res) {
+        this.applicationItems = res.content;
+      }
+    })
   }
   getCollectionItems() {
     this.form.patchValue({ collection: null });

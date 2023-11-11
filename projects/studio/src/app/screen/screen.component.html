@@ -47,6 +47,8 @@
     <ng-template vTemplate="header">Screen</ng-template>
     <ng-template vTemplate="content">
         <form [formGroup]="form">
+            <vezo-select optionLabel="applicationName" [items]="applicationItems" formControlName="application"
+                label="Application"></vezo-select>
             <vezo-select optionLabel="microServiceName" [items]="microserviceItems" formControlName="microService"
                 label="Microservice" (ngModelChange)="getCollectionItems()"></vezo-select>
             <vezo-select optionLabel="collectionName" [items]="collectionItems" formControlName="collection"

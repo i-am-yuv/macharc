@@ -34,6 +34,8 @@ import { MsFormComponent } from './microservice/ms-form/ms-form.component';
 import { AuthGuard } from './auth/auth.guard';
 import { ProjectComponent } from './project/project.component';
 import { WizardComponent } from './project/wizard/wizard.component';
+import { ApplicationComponent } from './application/application.component';
+import { AppWizardComponent } from './application/app-wizard/app-wizard.component';
 
 const routes: Routes = [
   {
@@ -44,7 +46,17 @@ const routes: Routes = [
         children: [
           { path: '', component: ProjectComponent },
           { path: 'create', component: WizardComponent, data: { step: 0 } },
-          { path: 'manage/:id', component: WizardComponent, data: { step: 1 } }
+          { path: 'manage', component: WizardComponent, data: { step: 1 } },
+          { path: 'manage/:id', component: WizardComponent, data: { step: 2 } }
+        ]
+      },
+      {
+        path: 'applications', component: DispatcherComponent,
+        children: [
+          { path: '', component: ApplicationComponent },
+          { path: 'create', component: AppWizardComponent, data: { step: 0 } },
+          { path: 'manage', component: AppWizardComponent, data: { step: 1 } },
+          { path: 'manage/:id', component: AppWizardComponent, data: { step: 2 } }
         ]
       },
       { path: 'releases', component: ReleasesComponent },

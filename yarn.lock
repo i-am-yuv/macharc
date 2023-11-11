@@ -1990,7 +1990,7 @@
     "@stoplight/json-schema-viewer" "^4.9.0"
     "@stoplight/markdown-viewer" "^5.6.0"
     "@stoplight/mosaic" "^1.33.0"
-    "@stoplight/mosaic-code-editor" "^1.33.0"
+    "@stoplight/mosaic-code-" "^1.33.0"
     "@stoplight/mosaic-code-viewer" "^1.33.0"
     "@stoplight/path" "^1.3.2"
     "@stoplight/react-error-boundary" "^2.0.0"
@@ -2174,9 +2174,9 @@
     unist-util-select "^4.0.0"
     unist-util-visit "^3.1.0"
 
-"@stoplight/mosaic-code-editor@^1.33.0":
+"@stoplight/mosaic-code-@^1.33.0":
   version "1.40.0"
-  resolved "https://registry.npmjs.org/@stoplight/mosaic-code-editor/-/mosaic-code-editor-1.40.0.tgz"
+  resolved "https://registry.npmjs.org/@stoplight/mosaic-code-/-/mosaic-code--1.40.0.tgz"
   integrity sha512-KU9Qj+JeXA6V4PtqJa8nV6W5scml92Bvbwc+//zd13MR5iUbbEKux9kzwtB1OJxvgSRsDI/5oP5yq1RzPLLQuw==
   dependencies:
     "@fortawesome/fontawesome-svg-core" "^6.1.1"
@@ -4864,9 +4864,9 @@ extend@^3.0.0:
   resolved "https://registry.npmjs.org/extend/-/extend-3.0.2.tgz"
   integrity sha512-fjquC59cD7CyW6urNXK0FBufkZcoiGG80wTuPujX590cB5Ttln20E2UB4S/WARVqhXffZl2LNgS+gQdPIIim/g==
 
-external-editor@^3.0.3:
+external-@^3.0.3:
   version "3.1.0"
-  resolved "https://registry.npmjs.org/external-editor/-/external-editor-3.1.0.tgz"
+  resolved "https://registry.npmjs.org/external-/-/external--3.1.0.tgz"
   integrity sha512-hMQ4CX1p1izmuLYyZqLMO/qGNw10wSv9QDCPfzXfyFrOaCSSoRfqE1Kf1s5an66J5JZC62NewG+mK49jOCtQew==
   dependencies:
     chardet "^0.7.0"
@@ -5778,7 +5778,7 @@ inquirer@8.2.4:
     chalk "^4.1.1"
     cli-cursor "^3.1.0"
     cli-width "^3.0.0"
-    external-editor "^3.0.3"
+    external- "^3.0.3"
     figures "^3.0.0"
     lodash "^4.17.21"
     mute-stream "0.0.8"
@@ -7052,9 +7052,9 @@ mobx-react@^7.2.0:
   dependencies:
     mobx-react-lite "^3.4.0"
 
-monaco-editor@^0.38.0:
+monaco-@^0.38.0:
   version "0.38.0"
-  resolved "https://registry.npmjs.org/monaco-editor/-/monaco-editor-0.38.0.tgz"
+  resolved "https://registry.npmjs.org/monaco-/-/monaco--0.38.0.tgz"
   integrity sha512-11Fkh6yzEmwx7O0YoLxeae0qEGFwmyPRlVxpg7oF9czOOCB/iCjdJrG5I67da5WiXK3YJCxoz9TJFE8Tfq/v9A==
 
 morgan@^1.10.0:
@@ -7213,9 +7213,9 @@ ngx-drag-drop@^15.1.0:
   dependencies:
     tslib "^2.3.0"
 
-ngx-monaco-editor-v2@^15.0.1:
+ngx-monaco--v2@^15.0.1:
   version "15.0.1"
-  resolved "https://registry.npmjs.org/ngx-monaco-editor-v2/-/ngx-monaco-editor-v2-15.0.1.tgz"
+  resolved "https://registry.npmjs.org/ngx-monaco--v2/-/ngx-monaco--v2-15.0.1.tgz"
   integrity sha512-QDj4XJO7o+XcYqbUrbIWhJdSRUnbAXltShsLveyVug+yw7ThS3DcE+FBuDUnAO67czTWta0paQPsyrH5DUfnkg==
   dependencies:
     tslib "^2.1.0"

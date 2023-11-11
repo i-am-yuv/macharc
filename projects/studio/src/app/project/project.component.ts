@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { GenericComponent } from '../utils/genericcomponent';
-import { FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProjectService } from './project.service';
 import { MessageService } from '@splenta/vezo';
 
@@ -14,8 +14,18 @@ export class ProjectComponent extends GenericComponent {
   override data: any[] = [];
   override componentName: string = 'Project';
 
-  constructor(projectService: ProjectService, messageService: MessageService) {
-    super(projectService, messageService);
+  constructor(dataService: ProjectService, messageService: MessageService, private fb: FormBuilder) {
+    super(dataService, messageService);
   }
 
+  ngOnInit() {
+    this.getAllData();
+  }
+  setDefault(project: any) {
+    project.isdefault = true;
+    this.dataService.updateData(project).then((res: any) => {
+      if (res) this.getAllData();
+      this.messageService.add({ severity: 'success', detail: 'Default Set', summary: 'Success' })
+    });
+  }
 }

@@ -52,7 +52,7 @@
                 </div>
                 <div class="flex-grow">
                     <vezo-select label="Datasource Type" formControlName="dbType" [items]="dbTypes" optionLabel="name"
-                        (ngModelChange)="setDefaultPort()"></vezo-select>
+                        optionValue="name" (ngModelChange)="setDefaultPort()"></vezo-select>
                     <error-message [controlName]="form.controls['dbType']"></error-message>
                 </div>
             </div>

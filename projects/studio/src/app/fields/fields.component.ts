@@ -31,7 +31,7 @@ export class FieldsComponent extends GenericComponent implements OnInit {
   ];
 
   validations: any[] = [
-    { label: 'Required', value: 'Required' },
+    { label: 'Required', value: 'REQUIRED' },
     { label: 'Alpha', value: 'Alpha' },
     { label: 'AlphaNumeric', value: 'AlphaNumeric' },
     { label: 'Email', value: 'Email' },

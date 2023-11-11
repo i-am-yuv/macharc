@@ -44,9 +44,11 @@
 </vezo-table>
 
 <vezo-modal [(visible)]="visible">
-    <ng-template vTemplate="header">DataForm</ng-template>
+    <ng-template vTemplate="header">Data Form</ng-template>
     <ng-template vTemplate="content">
         <form [formGroup]="form">
+            <vezo-select optionLabel="applicationName" [items]="applicationItems" formControlName="application"
+                label="Application"></vezo-select>
             <vezo-select optionLabel="microServiceName" [items]="microserviceItems" formControlName="microService"
                 label="Microservice" *ngIf="!collectionId" (ngModelChange)="getCollectionItems()"></vezo-select>
             <vezo-select optionLabel="collectionName" [items]="collectionItems" formControlName="collection"

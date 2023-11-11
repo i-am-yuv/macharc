@@ -77,15 +77,25 @@
                 label="Microservice"></vezo-select>
             <vezo-select optionLabel="dataSourceName" [items]="form.value.microService?.datasources"
                 *ngIf="form.value.microService" formControlName="dataSource" label="Datasource"></vezo-select>
+
             <vezo-input label="Collection Name" formControlName="collectionName"></vezo-input>
             <error-message [controlName]="form.controls['collectionName']"></error-message>
+            <vezo-select optionLabel="label" optionValue="value" [items]="collectionTypeItems"
+                formControlName="collectionKind" label="Collection Type"></vezo-select>
             <vezo-input label="Custom Table Name" formControlName="customTableName"></vezo-input>
             <error-message [controlName]="form.controls['customTableName']"></error-message>
-            <vezo-checkbox formControlName="crud" label="Generate CRUD Endpoints"></vezo-checkbox>
+
+            <!-- <vezo-radiobutton formControlName="collectionType" value="CRUD" name="crud"
+                label="Generate CRUD Endpoints"></vezo-radiobutton>
             <error-message [controlName]="form.controls['crud']"></error-message><br />
-            <vezo-checkbox formControlName="readonly" label="Generate Readonly Endpoints"></vezo-checkbox><br />
+            <vezo-radiobutton formControlName="collectionType" value="READONLY" name="crud"
+                label="Generate Readonly Endpoints"></vezo-radiobutton><br />
+            <vezo-radiobutton formControlName="collectionType" value="POJO" name="crud"
+                label="Generate Pojo"></vezo-radiobutton><br />
             <vezo-checkbox formControlName="hasService"
                 label="Generate Service Class for Business Logic"></vezo-checkbox>
+            <vezo-checkbox formControlName="hasService" label="Consumes API"></vezo-checkbox> -->
+            <vezo-checkbox formControlName="hasService" label="Generate Service Class"></vezo-checkbox>
         </form>
     </ng-template>
     <ng-template vTemplate="footer">

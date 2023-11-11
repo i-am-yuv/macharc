@@ -14,4 +14,9 @@ export class FilterBuilder {
         const filterstr = col + " : '" + searchString + "'";
         return encodeURIComponent(filterstr);
     }
+
+    static boolEqual(col: string, value: boolean) {
+        const filterstr = col + " : " + value + "";
+        return encodeURIComponent(filterstr);
+    }
 }

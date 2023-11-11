@@ -108,6 +108,12 @@
                     *ngIf="!form.value.crud" optionValue="value"></vezo-select>
                 <vezo-select label="Service" formControlName="service" [items]="services" *ngIf="!form.value.crud"
                     optionLabel="workflowName"></vezo-select>
+                <vezo-switch label="Web Client"></vezo-switch>
+                <vezo-switch label="Web Hook"></vezo-switch>
+            </div>
+
+            <div class="text-right p-4">
+                <vezo-button label="Save" (click)="saveData()"></vezo-button>
             </div>
         </form>
         <div class="grid grid-cols-2 p-4 gap-6" *ngIf="!form.value.crud">
@@ -121,9 +127,24 @@
                     optionLabel="label" optionValue="value"></vezo-select>
             </ng-container>
             <div></div>
-            <div class="text-right">
-                <vezo-button label="Save" (click)="saveData()"></vezo-button>
+
+        </div>
+        <div class="flex">
+            <div class="p-4 w-1/2">
+                <h2 class="heading mb-2">Request Json</h2>
+                <ngx-monaco-editor [options]="editorOptions" [(ngModel)]="requestJson"
+                    style="height: 350px"></ngx-monaco-editor>
             </div>
+            <div class="p-4 w-1/2">
+                <h2 class="heading mb-2">Response Json</h2>
+                <ngx-monaco-editor [options]="editorOptions" [(ngModel)]="responseJson"
+                    style="height: 350px"></ngx-monaco-editor>
+            </div>
+        </div>
+        <div class="p-4">
+            <h2 class="heading mb-2">Webhook Json Payload</h2>
+            <ngx-monaco-editor [options]="editorOptions" [(ngModel)]="requestJson"
+                style="height: 350px"></ngx-monaco-editor>
         </div>
     </div>
 </div>

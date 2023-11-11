@@ -1,23 +1,23 @@
 import { Component } from '@angular/core';
-import { GenericComponent } from '../../utils/genericcomponent';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MessageService } from '@splenta/vezo';
-import { ProjectService } from '../project.service';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { MessageService } from '@splenta/vezo';
+import { ApplicationService } from '../../application/application.service';
+import { GenericComponent } from '../../utils/genericcomponent';
 
 @Component({
-  selector: 'app-wizard',
-  templateUrl: './wizard.component.html',
-  styleUrls: ['./wizard.component.scss']
+  selector: 'app-app-wizard',
+  templateUrl: './app-wizard.component.html',
+  styleUrls: ['./app-wizard.component.scss']
 })
-export class WizardComponent extends GenericComponent {
+export class AppWizardComponent extends GenericComponent {
   override form: FormGroup<any>;
   override data: any[] = [];
-  override componentName: string = 'Project';
+  override componentName: string = 'Application';
   id: string | null = '';
   items = [
     {
-      label: 'Project', routerLink: '', icon: 'cog',
+      label: 'Application', routerLink: '', icon: 'cog',
       items: [
         { label: 'Overview', routerLink: '', icon: 'cog' },
         { label: 'API Endpoints', routerLink: '', icon: 'cog' },
@@ -30,18 +30,18 @@ export class WizardComponent extends GenericComponent {
     }
   ]
   constructor(
-    projectService: ProjectService,
+    applicationService: ApplicationService,
     messageService: MessageService,
     private fb: FormBuilder,
     private route: ActivatedRoute) {
-    super(projectService, messageService);
+    super(applicationService, messageService);
 
     this.form = this.fb.group({
       id: '',
-      projectName: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
-      projectCode: ['', [Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
-      projectDescription: [],
-      isdefault: [false]
+      applicationName: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
+      applicationCode: ['', [Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
+      applicationDescription: [],
+      backendApiUrl: []
     });
 
     this.id = this.route.snapshot.paramMap.get('id');

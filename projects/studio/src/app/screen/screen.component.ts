@@ -11,6 +11,8 @@ import { MicroserviceService } from '../microservice/microservice.service';
 import { MicroService } from '../microservice/microservice';
 import { FilterBuilder } from '../utils/FilterBuilder';
 import { FieldService } from '../fields/field.service';
+import { Application } from '../application/application';
+import { ApplicationService } from '../application/application.service';
 
 @Component({
   selector: 'app-screen',
@@ -27,6 +29,7 @@ export class ScreenComponent extends GenericComponent implements OnInit {
   collectionItems: Collection[] = [];
   collection: Collection = {};
   microserviceItems: MicroService[] = [];
+  applicationItems: Application[] = [];
   override pageData = {};
 
   constructor(
@@ -38,6 +41,7 @@ export class ScreenComponent extends GenericComponent implements OnInit {
     private collectionService: CollectionService,
     private fieldService: FieldService,
     private microserviceService: MicroserviceService,
+    private applicationService: ApplicationService
   ) {
     super(screenService, messageService);
     this.form = this.fb.group({
@@ -47,6 +51,7 @@ export class ScreenComponent extends GenericComponent implements OnInit {
       screenDescription: [],
       collection: [],
       microService: [],
+      application: [],
       process: [],
     })
   }
