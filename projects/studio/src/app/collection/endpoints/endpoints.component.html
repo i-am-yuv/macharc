@@ -32,7 +32,7 @@
                                 </div>
                                 <div class="col-span-3 w-full text-right cursor-pointer">
                                     <vezo-icon icon="chevronRight" className="w-12 h-12 text-indigo-400"
-                                        strokeWidth="0.5" (click)="editData(ep)"></vezo-icon>
+                                        strokeWidth="0.5" (click)="editCustomEndpoint(ep)"></vezo-icon>
                                 </div>
                             </div>
                         </ng-container>
@@ -80,71 +80,111 @@
                 <vezo-button icon="plus" label="Add Endpoint" (click)="addData()"></vezo-button>
             </div>
         </div>
-        <form [formGroup]="form">
-            <div class="grid grid-cols-2 p-4 gap-6">
-                <vezo-input label="Endpoint Name" formControlName="endpointName" *ngIf="!form.value.crud"></vezo-input>
-                <div *ngIf="form.value.crud">
-                    <label>Endpoint Name</label>
-                    <div class="my-2">{{ form.value.endpointName }}</div>
-                </div>
-                <vezo-select label="Endpoint Type" formControlName="endpointType" [items]="httpMethods"
-                    *ngIf="!form.value.crud"></vezo-select>
-                <div *ngIf="form.value.crud">
-                    <label>Endpoint Type</label>
-                    <div class="my-2">{{ form.value.endpointType }}</div>
-                </div>
-                <vezo-input label="Endpoint Details" formControlName="description"
-                    *ngIf="!form.value.crud"></vezo-input>
-                <div *ngIf="form.value.crud">
-                    <label>Endpoint Details</label>
-                    <div class="my-2">{{ form.value.description }}</div>
-                </div>
-                <vezo-input label="Endpoint Path" formControlName="endpointPath" *ngIf="!form.value.crud"></vezo-input>
-                <div *ngIf="form.value.crud">
-                    <label>Endpoint Path</label>
-                    <div class="my-2">{{ form.value.endpointPath }}</div>
-                </div>
-                <vezo-select label="Return Type" formControlName="returnType" [items]="returnTypes" optionLabel="label"
-                    *ngIf="!form.value.crud" optionValue="value"></vezo-select>
-                <vezo-select label="Service" formControlName="service" [items]="services" *ngIf="!form.value.crud"
-                    optionLabel="workflowName"></vezo-select>
-                <vezo-switch label="Web Client"></vezo-switch>
-                <vezo-switch label="Web Hook"></vezo-switch>
+        <div class="grid grid-cols-2 p-4 gap-6" *ngIf="form.value.crud">
+            <div>
+                <label>Endpoint Name</label>
+                <div class="my-2">{{ form.value.endpointName }}</div>
             </div>
+            <div>
+                <label>Endpoint Type</label>
+                <div class="my-2">{{ form.value.endpointType }}</div>
+            </div>
+            <div>
+                <label>Endpoint Details</label>
+                <div class="my-2">{{ form.value.description }}</div>
+            </div>
+            <div>
+                <label>Endpoint Path</label>
+                <div class="my-2">{{ form.value.endpointPath }}</div>
+            </div>
+        </div>
+        <div *ngIf="!form.value.crud">
+            <form [formGroup]="form">
+                <div class="grid grid-cols-2 p-4 gap-6">
+                    <vezo-input label="Endpoint Name" formControlName="endpointName"></vezo-input>
 
-            <div class="text-right p-4">
-                <vezo-button label="Save" (click)="saveData()"></vezo-button>
-            </div>
-        </form>
-        <div class="grid grid-cols-2 p-4 gap-6" *ngIf="!form.value.crud">
-            <h2 class="font-semibold">Path Variables</h2>
-            <div class="text-right">
-                <vezo-button label="" icon="plus" className="bg-white" (click)="addPathVariable()"></vezo-button>
+                    <div class="mt-6">
+                        <vezo-switch label="Is Web Service" formControlName="api"></vezo-switch>
+                    </div>
+                    <vezo-input label="Endpoint Path" formControlName="endpointPath"></vezo-input>
+
+                    <vezo-select label="Endpoint Type" formControlName="endPointType"
+                        [items]="httpMethods"></vezo-select>
+
+                    <ng-container *ngIf="!form.value.api">
+
+
+                        <vezo-input label="Endpoint Details" formControlName="description"></vezo-input>
+
+
+                        <vezo-select label="Return Type" formControlName="returnType" [items]="returnTypes"
+                            optionLabel="label" optionValue="value"></vezo-select>
+                        <vezo-select label="Service" formControlName="workflow" [items]="services"
+                            *ngIf="!form.value.crud" optionLabel="workflowName"></vezo-select>
+                        <vezo-select label="Pojo" formControlName="pojo" [items]="collections" *ngIf="!form.value.crud"
+                            optionLabel="collectionName"></vezo-select>
+                        <div></div>
+                    </ng-container>
+                    <vezo-select label=" API Source" formControlName="datasource" [items]="datasources"
+                        *ngIf="form.value.api" optionLabel="dataSourceName"></vezo-select>
+                    <vezo-switch label="Web Client" formControlName="webclient"
+                        *ngIf="form.value.api && !form.value.webhook"></vezo-switch>
+                    <vezo-switch label="Web Hook" formControlName="webhook"
+                        *ngIf="form.value.api && !form.value.webclient"></vezo-switch>
+                </div>
+
+
+
+
+                <div class="flex" *ngIf="activeEp && (activeEp?.webclient || activeEp?.webhook)">
+                    <div class="p-4 w-1/2">
+                        <h2 class="heading mb-2">Request Json</h2>
+                        <ngx-monaco-editor [options]="editorOptions" formControlName="requestJson"
+                            style="height: 350px"></ngx-monaco-editor>
+                    </div>
+                    <div class="p-4 w-1/2">
+                        <h2 class="heading mb-2">Response Json</h2>
+                        <ngx-monaco-editor [options]="editorOptions" formControlName="responseJson"
+                            style="height: 350px"></ngx-monaco-editor>
+                    </div>
+                </div>
+                <div class="text-right p-4">
+                    <vezo-button label="Save" (click)="saveData()"></vezo-button>
+                </div>
+
+
+                <div></div>
+            </form>
+        </div>
+        <ng-container *ngIf="activeEp && !activeEp?.webclient && !activeEp?.webhook">
+            <div class="grid grid-cols-2 p-4 gap-6" *ngIf="!form.value.crud">
+                <h2 class="font-semibold">Path Variables</h2>
+                <div class="text-right">
+                    <vezo-button label="" icon="plus" className="bg-white" (click)="addPathVariable()"></vezo-button>
+                </div>
             </div>
             <ng-container *ngFor="let pathVariable of pathVariables">
-                <vezo-input label="Variable" [(ngModel)]="pathVariable.variableName"></vezo-input>
-                <vezo-select label="Variable Type" [(ngModel)]="pathVariable.variableType" [items]="variableTypes"
-                    optionLabel="label" optionValue="value"></vezo-select>
-            </ng-container>
-            <div></div>
+                <div class="grid grid-cols-12 gap-6 place-items-center">
+                    <div class="col-span-5 w-full pl-4">
+                        <vezo-input label="Variable" [(ngModel)]="pathVariable.variableName"></vezo-input>
+                    </div>
+                    <div class="col-span-5 w-full">
 
-        </div>
-        <div class="flex">
-            <div class="p-4 w-1/2">
-                <h2 class="heading mb-2">Request Json</h2>
-                <ngx-monaco-editor [options]="editorOptions" [(ngModel)]="requestJson"
-                    style="height: 350px"></ngx-monaco-editor>
-            </div>
-            <div class="p-4 w-1/2">
-                <h2 class="heading mb-2">Response Json</h2>
-                <ngx-monaco-editor [options]="editorOptions" [(ngModel)]="responseJson"
-                    style="height: 350px"></ngx-monaco-editor>
-            </div>
-        </div>
-        <div class="p-4">
+                        <vezo-select label="Variable Type" [(ngModel)]="pathVariable.variableType"
+                            [items]="variableTypes" optionLabel="label" optionValue="value"></vezo-select>
+                    </div>
+                    <div class="col-span-2 w-full">
+                        <vezo-button icon="check" (click)="savePathVariable(pathVariable)"></vezo-button>
+                    </div>
+                </div>
+            </ng-container>
+        </ng-container>
+        <!-- <div class="p-4">
             <h2 class="heading mb-2">Webhook Json Payload</h2>
             <ngx-monaco-editor [options]="editorOptions" [(ngModel)]="requestJson"
                 style="height: 350px"></ngx-monaco-editor>
-        </div>
+        </div> -->
     </div>
 </div>
+
+<vezo-toast></vezo-toast>

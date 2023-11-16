@@ -44,7 +44,7 @@ export class DatasourceComponent extends GenericComponent implements OnInit {
       password: [''],
       apiUrl: [''],
       authToken: [''],
-      driverClassName: [''],
+      driverClassName: ['']
     })
   }
   ngOnInit(): void {

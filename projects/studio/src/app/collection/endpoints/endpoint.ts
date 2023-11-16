@@ -1,4 +1,7 @@
-export interface endpoint {
+import { Workflow } from "../../workflow/workflow";
+
+export interface Endpoint {
+    id?: string;
     endpointName?: string;
     endpointPath?: string;
     endpointType?: string;
@@ -6,4 +9,10 @@ export interface endpoint {
     returnType?: string;
     // Stored as json
     pathVariables?: string;
+    api: boolean;
+    webclient: boolean;
+    webhook: boolean;
+    requestJson: string;
+    responseJson: string;
+    workflow: Workflow;
 }

@@ -59,7 +59,7 @@
             <div class="my-4" *ngIf="form.value.dbUrl">
                 <span class="font-semibold"> DB Url:</span> {{ form.value.dbUrl}}
             </div>
-            <ng-container *ngIf="form.controls['dbType'].value?.name !='API'">
+            <ng-container *ngIf="form.controls['dbType'].value !='API'">
                 <div class="flex">
                     <div class="mr-4">
                         <vezo-input label="Datasource Host" formControlName="dbHost"></vezo-input>
@@ -89,7 +89,7 @@
                     </div>
                 </div>
             </ng-container>
-            <ng-container *ngIf="form.controls['dbType'].value?.name =='API'">
+            <ng-container *ngIf="form.controls['dbType'].value =='API'">
                 <vezo-input label="API Url" formControlName="apiUrl"></vezo-input>
                 <error-message [controlName]="form.controls['apiUrl']"></error-message>
                 <vezo-textarea label="Token" formControlName="authToken"></vezo-textarea>

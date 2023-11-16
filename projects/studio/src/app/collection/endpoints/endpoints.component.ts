@@ -9,6 +9,11 @@ import { EndpointService } from './endpoint.service';
 import { MessageService } from '@splenta/vezo';
 import { Workflow } from '../../workflow/workflow';
 import { WorkflowService } from '../../workflow/workflow.service';
+import { DatasourceService } from '../../datasource/datasource.service';
+import { Datasource } from '../../datasource/datasource';
+import { PathVariableService } from './path-variable.service';
+import { Endpoint } from './endpoint';
+import { PathVariable } from './path-variable';
 @Component({
   selector: 'app-endpoints',
   templateUrl: './endpoints.component.html',
@@ -18,6 +23,7 @@ export class EndpointsComponent extends GenericComponent implements OnInit {
   editorOptions = { theme: 'vs-dark', language: 'json', formatOnPaste: true };
   requestJson = '';
   responseJson = '';
+  activeEp: Endpoint | undefined;
   getEpColor(type: any) {
     const colors = [
       { type: 'GET', color: 'green' },
@@ -36,6 +42,7 @@ export class EndpointsComponent extends GenericComponent implements OnInit {
   collectionId: string | null;
   collection: Collection = {};
   services: Workflow[] = [];
+  datasources: Datasource[] = [];
 
   returnTypes: any[] = [
     { label: 'Void', value: 'void' },
@@ -56,7 +63,8 @@ export class EndpointsComponent extends GenericComponent implements OnInit {
     { label: 'Collection', value: 'collection' },
   ];
   httpMethods: any[] = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
-  pathVariables: any[] = [];
+  pathVariables: PathVariable[] = [];
+  collections: Collection[] = [];
 
   constructor(
     messageService: MessageService,
@@ -64,6 +72,8 @@ export class EndpointsComponent extends GenericComponent implements OnInit {
     private workflowService: WorkflowService,
     private fb: FormBuilder,
     private collectionService: CollectionService,
+    private datasourceService: DatasourceService,
+    private pathVariableService: PathVariableService,
     private route: ActivatedRoute) {
     super(endpointService, messageService);
     this.collectionId = this.route.snapshot.paramMap.get('id');
@@ -71,12 +81,19 @@ export class EndpointsComponent extends GenericComponent implements OnInit {
       id: '',
       endpointName: [''],
       endpointPath: [''],
-      endpointType: [''],
+      endPointType: [''],
       description: [''],
       returnType: [''],
       pathVariables: [''],
-      service: [''],
-      crud: [false]
+      workflow: [''],
+      crud: [false],
+      datasource: [''],
+      webclient: [''],
+      webhook: [''],
+      api: [''],
+      collection: [''],
+      requestJson: [''],
+      responseJson: ['']
     })
   }
   ngOnInit(): void {
@@ -92,10 +109,38 @@ export class EndpointsComponent extends GenericComponent implements OnInit {
     this.workflowService.getAllData().then((res: any) => {
       this.services = res.content
     })
+    this.datasourceService.getAllData().then((res: any) => {
+      this.datasources = res.content;
+    })
+    this.collectionService.getAllData().then((res: any) => {
+      this.collections = res.content;
+    })
+  }
+
+
+  getPathVariables(ep: Endpoint) {
+    this.activeEp = ep;
+    var filterStr = FilterBuilder.equal('endpoint.id', ep.id!);
+    this.pathVariableService.getAllData(undefined, filterStr).then((res: any) => {
+      this.pathVariables = res.content;
+    })
+  }
+
+  editCustomEndpoint(ep: Endpoint) {
+    this.editData(ep);
+    this.getPathVariables(ep);
+  }
+  savePathVariable(pv: PathVariable) {
+    pv.endpoint = this.activeEp;
+    this.pathVariableService.createData(pv).then((res: any) => {
+      this.messageService.add({ severity: 'success', detail: 'Path variable added', summary: 'Success' });
+    })
   }
 
   override preSave(): void {
-    this.form.patchValue({ pathVariables: JSON.stringify(this.pathVariables) })
+    this.form.patchValue({ collection: { id: this.collectionId } });
+    this.activeEp = this.form.value;
+    // this.form.patchValue({ pathVariables: JSON.stringify(this.pathVariables) });
   }
   addPathVariable() {
     this.pathVariables.push({ variableName: '', variableType: '' })
