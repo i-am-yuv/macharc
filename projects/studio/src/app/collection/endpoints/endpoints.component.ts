@@ -91,6 +91,7 @@ export class EndpointsComponent extends GenericComponent implements OnInit {
       webclient: [''],
       webhook: [''],
       api: [''],
+      pojo: [''],
       collection: [''],
       requestJson: [''],
       responseJson: ['']
