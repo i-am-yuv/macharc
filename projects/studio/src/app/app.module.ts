@@ -74,6 +74,7 @@ import { ProjectComponent } from './project/project.component';
 import { WizardComponent } from './project/wizard/wizard.component';
 import { ApplicationComponent } from './application/application.component';
 import { AppWizardComponent } from './application/app-wizard/app-wizard.component';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [

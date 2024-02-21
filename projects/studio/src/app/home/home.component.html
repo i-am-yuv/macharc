@@ -1,0 +1,22 @@
+<div id="leftcard">
+    <div id="blocklist">
+        <div *ngFor="let action of actions" class="blockelem create-flowy noselect">
+            <input type="hidden" name='blockelemtype' class="blockelemtype" [value]="action.type">
+            <div class="grabme">
+                <img src="assets/grabme.svg">
+            </div>
+            <div class="blockin">
+                <div class="blockico">
+                    <span></span>
+                    <img [src]="action.icon">
+                </div>
+                <div class="blocktext">
+                    <p class="blocktitle">{{ action.title }}</p>
+                    <p class="blockdesc">{{ action.description }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button (click)="getOutPut()">Output</button>
+</div>
+<div #canvas id="canvas" class="canvas"></div>
