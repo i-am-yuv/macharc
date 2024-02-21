@@ -36,6 +36,7 @@ import { ProjectComponent } from './project/project.component';
 import { WizardComponent } from './project/wizard/wizard.component';
 import { ApplicationComponent } from './application/application.component';
 import { AppWizardComponent } from './application/app-wizard/app-wizard.component';
+import { HomeComponent } from './home/home.component';
 
 const routes: Routes = [
   {
@@ -60,6 +61,7 @@ const routes: Routes = [
         ]
       },
       { path: 'releases', component: ReleasesComponent },
+      { path: 'home', component: HomeComponent },
       { path: 'acl', component: AclComponent },
       { path: 'settings', component: SettingsComponent },
       { path: 'marketplace', component: MarketplaceComponent },

@@ -38,6 +38,7 @@ export class LayoutComponent {
         { label: 'Processes', icon: 'clipboard', routerLink: ['/builder/processes'] },
         { label: 'Reports', icon: 'clipboard', routerLink: ['/builder/reports'] },
         { label: 'Releases', icon: 'clipboard', routerLink: ['/releases'] },
+        { label: 'Home', icon: 'clipboard', routerLink: ['/home'] },
         { label: 'Integrations', icon: 'clipboard', routerLink: ['/marketplace'] },
       ],
       showSubMenu: true
