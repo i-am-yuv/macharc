@@ -29,6 +29,7 @@ export class LayoutComponent {
         { label: 'Applications', icon: 'clipboard', routerLink: ['/applications'] },
         { label: 'Forms', icon: 'clipboard', routerLink: ['/builder/forms'] },
         { label: 'Screens', icon: 'clipboard', routerLink: ['/builder/screens'] },
+        { label: 'Actions', icon: 'clipboard', routerLink: ['/home'] },
       ],
       showSubMenu: true
     },
@@ -38,7 +39,6 @@ export class LayoutComponent {
         { label: 'Processes', icon: 'clipboard', routerLink: ['/builder/processes'] },
         { label: 'Reports', icon: 'clipboard', routerLink: ['/builder/reports'] },
         { label: 'Releases', icon: 'clipboard', routerLink: ['/releases'] },
-        { label: 'Home', icon: 'clipboard', routerLink: ['/home'] },
         { label: 'Integrations', icon: 'clipboard', routerLink: ['/marketplace'] },
       ],
       showSubMenu: true
