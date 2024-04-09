@@ -23,6 +23,7 @@ import { EndpointsComponent } from './collection/endpoints/endpoints.component';
 import { DataFormComponent } from './data-form/data-form.component';
 import { FormDesignerComponent } from './data-form/form-designer/form-designer.component';
 import { DiagramComponent } from './diagram/diagram.component';
+import { HomeComponent } from './home/home.component';
 import { MarketplaceComponent } from './marketplace/marketplace.component';
 import { ApidocComponent } from './microservice/apidoc/apidoc.component';
 import { MsDatasourceComponent } from './microservice/ms-datasource/ms-datasource.component';
@@ -61,6 +62,7 @@ const routes: Routes = [
         ]
       },
       { path: 'releases', component: ReleasesComponent },
+      { path: 'home', component: HomeComponent },
       { path: 'acl', component: AclComponent },
       { path: 'settings', component: SettingsComponent },
       { path: 'marketplace', component: MarketplaceComponent },
