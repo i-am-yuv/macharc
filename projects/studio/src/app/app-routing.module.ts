@@ -2,40 +2,41 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CollectionComponent } from './collection/collection.component';
 import { DatasourceComponent } from './datasource/datasource.component';
+import { DispatcherComponent } from './dispatcher/dispatcher.component';
 import { FieldsComponent } from './fields/fields.component';
+import { FlowComponent } from './flow/flow.component';
 import { FrontComponent } from './front/front.component';
 import { LayoutComponent } from './layout/layout.component';
 import { MicroserviceComponent } from './microservice/microservice.component';
-import { WorkflowComponent } from './workflow/workflow.component';
-import { DispatcherComponent } from './dispatcher/dispatcher.component';
-import { WorkflowDesignerComponent } from './workflow/workflow-designer/workflow-designer.component';
 import { DesignerComponent } from './screen/designer/designer.component';
 import { ScreenComponent } from './screen/screen.component';
-import { FlowComponent } from './flow/flow.component';
+import { WorkflowDesignerComponent } from './workflow/workflow-designer/workflow-designer.component';
+import { WorkflowComponent } from './workflow/workflow.component';
 
-import { ProcessesComponent } from './processes/processes.component';
-import { MarketplaceComponent } from './marketplace/marketplace.component';
-import { ReleasesComponent } from './releases/releases.component';
-import { ApidocComponent } from './microservice/apidoc/apidoc.component';
-import { MsDatasourceComponent } from './microservice/ms-datasource/ms-datasource.component';
-import { MxflowComponent } from './processes/mxflow/mxflow.component';
 import { AclComponent } from './acl/acl.component';
-import { SettingsComponent } from './settings/settings.component';
-import { EndpointsComponent } from './collection/endpoints/endpoints.component';
-import { TemplatesComponent } from './screen/templates/templates.component';
+import { ActionsComponent } from './actions/actions.component';
+import { AppWizardComponent } from './application/app-wizard/app-wizard.component';
+import { ApplicationComponent } from './application/application.component';
+import { AuthGuard } from './auth/auth.guard';
 import { LoginComponent } from './auth/login/login.component';
+import { EndpointsComponent } from './collection/endpoints/endpoints.component';
 import { DataFormComponent } from './data-form/data-form.component';
 import { FormDesignerComponent } from './data-form/form-designer/form-designer.component';
 import { DiagramComponent } from './diagram/diagram.component';
-import { ReportsComponent } from './reports/reports.component';
-import { ReportDesignerComponent } from './reports/report-designer/report-designer.component';
-import { QueryBuilderComponent } from './reports/query-builder/query-builder.component';
+import { MarketplaceComponent } from './marketplace/marketplace.component';
+import { ApidocComponent } from './microservice/apidoc/apidoc.component';
+import { MsDatasourceComponent } from './microservice/ms-datasource/ms-datasource.component';
 import { MsFormComponent } from './microservice/ms-form/ms-form.component';
-import { AuthGuard } from './auth/auth.guard';
+import { MxflowComponent } from './processes/mxflow/mxflow.component';
+import { ProcessesComponent } from './processes/processes.component';
 import { ProjectComponent } from './project/project.component';
 import { WizardComponent } from './project/wizard/wizard.component';
-import { ApplicationComponent } from './application/application.component';
-import { AppWizardComponent } from './application/app-wizard/app-wizard.component';
+import { ReleasesComponent } from './releases/releases.component';
+import { QueryBuilderComponent } from './reports/query-builder/query-builder.component';
+import { ReportDesignerComponent } from './reports/report-designer/report-designer.component';
+import { ReportsComponent } from './reports/reports.component';
+import { TemplatesComponent } from './screen/templates/templates.component';
+import { SettingsComponent } from './settings/settings.component';
 
 const routes: Routes = [
   {
@@ -90,7 +91,7 @@ const routes: Routes = [
             ]
           },
           {
-            path: 'workflows', component: DispatcherComponent, children: [
+            path: 'services', component: DispatcherComponent, children: [
               { path: '', component: WorkflowComponent },
               { path: 'designer/:id', component: WorkflowDesignerComponent }
             ]
@@ -158,6 +159,7 @@ const routes: Routes = [
     path: 'builder/screens/designer/:id',
     component: DesignerComponent
   },
+  { path: 'actions', component: ActionsComponent },
   {
     path: 'builder/forms/designer/:id',
     component: FormDesignerComponent

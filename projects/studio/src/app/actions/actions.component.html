@@ -1,0 +1,33 @@
+<div id="wrapper" class="relative">
+    <div id="leftcard">
+        <div class="mx-auto py-4 border-b flex z-index[99] noselect place-items-center">
+            <div class="text-indigo-500 mr-6 w-8 h-8 rounded-full cursor-pointer bg-neutral-200 flex items-center justify-center"
+                routerLink="../">
+                <vezo-icon icon="arrowLeft" className="w-4 h-4"></vezo-icon>
+            </div>
+            <div class="heading">ACTIONS</div>
+            <div class="flex-grow"></div>
+            <div class="mr-4"><img src="assets/macharc_icon.svg" class="w-6" /></div>
+        </div>
+        <div id="blocklist">
+            <div *ngFor="let action of actions" class="blockelem create-flowy noselect">
+                <input type="hidden" name='blockelemtype' class="blockelemtype" [value]="action.type">
+                <div class="grabme">
+                    <img src="assets/grabme.svg">
+                </div>
+                <div class="blockin">
+                    <div class="blockico">
+                        <span></span>
+                        <img [src]="action.icon">
+                    </div>
+                    <div class="blocktext">
+                        <p class="blocktitle">{{ action.title }}</p>
+                        <p class="blockdesc">{{ action.description }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button (click)="getOutPut()">Output</button>
+    </div>
+</div>
+<div #canvas id="canvas" class="canvas"></div>

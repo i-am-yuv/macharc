@@ -14,28 +14,37 @@ export class LayoutComponent {
   activeProject = { projectName: 'SELECT PROJECT' };
   menuItems: any[] = [
     {
+      label: 'Application',
+      items: [
+        { label: 'Projects', icon: 'clipboard', routerLink: ['/projects'] },
+      ]
+    },
+    {
       label: 'Backend',
       items: [
+
         { label: 'Datasources', icon: 'clipboard', routerLink: ['/builder/datasources'] },
         { label: 'Microservices', icon: 'clipboard', routerLink: ['/builder/microservices'] },
         { label: 'Collections', icon: 'clipboard', routerLink: ['/builder/collections'] },
-        { label: 'Services', icon: 'clipboard', routerLink: ['/builder/workflows'] },
+        { label: 'Services', icon: 'clipboard', routerLink: ['/builder/services'] },
       ],
       showSubMenu: true
     },
     {
       label: 'Frontend',
       items: [
-        { label: 'Applications', icon: 'clipboard', routerLink: ['/applications'] },
+        // { label: 'Applications', icon: 'clipboard', routerLink: ['/applications'] },
         { label: 'Forms', icon: 'clipboard', routerLink: ['/builder/forms'] },
         { label: 'Screens', icon: 'clipboard', routerLink: ['/builder/screens'] },
+        { label: 'Actions', icon: 'clipboard', routerLink: ['/actions'] },
+        { label: 'Mobile Builder', icon: 'clipboard', routerLink: [''], externalUrl: 'https://www.splenta.com' },
       ],
       showSubMenu: true
     },
     {
       label: 'Utilities',
       items: [
-        { label: 'Processes', icon: 'clipboard', routerLink: ['/builder/processes'] },
+        { label: 'Business Process', icon: 'clipboard', routerLink: ['/builder/processes'] },
         { label: 'Reports', icon: 'clipboard', routerLink: ['/builder/reports'] },
         { label: 'Releases', icon: 'clipboard', routerLink: ['/releases'] },
         { label: 'Integrations', icon: 'clipboard', routerLink: ['/marketplace'] },

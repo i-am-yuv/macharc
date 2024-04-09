@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { MessageService } from '@splenta/vezo';
+import { MicroService } from '../microservice/microservice';
+import { MicroserviceService } from '../microservice/microservice.service';
 import { GenericComponent } from '../utils/genericcomponent';
 import { Workflow } from './workflow';
 import { WorkflowService } from './workflow.service';
-import { Router } from '@angular/router';
-import { MicroService } from '../microservice/microservice';
-import { MicroserviceService } from '../microservice/microservice.service';
 
 @Component({
   selector: 'app-workflow',
@@ -45,7 +45,7 @@ export class WorkflowComponent extends GenericComponent implements OnInit {
     })
   }
   showDesigner(wf: Workflow) {
-    this.router.navigate(['/builder/workflows/designer/' + wf.id]);
+    this.router.navigate(['/builder/services/designer/' + wf.id]);
   }
 
 }
