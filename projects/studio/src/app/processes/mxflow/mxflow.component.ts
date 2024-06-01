@@ -1,11 +1,29 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { type CellStyle, Graph, MaxToolbar, gestureUtils, xmlUtils, Cell, Geometry, KeyHandler, InternalEvent, Codec, UndoManager, CellTracker, CellHighlight, RubberBandHandler, VertexHandler, constants, EdgeHandler, SelectionHandler, eventUtils } from '@maxgraph/core';
+import { ActivatedRoute } from '@angular/router';
+import {
+  Cell,
+  CellHighlight,
+  CellTracker,
+  Codec,
+  EdgeHandler,
+  Geometry,
+  Graph,
+  InternalEvent,
+  KeyHandler,
+  MaxToolbar,
+  RubberBandHandler,
+  SelectionHandler,
+  UndoManager,
+  eventUtils,
+  gestureUtils,
+  xmlUtils,
+  type CellStyle,
+} from '@maxgraph/core';
+import { MessageService } from '@splenta/vezo';
+import { BusinessLogicService } from '../../business-logic/business-logic.service';
+import { ScreenService } from '../../screen/screen.service';
 import { Process } from '../process';
 import { ProcessesService } from '../processes.service';
-import { ActivatedRoute } from '@angular/router';
-import { MessageService } from '@splenta/vezo';
-import { ScreenService } from '../../screen/screen.service';
-import { WorkflowService } from '../../workflow/workflow.service';
 
 export interface ActiveElement {
   mxObjectId?: string;
@@ -21,10 +39,9 @@ export interface ActiveElement {
 @Component({
   selector: 'app-mxflow',
   templateUrl: './mxflow.component.html',
-  styleUrls: ['./mxflow.component.scss']
+  styleUrls: ['./mxflow.component.scss'],
 })
 export class MxflowComponent implements OnInit {
-
   @ViewChild('graphContainer', { read: ElementRef, static: true })
   container!: ElementRef;
   tabactive: number = 1;
@@ -40,24 +57,19 @@ export class MxflowComponent implements OnInit {
 
   editorOptions = { theme: 'vs-dark', language: 'xml', formatOnPaste: true };
   bpmnXml: string | null = '';
-  undoManager: UndoManager = new UndoManager;
+  undoManager: UndoManager = new UndoManager();
   screens: any;
   workflows: any;
 
   constructor(
     private processService: ProcessesService,
     private screenService: ScreenService,
-    private workflowService: WorkflowService,
+    private workflowService: BusinessLogicService,
     private route: ActivatedRoute,
     private msgService: MessageService
-  ) {
-
-  }
+  ) {}
   ngOnInit(): void {
-
     this.processId = this.route.snapshot.paramMap.get('id');
-
-
 
     // Graph definitions
 
@@ -88,7 +100,6 @@ export class MxflowComponent implements OnInit {
     new CellHighlight(this.graph, '#ff0000', 2);
     new CellTracker(this.graph, 'rgba(0, 182, 255, 0.4)');
 
-
     new RubberBandHandler(this.graph);
 
     // registerCustomShapes();
@@ -104,9 +115,6 @@ export class MxflowComponent implements OnInit {
     this.graph.setAllowDanglingEdges(false);
     this.graph.setDisconnectOnMove(false);
     this.graph.gridSize = 1;
-
-
-
 
     var undoManager = this.undoManager;
     var listener = function (sender: any, evt: any) {
@@ -127,31 +135,100 @@ export class MxflowComponent implements OnInit {
     // this.graph.addListener(InternalEvent.REDO, redoListener);
     // graph.dropEnabled = true;
 
-    const addVertex = (type: string, label: string | null, icon: any, w: any, h: any, style: CellStyle) => {
+    const addVertex = (
+      type: string,
+      label: string | null,
+      icon: any,
+      w: any,
+      h: any,
+      style: CellStyle
+    ) => {
       // const vertex = new Cell(null, new Geometry(0, 0, w, h), style);
       if (!label) label = '';
-      const vertex = new Cell(label, new Geometry(0, 0, w, h), <CellStyle>style);
+      const vertex = new Cell(
+        label,
+        new Geometry(0, 0, w, h),
+        <CellStyle>style
+      );
       vertex.setVertex(true);
 
       this.addToolbarItem(type, this.graph, toolbar, vertex, icon);
     };
 
-    addVertex('start-event', null, '/assets/start-event.svg', 50, 50, { shape: 'ellipse', fillColor: '#23d67d', aspect: 'fixed', fontColor: '#333333', labelPosition: 'left', align: 'center' });
-    addVertex('swim-lane', 'Lane', '/assets/lane.svg', 600, 200, { shape: 'swimlane', horizontal: false });
-    addVertex('user-task', 'Task', '/assets/usertask.svg', 100, 40, { shape: 'rectangle', rounded: true });
+    addVertex('start-event', null, '/assets/start-event.svg', 50, 50, {
+      shape: 'ellipse',
+      fillColor: '#23d67d',
+      aspect: 'fixed',
+      fontColor: '#333333',
+      labelPosition: 'left',
+      align: 'center',
+    });
+    addVertex('swim-lane', 'Lane', '/assets/lane.svg', 600, 200, {
+      shape: 'swimlane',
+      horizontal: false,
+    });
+    addVertex('user-task', 'Task', '/assets/usertask.svg', 100, 40, {
+      shape: 'rectangle',
+      rounded: true,
+    });
     // addVertex('connection', null, '/assets/connection.svg', 40, 40, { shape: 'ellipse' });
     // @ts-ignore
-    addVertex('gateway-parallel', null, '/assets/gateway-parallel.svg', 50, 50, { shape: 'image', image: '/assets/gateway-parallel.svg', verticalLabelPosition: 'bottom', verticalAlign: 'top' });
+    addVertex(
+      'gateway-parallel',
+      null,
+      '/assets/gateway-parallel.svg',
+      50,
+      50,
+      {
+        shape: 'image',
+        image: '/assets/gateway-parallel.svg',
+        verticalLabelPosition: 'bottom',
+        verticalAlign: 'top',
+      }
+    );
     // @ts-ignore
-    addVertex('gateway-xor', null, '/assets/gateway-xor.svg', 50, 50, { shape: 'image', image: '/assets/gateway-xor.svg', verticalLabelPosition: 'bottom', verticalAlign: 'top' });
+    addVertex('gateway-xor', null, '/assets/gateway-xor.svg', 50, 50, {
+      shape: 'image',
+      image: '/assets/gateway-xor.svg',
+      verticalLabelPosition: 'bottom',
+      verticalAlign: 'top',
+    });
     // @ts-ignore
-    addVertex('service-task', null, '/assets/service.svg', 50, 50, { shape: 'image', image: '/assets/service.svg', verticalLabelPosition: 'bottom', verticalAlign: 'top' });
+    addVertex('service-task', null, '/assets/service.svg', 50, 50, {
+      shape: 'image',
+      image: '/assets/service.svg',
+      verticalLabelPosition: 'bottom',
+      verticalAlign: 'top',
+    });
     // @ts-ignore
-    addVertex('data-store', null, '/assets/data-store.svg', 50, 50, { shape: 'image', image: '/assets/data-store.svg', verticalLabelPosition: 'bottom', verticalAlign: 'top' });
+    addVertex('data-store', null, '/assets/data-store.svg', 50, 50, {
+      shape: 'image',
+      image: '/assets/data-store.svg',
+      verticalLabelPosition: 'bottom',
+      verticalAlign: 'top',
+    });
     // @ts-ignore
-    addVertex('start-event-message', null, '/assets/start-event-message.svg', 50, 50, { shape: 'image', image: '/assets/start-event-message.svg', verticalLabelPosition: 'bottom', verticalAlign: 'top' });
+    addVertex(
+      'start-event-message',
+      null,
+      '/assets/start-event-message.svg',
+      50,
+      50,
+      {
+        shape: 'image',
+        image: '/assets/start-event-message.svg',
+        verticalLabelPosition: 'bottom',
+        verticalAlign: 'top',
+      }
+    );
     // @ts-ignore
-    addVertex('end-event', null, '/assets/end-event.svg', 50, 50, { shape: 'doubleEllipse', fillColor: '#db3e00', strokeColor: '#ffffff', labelPosition: 'left', align: 'center' });
+    addVertex('end-event', null, '/assets/end-event.svg', 50, 50, {
+      shape: 'doubleEllipse',
+      fillColor: '#db3e00',
+      strokeColor: '#ffffff',
+      labelPosition: 'left',
+      align: 'center',
+    });
     toolbar.addLine();
 
     this.graph.setPanning(true); // Use mouse right button for panning
@@ -159,20 +236,17 @@ export class MxflowComponent implements OnInit {
     // is normally the first child of the root (ie. layer 0).
     const parent = this.graph.getDefaultParent();
 
-    this.processService.getData({ id: this.processId }).then(
-      (res: any) => {
-        if (res) {
-          this.process = res;
-          this.getScreens();
-          this.getWorkflows();
-          if (this.process) {
-            this.fromXml = this.process.processDefinition;
-            this.renderXml();
-          }
-
+    this.processService.getData({ id: this.processId }).then((res: any) => {
+      if (res) {
+        this.process = res;
+        this.getScreens();
+        this.getWorkflows();
+        if (this.process) {
+          this.fromXml = this.process.processDefinition;
+          this.renderXml();
         }
-      })
-
+      }
+    });
 
     // Adds cells to the model in a single step
     // graph.batchUpdate(() => {
@@ -181,21 +255,30 @@ export class MxflowComponent implements OnInit {
     //   graph.insertEdge(parent, null, null, vertex01, vertex02, <EdgeStyle>{ edgeStyle: 'orthogonalEdgeStyle', rounded: 0, orthogonalLoop: 1, jettySize: 'auto', html: 1 });
 
     // });
-
   }
   getScreens() {
-    this.screenService.getScreensByMicroService(this.process.microService?.id).then((res: any) => {
-      this.screens = res;
-    })
+    this.screenService
+      .getScreensByMicroService(this.process.microService?.id)
+      .then((res: any) => {
+        this.screens = res;
+      });
   }
 
   getWorkflows() {
-    this.workflowService.getWorkflowsByMicroService(this.process.microService?.id).then((res: any) => {
-      this.workflows = res;
-    })
+    this.workflowService
+      .getWorkflowsByMicroService(this.process.microService?.id)
+      .then((res: any) => {
+        this.workflows = res;
+      });
   }
 
-  addToolbarItem(type: string, graph: any, toolbar: MaxToolbar, prototype: any, image: any) {
+  addToolbarItem(
+    type: string,
+    graph: any,
+    toolbar: MaxToolbar,
+    prototype: any,
+    image: any
+  ) {
     // Function that is executed when the image is dropped on
     // the graph. The cell argument points to the cell under
     // the mousepointer if there is one.
@@ -222,7 +305,6 @@ export class MxflowComponent implements OnInit {
     const img = toolbar.addMode(type, image, funct, image);
     gestureUtils.makeDraggable(img, graph, funct, img);
 
-
     this.graph.addListener(InternalEvent.CLICK, (sender: any, evt: any) => {
       if (evt.properties.cell) {
         this.activeElement = evt.properties.cell;
@@ -232,18 +314,17 @@ export class MxflowComponent implements OnInit {
     var keyHandler = new KeyHandler(graph);
     keyHandler.bindControlKey(90, () => {
       this.undoManager.undo();
-    })
+    });
     keyHandler.bindControlKey(89, () => {
       this.undoManager.redo();
-    })
+    });
     keyHandler.bindKey(46, function (evt: any) {
       var cells = graph.getSelectionCells();
       graph.removeCells(cells);
 
       cells.forEach((cell: any) => {
         graph.view.clear(cell, true, false);
-      })
-
+      });
 
       graph.refresh();
     });
@@ -253,8 +334,7 @@ export class MxflowComponent implements OnInit {
 
       cells.forEach((cell: any) => {
         graph.view.clear(cell, true, false);
-      })
-
+      });
 
       graph.refresh();
     });
@@ -265,14 +345,11 @@ export class MxflowComponent implements OnInit {
 
         if (keyCode == 37) {
           dx = -1;
-        }
-        else if (keyCode == 38) {
+        } else if (keyCode == 38) {
           dy = -1;
-        }
-        else if (keyCode == 39) {
+        } else if (keyCode == 39) {
           dx = 1;
-        }
-        else if (keyCode == 40) {
+        } else if (keyCode == 40) {
           dy = 1;
         }
 
@@ -294,11 +371,7 @@ export class MxflowComponent implements OnInit {
     keyHandler.bindKey(40, function () {
       nudge(40);
     });
-
   }
-
-
-
 
   sendBack() {
     var cells = this.graph.getSelectionCells();
@@ -338,7 +411,7 @@ export class MxflowComponent implements OnInit {
     this.processService.mxXmltoBpmn(this.process).then((res: any) => {
       this.bpmnXml = res.message;
       this.showXml = true;
-    })
+    });
   }
 
   getXmlModel() {
@@ -352,26 +425,29 @@ export class MxflowComponent implements OnInit {
 
   prettifyXml(sourceXml: string) {
     var xmlDoc = new DOMParser().parseFromString(sourceXml, 'application/xml');
-    var xsltDoc = new DOMParser().parseFromString([
-      // describes how we want to modify the XML - indent everything
-      '<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform">',
-      '  <xsl:strip-space elements="*"/>',
-      '  <xsl:template match="para[content-style][not(text())]">', // change to just text() to strip space in text nodes
-      '    <xsl:value-of select="normalize-space(.)"/>',
-      '  </xsl:template>',
-      '  <xsl:template match="node()|@*">',
-      '    <xsl:copy><xsl:apply-templates select="node()|@*"/></xsl:copy>',
-      '  </xsl:template>',
-      '  <xsl:output indent="yes"/>',
-      '</xsl:stylesheet>',
-    ].join('\n'), 'application/xml');
+    var xsltDoc = new DOMParser().parseFromString(
+      [
+        // describes how we want to modify the XML - indent everything
+        '<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform">',
+        '  <xsl:strip-space elements="*"/>',
+        '  <xsl:template match="para[content-style][not(text())]">', // change to just text() to strip space in text nodes
+        '    <xsl:value-of select="normalize-space(.)"/>',
+        '  </xsl:template>',
+        '  <xsl:template match="node()|@*">',
+        '    <xsl:copy><xsl:apply-templates select="node()|@*"/></xsl:copy>',
+        '  </xsl:template>',
+        '  <xsl:output indent="yes"/>',
+        '</xsl:stylesheet>',
+      ].join('\n'),
+      'application/xml'
+    );
 
     var xsltProcessor = new XSLTProcessor();
     xsltProcessor.importStylesheet(xsltDoc);
     var resultDoc = xsltProcessor.transformToDocument(xmlDoc);
     var resultXml = new XMLSerializer().serializeToString(resultDoc);
     return resultXml;
-  };
+  }
 
   renderXml() {
     if (this.fromXml) {
@@ -388,21 +464,21 @@ export class MxflowComponent implements OnInit {
     this.undoManager.redo();
   }
 
-
   stringifyWithoutCircular(json: any) {
     return JSON.stringify(
       json,
       (key, value) => {
-        if ((key === 'parent' || key == 'source' || key == 'target') && value !== null) {
+        if (
+          (key === 'parent' || key == 'source' || key == 'target') &&
+          value !== null
+        ) {
           return value.id;
         } else if (key === 'value' && value !== null && value.localName) {
           let results;
-          Object.keys(value.attributes).forEach(
-            (attrKey) => {
-              const attribute = value.attributes[attrKey];
-              results[attribute.nodeName] = attribute.nodeValue;
-            }
-          )
+          Object.keys(value.attributes).forEach((attrKey) => {
+            const attribute = value.attributes[attrKey];
+            results[attribute.nodeName] = attribute.nodeValue;
+          });
           return results;
         }
         return value;
@@ -412,49 +488,66 @@ export class MxflowComponent implements OnInit {
   }
 
   parseXmlToGraph(xmlDoc: any, graph: any) {
-    const cells = xmlDoc.documentElement.children[0].children
-    const parent = graph.getDefaultParent()
+    const cells = xmlDoc.documentElement.children[0].children;
+    const parent = graph.getDefaultParent();
     for (let i = 0; i < cells.length; i++) {
+      const cellAttrs = cells[i].attributes;
+      if (cellAttrs.vertex) {
+        // is vertex
 
-      const cellAttrs = cells[i].attributes
-      if (cellAttrs.vertex) { // is vertex
-
-        const vertexName = cellAttrs.value.value
-        const vertexId = Number(cellAttrs.id.value)
-        const geom = cells[i].children[0].attributes
-        const styles = cells[i].children[1].attributes
-        const attrs = Object.fromEntries(Array.from(styles).map((item: any) => [item.name, item.value])
-          .filter((t: any) => {
-            return t[0] !== 'as'
-          }));
+        const vertexName = cellAttrs.value.value;
+        const vertexId = Number(cellAttrs.id.value);
+        const geom = cells[i].children[0].attributes;
+        const styles = cells[i].children[1].attributes;
+        const attrs = Object.fromEntries(
+          Array.from(styles)
+            .map((item: any) => [item.name, item.value])
+            .filter((t: any) => {
+              return t[0] !== 'as';
+            })
+        );
 
         if (attrs.horizontal) {
-          (attrs.horizontal === '0') ? attrs.horizontal = false : attrs.horizontal = true;
+          attrs.horizontal === '0'
+            ? (attrs.horizontal = false)
+            : (attrs.horizontal = true);
         }
-        const xPos = Number(geom._x.nodeValue)
-        const yPos = Number(geom._y.nodeValue)
-        const height = Number(geom._height.nodeValue)
-        const width = Number(geom._width.nodeValue)
-        var c2 = graph.insertVertex(parent, vertexId, vertexName, xPos, yPos, width, height, <CellStyle>attrs)
+        const xPos = Number(geom._x.nodeValue);
+        const yPos = Number(geom._y.nodeValue);
+        const height = Number(geom._height.nodeValue);
+        const width = Number(geom._width.nodeValue);
+        var c2 = graph.insertVertex(
+          parent,
+          vertexId,
+          vertexName,
+          xPos,
+          yPos,
+          width,
+          height,
+          <CellStyle>attrs
+        );
         if (cellAttrs.type) {
           c2['type'] = cellAttrs.type.value;
         }
       }
     }
     for (let i = 0; i < cells.length; i++) {
-
-      const cellAttrs = cells[i].attributes
-      if (cellAttrs.edge) { //is edge
-        const edgeName = cellAttrs.value?.nodeValue
-        const edgeId = Number(cellAttrs.id.nodeValue)
-        const source = Number(cellAttrs.source.nodeValue)
-        const target = Number(cellAttrs.target.nodeValue)
+      const cellAttrs = cells[i].attributes;
+      if (cellAttrs.edge) {
+        //is edge
+        const edgeName = cellAttrs.value?.nodeValue;
+        const edgeId = Number(cellAttrs.id.nodeValue);
+        const source = Number(cellAttrs.source.nodeValue);
+        const target = Number(cellAttrs.target.nodeValue);
         //console.log(edgeId, graph.getDataModel().getCell(source), target);
         //graph.insertEdge(parent, null, null, graph.getDataModel().getCell(source), graph.getDataModel().getCell(target), <EdgeStyle>{ edgeStyle: 'orthogonalEdgeStyle', rounded: 0, orthogonalLoop: 1, jettySize: 'auto', html: 1 });
-        graph.insertEdge(parent, edgeId, edgeName,
+        graph.insertEdge(
+          parent,
+          edgeId,
+          edgeName,
           graph.getDataModel().getCell(source),
           graph.getDataModel().getCell(target)
-        )
+        );
       }
     }
   }
@@ -464,10 +557,11 @@ export class MxflowComponent implements OnInit {
     this.getXmlModel();
     this.process.processDefinition = this.xmlData;
     this.processService.updateData(this.process).then((res: any) => {
-      this.msgService.add({ severity: 'success', summary: 'Updated', detail: 'Definition updated' });
-    })
+      this.msgService.add({
+        severity: 'success',
+        summary: 'Updated',
+        detail: 'Definition updated',
+      });
+    });
   }
-
-
 }
-

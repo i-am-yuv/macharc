@@ -1,9 +1,21 @@
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class LayoutService {
+  showSideBar = false;
 
-  constructor() { }
+  sidebarVisibilityChange: Subject<boolean> = new Subject<boolean>();
+
+  constructor() {
+    this.sidebarVisibilityChange.subscribe((value) => {
+      this.showSideBar = value;
+    });
+  }
+
+  toggleSidebarVisibility() {
+    this.sidebarVisibilityChange.next(!this.showSideBar);
+  }
 }

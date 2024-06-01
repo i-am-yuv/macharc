@@ -39,8 +39,6 @@ import { MicroserviceComponent } from './microservice/microservice.component';
 import { BlocksComponent } from './screen/blocks/blocks.component';
 import { DesignerComponent } from './screen/designer/designer.component';
 import { ScreenComponent } from './screen/screen.component';
-import { WorkflowDesignerComponent } from './workflow/workflow-designer/workflow-designer.component';
-import { WorkflowComponent } from './workflow/workflow.component';
 
 import { ChartModule } from '@splenta/vezo/chart';
 import { InputnumberModule } from '@splenta/vezo/inputnumber';
@@ -55,9 +53,13 @@ import { ApplicationComponent } from './application/application.component';
 import { JwtInterceptor } from './auth/JwtInterceptor';
 import { AuthService } from './auth/auth.service';
 import { LoginComponent } from './auth/login/login.component';
+import { BusinessLogicDesignerComponent } from './business-logic/business-logic-designer/business-logic-designer.component';
+import { BusinessLogicComponent } from './business-logic/business-logic.component';
 import { EndpointsComponent } from './collection/endpoints/endpoints.component';
 import { DataFormComponent } from './data-form/data-form.component';
 import { FormDesignerComponent } from './data-form/form-designer/form-designer.component';
+import { DatasourceFormComponent } from './datasource/datasource-form/datasource-form.component';
+import { DatasourceListComponent } from './datasource/datasource-list/datasource-list.component';
 import { DiagramComponent } from './diagram/diagram.component';
 import { MarketplaceComponent } from './marketplace/marketplace.component';
 import { ApidocComponent } from './microservice/apidoc/apidoc.component';
@@ -75,6 +77,7 @@ import { PropertiesComponent } from './screen/properties/properties.component';
 import { TemplatesComponent } from './screen/templates/templates.component';
 import { SettingsComponent } from './settings/settings.component';
 import { ContenteditableValueAccessor } from './utils/constenteditable.directive';
+import { BusinessLogicAiComponent } from './business-logic/business-logic-ai/business-logic-ai.component';
 
 @NgModule({
   declarations: [
@@ -86,13 +89,13 @@ import { ContenteditableValueAccessor } from './utils/constenteditable.directive
     DatasourceComponent,
     CollectionComponent,
     CollectionFormComponent,
-    WorkflowComponent,
+    BusinessLogicComponent,
     FieldsComponent,
     DispatcherComponent,
     ScreenComponent,
     BlocksComponent,
     DesignerComponent,
-    WorkflowDesignerComponent,
+    BusinessLogicDesignerComponent,
     FlowComponent,
     MxflowComponent,
     ProcessesComponent,
@@ -118,7 +121,10 @@ import { ContenteditableValueAccessor } from './utils/constenteditable.directive
     WizardComponent,
     ApplicationComponent,
     AppWizardComponent,
-    ActionsComponent
+    ActionsComponent,
+    DatasourceListComponent,
+    DatasourceFormComponent,
+    BusinessLogicAiComponent,
   ],
   imports: [
     BrowserModule,
@@ -153,10 +159,15 @@ import { ContenteditableValueAccessor } from './utils/constenteditable.directive
     SequentialWorkflowDesignerModule,
     MonacoEditorModule.forRoot(),
     NgChartsModule,
-    ChartModule
+    ChartModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  providers: [HttpClientModule, MessageService, AuthService, { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },],
-  bootstrap: [AppComponent]
+  providers: [
+    HttpClientModule,
+    MessageService,
+    AuthService,
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+  ],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
