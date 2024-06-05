@@ -22,7 +22,7 @@
         <div class="mr-4 flex-grow">
           <div class="text-xs font-light">ACTIVE PROJECT</div>
           <div class="heading text-indigo-500">
-            {{ activeProject.projectName }}
+            {{ activeProject?.projectName }}
           </div>
         </div>
         <div>
@@ -35,7 +35,7 @@
         <div class="py-6 px-4 space-y-6">
           <div
             class="cursor-pointer"
-            [routerLink]="['/builder/microservices/' + activeProject.id]"
+            [routerLink]="['/builder/microservices/' + activeProject?.id]"
           >
             <vezo-icon icon="rectangleStack"></vezo-icon>
           </div>
@@ -97,7 +97,7 @@
       </div>
       <div
         class="cursor-pointer"
-        [routerLink]="['/builder/microservices/' + activeProject.id]"
+        [routerLink]="['/builder/microservices/' + activeProject?.id]"
       >
         <vezo-icon icon="rectangleStack"></vezo-icon>
       </div>

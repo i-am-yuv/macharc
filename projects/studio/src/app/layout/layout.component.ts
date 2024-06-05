@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
+import { Project } from '../project/project';
 import { ProjectService } from '../project/project.service';
-import { FilterBuilder } from '../utils/FilterBuilder';
 import { LayoutService } from './layout.service';
 
 @Component({
@@ -13,7 +13,10 @@ import { LayoutService } from './layout.service';
 export class LayoutComponent {
   showSideBar: boolean = false;
 
-  activeProject = { id: '', projectName: 'SELECT PROJECT' };
+  activeProject: Project | undefined = {
+    id: '',
+    projectName: 'SELECT PROJECT',
+  };
   menuItems: any[] = [
     // {
     //   label: 'Application',
@@ -115,14 +118,14 @@ export class LayoutComponent {
     this.layoutService.sidebarVisibilityChange.subscribe((value) => {
       this.showSideBar = value;
     });
+    this.projectService.setActiveProject();
+    this.projectService.getActiveProject().subscribe((val) => {
+      this.activeProject = val;
+    });
   }
   ngOnInit() {
     this.username = this.authService.getUserName();
     this.roles = this.authService.getRoles();
-    var search = FilterBuilder.boolEqual('isdefault', true);
-    this.projectService.getAllData(undefined, search).then((res: any) => {
-      if (res) this.activeProject = res.content[0];
-    });
   }
 
   logout() {
