@@ -44,7 +44,7 @@ export class MicroserviceComponent extends GenericComponent implements OnInit {
     private msgService: MessageService
   ) {
     super(msService, messageService);
-    this.projectId = this.route.snapshot.paramMap.get('id');
+    // this.projectId = this.route.snapshot.paramMap.get('id');
     this.form = this.fb.group({
       id: '',
       microServiceCode: [
@@ -61,14 +61,16 @@ export class MicroserviceComponent extends GenericComponent implements OnInit {
     });
   }
   ngOnInit(): void {
-    if (this.projectId) {
-      this.projectService.getData({ id: this.projectId }).then((res: any) => {
-        this.project = res;
-      });
-      var filterStr = FilterBuilder.equal('project.id', this.projectId);
-      this.search = filterStr;
-    }
-    this.getAllData();
+    this.projectService.getActiveProject().subscribe((val) => {
+      // this.projectId = this.projectService.activeProject?.id;
+      console.log(val);
+      this.projectId = val.id;
+      if (this.projectId) {
+        var filterStr = FilterBuilder.equal('project.id', this.projectId);
+        this.search = filterStr;
+        this.getAllData();
+      }
+    });
   }
   generateService(ms: MicroService) {
     this.loading = true;

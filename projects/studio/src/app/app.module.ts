@@ -53,6 +53,7 @@ import { ApplicationComponent } from './application/application.component';
 import { JwtInterceptor } from './auth/JwtInterceptor';
 import { AuthService } from './auth/auth.service';
 import { LoginComponent } from './auth/login/login.component';
+import { BusinessLogicAiComponent } from './business-logic/business-logic-ai/business-logic-ai.component';
 import { BusinessLogicDesignerComponent } from './business-logic/business-logic-designer/business-logic-designer.component';
 import { BusinessLogicComponent } from './business-logic/business-logic.component';
 import { EndpointsComponent } from './collection/endpoints/endpoints.component';
@@ -68,6 +69,7 @@ import { MsFormComponent } from './microservice/ms-form/ms-form.component';
 import { MxflowComponent } from './processes/mxflow/mxflow.component';
 import { ProcessesComponent } from './processes/processes.component';
 import { ProjectComponent } from './project/project.component';
+import { ProjectService } from './project/project.service';
 import { WizardComponent } from './project/wizard/wizard.component';
 import { ReleasesComponent } from './releases/releases.component';
 import { QueryBuilderComponent } from './reports/query-builder/query-builder.component';
@@ -77,7 +79,6 @@ import { PropertiesComponent } from './screen/properties/properties.component';
 import { TemplatesComponent } from './screen/templates/templates.component';
 import { SettingsComponent } from './settings/settings.component';
 import { ContenteditableValueAccessor } from './utils/constenteditable.directive';
-import { BusinessLogicAiComponent } from './business-logic/business-logic-ai/business-logic-ai.component';
 
 @NgModule({
   declarations: [
@@ -165,6 +166,7 @@ import { BusinessLogicAiComponent } from './business-logic/business-logic-ai/bus
   providers: [
     HttpClientModule,
     MessageService,
+    ProjectService,
     AuthService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
   ],
