@@ -10,7 +10,7 @@ export class LayoutService {
   sidebarVisibilityChange: Subject<boolean> = new Subject<boolean>();
 
   constructor() {
-    this.sidebarVisibilityChange.subscribe((value) => {
+    this.sidebarVisibilityChange.subscribe((value : any) => {
       this.showSideBar = value;
     });
   }
