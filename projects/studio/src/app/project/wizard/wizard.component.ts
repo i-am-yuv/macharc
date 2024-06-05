@@ -61,4 +61,8 @@ export class WizardComponent extends GenericComponent {
       this.router.navigate(['/projects']);
     }, 2000);
   }
+  getRouterLink()
+  {
+    this.router.navigate(['/projects']);
+  }
 }
