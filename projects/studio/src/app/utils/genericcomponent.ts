@@ -1,6 +1,7 @@
 import { FormGroup } from '@angular/forms';
 import { MessageService, Pagination } from '@splenta/vezo';
 import { GenericService } from './genericservice';
+import { Router } from '@angular/router';
 
 export abstract class GenericComponent {
   visible: boolean = false;

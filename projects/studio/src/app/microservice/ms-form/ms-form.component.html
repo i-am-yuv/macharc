@@ -2,7 +2,8 @@
   <div class="mr-6">
     <vezo-icon
       icon="arrowLeft"
-      [routerLink]="['/builder/microservices/' + dataSingle.project.id]"
+      [routerLink]="['/builder/microservices/' + dataSingle?.project?.id]"
+      (click)="getRouterLink()"
       className="cursor-pointer"
     ></vezo-icon>
   </div>

@@ -29,6 +29,7 @@ export class ProjectService extends GenericService {
     });
   }
   getActiveProject() {
+  //  this.setActiveProject();
     return this.activeProjectChange.asObservable();
   }
 }

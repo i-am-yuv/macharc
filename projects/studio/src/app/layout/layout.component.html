@@ -1,5 +1,5 @@
 <div [ngClass]="{ 'grid grid-cols-12': showSideBar, flex: !showSideBar }">
-  <div class="col-span-2 relative" *ngIf="showSideBar">
+  <div class="col-span-2 relative shadow-md" *ngIf="showSideBar">
     <div class="p-5 grid grid-cols-12 border-b cursor-pointer" routerLink="/">
       <div class="col-span-3">
         <img src="assets/macharc_icon.svg" class="w-8" />
@@ -82,7 +82,7 @@
     </div>
   </div>
   <div
-    class="p-4 text-right bg-gray-100 cursor-pointer flex-none"
+    class="p-4 text-right bg-gray-100 cursor-pointer flex-none shadow-md"
     *ngIf="!showSideBar"
   >
     <div class="py-6 space-y-6">

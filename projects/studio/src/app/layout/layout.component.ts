@@ -4,6 +4,7 @@ import { AuthService } from '../auth/auth.service';
 import { Project } from '../project/project';
 import { ProjectService } from '../project/project.service';
 import { LayoutService } from './layout.service';
+import { FilterBuilder } from '../utils/FilterBuilder';
 
 @Component({
   selector: 'app-layout',
@@ -118,14 +119,19 @@ export class LayoutComponent {
     this.layoutService.sidebarVisibilityChange.subscribe((value) => {
       this.showSideBar = value;
     });
-    this.projectService.setActiveProject();
-    this.projectService.getActiveProject().subscribe((val) => {
-      this.activeProject = val;
-    });
+    
   }
   ngOnInit() {
     this.username = this.authService.getUserName();
     this.roles = this.authService.getRoles();
+    var search = FilterBuilder.boolEqual('isdefault', true);
+    // this.projectService.getAllData(undefined, search).then((res: any) => {
+    //   if (res.content[0] != null ) this.activeProject = res.content[0];
+    // });
+    this.projectService.setActiveProject();
+    this.projectService.getActiveProject().subscribe((val) => {
+      this.activeProject = val;
+    });
   }
 
   logout() {

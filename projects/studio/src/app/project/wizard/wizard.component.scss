@@ -1,0 +1,27 @@
+
+:host::ng-deep {
+    .btn{
+        height: 50px;
+        width:-webkit-fill-available;
+        background-color:  #4038CA;
+        color: white;
+        
+        text-align: center !important;
+        border-radius: 2px !important;
+    }
+    .place-items-center {
+        display: contents !important;
+    }
+    .text-xs{
+        font-size: 18px;
+        font-weight: 600;
+        line-height: 26.1px;
+    }
+}
+
+.InputText {
+    font-size: 16px;
+    font-weight: 400;
+    color: #6D6D6D;
+    border-radius: 2px;
+}

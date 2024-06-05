@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, Pagination } from '@splenta/vezo';
 import { ProjectService } from '../project/project.service';
 import { FilterBuilder } from '../utils/FilterBuilder';
@@ -15,7 +15,7 @@ import { MicroserviceService } from './microservice.service';
 })
 export class MicroserviceComponent extends GenericComponent implements OnInit {
   componentName: string = 'Microservice';
-  form: FormGroup;
+  form!: FormGroup;
   data: MicroService[] = [];
 
   showGrid: boolean = true;
@@ -41,6 +41,7 @@ export class MicroserviceComponent extends GenericComponent implements OnInit {
     private micrService: MicroserviceService,
     private projectService: ProjectService,
     private route: ActivatedRoute,
+    private router : Router ,
     private msgService: MessageService
   ) {
     super(msService, messageService);
@@ -61,6 +62,7 @@ export class MicroserviceComponent extends GenericComponent implements OnInit {
     });
   }
   ngOnInit(): void {
+    this.projectService.setActiveProject();
     this.projectService.getActiveProject().subscribe((val) => {
       // this.projectId = this.projectService.activeProject?.id;
       console.log(val);
@@ -113,5 +115,10 @@ export class MicroserviceComponent extends GenericComponent implements OnInit {
       .catch((e) => {
         this.loading = false;
       });
+  }
+
+  getRouterLink()
+  {
+    this.router.navigate(['/builder/microservices/create/new']);
   }
 }
