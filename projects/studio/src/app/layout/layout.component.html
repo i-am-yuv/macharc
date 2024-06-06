@@ -113,6 +113,9 @@
       <div (click)="toggleSideBar()">
         <vezo-icon icon="chevronRight"></vezo-icon>
       </div>
+      <div (click)="logout()" style="position: fixed; bottom: 0; padding-bottom: 16px; padding-top: 16px;" >
+        <vezo-icon icon="arrowRightOnRectangle" [isTooltip]="true" [tooltipText]="'Log out'"></vezo-icon>
+      </div>
     </div>
   </div>
   <div

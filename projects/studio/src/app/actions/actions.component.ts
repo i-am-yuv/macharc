@@ -177,10 +177,10 @@ export class ActionsComponent implements OnInit {
   // getOutPut() {
   //   console.log(JSON.stringify(this.engine.output()));
   // }
-// Old Code Ends -------------------------------------
+  // Old Code Ends -------------------------------------
 
 
-// New Code Starts from here
+  // New Code Starts from here
   private designer?: Designer;
 
   public definition: Definition = createDefinition();
@@ -193,7 +193,7 @@ export class ActionsComponent implements OnInit {
     private businessLogicService: BusinessLogicService,
     private route: ActivatedRoute,
     private msgService: MessageService
-  ) {}
+  ) { }
   public readonly toolboxConfiguration: ToolboxConfiguration = {
     groups: [
       // {
@@ -224,16 +224,22 @@ export class ActionsComponent implements OnInit {
   public ngOnInit() {
     this.updateDefinitionJSON();
     this.wfId = this.route.snapshot.paramMap.get('id');
-    this.businessLogicService.getData({ id: this.wfId }).then((res: any) => {
-      if (res) {
-        this.wf = res;
-        this.dataDef = this.wf.workflowDefinition;
-        if (this.dataDef) {
-          this.definition = JSON.parse(this.dataDef);
-          this.updateDefinitionJSON();
+    if (this.wfId) {
+      this.businessLogicService.getData({ id: this.wfId }).then((res: any) => {
+        if (res) {
+          this.wf = res;
+          this.dataDef = this.wf.workflowDefinition;
+          if (this.dataDef) {
+            this.definition = JSON.parse(this.dataDef);
+            this.updateDefinitionJSON();
+          }
         }
-      }
-    });
+      });
+    }
+    else {
+
+    }
+
   }
 
   public onDesignerReady(designer: Designer) {
