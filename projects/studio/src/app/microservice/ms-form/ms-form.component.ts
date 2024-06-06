@@ -51,19 +51,4 @@ export class MsFormComponent extends GenericComponent {
   loadData(res: any): void {
     this.form.patchValue({ ...res });
   }
-
-  getRouterLink()
-  {
-     if( this.msId)
-      {
-        // We are in edit form
-        this.router.navigate(['/builder/microservices/' + this.dataSingle?.project?.id]) ;
-      }
-      else{
-        // We are in create form
-        this.router.navigate(['/builder/microservices']) ;
-      }
-  }
-
-
 }

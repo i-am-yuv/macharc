@@ -41,7 +41,7 @@ export class MicroserviceComponent extends GenericComponent implements OnInit {
     private micrService: MicroserviceService,
     private projectService: ProjectService,
     private route: ActivatedRoute,
-    private router : Router ,
+    private router: Router,
     private msgService: MessageService
   ) {
     super(msService, messageService);
@@ -117,8 +117,7 @@ export class MicroserviceComponent extends GenericComponent implements OnInit {
       });
   }
 
-  getRouterLink()
-  {
-    this.router.navigate(['/builder/microservices/create/new']);
+  getRouterLink() {
+    this.router.navigate(['/builder/microservices/create']);
   }
 }

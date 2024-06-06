@@ -97,10 +97,9 @@ const routes: Routes = [
             component: DispatcherComponent,
             children: [
               { path: '', component: MicroserviceComponent },
-              { path: ':id', component: MicroserviceComponent },
-              { path: 'create/new', component: MsFormComponent },
               { path: 'create', component: MsFormComponent },
               { path: 'edit/:id', component: MsFormComponent },
+              { path: ':id', component: MicroserviceComponent },
             ],
           },
           { path: 'diagram', component: DiagramComponent },
