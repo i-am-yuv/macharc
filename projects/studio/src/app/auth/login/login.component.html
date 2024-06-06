@@ -38,20 +38,20 @@
                     </div>
 
                     <div class="mt-4">
-                        <vezo-input label="Password" formControlName="password" required="" class="text"
+                        <vezo-input label="Password" formControlName="password" required="" class="InputText"
                             placeholder="Enter Password"></vezo-input>
                         <error-message [controlName]="loginForm.controls['password']"></error-message>
                     </div>
 
                     <div claas="text-center flex" style="margin-top: 32px; justify-content: center;">
-                        <vezo-button label="LOGIN" className="btn" (click)="onSubmit()"
+                        <vezo-button label="LOGIN" className="btn" labelClass="btn1" (click)="onSubmit()"
                             [disabled]="!loginForm.valid"></vezo-button>
                     </div>
 
                     <div class="flex gap-2" style="justify-content: center; align-items: center; margin-top: 32px;">
-                        <div style="font-size: 12px; font-weight: 400; color: #000000; line-height: 12.1px;">Already
+                        <div style="font-size: 14px; font-weight: 400; color: #000000; line-height: 12.1px;">Already
                             have an account?</div>
-                        <div style="font-size: 12px; font-weight: 600; color: #6366F1; line-height: 12.1px;">Signup</div>
+                        <div style="font-size: 14px; font-weight: 600; color: #6366F1; line-height: 12.1px;">Signup</div>
                     </div>
 
                 </form>

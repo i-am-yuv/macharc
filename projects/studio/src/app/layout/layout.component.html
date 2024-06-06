@@ -30,9 +30,9 @@
         </div>
       </div>
     </div>
-    <div class="h-[80vh] overflow-y-scroll">
+    <div class="h-[80vh] ">
       <div class="flex">
-        <div class="py-6 px-4 space-y-6">
+        <div class="py-6 px-3 space-y-6 shadow-sm">
           <div
             class="cursor-pointer"
             [routerLink]="['/builder/microservices/' + activeProject?.id]"
@@ -49,7 +49,7 @@
             <vezo-icon icon="cog8Tooth"></vezo-icon>
           </div>
         </div>
-        <div>
+        <div class="overflow-y-scroll h-[72vh]">
           <vezo-menu [items]="menuItems"></vezo-menu>
         </div>
       </div>
@@ -119,7 +119,7 @@
     class="w-full"
     [ngClass]="{ 'col-span-10': showSideBar, 'flex-grow': !showSideBar }"
   >
-    <div class="p-10 bg-gray-50 h-screen overflow-x-scroll">
+    <div class="p-10 bg-gray-50 h-screen overflow-x-scroll ">
       <router-outlet></router-outlet>
     </div>
   </div>
