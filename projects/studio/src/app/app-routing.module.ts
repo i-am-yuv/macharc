@@ -201,7 +201,20 @@ const routes: Routes = [
     path: 'builder/screens/designer/:id',
     component: DesignerComponent,
   },
-  { path: 'actions', component: ActionsComponent },
+  // { path: 'actions', component: ActionsComponent },
+  {
+    path: 'actions',
+    component: LayoutComponent,
+    children: [
+      {
+        path: '',
+        component: DispatcherComponent,
+        children: [
+          { path: '', component: ActionsComponent }
+        ],
+      }
+    ]
+  },
   {
     path: 'builder/forms/designer/:id',
     component: FormDesignerComponent,
@@ -224,4 +237,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

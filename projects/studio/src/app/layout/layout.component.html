@@ -90,25 +90,25 @@
         <img src="assets/macharc_icon.svg" class="w-6" />
       </div>
       <div class="cursor-pointer" routerLink="/projects">
-        <vezo-icon icon="arrowsRightLeft"></vezo-icon>
+        <vezo-icon icon="arrowsRightLeft" [isTooltip]="true" [tooltipText]="'Projects'"></vezo-icon>
       </div>
       <div class="cursor-pointer" routerLink="/datasources">
-        <vezo-icon icon="circleStack"></vezo-icon>
+        <vezo-icon icon="circleStack" [isTooltip]="true" [tooltipText]="'Data sources'"></vezo-icon>
       </div>
       <div
         class="cursor-pointer"
         [routerLink]="['/builder/microservices/' + activeProject?.id]"
       >
-        <vezo-icon icon="rectangleStack"></vezo-icon>
+        <vezo-icon icon="rectangleStack" [isTooltip]="true" [tooltipText]="'Microservices'"></vezo-icon>
       </div>
       <div class="cursor-pointer" routerLink="/applications">
-        <vezo-icon icon="cubeTransparent"></vezo-icon>
+        <vezo-icon icon="cubeTransparent" [isTooltip]="true" [tooltipText]="'Applications'"></vezo-icon>
       </div>
       <div class="cursor-pointer" routerLink="/builder/mobile">
-        <vezo-icon icon="devicePhoneMobile"></vezo-icon>
+        <vezo-icon icon="devicePhoneMobile" [isTooltip]="true" [tooltipText]="'Mobile Builder'"></vezo-icon>
       </div>
       <div class="cursor-pointer" routerLink="/settings">
-        <vezo-icon icon="cog8Tooth"></vezo-icon>
+        <vezo-icon icon="cog8Tooth" [isTooltip]="true" [tooltipText]="'Settings'"></vezo-icon>
       </div>
       <div (click)="toggleSideBar()">
         <vezo-icon icon="chevronRight"></vezo-icon>

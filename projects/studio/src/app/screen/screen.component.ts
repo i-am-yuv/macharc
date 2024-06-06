@@ -69,8 +69,12 @@ export class ScreenComponent extends GenericComponent implements OnInit {
           this.microserviceItems = res.content;
         }
       })
-
     }
+    this.applicationService.getAllData().then((res: any) => {
+      if (res) {
+        this.applicationItems = res.content;
+      }
+    })
   }
 
   override editData(ds: any): void {
