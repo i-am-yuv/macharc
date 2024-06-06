@@ -1,6 +1,6 @@
 <div [ngClass]="{ 'grid grid-cols-12': showSideBar, flex: !showSideBar }">
   <div class="col-span-2 relative shadow-md" *ngIf="showSideBar">
-    <div class="p-5 grid grid-cols-12 border-b cursor-pointer" routerLink="/">
+    <div class="p-5 grid grid-cols-12 border-b cursor-pointer" routerLink="/" (click)="resetMenuItems()">
       <div class="col-span-3">
         <img src="assets/macharc_icon.svg" class="w-8" />
         <!-- <div class="border border-indigo-500 rounded-full w-8 h-8 flex justify-center items-center">
@@ -16,7 +16,7 @@
     </div>
     <div
       class="px-5 py-2 bg-indigo-50 border-b cursor-pointer"
-      routerLink="/projects"
+      routerLink="/projects" (click)="resetMenuItems()"
     >
       <div class="flex place-items-center">
         <div class="mr-4 flex-grow">
@@ -32,25 +32,25 @@
     </div>
     <div class="h-[80vh] ">
       <div class="flex">
-        <div class="py-6 px-3 space-y-6 shadow-sm">
+        <div class="py-6 space-y-3 shadow-sm">
           <div
-            class="cursor-pointer"
+            class="cursor-pointer  px-3 py-2" [ngClass]="{'bg-indigo-50 rounded-r-lg' : this.menuView =='menuItemsBackend' }"  (click)="selectMenuItem('menuItemsBackend')"
             [routerLink]="['/builder/microservices/' + activeProject?.id]"
           >
-            <vezo-icon icon="rectangleStack"></vezo-icon>
+            <vezo-icon icon="rectangleStack" ></vezo-icon>
           </div>
-          <div class="cursor-pointer" routerLink="/applications">
+          <div class="cursor-pointer px-3 py-2" [ngClass]="{'bg-indigo-50 rounded-r-lg' : this.menuView =='menuItemsFrontendWeb' }" routerLink="/applications" (click)="selectMenuItem('menuItemsFrontendWeb')">
             <vezo-icon icon="cubeTransparent"></vezo-icon>
           </div>
-          <div class="cursor-pointer" routerLink="/builder/mobile">
+          <div class="cursor-pointer  px-3 py-2" [ngClass]="{'bg-indigo-50 rounded-r-lg' : this.menuView =='menuItemsFrontendMobile' }"  routerLink="/" (click)="selectMenuItem('menuItemsFrontendMobile')">
             <vezo-icon icon="devicePhoneMobile"></vezo-icon>
           </div>
-          <div class="cursor-pointer" routerLink="/settings">
+          <div class="cursor-pointer px-3 py-2" [ngClass]="{'bg-indigo-50 rounded-r-lg' : this.menuView =='menuItemsSettings' }"  routerLink="/settings" (click)="selectMenuItem('menuItemsSettings')">
             <vezo-icon icon="cog8Tooth"></vezo-icon>
           </div>
         </div>
         <div class="overflow-y-scroll h-[72vh]">
-          <vezo-menu [items]="menuItems"></vezo-menu>
+          <vezo-menu [items]="this.getMenuItems()"></vezo-menu>
         </div>
       </div>
     </div>
@@ -86,28 +86,26 @@
     *ngIf="!showSideBar"
   >
     <div class="py-6 space-y-6">
-      <div class="cursor-pointer" routerLink="/">
+      <div class="cursor-pointer" routerLink="/" (click)="resetMenuItems()">
         <img src="assets/macharc_icon.svg" class="w-6" />
       </div>
-      <div class="cursor-pointer" routerLink="/projects">
+      <div class="cursor-pointer" routerLink="/projects" (click)="resetMenuItems()">
         <vezo-icon icon="arrowsRightLeft" [isTooltip]="true" [tooltipText]="'Projects'"></vezo-icon>
       </div>
-      <div class="cursor-pointer" routerLink="/datasources">
+      <div class="cursor-pointer" routerLink="/datasources" (click)="selectMenuItem('menuItemsBackend')">
         <vezo-icon icon="circleStack" [isTooltip]="true" [tooltipText]="'Data sources'"></vezo-icon>
       </div>
-      <div
-        class="cursor-pointer"
-        [routerLink]="['/builder/microservices/' + activeProject?.id]"
+      <div class="cursor-pointer" [routerLink]="['/builder/microservices/' + activeProject?.id]" (click)="selectMenuItem('menuItemsBackend')"
       >
         <vezo-icon icon="rectangleStack" [isTooltip]="true" [tooltipText]="'Microservices'"></vezo-icon>
       </div>
-      <div class="cursor-pointer" routerLink="/applications">
+      <div class="cursor-pointer" routerLink="/applications" (click)="selectMenuItem('menuItemsFrontendWeb')">
         <vezo-icon icon="cubeTransparent" [isTooltip]="true" [tooltipText]="'Applications'"></vezo-icon>
       </div>
-      <div class="cursor-pointer" routerLink="/builder/mobile">
+      <div class="cursor-pointer" routerLink="/builder/mobile" (click)="selectMenuItem('menuItemsFrontendMobile')">
         <vezo-icon icon="devicePhoneMobile" [isTooltip]="true" [tooltipText]="'Mobile Builder'"></vezo-icon>
       </div>
-      <div class="cursor-pointer" routerLink="/settings">
+      <div class="cursor-pointer" routerLink="/settings" (click)="selectMenuItem('menuItemsSettings')">
         <vezo-icon icon="cog8Tooth" [isTooltip]="true" [tooltipText]="'Settings'"></vezo-icon>
       </div>
       <div (click)="toggleSideBar()">
@@ -122,7 +120,7 @@
     class="w-full"
     [ngClass]="{ 'col-span-10': showSideBar, 'flex-grow': !showSideBar }"
   >
-    <div class="p-10 bg-gray-50 h-screen overflow-x-scroll ">
+    <div class="p-10 bg-white h-screen overflow-x-scroll ">
       <router-outlet></router-outlet>
     </div>
   </div>

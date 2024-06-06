@@ -13,7 +13,7 @@ import { FilterBuilder } from '../utils/FilterBuilder';
 })
 export class LayoutComponent {
   showSideBar: boolean = false;
-
+  menuView : string = '';
   activeProject: Project | undefined = {
     id: '',
     projectName: 'SELECT PROJECT',
@@ -107,6 +107,85 @@ export class LayoutComponent {
     //   showSubMenu: true,
     // },
   ];
+
+  menuItemsBackend: any[] = [
+    {
+      label: 'Microservice',
+      items: [
+        {
+          label: 'Microservices',
+          icon: 'clipboard',
+          routerLink: ['/builder/microservices'],
+        },
+        {
+          label: 'Models',
+          icon: 'clipboard',
+          routerLink: ['/builder/collections'],
+        },
+        {
+          label: 'Services',
+          icon: 'clipboard',
+          routerLink: ['/builder/services'],
+        },
+      ],
+      showSubMenu: true,
+    }
+  ]
+
+  menuItemsFrontend: any[] = [
+    {
+      label: 'Frontend',
+      items: [
+        {
+          label: 'Applications',
+          icon: 'clipboard',
+          routerLink: ['/applications'],
+        },
+        { label: 'Pages', icon: 'clipboard', routerLink: ['/builder/screens'] },
+        { label: 'Actions', icon: 'clipboard', routerLink: ['/actions'] },
+        {
+          label: 'Components',
+          icon: 'clipboard',
+          routerLink: ['/builder/forms'],
+        },
+        {
+          label: 'Mobile Builder',
+          icon: 'clipboard',
+          routerLink: [''],
+          externalUrl: 'https://www.splenta.com',
+        },
+      ],
+      showSubMenu: true,
+    }
+  ]
+
+  menuItemsSettings: any[] = [
+    {
+      label: 'Utilities',
+      items: [
+        { label: 'Settings', icon: 'cog8Tooth', routerLink: ['/settings'], },
+        {
+          label: 'Business Process',
+          icon: 'clipboard',
+          routerLink: ['/builder/processes'],
+        },
+        {
+          label: 'Reports',
+          icon: 'clipboard',
+          routerLink: ['/builder/reports'],
+        },
+        { label: 'Releases', icon: 'clipboard', routerLink: ['/releases'] },
+        { label: 'Logs', icon: 'clipboard', routerLink: ['/system-logs'] },
+        // {
+        //   label: 'Integrations',
+        //   icon: 'clipboard',
+        //   routerLink: ['/marketplace'],
+        // },
+      ],
+      showSubMenu: true,
+    }
+  ]
+
   roles: any;
   username: string = '';
 
@@ -119,7 +198,7 @@ export class LayoutComponent {
     this.layoutService.sidebarVisibilityChange.subscribe((value) => {
       this.showSideBar = value;
     });
-    
+
   }
   ngOnInit() {
     this.username = this.authService.getUserName();
@@ -132,6 +211,10 @@ export class LayoutComponent {
     this.projectService.getActiveProject().subscribe((val) => {
       this.activeProject = val;
     });
+    const savedMenuItemName = sessionStorage.getItem('menuItemName');
+    if (savedMenuItemName) {
+      this.menuView = savedMenuItemName;
+    }
   }
 
   logout() {
@@ -140,5 +223,35 @@ export class LayoutComponent {
   }
   toggleSideBar() {
     this.layoutService.toggleSidebarVisibility();
+  }
+
+  getMenuItems():any[]  {
+    if (this.menuView == 'menuItemsBackend') {
+      return this.menuItemsBackend;
+    }
+    else if (this.menuView == 'menuItemsFrontendWeb') {
+      return this.menuItemsFrontend
+    }
+    else if (this.menuView == 'menuItemsFrontendMobile') {
+      return this.menuItemsFrontend
+    }
+    else if (this.menuView == 'menuItemsSettings') {
+      return this.menuItemsSettings ;
+    }
+    else{
+      return this.menuItems;
+    }
+  }
+
+  selectMenuItem(menuItemName:string)
+  {
+      this.menuView = menuItemName ;
+      sessionStorage.setItem('menuItemName', this.menuView );
+  }
+
+  resetMenuItems()
+  {
+    this.menuView = '' ;
+    sessionStorage.removeItem('menuItemName');
   }
 }
