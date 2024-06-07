@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { FilterBuilder } from '../utils/FilterBuilder';
 import { GenericService } from '../utils/genericservice';
 import { Project } from './project';
@@ -13,7 +13,8 @@ export class ProjectService extends GenericService {
 
   activeProject: Project | undefined;
 
-  activeProjectChange: Subject<Project> = new Subject<Project>();
+  //activeProjectChange: Subject<Project> = new Subject<Project>();
+  private activeProjectChange: BehaviorSubject<Project | undefined> = new BehaviorSubject<Project | undefined>(undefined);
 
   constructor(http: HttpClient) {
     super(http);
@@ -29,7 +30,6 @@ export class ProjectService extends GenericService {
     });
   }
   getActiveProject() {
-  //  this.setActiveProject();
     return this.activeProjectChange.asObservable();
   }
 }

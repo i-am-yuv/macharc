@@ -62,11 +62,10 @@ export class MicroserviceComponent extends GenericComponent implements OnInit {
     });
   }
   ngOnInit(): void {
-    this.projectService.setActiveProject();
     this.projectService.getActiveProject().subscribe((val) => {
       // this.projectId = this.projectService.activeProject?.id;
       console.log(val);
-      this.projectId = val.id;
+      this.projectId = val?.id;
       if (this.projectId) {
         var filterStr = FilterBuilder.equal('project.id', this.projectId);
         this.search = filterStr;
