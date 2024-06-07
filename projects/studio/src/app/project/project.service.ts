@@ -13,8 +13,8 @@ export class ProjectService extends GenericService {
 
   activeProject: Project | undefined;
 
-  //activeProjectChange: Subject<Project> = new Subject<Project>();
-  private activeProjectChange: BehaviorSubject<Project | undefined> = new BehaviorSubject<Project | undefined>(undefined);
+  //activeProjectChange: Subject<Project> = new Subject<Project>(); //This will not the value because the subscription happens after the emission.
+  private activeProjectChange: BehaviorSubject<Project | undefined> = new BehaviorSubject<Project | undefined>(undefined); //GIve value immediately upon subscription, because it retains the last emitted value.
 
   constructor(http: HttpClient) {
     super(http);

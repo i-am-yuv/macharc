@@ -216,7 +216,16 @@ const routes: Routes = [
   },
   {
     path: 'builder/forms/designer/:id',
-    component: FormDesignerComponent,
+    component: LayoutComponent,
+    children: [
+      {
+        path: '',
+        component: DispatcherComponent,
+        children: [
+          { path: '', component: FormDesignerComponent }
+        ],
+      }
+    ]
   },
   {
     path: 'builder/reports/designer/:id',

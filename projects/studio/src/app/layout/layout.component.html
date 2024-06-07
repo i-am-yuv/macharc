@@ -1,6 +1,6 @@
 <div [ngClass]="{ 'grid grid-cols-12': showSideBar, flex: !showSideBar }">
   <div class="col-span-2 relative shadow-md" *ngIf="showSideBar">
-    <div class="p-5 grid grid-cols-12 border-b cursor-pointer" routerLink="/" (click)="resetMenuItems()">
+    <div class="p-5 grid grid-cols-12 border-b cursor-pointer" routerLink="/">
       <div class="col-span-3">
         <img src="assets/macharc_icon.svg" class="w-8" />
         <!-- <div class="border border-indigo-500 rounded-full w-8 h-8 flex justify-center items-center">
@@ -16,7 +16,7 @@
     </div>
     <div
       class="px-5 py-2 bg-indigo-50 border-b cursor-pointer"
-      routerLink="/projects" (click)="resetMenuItems()"
+      routerLink="/projects"
     >
       <div class="flex place-items-center">
         <div class="mr-4 flex-grow">
