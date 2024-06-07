@@ -1,53 +1,84 @@
-<vezo-toast></vezo-toast>
-<div class="mb-3 " style="height: 80vh;">
-    <div class="flex justify-end"><img src="assets/close.svg"  width="24px" style="cursor: pointer;" (click)="getRouterLink()"></div>
-    <div class="flex w-full gap-5" style="align-items: center; justify-content: center;">
-
-        <div class="flex-auto grow-0 px-2 "
-            style="width:70%; height: 530px; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 12px; background: url('assets/leftBg.png'); background-size: cover; background-repeat: repeat; background-position:center;">
-            <div class="text-lg xl:text-3xl" style=" font-weight: 600; color: #FFFFFF; margin-top: 16px;">Create Your Project</div>
-            <div class="mt-4 mx-20 text-sm xl:text-base text-center" style=" font-weight: 400; color: #3730A3;">
-                Create a new project effortlessly with our low code, no code website builder. Design, develop, and
-                deploy your project without writing a single line of code.</div>
-            <div class="mt-6 mx-20 text-sm xl:text-base text-center" style=" font-weight: 400; color: #3730A3;"> Simply
-                choose your project type, customize your design, add functionality with drag-and-drop components, and
-                launch your project with ease. </div>
-            <img src="assets/projectPic.png" style="width: 270px;" class="mt-3" />
+<div class="grid grid-cols-12 min-h-full">
+    <div class="col-span-3 border-r">
+        <div class="heading mb-6">BUILD PROJECT</div>
+        <div class="">
+            <div class="flex place-items-center">
+                <div class="w-8 h-8 bg-green-400 rounded-full text-white">
+                    &nbsp;
+                </div>
+                <div class="pl-4">
+                    Define Project
+                </div>
+            </div>
+            <div class="h-[2rem] border-l ml-4"></div>
+            <div class="flex place-items-center">
+                <div class=" w-8 h-8 bg-orange-400 rounded-full text-white">
+                    &nbsp;
+                </div>
+                <div class="pl-4">
+                    Create Microservices
+                </div>
+            </div>
+            <div class="h-[2rem] border-l ml-4"></div>
+            <div class="flex place-items-center">
+                <div class=" w-8 h-8 bg-gray-400 rounded-full text-white">
+                    &nbsp;
+                </div>
+                <div class="pl-4">
+                    Define Services
+                </div>
+            </div>
+            <div class="h-[2rem] border-l ml-4"></div>
+            <div class="flex place-items-center">
+                <div class=" w-8 h-8 bg-gray-400 rounded-full text-white">
+                    &nbsp;
+                </div>
+                <div class="pl-4">
+                    Create Frontend Applications
+                </div>
+            </div>
+            <div class="h-[2rem] border-l ml-4"></div>
+            <div class="flex place-items-center">
+                <div class="w-8 h-8 bg-gray-400 rounded-full text-white">
+                    &nbsp;
+                </div>
+                <div class="pl-4">
+                    Define Processes
+                </div>
+            </div>
+            <div class="h-[2rem] border-l ml-4"></div>
+            <div class="flex place-items-center">
+                <div class="w-8 h-8 bg-gray-400 rounded-full text-white">
+                    &nbsp;
+                </div>
+                <div class="pl-4">
+                    Build and Deploy
+                </div>
+            </div>
         </div>
-
-        <!-- Project Form Starts from here -->
-        <div 
-            style="width:30%; display:flex; height: 530px;justify-content: start; flex-direction: column; align-items: center; ">
-            <img src="assets/macharcLogo.png" style="width: 235px;" class="mt-1" />
-            <form [formGroup]="form" class=" w-full">
-
-                <div class="mt-6">
-                    <vezo-input label="Application Code" placeholder="Enter Application Code" class="InputText"
+    </div>
+    <div class="col-span-9">
+        <div class="p-6 border-b bg-white">
+            <h1 class="heading">Project</h1>
+        </div>
+        <div class="bg-white m-6 p-4">
+            <form [formGroup]="form">
+                <div class="grid grid-cols-2 gap-6 mb-4">
+                    <vezo-input label="Project Code" placeholder="Enter Project Code"
                         formControlName="projectCode"></vezo-input>
-                </div>
-
-                <div class="mt-6">
-                    <vezo-input label="Application Name" placeholder="Enter Application Name" class="InputText"
+                    <vezo-input label="Project Name" placeholder="Enter Project Name"
                         formControlName="projectName"></vezo-input>
-                </div>
-
-                <div class="mt-6">
-                    <vezo-textarea label="Application Description" placeholder="Enter Application Description" class="InputText"
+                    <vezo-textarea label="Project Description" placeholder="Enter Description"
                         formControlName="projectDescription"></vezo-textarea>
-                </div>
-
-
-                <div class="mt-4">
+                    <div></div>
                     <vezo-switch label="Default" formControlName="isdefault"></vezo-switch>
                 </div>
-
-                <div class="text-center mt-6">
-                    <!-- <vezo-button label="Cancel" className="mr-2 bg-white"></vezo-button> -->
-                    <vezo-button label="Get started" (click)="submit()" className="btn"></vezo-button>
+                <div class="text-right">
+                    <vezo-button label="Cancel" className="mr-2 bg-white"></vezo-button>
+                    <vezo-button label="Save" (click)="saveData()"></vezo-button>
                 </div>
             </form>
         </div>
-
-
     </div>
 </div>
+<vezo-toast></vezo-toast>

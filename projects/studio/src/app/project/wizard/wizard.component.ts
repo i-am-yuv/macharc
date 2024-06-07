@@ -3,7 +3,7 @@ import { GenericComponent } from '../../utils/genericcomponent';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from '@splenta/vezo';
 import { ProjectService } from '../project.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-wizard',
@@ -33,7 +33,6 @@ export class WizardComponent extends GenericComponent {
     projectService: ProjectService,
     messageService: MessageService,
     private fb: FormBuilder,
-    private router: Router ,
     private route: ActivatedRoute) {
     super(projectService, messageService);
 
@@ -53,16 +52,5 @@ export class WizardComponent extends GenericComponent {
       this.getData({ id: this.id }, (res) => { this.form.patchValue({ ...res }) });
     }
   }
-  submit()
-  {
-    this.saveData();
-    // Moving back to Listing 
-    setTimeout(() => {
-      this.router.navigate(['/projects']);
-    }, 2000);
-  }
-  getRouterLink()
-  {
-    this.router.navigate(['/projects']);
-  }
 }
+
