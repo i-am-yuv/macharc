@@ -79,6 +79,7 @@ import { PropertiesComponent } from './screen/properties/properties.component';
 import { TemplatesComponent } from './screen/templates/templates.component';
 import { SettingsComponent } from './settings/settings.component';
 import { ContenteditableValueAccessor } from './utils/constenteditable.directive';
+import { SearchfieldModule } from '@splenta/vezo/searchfield';
 
 @NgModule({
   declarations: [
@@ -139,6 +140,7 @@ import { ContenteditableValueAccessor } from './utils/constenteditable.directive
     SidebarModule,
     VezoModule,
     InputModule,
+    SearchfieldModule,
     InputnumberModule,
     IconModule,
     MenuModule,

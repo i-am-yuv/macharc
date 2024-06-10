@@ -136,6 +136,8 @@ export class FormDesignerComponent implements OnInit {
   fields: Field[] = [];
   collections: Collection[] = [];
 
+  rightPanelExpanded : boolean =  true;
+
   constructor(
     private formService: DataFormService,
     private fieldService: FieldService,
@@ -214,6 +216,5 @@ export class FormDesignerComponent implements OnInit {
     var newItem: any;
     this.activeItem = newItem;
   }
-
 
 }
