@@ -65,7 +65,7 @@ export class FormDesignerComponent implements OnInit {
       effectAllowed: 'copy',
       disable: false,
       handle: false,
-      data: { label: 'Input Label' }
+      data: { label: 'Input Label', labelFont: '14', labelColor: '#000000' }
     },
     {
       name: 'dropdown',
@@ -201,11 +201,18 @@ export class FormDesignerComponent implements OnInit {
 
   deleteActiveItem(val: boolean) {
     this.draggableListRight.splice(this.draggableListRight.findIndex((a: any) => a.id === this.activeItem.id), 1);
+    var newItem: any;
+    this.activeItem = newItem;
   }
 
   handleClick(event: MouseEvent, item: any) {
     event.stopPropagation();
     this.activeItem = item;
+  }
+
+  onClickPickElement() {
+    var newItem: any;
+    this.activeItem = newItem;
   }
 
 

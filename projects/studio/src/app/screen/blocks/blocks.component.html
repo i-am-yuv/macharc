@@ -7,9 +7,9 @@
     </div>
 </ng-container>
 <ng-container *ngIf="block.name === 'input'">
-    <vezo-input [label]="block.data?.label"></vezo-input>
+    <vezo-input [label]="block.data?.label" [labelFont]="block.data?.labelFont+'px'" [labelColor]="block.data?.labelColor"></vezo-input>
 </ng-container>
-<ng-container *ngIf="block.name === 'textarea'">
+<ng-container *ngIf="block.name === 'textarea'"> 
     <vezo-textarea [label]="block.data?.label"></vezo-textarea>
 </ng-container>
 <ng-container *ngIf="block.name === 'dropdown'">

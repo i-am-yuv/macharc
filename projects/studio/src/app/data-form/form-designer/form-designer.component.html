@@ -1,21 +1,104 @@
-<div class="">
-    <div class="grid grid-cols-12">
-        <div class="col-span-2">
-            <div class="border-b p-3">
-                <div class="grid grid-cols-2">
-                    <div>
-                        <span *ngIf="!showProps">Blocks</span>
-                        <span *ngIf="showProps">Widgets</span>
+<div class="bg-gray-50">
+    <div class="grid grid-cols-12 gap-2 border-b" style="background-color: #EEF2FF;">
+        <div class="col-span-3 my-2 ml-3" style="background-color: #dfe7ff;">
+            <div class="text-center py-2" style="color: #4038CA;">
+                Microservice: <span>{{
+                    formData.collection?.microService?.microServiceCode }}</span>
+            </div>
+        </div>
+        <div class="col-span-3  my-2 " style="background-color: #dfe7ff;;">
+            <div class="text-center py-2" style="color: #4038CA;">Form: <span >{{ formData.formName }}</span></div>
+        </div>
+        <div class="col-span-2 my-2 " style="background-color: #dfe7ff;">
+            <!-- <div class="inline-block cursor-pointer">
+                    <vezo-icon icon="cursorArrowRays" className="w-4 h-4 mr-2 text-orange-400"></vezo-icon>
+                    <span class="text-orange-400 mr-4" (click)="generateComponent()">Generate Code</span>
+                </div> -->
+            <div class="flex justify-center py-2 gap-8">
+                <div class="col-12 cursor-pointer" (click)="saveDefinition()">
+                    <vezo-icon icon="inbox" className="w-3 h-3 mr-2" style="color: #4038CA;"></vezo-icon>
+                    <span class="" style="color: #4038CA;">Save</span>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-span-4  my-2 flex justify-end mr-4">
+            <div class="cursor-pointer py-2"  routerLink="../../">
+                <vezo-icon icon="arrowUturnLeft" className="w-4 h-4 mr-2" style="color: #4038CA;"></vezo-icon>
+                <span class="" style="color: #4038CA;">Back</span>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="grid grid-cols-12">
+    <div class="col-span-8 border-l border-r bg-gray-50">
+
+        <div [class.horizontal]="layout.dndHorizontal" [dndHorizontal]="layout.dndHorizontal"
+            (dndDrop)="onDrop($event, draggableListRight)"
+            class="dndList  name border-b h-[847px] overflow-y-scroll border-l-0 p-3" dndDropzone
+            dndEffectAllowed="copyMove">
+            <div class="dndPlaceholder h-16 p-5 border bg-blue-400 bg-opacity-25" dndPlaceholderRef>
+            </div>
+            <div *ngFor="let item of draggableListRight" [dndDraggable]="item" (click)="handleClick($event, item)"
+                (dndCanceled)="onDragged(item, draggableListRight, 'none')"
+                (dndCopied)="onDragged(item, draggableListRight, 'move')"
+                (dndLinked)="onDragged(item, draggableListRight, 'link')"
+                (dndMoved)="onDragged(item, draggableListRight, 'move')">
+                <div class="draggable-item mb-2 p-5 border border-dashed border-indigo-300 cursor-pointer relative">
+                    <!-- <div class="absolute bg-white right-0" *ngIf="activeItem === item"><vezo-icon icon="trash"
+                                className="text-red-400 w-4 h-4 -mt-16 mr-4"></vezo-icon>
+                        </div> -->
+                    <ng-container *ngIf="item.name === 'section'">
+                        <div (dndDrop)="onDrop($event, item.children)"
+                            class="name p-2 gap-4 grid grid-cols-{{item.data.columns}} justify-content items-center"
+                            dndDropzone dndEffectAllowed="copyMove">
+
+                            <div *ngFor="let child of item.children" [dndDraggable]="child"
+                                (dndCanceled)="onDragged(child, item.children!, 'none')"
+                                (dndCopied)="onDragged(child, item.children!, 'move')"
+                                (dndLinked)="onDragged(child, item.children!, 'link')"
+                                (dndMoved)="onDragged(child, item.children!, 'move')" class="name">
+                                <app-blocks [block]="child" (click)="handleClick($event, child)"></app-blocks>
+                            </div>
+                            <div class="dndPlaceholder h-16 p-5 border bg-blue-400 bg-opacity-25" dndPlaceholderRef>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <app-blocks [block]="item" (click)="handleClick($event, item)"></app-blocks>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-span-4">
+        <div class="grid grid-cols-12">
+
+            <div class="col-span-6 p-3 cursor-pointer"
+                [style.background-color]=" this.activeItem?.id === null? '#4038CA' : '#C7D2FE'"
+                (click)="onClickPickElement()">
+                <div class="flex justify-between">
+                    <div class="col-6">
+                        <span *ngIf="!showProps" [style.color]=" this.activeItem?.id === null? '#F6F6F6' : '#454545'"
+                            style="font-size: 15px; font-weight: 400;">PICK AN ELEMENT</span>
+                        <span *ngIf="showProps" [style.color]=" this.activeItem?.id === null? '#F6F6F6' : '#454545'"
+                            style="font-size: 15px; font-weight: 400;">Widgets</span>
                     </div>
-                    <div class="text-right">
+                    <div class="col-6">
                         <vezo-icon icon="bars2" *ngIf="!showProps" className="cursor-pointer w-4 h-4"
-                            (click)="showProps=!showProps"></vezo-icon>
+                            (click)="showProps=!showProps" style="color:white"></vezo-icon>
                         <vezo-icon icon="squares2x2" *ngIf="showProps" className="cursor-pointer w-4 h-4"
-                            (click)="showProps=!showProps"></vezo-icon>
+                            style="color:white" (click)="showProps=!showProps"></vezo-icon>
                     </div>
                 </div>
-
             </div>
+
+            <div class="col-span-6 p-3" [style.background-color]=" this.activeItem?.id !== null? '#4038CA' : '#C7D2FE'">
+                <div [style.color]=" this.activeItem?.id !== null? '#F6F6F6' : '#454545'"
+                    style="font-size: 15px; font-weight: 400;">STYLES</div>
+            </div>
+        </div>
+        <!-- All elements -->
+        <div *ngIf="this.activeItem?.id === null" class="h-[800px] overflow-y-scroll">
             <div class="dndList bg-white p-3 name border-b h-[800px] overflow-y-scroll" *ngIf="!showProps">
 
                 <div *ngFor="let item of draggableListLeft" [dndDraggable]="item"
@@ -31,99 +114,33 @@
                     </div>
                 </div>
             </div>
-
             <div *ngIf="showProps" class="p-2">
 
             </div>
         </div>
-        <div class="col-span-7 border-l border-r">
-            <div class="p-3 border-b">
-                <div class="grid grid-cols-12">
-                    <div class="col-span-4">
-                        Microservice: <span class="text-indigo-400">{{
-                            formData.collection?.microService?.microServiceCode }}</span>
-                    </div>
-                    <div class="col-span-4">
-                        Form: <span class="text-indigo-400">{{ formData.formName }}</span>
-                    </div>
-                    <div class="col-span-4 text-indigo-700 border-l text-right">
-                        <!-- <div class="inline-block cursor-pointer">
-                            <vezo-icon icon="cursorArrowRays" className="w-4 h-4 mr-2 text-orange-400"></vezo-icon>
-                            <span class="text-orange-400 mr-4" (click)="generateComponent()">Generate Code</span>
-                        </div> -->
-                        <vezo-icon icon="inbox" className="w-4 h-4 mr-2 text-blue-400"></vezo-icon>
-                        <span class="text-blue-400 mr-4" (click)="saveDefinition()">Save</span>
-                    </div>
-                </div>
+        <!-- Elements's Property -->
+        <div *ngIf="this.activeItem?.id !== null" class="h-[800px] overflow-y-scroll">
+            <div class="min-h-[24rem]">
+                <app-properties [fields]="fields" [props]="activeItem" [collections]="collections"
+                    (deleteProp)="deleteActiveItem($event)"></app-properties>
+                <div class="text-center m-8" *ngIf="!activeItem">Drag and drop from blocks to center panel to create
+                    form. </div>
             </div>
-            <div [class.horizontal]="layout.dndHorizontal" [dndHorizontal]="layout.dndHorizontal"
-                (dndDrop)="onDrop($event, draggableListRight)"
-                class="dndList bg-white name border-b h-[800px] overflow-y-scroll border-l-0 p-3" dndDropzone
-                dndEffectAllowed="copyMove">
-                <div class="dndPlaceholder h-16 p-5 border bg-blue-400 bg-opacity-25" dndPlaceholderRef>
-                </div>
-                <div *ngFor="let item of draggableListRight" [dndDraggable]="item" (click)="handleClick($event, item)"
-                    (dndCanceled)="onDragged(item, draggableListRight, 'none')"
-                    (dndCopied)="onDragged(item, draggableListRight, 'move')"
-                    (dndLinked)="onDragged(item, draggableListRight, 'link')"
-                    (dndMoved)="onDragged(item, draggableListRight, 'move')">
-                    <div class="draggable-item mb-2 p-5 border border-dashed border-indigo-300 cursor-pointer relative">
-                        <!-- <div class="absolute bg-white right-0" *ngIf="activeItem === item"><vezo-icon icon="trash"
-                                className="text-red-400 w-4 h-4 -mt-16 mr-4"></vezo-icon>
-                        </div> -->
-                        <ng-container *ngIf="item.name === 'section'">
-                            <div (dndDrop)="onDrop($event, item.children)"
-                                class="name p-2 gap-4 grid grid-cols-{{item.data.columns}} justify-content items-center"
-                                dndDropzone dndEffectAllowed="copyMove">
-
-                                <div *ngFor="let child of item.children" [dndDraggable]="child"
-                                    (dndCanceled)="onDragged(child, item.children!, 'none')"
-                                    (dndCopied)="onDragged(child, item.children!, 'move')"
-                                    (dndLinked)="onDragged(child, item.children!, 'link')"
-                                    (dndMoved)="onDragged(child, item.children!, 'move')" class="name">
-                                    <app-blocks [block]="child" (click)="handleClick($event, child)"></app-blocks>
-                                </div>
-                                <div class="dndPlaceholder h-16 p-5 border bg-blue-400 bg-opacity-25" dndPlaceholderRef>
-                                </div>
-                            </div>
-                        </ng-container>
-                        <app-blocks [block]="item" (click)="handleClick($event, item)"></app-blocks>
+            <div>
+                <div class="bg-gray-50 border-b p-2 font-semibold">Form Properties</div>
+                <div class="p-4">
+                    <!-- <vezo-switch label="Has Workflow"></vezo-switch> -->
+                    <vezo-select label="Process"></vezo-select>
+                    <div class="text-right mb-8 pt-4">
+                        <vezo-button label="Save" className="bg-gray-50" (click)="saveDefinition()"></vezo-button>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-span-3">
-            <div class="border-b p-3">
-                <div class="inline-block mr-4">Properties</div>
-                <div class="inline-block float-right text-indigo-500 cursor-pointer" routerLink="../../"><vezo-icon
-                        icon="arrowUturnLeft" className="w-4 h-4 mr-2"></vezo-icon>Back</div>
-                <!-- <div class="inline-block float-right text-indigo-500 cursor-pointer">
-                    <vezo-icon icon="cog8Tooth" className="w-4 h-4 mr-2"></vezo-icon>
-                    <span class="mr-6">Form Config</span>
-                </div> -->
 
-            </div>
-            <div class="p-3">
-                <div class="min-h-[24rem]">
-                    <app-properties [fields]="fields" [props]="activeItem" [collections]="collections"
-                        (deleteProp)="deleteActiveItem($event)"></app-properties>
-                    <div class="text-center m-8" *ngIf="!activeItem">Drag and drop from blocks to center panel to create
-                        form. </div>
-                </div>
-                <div>
-                    <div class="bg-gray-50 border-b p-2 font-semibold">Form Properties</div>
-                    <div class="p-4">
-                        <!-- <vezo-switch label="Has Workflow"></vezo-switch> -->
-                        <vezo-select label="Process"></vezo-select>
-                        <div class="text-right mb-8 pt-4">
-                            <vezo-button label="Save" className="bg-gray-50" (click)="saveDefinition()"></vezo-button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
-    <!-- <pre>
+</div>
+<!-- <pre>
         {{ draggableListRight | json }}
     </pre> -->
-    <vezo-toast></vezo-toast>
+<vezo-toast></vezo-toast>

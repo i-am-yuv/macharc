@@ -14,6 +14,14 @@
 </ng-container>
 <ng-container *ngIf="props?.name === 'input'">
     <vezo-input label="Label" [(ngModel)]="props.data.label"></vezo-input>
+    <div class="flex gap-2">
+        <div class="">
+            <vezo-input label="Label Font Size (In px)" [(ngModel)]="props.data.labelFont"></vezo-input>
+        </div>
+        <div class="">
+            <vezo-input label="Label Color (HEX)" [(ngModel)]="props.data.labelColor"></vezo-input>
+        </div>
+    </div>
     <vezo-select label="Field" optionLabel="fieldName" [items]="fields" [(ngModel)]="props.data.field"></vezo-select>
     <vezo-select label="Validation" [items]="validations" [(ngModel)]="props.data.validation"></vezo-select>
 </ng-container>

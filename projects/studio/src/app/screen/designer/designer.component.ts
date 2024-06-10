@@ -82,7 +82,7 @@ export class DesignerComponent implements OnInit {
     },
     {
       name: 'form',
-      content: 'Data Form',
+      content: 'Component',
       data: {},
       effectAllowed: 'copy',
       disable: false,

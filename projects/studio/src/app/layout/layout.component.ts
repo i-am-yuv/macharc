@@ -13,7 +13,7 @@ import { FilterBuilder } from '../utils/FilterBuilder';
 })
 export class LayoutComponent {
   showSideBar: boolean = false;
-  menuView : string = '';
+  menuView: string = '';
   activeProject: Project | undefined = {
     id: '',
     projectName: 'SELECT PROJECT',
@@ -215,6 +215,11 @@ export class LayoutComponent {
     if (savedMenuItemName) {
       this.menuView = savedMenuItemName;
     }
+    else {
+      this.menuView = 'menuItemsBackend';
+      sessionStorage.setItem('menuItemName', this.menuView);
+
+    }
   }
 
   logout() {
@@ -225,7 +230,7 @@ export class LayoutComponent {
     this.layoutService.toggleSidebarVisibility();
   }
 
-  getMenuItems():any[]  {
+  getMenuItems(): any[] {
     if (this.menuView == 'menuItemsBackend') {
       return this.menuItemsBackend;
     }
@@ -236,22 +241,20 @@ export class LayoutComponent {
       return this.menuItemsFrontend
     }
     else if (this.menuView == 'menuItemsSettings') {
-      return this.menuItemsSettings ;
+      return this.menuItemsSettings;
     }
-    else{
+    else {
       return this.menuItems;
     }
   }
 
-  selectMenuItem(menuItemName:string)
-  {
-      this.menuView = menuItemName ;
-      sessionStorage.setItem('menuItemName', this.menuView );
+  selectMenuItem(menuItemName: string) {
+    this.menuView = menuItemName;
+    sessionStorage.setItem('menuItemName', this.menuView);
   }
 
-  resetMenuItems()
-  {
-    this.menuView = '' ;
+  resetMenuItems() {
+    this.menuView = '';
     sessionStorage.removeItem('menuItemName');
   }
 }
