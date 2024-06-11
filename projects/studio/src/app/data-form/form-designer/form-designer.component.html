@@ -32,7 +32,7 @@
     </div>
 </div>
 <div class="flex justify-start w-full">
-    <div class="w-8/12 border-l  bg-gray-50">
+    <div class="w-8/12 border-l bg-white">
 
         <div [class.horizontal]="layout.dndHorizontal" [dndHorizontal]="layout.dndHorizontal"
             (dndDrop)="onDrop($event, draggableListRight)"
@@ -59,7 +59,7 @@
                                 (dndCopied)="onDragged(child, item.children!, 'move')"
                                 (dndLinked)="onDragged(child, item.children!, 'link')"
                                 (dndMoved)="onDragged(child, item.children!, 'move')" class="name">
-                                <div class="border border-dashed border-indigo-300 ">
+                                <div class="">
                                     <app-blocks [block]="child" (click)="handleClick($event, child)"></app-blocks>
                                 </div>
                             </div>
@@ -72,7 +72,7 @@
             </div>
         </div>
     </div>
-    <div class="w-4/12 flex-grow-1">
+    <div class="w-4/12 flex-grow-1 bg-gray-100">
 
         <div class="flex justify-end w-full">
             <div class="flex-none w-1/12">
@@ -112,15 +112,15 @@
                 </div>
                 <!-- All elements -->
                 <div *ngIf="this.activeItem?.id == null"  class="h-[800px] overflow-y-scroll" >
-                    <div class="m-3">
+                    <div class="m-3 bg-white">
                         <vezo-searchfield type="text" placeholder="Search" className="p-1"></vezo-searchfield>
                     </div>
-                    <div class="dndList bg-white p-3 name" *ngIf="!showProps">
+                    <div class="dndList p-3 name" *ngIf="!showProps">
 
                         <div *ngFor="let item of draggableListLeft" [dndDraggable]="item"
                             [dndEffectAllowed]="item.effectAllowed" class="cursor-move">
-                            <div class="draggable-item mb-2 border">
-                                <div class="flex">
+                            <div class="draggable-item mb-2 border bg-white">
+                                <div class="flex ">
                                     <div class="col-2 bg-gray-50 py-3 px-1">
                                         <vezo-icon icon="ellipsisVertical"></vezo-icon>
                                     </div>

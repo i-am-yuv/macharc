@@ -11,13 +11,18 @@
     </div>
 </ng-container>
 <ng-container *ngIf="block.name === 'input'">
-    <vezo-input [label]="block.data?.label" [labelInfo]="{ size: block.data?.labelFont+'px', weight: block.data?.labelWeight, color: block.data?.labelColor }" ></vezo-input>
+    <vezo-input [placeholder]="block.data?.label"  [labelInfo]="{ size: block.data?.labelFont+'px', weight: block.data?.labelWeight, color: block.data?.labelColor, 
+    height: block.data?.fieldHeight+'px' , radius: block.data?.fieldRadius+'px' , fillColor: block.data?.fillColor,
+    borderColor: block.data?.borderColor , borderWidth: block.data?.borderWidth+'px' }" ></vezo-input>
 </ng-container>
 <ng-container *ngIf="block.name === 'textarea'"> 
     <vezo-textarea [label]="block.data?.label" [labelInfo]="{ size: block.data?.labelFont+'px', weight: block.data?.labelWeight, color: block.data?.labelColor }" ></vezo-textarea>
 </ng-container>
 <ng-container *ngIf="block.name === 'dropdown'">
-    <vezo-select [label]="block.data?.label" [labelInfo]="{ size: block.data?.labelFont+'px', weight: block.data?.labelWeight, color: block.data?.labelColor }" ></vezo-select>
+    <vezo-select [placeholder]="block.data?.label" [labelInfo]="{ size: block.data?.labelFont+'px', weight: block.data?.labelWeight, color: block.data?.labelColor
+       , height: block.data?.fieldHeight+'px' , radius: block.data?.fieldRadius+'px' , fillColor: block.data?.fillColor,
+    borderColor: block.data?.borderColor , borderWidth: block.data?.borderWidth+'px' 
+     }" ></vezo-select>
 </ng-container>
 <ng-container *ngIf="block.name === 'checkbox'">
     <vezo-checkbox [label]="block.data?.label" [labelInfo]="{ size: block.data?.labelFont+'px', weight: block.data?.labelWeight, color: block.data?.labelColor }" ></vezo-checkbox>

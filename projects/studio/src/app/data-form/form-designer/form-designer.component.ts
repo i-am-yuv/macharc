@@ -65,7 +65,7 @@ export class FormDesignerComponent implements OnInit {
       effectAllowed: 'copy',
       disable: false,
       handle: false,
-      data: { label: 'Input Label', labelFont: '14', labelWeight:'400', labelColor: '#000000' }
+      data: { label: 'Input Label', labelFont: '14', labelWeight:'400', labelColor: '#000000' , fieldHeight:'35' , fieldRadius:'4', fillColor: '#f1f3f6', borderColor:'#f1f3f6' , borderWidth:'1' }
     },
     {
       name: 'dropdown',
@@ -73,7 +73,7 @@ export class FormDesignerComponent implements OnInit {
       effectAllowed: 'copy',
       disable: false,
       handle: false,
-      data: { label: 'Input Label', labelFont: '14', labelWeight:'400', labelColor: '#000000'  }
+      data: { label: 'Input Label', labelFont: '14', labelWeight:'400', labelColor: '#000000' , fieldHeight:'35' , fieldRadius:'4', fillColor: '#f1f3f6', borderColor:'#f1f3f6' , borderWidth:'1' }
     },
     {
       name: 'textarea',
