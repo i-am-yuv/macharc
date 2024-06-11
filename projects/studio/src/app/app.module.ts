@@ -79,7 +79,9 @@ import { PropertiesComponent } from './screen/properties/properties.component';
 import { TemplatesComponent } from './screen/templates/templates.component';
 import { SettingsComponent } from './settings/settings.component';
 import { ContenteditableValueAccessor } from './utils/constenteditable.directive';
-import { SearchfieldModule } from '@splenta/vezo/searchfield';
+import { SeachfieldModule } from '@splenta/vezo/searchfield';
+import { ColorpickerModule } from '@splenta/vezo/colorpicker';
+
 
 @NgModule({
   declarations: [
@@ -140,7 +142,6 @@ import { SearchfieldModule } from '@splenta/vezo/searchfield';
     SidebarModule,
     VezoModule,
     InputModule,
-    SearchfieldModule,
     InputnumberModule,
     IconModule,
     MenuModule,
@@ -163,6 +164,8 @@ import { SearchfieldModule } from '@splenta/vezo/searchfield';
     MonacoEditorModule.forRoot(),
     NgChartsModule,
     ChartModule,
+    SeachfieldModule,
+    ColorpickerModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [

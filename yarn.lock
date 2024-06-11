@@ -7042,6 +7042,13 @@ ng2-charts@4.1.0:
     lodash-es "^4.17.15"
     tslib "^2.3.0"
 
+ngx-color-picker@^16.0.0:
+  version "16.0.0"
+  resolved "https://registry.npmjs.org/ngx-color-picker/-/ngx-color-picker-16.0.0.tgz"
+  integrity sha512-Dk2FvcbebD6STZSVzkI5oFHOlTrrNC5bOHh+YVaFgaWuWrVUdVIJm68ocUvTgr/qxTEJjrfcnRnS4wi7BJ2hKg==
+  dependencies:
+    tslib "^2.3.0"
+
 ngx-drag-drop@^15.1.0:
   version "15.1.0"
   resolved "https://registry.npmjs.org/ngx-drag-drop/-/ngx-drag-drop-15.1.0.tgz"

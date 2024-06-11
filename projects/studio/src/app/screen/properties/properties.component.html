@@ -1,8 +1,53 @@
 <ng-container *ngIf="props?.name === 'heading'">
     <vezo-input label="Heading" [(ngModel)]="props.data.text"></vezo-input>
+    <vezo-input label="Font Size" [(ngModel)]="props.data.fontSize"></vezo-input>
+    <vezo-input label="Font Weight" [(ngModel)]="props.data.fontWeight"></vezo-input>
+    <vezo-colorpicker [label]="'Choose Color'" (colorChange)="props.data.fontColor=$event" [inputVal]="props.data.fontColor"></vezo-colorpicker>
+    <div>
+        <label class="">Alignment</label>
+        <div class="grid grid-cols-3 divide-x mt-2" style="border-color: #DFDFDF; border-width: 1px;">
+            <div class="p-2 flex justify-center cursor-pointer" (click) ="props.data.alignment ='start'" [ngClass]="{'bg-slate-100':props.data?.alignment =='start'}"  ><img src="assets/alignLeft.svg"></div>
+            <div class="p-2 flex justify-center cursor-pointer" (click) ="props.data.alignment ='center'" [ngClass]="{'bg-slate-100':props.data?.alignment =='center'}"><img src="assets/alignCenter.svg"></div>
+            <div class="p-2 flex justify-center cursor-pointer" (click) ="props.data.alignment ='end'" [ngClass]="{'bg-slate-100':props.data?.alignment =='end'}"><img src="assets/alignRight.svg"></div>
+        </div>
+    </div>
+
 </ng-container>
 <ng-container *ngIf="props?.name === 'button'">
     <vezo-input label="Label" [(ngModel)]="props.data.label"></vezo-input>
+    <vezo-colorpicker [label]="'Text Color'"  (colorChange)="props.data.btnTextColor=$event" [inputVal]="props.data.btnTextColor"></vezo-colorpicker>
+    <div class="flex gap-2">
+        <vezo-input label="Width" [(ngModel)]="props.data.width"></vezo-input>
+        <vezo-input label="Height" [(ngModel)]="props.data.height"></vezo-input>
+    </div>
+    <div class="flex gap-2">
+        <vezo-input label="Font Size" [(ngModel)]="props.data.btnTextFont"></vezo-input>
+        <vezo-input label="Font Weight" [(ngModel)]="props.data.btnTextWeight"></vezo-input>
+    </div>
+    <div class="flex gap-2">
+        <vezo-input label="Border Width" [(ngModel)]="props.data.borderWidth"></vezo-input>
+        <vezo-input label="Border Radius" [(ngModel)]="props.data.borderRadius"></vezo-input>
+        <vezo-colorpicker [label]="'Border Color'"  (colorChange)="props.data.borderColor=$event" [inputVal]="props.data.borderColor"></vezo-colorpicker>
+    </div>
+    <vezo-colorpicker [label]="'background Color'"  (colorChange)="props.data.bgColor=$event" [inputVal]="props.data.bgColor"></vezo-colorpicker>
+
+    <div>
+        <label class="">Button Alignment</label>
+        <div class="grid grid-cols-3 divide-x mt-2" style="border-color: #DFDFDF; border-width: 1px;">
+            <div class="p-2 flex justify-center cursor-pointer" (click) ="props.data.btnAlignment ='start'" [ngClass]="{'bg-slate-100':props.data?.btnAlignment =='start'}"  ><img src="assets/alignLeft.svg"></div>
+            <div class="p-2 flex justify-center cursor-pointer" (click) ="props.data.btnAlignment ='center'" [ngClass]="{'bg-slate-100':props.data?.btnAlignment =='center'}"><img src="assets/alignCenter.svg"></div>
+            <div class="p-2 flex justify-center cursor-pointer" (click) ="props.data.btnAlignment ='right'" [ngClass]="{'bg-slate-100':props.data?.btnAlignment =='right'}"><img src="assets/alignRight.svg"></div>
+        </div>
+    </div>
+    <div>
+        <label class="">Text Alignment</label>
+        <div class="grid grid-cols-3 divide-x mt-2" style="border-color: #DFDFDF; border-width: 1px;">
+            <div class="p-2 flex justify-center cursor-pointer" (click) ="props.data.textAlignment ='start'" [ngClass]="{'bg-slate-100':props.data?.textAlignment =='start'}"  ><img src="assets/alignLeft.svg"></div>
+            <div class="p-2 flex justify-center cursor-pointer" (click) ="props.data.textAlignment ='center'" [ngClass]="{'bg-slate-100':props.data?.textAlignment =='center'}"><img src="assets/alignCenter.svg"></div>
+            <div class="p-2 flex justify-center cursor-pointer" (click) ="props.data.textAlignment ='end'" [ngClass]="{'bg-slate-100':props.data?.textAlignment =='end'}"><img src="assets/alignRight.svg"></div>
+        </div>
+    </div>
+
     <div>
         <vezo-radiobutton [(ngModel)]="props.data.action" value="save" label="Save" name="action"
             className="mr-2"></vezo-radiobutton>
@@ -19,19 +64,41 @@
             <vezo-input label="Label Font Size (In px)" [(ngModel)]="props.data.labelFont"></vezo-input>
         </div>
         <div class="">
-            <vezo-input label="Label Color (HEX)" [(ngModel)]="props.data.labelColor"></vezo-input>
+            <vezo-colorpicker [label]="'Choose Color'"  (colorChange)="props.data.labelColor=$event"
+                [inputVal]="props.data.labelColor"></vezo-colorpicker>
         </div>
     </div>
+    <vezo-input label="Label Font Weight" [(ngModel)]="props.data.labelWeight"></vezo-input>
     <vezo-select label="Field" optionLabel="fieldName" [items]="fields" [(ngModel)]="props.data.field"></vezo-select>
     <vezo-select label="Validation" [items]="validations" [(ngModel)]="props.data.validation"></vezo-select>
 </ng-container>
 <ng-container *ngIf="props?.name === 'textarea'">
     <vezo-input label="Label" [(ngModel)]="props.data.label"></vezo-input>
+    <div class="flex gap-2">
+        <div class="">
+            <vezo-input label="Label Font Size (In px)" [(ngModel)]="props.data.labelFont"></vezo-input>
+        </div>
+        <div class="">
+            <vezo-colorpicker [label]="'Choose Color'"  (colorChange)="props.data.labelColor=$event"
+                [inputVal]="props.data.labelColor"></vezo-colorpicker>
+        </div>
+    </div>
+    <vezo-input label="Label Font Weight" [(ngModel)]="props.data.labelWeight"></vezo-input>
     <vezo-select label="Field" optionLabel="fieldName" [items]="fields" [(ngModel)]="props.data.field"></vezo-select>
     <vezo-select label="Validation" [items]="validations" [(ngModel)]="props.data.validation"></vezo-select>
 </ng-container>
 <ng-container *ngIf="props?.name === 'dropdown'">
     <vezo-input label="Label" [(ngModel)]="props.data.label"></vezo-input>
+    <div class="flex gap-2">
+        <div class="">
+            <vezo-input label="Label Font Size (In px)" [(ngModel)]="props.data.labelFont"></vezo-input>
+        </div>
+        <div class="">
+            <vezo-colorpicker [label]="'Choose Color'"  (colorChange)="props.data.labelColor=$event"
+                [inputVal]="props.data.labelColor"></vezo-colorpicker>
+        </div>
+    </div>
+    <vezo-input label="Label Font Weight" [(ngModel)]="props.data.labelWeight"></vezo-input>
     <vezo-select label="Field" optionLabel="fieldName" [items]="fields" [(ngModel)]="props.data.field"></vezo-select>
     <vezo-select label="Options" optionLabel="collectionName" [items]="collections"
         [(ngModel)]="props.data.field"></vezo-select>
@@ -39,16 +106,46 @@
 </ng-container>
 <ng-container *ngIf="props?.name === 'checkbox'">
     <vezo-input label="Label" [(ngModel)]="props.data.label"></vezo-input>
+    <div class="flex gap-2">
+        <div class="">
+            <vezo-input label="Label Font Size (In px)" [(ngModel)]="props.data.labelFont"></vezo-input>
+        </div>
+        <div class="">
+            <vezo-colorpicker [label]="'Choose Color'"  (colorChange)="props.data.labelColor=$event"
+                [inputVal]="props.data.labelColor"></vezo-colorpicker>
+        </div>
+    </div>
+    <vezo-input label="Label Font Weight" [(ngModel)]="props.data.labelWeight"></vezo-input>
     <vezo-select label="Field" optionLabel="fieldName" [items]="fields" [(ngModel)]="props.data.field"></vezo-select>
     <vezo-select label="Validation" [items]="validations" [(ngModel)]="props.data.validation"></vezo-select>
 </ng-container>
 <ng-container *ngIf="props?.name === 'radio'">
     <vezo-input label="Label" [(ngModel)]="props.data.label"></vezo-input>
+    <div class="flex gap-2">
+        <div class="">
+            <vezo-input label="Label Font Size (In px)" [(ngModel)]="props.data.labelFont"></vezo-input>
+        </div>
+        <div class="">
+            <vezo-colorpicker [label]="'Choose Color'"  (colorChange)="props.data.labelColor=$event"
+                [inputVal]="props.data.labelColor"></vezo-colorpicker>
+        </div>
+    </div>
+    <vezo-input label="Label Font Weight" [(ngModel)]="props.data.labelWeight"></vezo-input>
     <vezo-select label="Field" optionLabel="fieldName" [items]="fields" [(ngModel)]="props.data.field"></vezo-select>
     <vezo-select label="Validation" [items]="validations" [(ngModel)]="props.data.validation"></vezo-select>
 </ng-container>
 <ng-container *ngIf="props?.name === 'switch'">
     <vezo-input label="Label" [(ngModel)]="props.data.label"></vezo-input>
+    <div class="flex gap-2">
+        <div class="">
+            <vezo-input label="Label Font Size (In px)" [(ngModel)]="props.data.labelFont"></vezo-input>
+        </div>
+        <div class="">
+            <vezo-colorpicker [label]="'Choose Color'"  (colorChange)="props.data.labelColor=$event"
+                [inputVal]="props.data.labelColor"></vezo-colorpicker>
+        </div>
+    </div>
+    <vezo-input label="Label Font Weight" [(ngModel)]="props.data.labelWeight"></vezo-input>
     <vezo-select label="Field" optionLabel="fieldName" [items]="fields" [(ngModel)]="props.data.field"></vezo-select>
     <vezo-select label="Validation" [items]="validations" [(ngModel)]="props.data.validation"></vezo-select>
 </ng-container>

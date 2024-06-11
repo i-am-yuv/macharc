@@ -37,7 +37,7 @@ export class FormDesignerComponent implements OnInit {
     {
       name: 'heading',
       content: 'Heading',
-      data: { text: 'Heading' },
+      data: { text: 'Heading', fontSize:'14' ,fontWeight :'400', fontColor:'#000000', alignment:'start'  },
       effectAllowed: 'copy',
       disable: false,
       handle: false
@@ -65,7 +65,7 @@ export class FormDesignerComponent implements OnInit {
       effectAllowed: 'copy',
       disable: false,
       handle: false,
-      data: { label: 'Input Label', labelFont: '14', labelColor: '#000000' }
+      data: { label: 'Input Label', labelFont: '14', labelWeight:'400', labelColor: '#000000' }
     },
     {
       name: 'dropdown',
@@ -73,7 +73,7 @@ export class FormDesignerComponent implements OnInit {
       effectAllowed: 'copy',
       disable: false,
       handle: false,
-      data: { label: 'Input Label' }
+      data: { label: 'Input Label', labelFont: '14', labelWeight:'400', labelColor: '#000000'  }
     },
     {
       name: 'textarea',
@@ -81,7 +81,7 @@ export class FormDesignerComponent implements OnInit {
       effectAllowed: 'copy',
       disable: false,
       handle: false,
-      data: { label: 'Input Label' }
+      data: { label: 'Input Label', labelFont: '14', labelWeight:'400', labelColor: '#000000'  }
     },
     {
       name: 'button',
@@ -89,7 +89,10 @@ export class FormDesignerComponent implements OnInit {
       effectAllowed: 'copy',
       disable: false,
       handle: true,
-      data: { label: 'Input Label' }
+      data: { label: 'Input Label',btnTextFont: '12', btnTextWeight:'600', btnTextColor: '#4338ca',
+              bgColor:'#e0e7ff',borderColor:'#c7d2fe',borderWidth:'1',borderRadius:'4', width:'100', height:'35',
+              btnAlignment:'center', textAlignment:'center'
+       }
     },
     {
       name: 'checkbox',
@@ -97,7 +100,7 @@ export class FormDesignerComponent implements OnInit {
       effectAllowed: 'copy',
       disable: false,
       handle: false,
-      data: { label: 'Input Label' }
+      data: { label: 'Input Label',labelFont: '14', labelWeight:'400', labelColor: '#000000'  }
     },
     {
       name: 'radio',
@@ -105,7 +108,7 @@ export class FormDesignerComponent implements OnInit {
       effectAllowed: 'copy',
       disable: false,
       handle: false,
-      data: { label: 'Input Label' }
+      data: { label: 'Input Label' ,labelFont: '14', labelWeight:'400', labelColor: '#000000' }
     },
     {
       name: 'switch',
@@ -113,7 +116,7 @@ export class FormDesignerComponent implements OnInit {
       effectAllowed: 'copy',
       disable: false,
       handle: false,
-      data: { label: 'Input Label' }
+      data: { label: 'Input Label' ,labelFont: '14', labelWeight:'400', labelColor: '#000000' }
     },
 
   ];

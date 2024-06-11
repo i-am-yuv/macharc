@@ -1,28 +1,32 @@
 <ng-container *ngIf="block.name === 'heading'">
-    <div class="text-lg" contenteditable [(ngModel)]="block.data.text">{{ block.data?.text }}</div>
+    <div class="text-lg" contenteditable [(ngModel)]="block.data.text" 
+    [ngStyle]="{'display':'flex','justify-content':block.data?.alignment, 'font-size': block.data?.fontSize+'px' ,'font-weight':block.data?.fontWeight , 'color': block.data?.fontColor }"
+    >{{ block.data?.text }}</div>
 </ng-container>
 <ng-container *ngIf="block.name === 'button'">
-    <div class="text-{{ block.data?.align ? block.data.align : 'right' }}">
-        <vezo-button [label]="block.data?.label"></vezo-button>
+    <div class="text-{{ block.data?.align ? block.data.align : block.data?.btnAlignment }}">
+        <vezo-button [label]="block.data?.label" [btnInfo]="{ btnTextSize: block.data?.btnTextFont+'px', btnTextWeight: block.data?.btnTextWeight, btnTextColor: block.data?.btnTextColor , 
+            borderWidth: block.data?.borderWidth+'px', borderColor: block.data?.borderColor, borderRadius: block.data?.borderRadius+'px' ,  bgColor: block.data?.bgColor, width: block.data?.width+'px',  height: block.data?.height+'px' ,
+            btnAlignment:  block.data?.btnAlignment, textAlignment:  block.data?.textAlignment  }"></vezo-button>
     </div>
 </ng-container>
 <ng-container *ngIf="block.name === 'input'">
-    <vezo-input [label]="block.data?.label" [labelFont]="block.data?.labelFont+'px'" [labelColor]="block.data?.labelColor"></vezo-input>
+    <vezo-input [label]="block.data?.label" [labelInfo]="{ size: block.data?.labelFont+'px', weight: block.data?.labelWeight, color: block.data?.labelColor }" ></vezo-input>
 </ng-container>
 <ng-container *ngIf="block.name === 'textarea'"> 
-    <vezo-textarea [label]="block.data?.label"></vezo-textarea>
+    <vezo-textarea [label]="block.data?.label" [labelInfo]="{ size: block.data?.labelFont+'px', weight: block.data?.labelWeight, color: block.data?.labelColor }" ></vezo-textarea>
 </ng-container>
 <ng-container *ngIf="block.name === 'dropdown'">
-    <vezo-select [label]="block.data?.label"></vezo-select>
+    <vezo-select [label]="block.data?.label" [labelInfo]="{ size: block.data?.labelFont+'px', weight: block.data?.labelWeight, color: block.data?.labelColor }" ></vezo-select>
 </ng-container>
 <ng-container *ngIf="block.name === 'checkbox'">
-    <vezo-checkbox [label]="block.data?.label"></vezo-checkbox>
+    <vezo-checkbox [label]="block.data?.label" [labelInfo]="{ size: block.data?.labelFont+'px', weight: block.data?.labelWeight, color: block.data?.labelColor }" ></vezo-checkbox>
 </ng-container>
 <ng-container *ngIf="block.name === 'radio'">
-    <vezo-radiobutton [label]="block.data?.label"></vezo-radiobutton>
+    <vezo-radiobutton [label]="block.data?.label" [labelInfo]="{ size: block.data?.labelFont+'px', weight: block.data?.labelWeight, color: block.data?.labelColor }"></vezo-radiobutton>
 </ng-container>
 <ng-container *ngIf="block.name === 'switch'">
-    <vezo-switch [label]="block.data?.label"></vezo-switch>
+    <vezo-switch [label]="block.data?.label" [labelInfo]="{ size: block.data?.labelFont+'px', weight: block.data?.labelWeight, color: block.data?.labelColor }"></vezo-switch>
 </ng-container>
 <ng-container *ngIf="block.name === 'chart'">
     <vezo-chart></vezo-chart>
