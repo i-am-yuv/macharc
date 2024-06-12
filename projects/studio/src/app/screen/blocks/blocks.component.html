@@ -1,5 +1,5 @@
 <ng-container *ngIf="block.name === 'heading'">
-    <div class="text-lg" contenteditable [(ngModel)]="block.data.text" 
+    <div class="text-lg  min-w-full" contenteditable [(ngModel)]="block.data.text" 
     [ngStyle]="{'display':'flex','justify-content':block.data?.alignment, 'font-size': block.data?.fontSize+'px' ,'font-weight':block.data?.fontWeight , 'color': block.data?.fontColor }"
     >{{ block.data?.text }}</div>
 </ng-container>
@@ -7,19 +7,21 @@
     <div class="text-{{ block.data?.align ? block.data.align : block.data?.btnAlignment }}">
         <vezo-button [label]="block.data?.label" [btnInfo]="{ btnTextSize: block.data?.btnTextFont+'px', btnTextWeight: block.data?.btnTextWeight, btnTextColor: block.data?.btnTextColor , 
             borderWidth: block.data?.borderWidth+'px', borderColor: block.data?.borderColor, borderRadius: block.data?.borderRadius+'px' ,  bgColor: block.data?.bgColor, width: block.data?.width+'px',  height: block.data?.height+'px' ,
-            btnAlignment:  block.data?.btnAlignment, textAlignment:  block.data?.textAlignment  }"></vezo-button>
+            btnAlignment:  block.data?.btnAlignment, textAlignment:  block.data?.textAlignment ,
+            mt:  block.data?.mt+'px',  mb:  block.data?.mb+'px',  ml:  block.data?.ml+'px',  mr:  block.data?.mr+'px'  }"></vezo-button>
     </div>
 </ng-container>
 <ng-container *ngIf="block.name === 'input'">
-    <vezo-input [placeholder]="block.data?.label"  [labelInfo]="{ size: block.data?.labelFont+'px', weight: block.data?.labelWeight, color: block.data?.labelColor, 
+    <vezo-input [label]="block.data?.label" [placeholder]="block.data?.placeholder"  [labelInfo]="{ size: block.data?.labelFont+'px', weight: block.data?.labelWeight, color: block.data?.labelColor, 
     height: block.data?.fieldHeight+'px' , radius: block.data?.fieldRadius+'px' , fillColor: block.data?.fillColor,
     borderColor: block.data?.borderColor , borderWidth: block.data?.borderWidth+'px' }" ></vezo-input>
 </ng-container>
 <ng-container *ngIf="block.name === 'textarea'"> 
-    <vezo-textarea [label]="block.data?.label" [labelInfo]="{ size: block.data?.labelFont+'px', weight: block.data?.labelWeight, color: block.data?.labelColor }" ></vezo-textarea>
+    <vezo-textarea [label]="block.data?.label" [placeholder]="block.data?.placeholder" [labelInfo]="{ size: block.data?.labelFont+'px', weight: block.data?.labelWeight, color: block.data?.labelColor , fillColor: block.data?.fillColor,
+    borderColor: block.data?.borderColor , borderWidth: block.data?.borderWidth+'px', borderRadius: block.data?.borderRadius+'px' }" ></vezo-textarea>
 </ng-container>
 <ng-container *ngIf="block.name === 'dropdown'">
-    <vezo-select [placeholder]="block.data?.label" [labelInfo]="{ size: block.data?.labelFont+'px', weight: block.data?.labelWeight, color: block.data?.labelColor
+    <vezo-select [label]="block.data?.label" [placeholder]="block.data?.placeholder" [labelInfo]="{ size: block.data?.labelFont+'px', weight: block.data?.labelWeight, color: block.data?.labelColor
        , height: block.data?.fieldHeight+'px' , radius: block.data?.fieldRadius+'px' , fillColor: block.data?.fillColor,
     borderColor: block.data?.borderColor , borderWidth: block.data?.borderWidth+'px' 
      }" ></vezo-select>

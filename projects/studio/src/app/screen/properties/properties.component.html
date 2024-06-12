@@ -42,24 +42,66 @@
         <label class="">Button Alignment</label>
         <div class="grid grid-cols-3 divide-x mt-2" style="border-color: #DFDFDF; border-width: 1px;">
             <div class="p-2 flex justify-center cursor-pointer" (click)="props.data.btnAlignment ='start'"
-                [ngClass]="{'bg-slate-100':props.data?.btnAlignment =='start'}"><img src="assets/alignLeft.svg"></div>
+                [ngClass]="{'bg-slate-200':props.data?.btnAlignment =='start'}"><img src="assets/alignLeft.svg"></div>
             <div class="p-2 flex justify-center cursor-pointer" (click)="props.data.btnAlignment ='center'"
-                [ngClass]="{'bg-slate-100':props.data?.btnAlignment =='center'}"><img src="assets/alignCenter.svg">
+                [ngClass]="{'bg-slate-200':props.data?.btnAlignment =='center'}"><img src="assets/alignCenter.svg">
             </div>
             <div class="p-2 flex justify-center cursor-pointer" (click)="props.data.btnAlignment ='right'"
-                [ngClass]="{'bg-slate-100':props.data?.btnAlignment =='right'}"><img src="assets/alignRight.svg"></div>
+                [ngClass]="{'bg-slate-200':props.data?.btnAlignment =='right'}"><img src="assets/alignRight.svg"></div>
         </div>
     </div>
-    <div>
+    <div class="mt-2">
         <label class="">Text Alignment</label>
         <div class="grid grid-cols-3 divide-x mt-2" style="border-color: #DFDFDF; border-width: 1px;">
             <div class="p-2 flex justify-center cursor-pointer" (click)="props.data.textAlignment ='start'"
-                [ngClass]="{'bg-slate-100':props.data?.textAlignment =='start'}"><img src="assets/alignLeft.svg"></div>
+                [ngClass]="{'bg-slate-200':props.data?.textAlignment =='start'}"><img src="assets/alignLeft.svg"></div>
             <div class="p-2 flex justify-center cursor-pointer" (click)="props.data.textAlignment ='center'"
-                [ngClass]="{'bg-slate-100':props.data?.textAlignment =='center'}"><img src="assets/alignCenter.svg">
+                [ngClass]="{'bg-slate-200':props.data?.textAlignment =='center'}"><img src="assets/alignCenter.svg">
             </div>
             <div class="p-2 flex justify-center cursor-pointer" (click)="props.data.textAlignment ='end'"
-                [ngClass]="{'bg-slate-100':props.data?.textAlignment =='end'}"><img src="assets/alignRight.svg"></div>
+                [ngClass]="{'bg-slate-200':props.data?.textAlignment =='end'}"><img src="assets/alignRight.svg"></div>
+        </div>
+    </div>
+
+    <div class="mt-2">
+        <label class="">Margin Style</label>
+        <div class="grid grid-cols-12 mt-2 mb-2" style="justify-items: start;">
+            <div class="col-span-6 gap-2">
+                <div>Top</div>
+                <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9" style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                    <div class="w-10/12">
+                        <input  style="width:40px" [(ngModel)]="props.data.mt" />
+                    </div>
+                    <div  class="w-2/12 mr-2">px</div>
+                </div>
+            </div>
+            <div class="col-span-6 gap-2">
+                <div>Bottom</div>
+                <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9" style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                    <div class="w-10/12">
+                        <input  style="width:40px" [(ngModel)]="props.data.mb" />
+                    </div>
+                    <div  class="w-2/12 mr-2">px</div>
+                </div>
+            </div>
+            <div class="col-span-6 gap-2">
+                <div>Left</div>
+                <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9" style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                    <div class="w-10/12">
+                        <input  style="width:40px" [(ngModel)]="props.data.ml" />
+                    </div>
+                    <div  class="w-2/12 mr-2">px</div>
+                </div>
+            </div>
+            <div class="col-span-6 gap-2">
+                <div>Right</div>
+                <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9" style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                    <div class="w-10/12">
+                        <input  style="width:40px" [(ngModel)]="props.data.mr"/>
+                    </div>
+                    <div  class="w-2/12 mr-2">px</div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -73,7 +115,10 @@
         className="mb-4"></vezo-input>
 </ng-container>
 <ng-container *ngIf="props?.name === 'input'">
-    <vezo-input label="Label" [(ngModel)]="props.data.label"></vezo-input>
+    <div class="flex gap-2">
+        <vezo-input label="Label" [(ngModel)]="props.data.label"></vezo-input>
+        <vezo-input label="Placeholder" [(ngModel)]="props.data.placeholder"></vezo-input>
+    </div>
     <div class="flex gap-2">
         <div class="">
             <vezo-input label="Label Font Size (In px)" [(ngModel)]="props.data.labelFont"></vezo-input>
@@ -97,7 +142,10 @@
     <vezo-select label="Validation" [items]="validations" [(ngModel)]="props.data.validation"></vezo-select>
 </ng-container>
 <ng-container *ngIf="props?.name === 'textarea'">
-    <vezo-input label="Label" [(ngModel)]="props.data.label"></vezo-input>
+    <div class="flex gap-2">
+        <vezo-input label="Label" [(ngModel)]="props.data.label"></vezo-input>
+        <vezo-input label="Placeholder" [(ngModel)]="props.data.placeholder"></vezo-input>
+    </div>
     <div class="flex gap-2">
         <div class="">
             <vezo-input label="Label Font Size (In px)" [(ngModel)]="props.data.labelFont"></vezo-input>
@@ -107,12 +155,23 @@
                 [inputVal]="props.data.labelColor"></vezo-colorpicker>
         </div>
     </div>
+    <div class="flex gap-2">
+        <vezo-colorpicker [label]="'Fill Color'" (colorChange)="props.data.fillColor=$event"
+            [inputVal]="props.data.fillColor"></vezo-colorpicker>
+        <vezo-colorpicker [label]="'Border Color'" (colorChange)="props.data.borderColor=$event"
+            [inputVal]="props.data.borderColor"></vezo-colorpicker>
+        <vezo-input label="Border Width" [(ngModel)]="props.data.borderWidth"></vezo-input>
+    </div>
+    <vezo-input label="Border Radius" [(ngModel)]="props.data.borderRadius"></vezo-input>
     <vezo-input label="Label Font Weight" [(ngModel)]="props.data.labelWeight"></vezo-input>
     <vezo-select label="Field" optionLabel="fieldName" [items]="fields" [(ngModel)]="props.data.field"></vezo-select>
     <vezo-select label="Validation" [items]="validations" [(ngModel)]="props.data.validation"></vezo-select>
 </ng-container>
 <ng-container *ngIf="props?.name === 'dropdown'">
-    <vezo-input label="Label" [(ngModel)]="props.data.label"></vezo-input>
+    <div class="flex gap-2">
+        <vezo-input label="Label" [(ngModel)]="props.data.label"></vezo-input>
+        <vezo-input label="Placeholder" [(ngModel)]="props.data.placeholder"></vezo-input>
+    </div>
     <div class="flex gap-2">
         <div class="">
             <vezo-input label="Label Font Size (In px)" [(ngModel)]="props.data.labelFont"></vezo-input>
@@ -239,6 +298,14 @@
 <ng-container *ngIf="props?.name === 'form'">
     <vezo-select label="Form" [(ngModel)]="formData" optionLabel="formName" [items]="forms"
         (ngModelChange)="setForm()"></vezo-select>
+</ng-container>
+<ng-container *ngIf="props?.name === 'section'">
+    <vezo-input label="Gap" [(ngModel)]="props.data.gap"></vezo-input>
+    <div class="flex gap-2 mt-2 mb-2">
+        <vezo-input label="Start Spacing (in px)" [(ngModel)]="props.data.startSpacing"></vezo-input>
+        <vezo-input label="End Spacing (in px)" [(ngModel)]="props.data.endSpacing"></vezo-input>
+    </div>
+
 </ng-container>
 <div *ngIf="props?.name" class="text-right" (click)="deleteProperty()">
     <vezo-button label="Delete"></vezo-button>

@@ -32,26 +32,28 @@
     </div>
 </div>
 <div class="flex justify-start w-full">
-    <div class="w-8/12 border-l bg-white">
+
+    <div class="w-8/12 border-l  border border-dashed border-yellow-600 m-12 h-[847px] overflow-y-scroll">
 
         <div [class.horizontal]="layout.dndHorizontal" [dndHorizontal]="layout.dndHorizontal"
-            (dndDrop)="onDrop($event, draggableListRight)"
-            class="dndList  name border-b h-[847px] overflow-y-scroll border-l-0 p-3" dndDropzone
+            (dndDrop)="onDrop($event, draggableListRight)" class="dndList  name border-b  border-l-0" dndDropzone
             dndEffectAllowed="copyMove">
-            <div class="dndPlaceholder h-16 p-5 border bg-blue-400 bg-opacity-25" dndPlaceholderRef>
+            <div class="dndPlaceholder h-16 border bg-blue-400 bg-opacity-25" dndPlaceholderRef>
             </div>
             <div *ngFor="let item of draggableListRight" [dndDraggable]="item" (click)="handleClick($event, item)"
                 (dndCanceled)="onDragged(item, draggableListRight, 'none')"
                 (dndCopied)="onDragged(item, draggableListRight, 'move')"
                 (dndLinked)="onDragged(item, draggableListRight, 'link')"
                 (dndMoved)="onDragged(item, draggableListRight, 'move')">
-                <div class="draggable-item mb-2 p-5 border border-dashed border-indigo-300 cursor-pointer relative">
+                <div class="draggable-item  border border-dashed border-indigo-300 cursor-pointer relative">
                     <!-- <div class="absolute bg-white right-0" *ngIf="activeItem === item"><vezo-icon icon="trash"
                                 className="text-red-400 w-4 h-4 -mt-16 mr-4"></vezo-icon>
                         </div> -->
                     <ng-container *ngIf="item.name === 'section'">
-                        <div (dndDrop)="onDrop($event, item.children)"
-                            class="name p-2 gap-4 grid grid-cols-{{item.data.columns}} justify-content items-center"
+                        <div (dndDrop)="onDrop($event, item.children)" class="name gap-{{item.data.gap}} grid grid-cols-{{item.data.columns}} 
+                            justify-content items-center"
+                            [ngClass]="{'p-4':  (!this.item.children || this.item.children.length === 0) }"
+                            [ngStyle]="{'margin-top': item.data.startSpacing+'px' ,'margin-bottom': item.data.endSpacing+'px'}"
                             dndDropzone dndEffectAllowed="copyMove">
 
                             <div *ngFor="let child of item.children" [dndDraggable]="child"
@@ -63,7 +65,7 @@
                                     <app-blocks [block]="child" (click)="handleClick($event, child)"></app-blocks>
                                 </div>
                             </div>
-                            <div class="dndPlaceholder h-16 p-5 border bg-blue-400 bg-opacity-25" dndPlaceholderRef>
+                            <div class="dndPlaceholder h-16 border bg-blue-400 bg-opacity-25" dndPlaceholderRef>
                             </div>
                         </div>
                     </ng-container>
@@ -76,12 +78,17 @@
 
         <div class="flex justify-end w-full">
             <div class="flex-none w-1/12">
-                <div style="height: 47px; border-bottom-left-radius: 4px; align-items: center;" class="border-b  border-l border-r flex justify-center px-2" (click)="this.rightPanelExpanded =  !this.rightPanelExpanded" >
-                    <vezo-icon *ngIf="this.rightPanelExpanded==true " [icon]="'chevronRight'"  className="cursor-pointer w-5 h-5" style="color:black"></vezo-icon>
-                    <vezo-icon  *ngIf="this.rightPanelExpanded==false " [icon]="'chevronLeft'"  className="cursor-pointer w-5 h-5" style="color:black"></vezo-icon>
+                <div style="height: 47px; border-bottom-left-radius: 4px; align-items: center;"
+                    class="border-b  border-l border-r flex justify-center px-2"
+                    (click)="this.rightPanelExpanded =  !this.rightPanelExpanded">
+                    <vezo-icon *ngIf="this.rightPanelExpanded==true " [icon]="'chevronRight'"
+                        className="cursor-pointer w-5 h-5" style="color:black"></vezo-icon>
+                    <vezo-icon *ngIf="this.rightPanelExpanded==false " [icon]="'chevronLeft'"
+                        className="cursor-pointer w-5 h-5" style="color:black"></vezo-icon>
                 </div>
             </div>
-            <div class="flex-none w-11/12 border-l" style="border-color: #818CF8;" *ngIf="this.rightPanelExpanded==true">
+            <div class="flex-none w-11/12 border-l" style="border-color: #818CF8;"
+                *ngIf="this.rightPanelExpanded==true">
                 <div class="flex">
                     <div class="w-6/12 p-3 cursor-pointer"
                         [style.background-color]=" this.activeItem?.id === null? '#4038CA' : '#C7D2FE'"
@@ -107,25 +114,30 @@
                     <div class="w-6/12 p-3 justify-center"
                         [style.background-color]=" this.activeItem?.id !== null? '#4038CA' : '#C7D2FE'">
                         <div [style.color]=" this.activeItem?.id !== null? '#F6F6F6' : '#454545'"
-                            style="font-size: 14px; font-weight: 400; display: flex; justify-content: center; align-items: center;">STYLES</div>
+                            style="font-size: 14px; font-weight: 400; display: flex; justify-content: center; align-items: center;">
+                            STYLES</div>
                     </div>
                 </div>
                 <!-- All elements -->
-                <div *ngIf="this.activeItem?.id == null"  class="h-[800px] overflow-y-scroll" >
+                <div *ngIf="this.activeItem?.id == null" class="h-[800px] overflow-y-scroll">
                     <div class="m-3 bg-white">
                         <vezo-searchfield type="text" placeholder="Search" className="p-1"></vezo-searchfield>
                     </div>
-                    <div class="dndList p-3 name" *ngIf="!showProps">
-
-                        <div *ngFor="let item of draggableListLeft" [dndDraggable]="item"
-                            [dndEffectAllowed]="item.effectAllowed" class="cursor-move">
-                            <div class="draggable-item mb-2 border bg-white">
-                                <div class="flex ">
-                                    <div class="col-2 bg-gray-50 py-3 px-1">
-                                        <vezo-icon icon="ellipsisVertical"></vezo-icon>
+                    <div class=" m-3 flex gap-2 justify-start align-middle" style="align-items: center;">
+                        <div><img src="assets/elementsClose.svg"></div>
+                        <div style="font-size: 16px; font-weight: 600; color: black;">Visual Elements</div>
+                    </div>
+                    <div class="dndList px-3 py-1 name" *ngIf="!showProps">
+                        <div class="grid grid-cols-2 gap-2">
+                            <div *ngFor="let item of draggableListLeft" [dndDraggable]="item"
+                                [dndEffectAllowed]="item.effectAllowed" class="cursor-move">
+                                <div class="draggable-item mb-2 border bg-white shadow-lg" style="border-radius: 4px;">
+                                    <div class="flex gap-3 py-2 px-2" style="justify-content: start; align-items: center;">
+                                        <div class="col-2">
+                                            <img [src]="item.icon">                                            
+                                        </div>
+                                        <div class="col-10"> {{item.content}}</div>
                                     </div>
-
-                                    <div class="col-10 p-3"> {{item.content}}</div>
                                 </div>
                             </div>
                         </div>
@@ -134,7 +146,7 @@
                     </div>
                 </div>
                 <!-- Elements's Property -->
-                <div *ngIf="this.activeItem?.id != null"  class="h-[800px] overflow-y-scroll p-3">
+                <div *ngIf="this.activeItem?.id != null" class="h-[800px] overflow-y-scroll p-3">
                     <div class="min-h-[24rem]">
                         <app-properties [fields]="fields" [props]="activeItem" [collections]="collections"
                             (deleteProp)="deleteActiveItem($event)"></app-properties>
