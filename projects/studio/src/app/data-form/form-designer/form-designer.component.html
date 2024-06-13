@@ -33,10 +33,11 @@
 </div>
 <div class="flex justify-start w-full">
 
-    <div class="w-8/12 border-l  border border-dashed border-yellow-600 m-12 h-[847px] overflow-y-scroll">
+    <div class="w-8/12 border-l  border border-dashed border-yellow-600 m-12">
 
         <div [class.horizontal]="layout.dndHorizontal" [dndHorizontal]="layout.dndHorizontal"
-            (dndDrop)="onDrop($event, draggableListRight)" class="dndList  name border-b  border-l-0" dndDropzone
+            (dndDrop)="onDrop($event, draggableListRight)" class="dndList  name border-b  border-l-0  h-[847px] overflow-y-scroll overflow-x: auto;
+            white-space: nowrap;" dndDropzone
             dndEffectAllowed="copyMove">
             <div class="dndPlaceholder h-16 border bg-blue-400 bg-opacity-25" dndPlaceholderRef>
             </div>
@@ -45,7 +46,7 @@
                 (dndCopied)="onDragged(item, draggableListRight, 'move')"
                 (dndLinked)="onDragged(item, draggableListRight, 'link')"
                 (dndMoved)="onDragged(item, draggableListRight, 'move')">
-                <div class="draggable-item  border border-dashed border-indigo-300 cursor-pointer relative">
+                <div class="draggable-item  border border-dashed border-indigo-300 cursor-pointer relative overflow-x: auto;">
                     <!-- <div class="absolute bg-white right-0" *ngIf="activeItem === item"><vezo-icon icon="trash"
                                 className="text-red-400 w-4 h-4 -mt-16 mr-4"></vezo-icon>
                         </div> -->
@@ -69,7 +70,7 @@
                             </div>
                         </div>
                     </ng-container>
-                    <app-blocks [block]="item" (click)="handleClick($event, item)"></app-blocks>
+                    <app-blocks [block]="item" (click)="handleClick($event, item)" style="overflow-x: auto;"></app-blocks>
                 </div>
             </div>
         </div>
@@ -97,10 +98,10 @@
                             <div class="w-11/12">
                                 <span *ngIf="!showProps"
                                     [style.color]=" this.activeItem?.id === null? '#F6F6F6' : '#454545'"
-                                    style="font-size: 14px; font-weight: 400;">PICK AN ELEMENT</span>
+                                    style="font-size: 12px; font-weight: 500;">PICK AN ELEMENT</span>
                                 <span *ngIf="showProps"
                                     [style.color]=" this.activeItem?.id === null? '#F6F6F6' : '#454545'"
-                                    style="font-size: 14px; font-weight: 400;">Widgets</span>
+                                    style="font-size: 12px; font-weight: 500;">Widgets</span>
                             </div>
                             <div class="w-1/12">
                                 <vezo-icon icon="bars2" *ngIf="!showProps" className="cursor-pointer w-4 h-4"
@@ -114,7 +115,7 @@
                     <div class="w-6/12 p-3 justify-center"
                         [style.background-color]=" this.activeItem?.id !== null? '#4038CA' : '#C7D2FE'">
                         <div [style.color]=" this.activeItem?.id !== null? '#F6F6F6' : '#454545'"
-                            style="font-size: 14px; font-weight: 400; display: flex; justify-content: center; align-items: center;">
+                            style="font-size: 12px; font-weight: 500; display: flex; justify-content: center; align-items: center;">
                             STYLES</div>
                     </div>
                 </div>
@@ -154,7 +155,7 @@
                             create
                             form. </div>
                     </div>
-                    <div>
+                    <div class="mt-4">
                         <div class="bg-gray-50 border-b p-2 font-semibold">Form Properties</div>
                         <div class="">
                             <!-- <vezo-switch label="Has Workflow"></vezo-switch> -->

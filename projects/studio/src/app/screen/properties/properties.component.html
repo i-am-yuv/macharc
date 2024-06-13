@@ -1,44 +1,194 @@
 <ng-container *ngIf="props?.name === 'heading'">
-    <vezo-input label="Heading" [(ngModel)]="props.data.text"></vezo-input>
-    <vezo-input label="Font Size" [(ngModel)]="props.data.fontSize"></vezo-input>
-    <vezo-input label="Font Weight" [(ngModel)]="props.data.fontWeight"></vezo-input>
-    <vezo-colorpicker [label]="'Choose Color'" (colorChange)="props.data.fontColor=$event"
-        [inputVal]="props.data.fontColor"></vezo-colorpicker>
-    <div>
+    <vezo-input label="Text" [(ngModel)]="props.data.text"></vezo-input>
+    <div class="mt-2">
+        <div class="flex gap-2">
+            <vezo-input label="Font Size" [(ngModel)]="props.data.fontSize"></vezo-input>
+            <vezo-input label="Font Weight" [(ngModel)]="props.data.fontWeight"></vezo-input>
+        </div>
+    </div>
+    <div class="mt-2">
+    </div>
+    <div class="mt-2">
+        <vezo-colorpicker [label]="'Choose Color'" (colorChange)="props.data.fontColor=$event"
+            [inputVal]="props.data.fontColor"></vezo-colorpicker>
+    </div>
+    <div class="mt-2">
         <label class="">Alignment</label>
         <div class="grid grid-cols-3 divide-x mt-2" style="border-color: #DFDFDF; border-width: 1px;">
             <div class="p-2 flex justify-center cursor-pointer" (click)="props.data.alignment ='start'"
-                [ngClass]="{'bg-slate-100':props.data?.alignment =='start'}"><img src="assets/alignLeft.svg"></div>
+                [ngClass]="{'bg-slate-200':props.data?.alignment =='start'}"><img src="assets/alignLeft.svg"></div>
             <div class="p-2 flex justify-center cursor-pointer" (click)="props.data.alignment ='center'"
-                [ngClass]="{'bg-slate-100':props.data?.alignment =='center'}"><img src="assets/alignCenter.svg"></div>
+                [ngClass]="{'bg-slate-200':props.data?.alignment =='center'}"><img src="assets/alignCenter.svg"></div>
             <div class="p-2 flex justify-center cursor-pointer" (click)="props.data.alignment ='end'"
-                [ngClass]="{'bg-slate-100':props.data?.alignment =='end'}"><img src="assets/alignRight.svg"></div>
+                [ngClass]="{'bg-slate-200':props.data?.alignment =='end'}"><img src="assets/alignRight.svg"></div>
         </div>
+    </div>
+    <div class="mt-2">
+        <label class="">Margin Style</label>
+        <div class="flex justify-center  items-center mt-2">
+            <div class="grid grid-cols-12 gap-2 w-full" style="justify-items: center;">
+                <div class="col-span-6 ">
+                    <!-- Content for the first div -->
+                    <div>Top</div>
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.mt" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+                <div class="col-span-6">
+                    <!-- Content for the second div -->
+                    <div>Bottom</div>
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.mb" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+                <div class="col-span-6">
+                    <!-- Content for the second div -->
+                    <div>Left</div>
+                    <div class="flex mt-1  gap-1 p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.ml" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+                <div class="col-span-6">
+                    <!-- Content for the second div -->
+                    <div>Right</div>
+                    <div class="flex mt-1  gap-1  p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;  justify-content:end">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.mr" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mt-2  mb-2">
+        <label class="">Padding Style</label>
+
+        <div class="flex justify-center items-center mt-2">
+            <div class="grid grid-cols-12 gap-2 w-full" style="justify-items: center;">
+                <div class="col-span-6 ">
+                    <!-- Content for the first div -->
+                    <div>Top</div>
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.pt" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+                <div class="col-span-6">
+                    <!-- Content for the second div -->
+                    <div>Bottom</div>
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.pb" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+                <div class="col-span-6">
+                    <!-- Content for the second div -->
+                    <div>Left</div>
+                    <div class="flex mt-1  gap-1 p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.pl" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+                <div class="col-span-6">
+                    <!-- Content for the second div -->
+                    <div>Right</div>
+                    <div class="flex mt-1  gap-1  p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;  justify-content:end">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.pr" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
     </div>
 
 </ng-container>
 <ng-container *ngIf="props?.name === 'button'">
     <vezo-input label="Label" [(ngModel)]="props.data.label"></vezo-input>
-    <vezo-colorpicker [label]="'Text Color'" (colorChange)="props.data.btnTextColor=$event"
-        [inputVal]="props.data.btnTextColor"></vezo-colorpicker>
-    <div class="flex gap-2">
+    <div class="mt-2">
+        <vezo-colorpicker [label]="'Text Color'" (colorChange)="props.data.btnTextColor=$event"
+            [inputVal]="props.data.btnTextColor"></vezo-colorpicker>
+    </div>
+
+    <div class="flex gap-2 mt-2">
         <vezo-input label="Width" [(ngModel)]="props.data.width"></vezo-input>
         <vezo-input label="Height" [(ngModel)]="props.data.height"></vezo-input>
     </div>
-    <div class="flex gap-2">
+
+    <div class="flex gap-2 mt-2">
         <vezo-input label="Font Size" [(ngModel)]="props.data.btnTextFont"></vezo-input>
         <vezo-input label="Font Weight" [(ngModel)]="props.data.btnTextWeight"></vezo-input>
     </div>
-    <div class="flex gap-2">
-        <vezo-input label="Border Width" [(ngModel)]="props.data.borderWidth"></vezo-input>
-        <vezo-input label="Border Radius" [(ngModel)]="props.data.borderRadius"></vezo-input>
-        <vezo-colorpicker [label]="'Border Color'" (colorChange)="props.data.borderColor=$event"
-            [inputVal]="props.data.borderColor"></vezo-colorpicker>
-    </div>
-    <vezo-colorpicker [label]="'background Color'" (colorChange)="props.data.bgColor=$event"
-        [inputVal]="props.data.bgColor"></vezo-colorpicker>
+    <!-- <div class="flex gap-2 mt-2" style="justify-content: space-between ; align-items: center;" >
+        <div class="w-4/12">
+            <vezo-input label="Border Width" [(ngModel)]="props.data.borderWidth"></vezo-input>
+        </div>
+        <div class="w-4/12">
+            <vezo-input label="Border Radius" [(ngModel)]="props.data.borderRadius"></vezo-input>
+        </div>
+        <div class="w-4/12">
+            <vezo-colorpicker [label]="'Border Color'" (colorChange)="props.data.borderColor=$event"
+                [inputVal]="props.data.borderColor"></vezo-colorpicker>
+        </div>
+    </div> -->
 
-    <div>
+    <div class="flex justify-center items-end mt-2">
+        <div class="grid grid-cols-12 gap-2 w-full">
+            <div class="col-span-6">
+                <vezo-input label="Border Width" [(ngModel)]="props.data.borderWidth"></vezo-input>
+            </div>
+            <div class="col-span-6 ">
+                <vezo-input label="Border Radius" [(ngModel)]="props.data.borderRadius"></vezo-input>
+            </div>
+        </div>
+    </div>
+    <div class="flex justify-center items-end mt-2">
+        <div class="grid grid-cols-12 gap-2 w-full">
+            <div class="col-span-6">
+                <vezo-colorpicker [label]="'Border Color'" (colorChange)="props.data.borderColor=$event"
+                    [inputVal]="props.data.borderColor"></vezo-colorpicker>
+            </div>
+            <div class="col-span-6 ">
+                <vezo-colorpicker [label]="'Background Color'" (colorChange)="props.data.bgColor=$event"
+                    [inputVal]="props.data.bgColor"></vezo-colorpicker>
+            </div>
+        </div>
+    </div>
+    <div class="mt-2">
         <label class="">Button Alignment</label>
         <div class="grid grid-cols-3 divide-x mt-2" style="border-color: #DFDFDF; border-width: 1px;">
             <div class="p-2 flex justify-center cursor-pointer" (click)="props.data.btnAlignment ='start'"
@@ -62,184 +212,1037 @@
                 [ngClass]="{'bg-slate-200':props.data?.textAlignment =='end'}"><img src="assets/alignRight.svg"></div>
         </div>
     </div>
-
     <div class="mt-2">
         <label class="">Margin Style</label>
-        <div class="grid grid-cols-12 mt-2 mb-2" style="justify-items: start;">
-            <div class="col-span-6 gap-2">
-                <div>Top</div>
-                <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9" style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
-                    <div class="w-10/12">
-                        <input  style="width:40px" [(ngModel)]="props.data.mt" />
+        <div class="flex justify-center items-center mt-2">
+            <div class="grid grid-cols-12 gap-2 w-full" style="justify-items: 'center';">
+                <div class="col-span-6 ">
+                    <!-- Content for the first div -->
+                    <div>Top</div>
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.mt" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
                     </div>
-                    <div  class="w-2/12 mr-2">px</div>
+
                 </div>
-            </div>
-            <div class="col-span-6 gap-2">
-                <div>Bottom</div>
-                <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9" style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
-                    <div class="w-10/12">
-                        <input  style="width:40px" [(ngModel)]="props.data.mb" />
+                <div class="col-span-6">
+                    <!-- Content for the second div -->
+                    <div>Bottom</div>
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.mb" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
                     </div>
-                    <div  class="w-2/12 mr-2">px</div>
+
                 </div>
-            </div>
-            <div class="col-span-6 gap-2">
-                <div>Left</div>
-                <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9" style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
-                    <div class="w-10/12">
-                        <input  style="width:40px" [(ngModel)]="props.data.ml" />
+                <div class="col-span-6">
+                    <!-- Content for the second div -->
+                    <div>Left</div>
+                    <div class="flex mt-1  gap-1 p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.ml" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
                     </div>
-                    <div  class="w-2/12 mr-2">px</div>
+
                 </div>
-            </div>
-            <div class="col-span-6 gap-2">
-                <div>Right</div>
-                <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9" style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
-                    <div class="w-10/12">
-                        <input  style="width:40px" [(ngModel)]="props.data.mr"/>
+                <div class="col-span-6">
+                    <!-- Content for the second div -->
+                    <div>Right</div>
+                    <div class="flex mt-1  gap-1  p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;  justify-content:end">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.mr" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
                     </div>
-                    <div  class="w-2/12 mr-2">px</div>
+
                 </div>
             </div>
         </div>
     </div>
+    <div class="mt-2 ">
+        <label class="">Padding Style</label>
 
-    <div>
+        <div class="flex justify-center items-center mt-2">
+            <div class="grid grid-cols-12 gap-2 w-full" style="justify-items: center;">
+                <div class="col-span-6 ">
+                    <!-- Content for the first div -->
+                    <div>Top</div>
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.pt" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+                <div class="col-span-6">
+                    <!-- Content for the second div -->
+                    <div>Bottom</div>
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.pb" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+                <div class="col-span-6">
+                    <!-- Content for the second div -->
+                    <div>Left</div>
+                    <div class="flex mt-1  gap-1 p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.pl" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+                <div class="col-span-6">
+                    <!-- Content for the second div -->
+                    <div>Right</div>
+                    <div class="flex mt-1  gap-1  p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;  justify-content:end">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.pr" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="mt-2 flex gap-4 justify-start items-center">
         <vezo-radiobutton [(ngModel)]="props.data.action" value="save" label="Save" name="action"
             className="mr-2"></vezo-radiobutton>
         <vezo-radiobutton [(ngModel)]="props.data.action" value="custom_save" label="Custom Save" name="action"
             className="ml-4"></vezo-radiobutton>
     </div>
-    <vezo-input label="Endpoint" [(ngModel)]="props.data.endpoint" *ngIf="props.data.action==='custom_save'"
-        className="mb-4"></vezo-input>
+    <div class="mt-2">
+        <vezo-input label="Endpoint" [(ngModel)]="props.data.endpoint" *ngIf="props.data.action==='custom_save'"
+            className="mb-2"></vezo-input>
+    </div>
 </ng-container>
 <ng-container *ngIf="props?.name === 'input'">
-    <div class="flex gap-2">
-        <vezo-input label="Label" [(ngModel)]="props.data.label"></vezo-input>
-        <vezo-input label="Placeholder" [(ngModel)]="props.data.placeholder"></vezo-input>
-    </div>
-    <div class="flex gap-2">
-        <div class="">
-            <vezo-input label="Label Font Size (In px)" [(ngModel)]="props.data.labelFont"></vezo-input>
-        </div>
-        <div class="">
-            <vezo-colorpicker [label]="'Choose Color'" (colorChange)="props.data.labelColor=$event"
-                [inputVal]="props.data.labelColor"></vezo-colorpicker>
+    <div class="flex justify-between items-center mt-2">
+        <div class="grid grid-cols-12 gap-2 w-full">
+            <div class="col-span-6 ">
+                <vezo-input label="Label" [(ngModel)]="props.data.label"></vezo-input>
+            </div>
+            <div class="col-span-6">
+                <vezo-input label="Placeholder" [(ngModel)]="props.data.placeholder"></vezo-input>
+            </div>
         </div>
     </div>
-    <vezo-input label="Label Font Weight" [(ngModel)]="props.data.labelWeight"></vezo-input>
-    <vezo-input label="Height (in px)" [(ngModel)]="props.data.fieldHeight"></vezo-input>
-    <vezo-input label="Radius (in px)" [(ngModel)]="props.data.fieldRadius"></vezo-input>
-    <div class="flex gap-2">
+    <div class="flex justify-between items-center mt-2">
+        <div class="grid grid-cols-12 gap-2 w-full">
+            <div class="col-span-6 ">
+                <vezo-input label="Font Size (In px)" [(ngModel)]="props.data.labelFont"></vezo-input>
+            </div>
+            <div class="col-span-6">
+                <vezo-input label="Font Weight" [(ngModel)]="props.data.labelWeight"></vezo-input>
+            </div>
+        </div>
+    </div>
+    <div class="mt-2">
+        <vezo-colorpicker [label]="'Choose Color'" (colorChange)="props.data.labelColor=$event"
+            [inputVal]="props.data.labelColor"></vezo-colorpicker>
+    </div>
+    <div class="mt-2">
+        <vezo-input label="Height (In px)" [(ngModel)]="props.data.fieldHeight"></vezo-input>
+    </div>
+    <div class="mt-2 flex gap-2">
+        <vezo-input label="Border Width (In px)" [(ngModel)]="props.data.borderWidth"></vezo-input>
+        <vezo-input label="Border Radius (In px)" [(ngModel)]="props.data.fieldRadius"></vezo-input>
+    </div>
+
+    <div class="flex gap-2 mt-2 ">
         <vezo-colorpicker [label]="'Fill Color'" (colorChange)="props.data.fillColor=$event"
             [inputVal]="props.data.fillColor"></vezo-colorpicker>
         <vezo-colorpicker [label]="'Border Color'" (colorChange)="props.data.borderColor=$event"
             [inputVal]="props.data.borderColor"></vezo-colorpicker>
-        <vezo-input label="Border Width" [(ngModel)]="props.data.borderWidth"></vezo-input>
     </div>
-    <vezo-select label="Field" optionLabel="fieldName" [items]="fields" [(ngModel)]="props.data.field"></vezo-select>
-    <vezo-select label="Validation" [items]="validations" [(ngModel)]="props.data.validation"></vezo-select>
+    <div class="mt-2">
+        <label class="">Margin Style</label>
+        <div class="flex justify-center  items-center mt-2">
+            <div class="grid grid-cols-12 gap-2 w-full" style="justify-items: center;">
+                <div class="col-span-6 ">
+                    <!-- Content for the first div -->
+                    <div>Top</div>
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.mt" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+                <div class="col-span-6">
+                    <!-- Content for the second div -->
+                    <div>Bottom</div>
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.mb" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+                <div class="col-span-6">
+                    <!-- Content for the second div -->
+                    <div>Left</div>
+                    <div class="flex mt-1  gap-1 p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.ml" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+                <div class="col-span-6">
+                    <!-- Content for the second div -->
+                    <div>Right</div>
+                    <div class="flex mt-1  gap-1  p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;  justify-content:end">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.mr" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mt-2 ">
+        <label class="">Padding Style</label>
+
+        <div class="flex justify-center items-center mt-2">
+            <div class="grid grid-cols-12 gap-2 w-full" style="justify-items: center;">
+                <div class="col-span-6 ">
+                    <!-- Content for the first div -->
+                    <div>Top</div>
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.pt" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+                <div class="col-span-6">
+                    <!-- Content for the second div -->
+                    <div>Bottom</div>
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.pb" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+                <div class="col-span-6">
+                    <!-- Content for the second div -->
+                    <div>Left</div>
+                    <div class="flex mt-1  gap-1 p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.pl" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+                <div class="col-span-6">
+                    <!-- Content for the second div -->
+                    <div>Right</div>
+                    <div class="flex mt-1  gap-1  p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;  justify-content:end">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.pr" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="mt-2">
+        <vezo-select label="Field" optionLabel="fieldName" [items]="fields"
+            [(ngModel)]="props.data.field"></vezo-select>
+    </div>
+    <div class="mt-2">
+        <vezo-select label="Validation" [items]="validations" [(ngModel)]="props.data.validation"></vezo-select>
+    </div>
 </ng-container>
 <ng-container *ngIf="props?.name === 'textarea'">
-    <div class="flex gap-2">
-        <vezo-input label="Label" [(ngModel)]="props.data.label"></vezo-input>
-        <vezo-input label="Placeholder" [(ngModel)]="props.data.placeholder"></vezo-input>
-    </div>
-    <div class="flex gap-2">
-        <div class="">
-            <vezo-input label="Label Font Size (In px)" [(ngModel)]="props.data.labelFont"></vezo-input>
-        </div>
-        <div class="">
-            <vezo-colorpicker [label]="'Choose Color'" (colorChange)="props.data.labelColor=$event"
-                [inputVal]="props.data.labelColor"></vezo-colorpicker>
+    <div class="flex justify-between items-center mt-2">
+        <div class="grid grid-cols-12 gap-2 w-full">
+            <div class="col-span-6 ">
+                <vezo-input label="Label" [(ngModel)]="props.data.label"></vezo-input>
+            </div>
+            <div class="col-span-6">
+                <vezo-input label="Placeholder" [(ngModel)]="props.data.placeholder"></vezo-input>
+            </div>
         </div>
     </div>
-    <div class="flex gap-2">
-        <vezo-colorpicker [label]="'Fill Color'" (colorChange)="props.data.fillColor=$event"
-            [inputVal]="props.data.fillColor"></vezo-colorpicker>
-        <vezo-colorpicker [label]="'Border Color'" (colorChange)="props.data.borderColor=$event"
-            [inputVal]="props.data.borderColor"></vezo-colorpicker>
-        <vezo-input label="Border Width" [(ngModel)]="props.data.borderWidth"></vezo-input>
+    <div class="flex justify-between items-center mt-2">
+        <div class="grid grid-cols-12 gap-2 w-full">
+            <div class="col-span-6 ">
+                <vezo-input label="Font Size (In px)" [(ngModel)]="props.data.labelFont"></vezo-input>
+            </div>
+            <div class="col-span-6">
+                <vezo-input label="Font Weight" [(ngModel)]="props.data.labelWeight"></vezo-input>
+            </div>
+        </div>
     </div>
-    <vezo-input label="Border Radius" [(ngModel)]="props.data.borderRadius"></vezo-input>
-    <vezo-input label="Label Font Weight" [(ngModel)]="props.data.labelWeight"></vezo-input>
-    <vezo-select label="Field" optionLabel="fieldName" [items]="fields" [(ngModel)]="props.data.field"></vezo-select>
-    <vezo-select label="Validation" [items]="validations" [(ngModel)]="props.data.validation"></vezo-select>
+    <div class="mt-2">
+        <vezo-colorpicker [label]="'Choose Color'" (colorChange)="props.data.labelColor=$event"
+            [inputVal]="props.data.labelColor"></vezo-colorpicker>
+    </div>
+    <div class="flex justify-between items-center mt-2">
+        <div class="grid grid-cols-12 gap-2 w-full">
+            <div class="col-span-6 ">
+                <vezo-input label="Border Width (In px)" [(ngModel)]="props.data.borderWidth"></vezo-input>
+            </div>
+            <div class="col-span-6">
+                <vezo-input label="Border Radius (In px)" [(ngModel)]="props.data.borderRadius"></vezo-input>
+            </div>
+        </div>
+    </div>
+    <div class="flex justify-between items-center mt-2">
+        <div class="grid grid-cols-12 gap-2 w-full">
+            <div class="col-span-6 ">
+                <vezo-colorpicker [label]="'Border Color'" (colorChange)="props.data.borderColor=$event"
+                    [inputVal]="props.data.borderColor"></vezo-colorpicker>
+            </div>
+            <div class="col-span-6">
+                <vezo-colorpicker [label]="'Fill Color'" (colorChange)="props.data.fillColor=$event"
+                    [inputVal]="props.data.fillColor"></vezo-colorpicker>
+            </div>
+        </div>
+    </div>
+    <div class="mt-2">
+        <label class="">Margin Style</label>
+        <div class="flex justify-center  items-center mt-2">
+            <div class="grid grid-cols-12 gap-2 w-full" style="justify-items: center;">
+                <div class="col-span-6 ">
+                    <!-- Content for the first div -->
+                    <div>Top</div>
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.mt" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+                <div class="col-span-6">
+                    <!-- Content for the second div -->
+                    <div>Bottom</div>
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.mb" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+                <div class="col-span-6">
+                    <!-- Content for the second div -->
+                    <div>Left</div>
+                    <div class="flex mt-1  gap-1 p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.ml" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+                <div class="col-span-6">
+                    <!-- Content for the second div -->
+                    <div>Right</div>
+                    <div class="flex mt-1  gap-1  p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;  justify-content:end">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.mr" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mt-2">
+        <label class="">Padding Style</label>
+
+        <div class="flex justify-center items-center mt-2">
+            <div class="grid grid-cols-12 gap-2 w-full" style="justify-items: center;">
+                <div class="col-span-6 ">
+                    <!-- Content for the first div -->
+                    <div>Top</div>
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.pt" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+                <div class="col-span-6">
+                    <!-- Content for the second div -->
+                    <div>Bottom</div>
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.pb" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+                <div class="col-span-6">
+                    <!-- Content for the second div -->
+                    <div>Left</div>
+                    <div class="flex mt-1  gap-1 p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.pl" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+                <div class="col-span-6">
+                    <!-- Content for the second div -->
+                    <div>Right</div>
+                    <div class="flex mt-1  gap-1  p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;  justify-content:end">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.pr" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="mt-2">
+        <vezo-select label="Field" optionLabel="fieldName" [items]="fields"
+            [(ngModel)]="props.data.field"></vezo-select>
+    </div>
+    <div class="mt-2">
+        <vezo-select label="Validation" [items]="validations" [(ngModel)]="props.data.validation"></vezo-select>
+    </div>
 </ng-container>
 <ng-container *ngIf="props?.name === 'dropdown'">
-    <div class="flex gap-2">
-        <vezo-input label="Label" [(ngModel)]="props.data.label"></vezo-input>
-        <vezo-input label="Placeholder" [(ngModel)]="props.data.placeholder"></vezo-input>
-    </div>
-    <div class="flex gap-2">
-        <div class="">
-            <vezo-input label="Label Font Size (In px)" [(ngModel)]="props.data.labelFont"></vezo-input>
-        </div>
-        <div class="">
-            <vezo-colorpicker [label]="'Choose Color'" (colorChange)="props.data.labelColor=$event"
-                [inputVal]="props.data.labelColor"></vezo-colorpicker>
+    <div class="flex justify-between items-center mt-2">
+        <div class="grid grid-cols-12 gap-2 w-full">
+            <div class="col-span-6 ">
+                <vezo-input label="Label" [(ngModel)]="props.data.label"></vezo-input>
+            </div>
+            <div class="col-span-6">
+                <vezo-input label="Placeholder" [(ngModel)]="props.data.placeholder"></vezo-input>
+            </div>
         </div>
     </div>
-    <vezo-input label="Label Font Weight" [(ngModel)]="props.data.labelWeight"></vezo-input>
-    <vezo-input label="Height (in px)" [(ngModel)]="props.data.fieldHeight"></vezo-input>
-    <vezo-input label="Radius (in px)" [(ngModel)]="props.data.fieldRadius"></vezo-input>
-    <div class="flex gap-2">
-        <vezo-colorpicker [label]="'Fill Color'" (colorChange)="props.data.fillColor=$event"
-            [inputVal]="props.data.fillColor"></vezo-colorpicker>
-        <vezo-colorpicker [label]="'Border Color'" (colorChange)="props.data.borderColor=$event"
-            [inputVal]="props.data.borderColor"></vezo-colorpicker>
-        <vezo-input label="Border Width" [(ngModel)]="props.data.borderWidth"></vezo-input>
+    <div class="flex justify-between items-center mt-2">
+        <div class="grid grid-cols-12 gap-2 w-full">
+            <div class="col-span-6 ">
+                <vezo-input label="Font Size (In px)" [(ngModel)]="props.data.labelFont"></vezo-input>
+            </div>
+            <div class="col-span-6">
+                <vezo-input label="Font Weight" [(ngModel)]="props.data.labelWeight"></vezo-input>
+            </div>
+        </div>
     </div>
-    <vezo-select label="Field" optionLabel="fieldName" [items]="fields" [(ngModel)]="props.data.field"></vezo-select>
-    <vezo-select label="Options" optionLabel="collectionName" [items]="collections"
-        [(ngModel)]="props.data.field"></vezo-select>
-    <vezo-select label="Validation" [items]="validations" [(ngModel)]="props.data.validation"></vezo-select>
+    <div class="mt-2">
+        <vezo-colorpicker [label]="'Label Color'" (colorChange)="props.data.labelColor=$event"
+            [inputVal]="props.data.labelColor"></vezo-colorpicker>
+    </div>
+    <div class="flex justify-between items-center mt-2">
+        <div class="grid grid-cols-12 gap-2 w-full">
+            <div class="col-span-6 ">
+                <vezo-input label="Border Width (In px)" [(ngModel)]="props.data.borderWidth"></vezo-input>
+            </div>
+            <div class="col-span-6">
+                <vezo-input label="Border Radius (In px)" [(ngModel)]="props.data.fieldRadius"></vezo-input>
+            </div>
+        </div>
+    </div>
+    <div class="flex justify-between items-center mt-2">
+        <div class="grid grid-cols-12 gap-2 w-full">
+            <div class="col-span-6 ">
+                <vezo-colorpicker [label]="'Fill Color'" (colorChange)="props.data.fillColor=$event"
+                    [inputVal]="props.data.fillColor"></vezo-colorpicker>
+            </div>
+            <div class="col-span-6">
+                <vezo-colorpicker [label]="'Border Color'" (colorChange)="props.data.borderColor=$event"
+                    [inputVal]="props.data.borderColor"></vezo-colorpicker>
+            </div>
+        </div>
+    </div>
+    <div class="mt-2">
+        <vezo-input label="Height (in px)" [(ngModel)]="props.data.fieldHeight"></vezo-input>
+    </div>
+    <div class="mt-2">
+        <label class="">Margin Style</label>
+        <div class="flex justify-center  items-center mt-2">
+            <div class="grid grid-cols-12 gap-2 w-full" style="justify-items: center;">
+                <div class="col-span-6 ">
+                    <!-- Content for the first div -->
+                    <div>Top</div>
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.mt" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+                <div class="col-span-6">
+                    <!-- Content for the second div -->
+                    <div>Bottom</div>
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.mb" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+                <div class="col-span-6">
+                    <!-- Content for the second div -->
+                    <div>Left</div>
+                    <div class="flex mt-1  gap-1 p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.ml" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+                <div class="col-span-6">
+                    <!-- Content for the second div -->
+                    <div>Right</div>
+                    <div class="flex mt-1  gap-1  p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;  justify-content:end">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.mr" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mt-2">
+        <label class="">Padding Style</label>
+
+        <div class="flex justify-center items-center mt-2">
+            <div class="grid grid-cols-12 gap-2 w-full" style="justify-items: center;">
+                <div class="col-span-6 ">
+                    <!-- Content for the first div -->
+                    <div>Top</div>
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.pt" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+                <div class="col-span-6">
+                    <!-- Content for the second div -->
+                    <div>Bottom</div>
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.pb" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+                <div class="col-span-6">
+                    <!-- Content for the second div -->
+                    <div>Left</div>
+                    <div class="flex mt-1  gap-1 p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.pl" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+                <div class="col-span-6">
+                    <!-- Content for the second div -->
+                    <div>Right</div>
+                    <div class="flex mt-1  gap-1  p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;  justify-content:end">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.pr" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="mt-2">
+        <vezo-select label="Field" optionLabel="fieldName" [items]="fields"
+            [(ngModel)]="props.data.field"></vezo-select>
+    </div>
+
+    <div class="mt-2">
+        <vezo-select label="Options" optionLabel="collectionName" [items]="collections"
+            [(ngModel)]="props.data.field"></vezo-select>
+    </div>
+    <div class="mt-2">
+        <vezo-select label="Validation" [items]="validations" [(ngModel)]="props.data.validation"></vezo-select>
+    </div>
 </ng-container>
 <ng-container *ngIf="props?.name === 'checkbox'">
     <vezo-input label="Label" [(ngModel)]="props.data.label"></vezo-input>
-    <div class="flex gap-2">
-        <div class="">
-            <vezo-input label="Label Font Size (In px)" [(ngModel)]="props.data.labelFont"></vezo-input>
-        </div>
-        <div class="">
-            <vezo-colorpicker [label]="'Choose Color'" (colorChange)="props.data.labelColor=$event"
-                [inputVal]="props.data.labelColor"></vezo-colorpicker>
+    <div class="flex justify-between items-center mt-2">
+        <div class="grid grid-cols-12 gap-2 w-full">
+            <div class="col-span-6 ">
+                <vezo-input label="Font Size (In px)" [(ngModel)]="props.data.labelFont"></vezo-input>
+            </div>
+            <div class="col-span-6">
+                <vezo-input label="Font Weight" [(ngModel)]="props.data.labelWeight"></vezo-input>
+            </div>
         </div>
     </div>
-    <vezo-input label="Label Font Weight" [(ngModel)]="props.data.labelWeight"></vezo-input>
-    <vezo-select label="Field" optionLabel="fieldName" [items]="fields" [(ngModel)]="props.data.field"></vezo-select>
-    <vezo-select label="Validation" [items]="validations" [(ngModel)]="props.data.validation"></vezo-select>
+    <div class="mt-2">
+        <vezo-colorpicker [label]="'Choose Label Color'" (colorChange)="props.data.labelColor=$event"
+            [inputVal]="props.data.labelColor"></vezo-colorpicker>
+    </div>
+    <div class="mt-2">
+        <label class="">Margin Style</label>
+        <div class="flex justify-center  items-center mt-2">
+            <div class="grid grid-cols-12 gap-2 w-full" style="justify-items: center;">
+                <div class="col-span-6 ">
+                    <!-- Content for the first div -->
+                    <div>Top</div>
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.mt" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+                <div class="col-span-6">
+                    <!-- Content for the second div -->
+                    <div>Bottom</div>
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.mb" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+                <div class="col-span-6">
+                    <!-- Content for the second div -->
+                    <div>Left</div>
+                    <div class="flex mt-1  gap-1 p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.ml" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+                <div class="col-span-6">
+                    <!-- Content for the second div -->
+                    <div>Right</div>
+                    <div class="flex mt-1  gap-1  p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;  justify-content:end">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.mr" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mt-2">
+        <label class="">Padding Style</label>
+
+        <div class="flex justify-center items-center mt-2">
+            <div class="grid grid-cols-12 gap-2 w-full" style="justify-items: center;">
+                <div class="col-span-6 ">
+                    <!-- Content for the first div -->
+                    <div>Top</div>
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.pt" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+                <div class="col-span-6">
+                    <!-- Content for the second div -->
+                    <div>Bottom</div>
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.pb" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+                <div class="col-span-6">
+                    <!-- Content for the second div -->
+                    <div>Left</div>
+                    <div class="flex mt-1  gap-1 p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.pl" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+                <div class="col-span-6">
+                    <!-- Content for the second div -->
+                    <div>Right</div>
+                    <div class="flex mt-1  gap-1  p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;  justify-content:end">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.pr" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="mt-2">
+        <vezo-select label="Field" optionLabel="fieldName" [items]="fields"
+            [(ngModel)]="props.data.field"></vezo-select>
+    </div>
+    <div class="mt-2">
+        <vezo-select label="Validation" [items]="validations" [(ngModel)]="props.data.validation"></vezo-select>
+    </div>
 </ng-container>
 <ng-container *ngIf="props?.name === 'radio'">
     <vezo-input label="Label" [(ngModel)]="props.data.label"></vezo-input>
-    <div class="flex gap-2">
-        <div class="">
-            <vezo-input label="Label Font Size (In px)" [(ngModel)]="props.data.labelFont"></vezo-input>
-        </div>
-        <div class="">
-            <vezo-colorpicker [label]="'Choose Color'" (colorChange)="props.data.labelColor=$event"
-                [inputVal]="props.data.labelColor"></vezo-colorpicker>
+    <div class="flex justify-between items-center mt-2">
+        <div class="grid grid-cols-12 gap-2 w-full">
+            <div class="col-span-6 ">
+                <vezo-input label="Font Size (In px)" [(ngModel)]="props.data.labelFont"></vezo-input>
+            </div>
+            <div class="col-span-6">
+                <vezo-input label="Font Weight" [(ngModel)]="props.data.labelWeight"></vezo-input>
+            </div>
         </div>
     </div>
-    <vezo-input label="Label Font Weight" [(ngModel)]="props.data.labelWeight"></vezo-input>
-    <vezo-select label="Field" optionLabel="fieldName" [items]="fields" [(ngModel)]="props.data.field"></vezo-select>
-    <vezo-select label="Validation" [items]="validations" [(ngModel)]="props.data.validation"></vezo-select>
+    <div class="mt-2">
+        <vezo-colorpicker [label]="'Choose Color'" (colorChange)="props.data.labelColor=$event"
+            [inputVal]="props.data.labelColor"></vezo-colorpicker>
+    </div>
+    <div class="mt-2">
+        <label class="">Margin Style</label>
+        <div class="flex justify-center  items-center mt-2">
+            <div class="grid grid-cols-12 gap-2 w-full" style="justify-items: center;">
+                <div class="col-span-6 ">
+                    <!-- Content for the first div -->
+                    <div>Top</div>
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.mt" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+                <div class="col-span-6">
+                    <!-- Content for the second div -->
+                    <div>Bottom</div>
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.mb" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+                <div class="col-span-6">
+                    <!-- Content for the second div -->
+                    <div>Left</div>
+                    <div class="flex mt-1  gap-1 p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.ml" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+                <div class="col-span-6">
+                    <!-- Content for the second div -->
+                    <div>Right</div>
+                    <div class="flex mt-1  gap-1  p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;  justify-content:end">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.mr" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mt-2">
+        <label class="">Padding Style</label>
+
+        <div class="flex justify-center items-center mt-2">
+            <div class="grid grid-cols-12 gap-2 w-full" style="justify-items: center;">
+                <div class="col-span-6 ">
+                    <!-- Content for the first div -->
+                    <div>Top</div>
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.pt" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+                <div class="col-span-6">
+                    <!-- Content for the second div -->
+                    <div>Bottom</div>
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.pb" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+                <div class="col-span-6">
+                    <!-- Content for the second div -->
+                    <div>Left</div>
+                    <div class="flex mt-1  gap-1 p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.pl" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+                <div class="col-span-6">
+                    <!-- Content for the second div -->
+                    <div>Right</div>
+                    <div class="flex mt-1  gap-1  p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;  justify-content:end">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.pr" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="mt-2">
+        <vezo-select label="Field" optionLabel="fieldName" [items]="fields"
+            [(ngModel)]="props.data.field"></vezo-select>
+    </div>
+    <div class="mt-2">
+        <vezo-select label="Validation" [items]="validations" [(ngModel)]="props.data.validation"></vezo-select>
+    </div>
 </ng-container>
 <ng-container *ngIf="props?.name === 'switch'">
     <vezo-input label="Label" [(ngModel)]="props.data.label"></vezo-input>
-    <div class="flex gap-2">
-        <div class="">
-            <vezo-input label="Label Font Size (In px)" [(ngModel)]="props.data.labelFont"></vezo-input>
-        </div>
-        <div class="">
-            <vezo-colorpicker [label]="'Choose Color'" (colorChange)="props.data.labelColor=$event"
-                [inputVal]="props.data.labelColor"></vezo-colorpicker>
+    <div class="flex justify-between items-center mt-2">
+        <div class="grid grid-cols-12 gap-2 w-full">
+            <div class="col-span-6 ">
+                <vezo-input label="Font Size (In px)" [(ngModel)]="props.data.labelFont"></vezo-input>
+            </div>
+            <div class="col-span-6">
+                <vezo-input label="Font Weight" [(ngModel)]="props.data.labelWeight"></vezo-input>
+            </div>
         </div>
     </div>
-    <vezo-input label="Label Font Weight" [(ngModel)]="props.data.labelWeight"></vezo-input>
-    <vezo-select label="Field" optionLabel="fieldName" [items]="fields" [(ngModel)]="props.data.field"></vezo-select>
-    <vezo-select label="Validation" [items]="validations" [(ngModel)]="props.data.validation"></vezo-select>
+    <div class="mt-2">
+        <vezo-colorpicker [label]="'Choose Color'" (colorChange)="props.data.labelColor=$event"
+            [inputVal]="props.data.labelColor"></vezo-colorpicker>
+    </div>
+    <div class="mt-2">
+        <label class="">Margin Style</label>
+        <div class="flex justify-center  items-center mt-2">
+            <div class="grid grid-cols-12 gap-2 w-full" style="justify-items: center;">
+                <div class="col-span-6 ">
+                    <!-- Content for the first div -->
+                    <div>Top</div>
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.mt" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+                <div class="col-span-6">
+                    <!-- Content for the second div -->
+                    <div>Bottom</div>
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.mb" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+                <div class="col-span-6">
+                    <!-- Content for the second div -->
+                    <div>Left</div>
+                    <div class="flex mt-1  gap-1 p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.ml" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+                <div class="col-span-6">
+                    <!-- Content for the second div -->
+                    <div>Right</div>
+                    <div class="flex mt-1  gap-1  p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;  justify-content:end">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.mr" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mt-2">
+        <label class="">Padding Style</label>
+
+        <div class="flex justify-center items-center mt-2">
+            <div class="grid grid-cols-12 gap-2 w-full" style="justify-items: center;">
+                <div class="col-span-6 ">
+                    <!-- Content for the first div -->
+                    <div>Top</div>
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.pt" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+                <div class="col-span-6">
+                    <!-- Content for the second div -->
+                    <div>Bottom</div>
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.pb" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+                <div class="col-span-6">
+                    <!-- Content for the second div -->
+                    <div>Left</div>
+                    <div class="flex mt-1  gap-1 p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.pl" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+                <div class="col-span-6">
+                    <!-- Content for the second div -->
+                    <div>Right</div>
+                    <div class="flex mt-1  gap-1  p-2 w-20 h-9"
+                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;  justify-content:end">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.pr" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="mt-2">
+        <vezo-select label="Field" optionLabel="fieldName" [items]="fields"
+            [(ngModel)]="props.data.field"></vezo-select>
+    </div>
+    <div class="mt-2">
+        <vezo-select label="Validation" [items]="validations" [(ngModel)]="props.data.validation"></vezo-select>
+    </div>
 </ng-container>
 <ng-container *ngIf="props?.name === 'table'">
     <vezo-input label="Caption" [(ngModel)]="props.data.caption"></vezo-input>

@@ -37,8 +37,10 @@ export class FormDesignerComponent implements OnInit {
   draggableListLeft: DraggableItem[] = [
     {
       name: 'heading',
-      content: 'Heading',
-      data: { text: 'Heading', fontSize: '14', fontWeight: '400', fontColor: '#000000', alignment: 'start' },
+      content: 'Text',
+      data: { text: 'Hello World!', fontSize: '14', fontWeight: '400', fontColor: '#000000', alignment: 'start',
+      mt:'0', mb:'0' , ml:'0', mr:'0' , pt:'0', pb:'0' , pl:'0', pr:'0'
+       },
       effectAllowed: 'copy',
       disable: false,
       handle: false,
@@ -46,7 +48,8 @@ export class FormDesignerComponent implements OnInit {
     }, {
       name: 'section',
       content: 'Columns 2',
-      data: { columns: 2 , gap:'16' , startSpacing:'16', endSpacing:'16'},
+      data: { columns: 2 , gap:'16' , startSpacing:'16', endSpacing:'16'
+      },
       effectAllowed: 'copy',
       disable: false,
       handle: false,
@@ -56,7 +59,8 @@ export class FormDesignerComponent implements OnInit {
     {
       name: 'section',
       content: 'Columns 3',
-      data: { columns: 3 , gap:'16' , startSpacing:'16', endSpacing:'16'},
+      data: { columns: 3 , gap:'16' , startSpacing:'16', endSpacing:'16'
+       },
       effectAllowed: 'copy',
       disable: false,
       handle: false,
@@ -70,7 +74,9 @@ export class FormDesignerComponent implements OnInit {
       effectAllowed: 'copy',
       disable: false,
       handle: false,
-      data: { label: 'Input Label', placeholder: 'Placeholder', labelFont: '14', labelWeight: '400', labelColor: '#000000', fieldHeight: '35', fieldRadius: '4', fillColor: '#f1f3f6', borderColor: '#f1f3f6', borderWidth: '1' },
+      data: { label: 'Input Label', placeholder: 'Placeholder', labelFont: '14', labelWeight: '400', labelColor: '#000000', fieldHeight: '35', fieldRadius: '4', fillColor: '#f1f3f6', borderColor: '#f1f3f6', borderWidth: '1',
+      mt:'0', mb:'0' , ml:'0', mr:'0' , pt:'0', pb:'0' , pl:'0', pr:'0'
+       },
       icon: 'assets/button.svg'
     },
     {
@@ -79,7 +85,9 @@ export class FormDesignerComponent implements OnInit {
       effectAllowed: 'copy',
       disable: false,
       handle: false,
-      data: { label: 'Input Label', placeholder: 'Placeholder', labelFont: '14', labelWeight: '400', labelColor: '#000000', fieldHeight: '35', fieldRadius: '4', fillColor: '#f1f3f6', borderColor: '#f1f3f6', borderWidth: '1' }
+      data: { label: 'Input Label', placeholder: 'Placeholder', labelFont: '14', labelWeight: '400', labelColor: '#000000', fieldHeight: '35', fieldRadius: '4', fillColor: '#f1f3f6', borderColor: '#f1f3f6', borderWidth: '1' ,
+      mt:'0', mb:'0' , ml:'0', mr:'0' , pt:'0', pb:'0' , pl:'0', pr:'0'
+      }
       ,icon: 'assets/button.svg'
     },
     {
@@ -88,7 +96,9 @@ export class FormDesignerComponent implements OnInit {
       effectAllowed: 'copy',
       disable: false,
       handle: false,
-      data: { label: 'Input Label', placeholder: 'Placeholder', labelFont: '14', labelWeight: '400', labelColor: '#000000', fillColor: '#f1f3f6', borderColor: '#f1f3f6', borderWidth: '1', borderRadius: '4' }
+      data: { label: 'Input Label', placeholder: 'Placeholder', labelFont: '14', labelWeight: '400', labelColor: '#000000', fillColor: '#f1f3f6', borderColor: '#f1f3f6', borderWidth: '1', borderRadius: '4',
+      mt:'0', mb:'0' , ml:'0', mr:'0' , pt:'0', pb:'0' , pl:'0', pr:'0'
+       }
       ,icon: 'assets/button.svg'
     },
     {
@@ -101,7 +111,7 @@ export class FormDesignerComponent implements OnInit {
         label: 'Input Label', btnTextFont: '12', btnTextWeight: '600', btnTextColor: '#4338ca',
         bgColor: '#e0e7ff', borderColor: '#c7d2fe', borderWidth: '1', borderRadius: '4', width: '100', height: '35',
         btnAlignment: 'center', textAlignment: 'center',
-        mt:'0', mb:'0' , ml:'0', mr:'0'
+        mt:'0', mb:'0' , ml:'0', mr:'0', pt:'0', pb:'0' , pl:'0', pr:'0'
       },
       icon: 'assets/button.svg'
     },
@@ -111,7 +121,9 @@ export class FormDesignerComponent implements OnInit {
       effectAllowed: 'copy',
       disable: false,
       handle: false,
-      data: { label: 'Input Label', labelFont: '14', labelWeight: '400', labelColor: '#000000' },
+      data: { label: 'Input Label', labelFont: '14', labelWeight: '400', labelColor: '#000000',
+      mt:'0', mb:'0' , ml:'0', mr:'0' , pt:'0', pb:'0' , pl:'0', pr:'0'
+       },
       icon: 'assets/checkBox.svg'
     },
     {
@@ -120,7 +132,9 @@ export class FormDesignerComponent implements OnInit {
       effectAllowed: 'copy',
       disable: false,
       handle: false,
-      data: { label: 'Input Label', labelFont: '14', labelWeight: '400', labelColor: '#000000' },
+      data: { label: 'Input Label', labelFont: '14', labelWeight: '400', labelColor: '#000000',
+      mt:'0', mb:'0' , ml:'0', mr:'0' , pt:'0', pb:'0' , pl:'0', pr:'0'
+       },
       icon: 'assets/checkBox.svg'
 
     },
@@ -130,7 +144,9 @@ export class FormDesignerComponent implements OnInit {
       effectAllowed: 'copy',
       disable: false,
       handle: false,
-      data: { label: 'Input Label', labelFont: '14', labelWeight: '400', labelColor: '#000000' },
+      data: { label: 'Input Label', labelFont: '14', labelWeight: '400', labelColor: '#000000',
+      mt:'0', mb:'0' , ml:'0', mr:'0' , pt:'0', pb:'0' , pl:'0', pr:'0'
+       },
       icon: 'assets/toggleOn.svg'
     },
 
