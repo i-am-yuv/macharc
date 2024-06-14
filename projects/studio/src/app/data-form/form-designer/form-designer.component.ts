@@ -96,7 +96,7 @@ export class FormDesignerComponent implements OnInit {
       effectAllowed: 'copy',
       disable: false,
       handle: false,
-      data: { label: 'Input Label', placeholder: 'Placeholder', labelFont: '14', labelWeight: '400', labelColor: '#000000', fillColor: '#f1f3f6', borderColor: '#f1f3f6', borderWidth: '1', borderRadius: '4',
+      data: { label: 'Input Label', placeholder: 'Placeholder', labelFont: '14', labelWeight: '400', labelColor: '#000000',fieldHeight: '35' , fillColor: '#f1f3f6', borderColor: '#f1f3f6', borderWidth: '1', borderRadius: '4',
       mt:'0', mb:'0' , ml:'0', mr:'0' , pt:'0', pb:'0' , pl:'0', pr:'0'
        }
       ,icon: 'assets/button.svg'
@@ -111,7 +111,7 @@ export class FormDesignerComponent implements OnInit {
         label: 'Input Label', btnTextFont: '12', btnTextWeight: '600', btnTextColor: '#4338ca',
         bgColor: '#e0e7ff', borderColor: '#c7d2fe', borderWidth: '1', borderRadius: '4', width: '100', height: '35',
         btnAlignment: 'center', textAlignment: 'center',
-        mt:'0', mb:'0' , ml:'0', mr:'0', pt:'0', pb:'0' , pl:'0', pr:'0'
+        mt:'0', mb:'0' , ml:'0', mr:'0'
       },
       icon: 'assets/button.svg'
     },

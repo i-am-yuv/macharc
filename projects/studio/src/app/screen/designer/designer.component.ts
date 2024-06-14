@@ -194,6 +194,7 @@ export class DesignerComponent implements OnInit {
       if (typeof index === 'undefined') {
         index = list.length;
       }
+      console.log( event) ;
       event.data['id'] = Math.floor(Math.random() * 1000000);
       list.splice(index, 0, event.data);
 

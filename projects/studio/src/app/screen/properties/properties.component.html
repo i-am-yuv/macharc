@@ -2,14 +2,14 @@
     <vezo-input label="Text" [(ngModel)]="props.data.text"></vezo-input>
     <div class="mt-2">
         <div class="flex gap-2">
-            <vezo-input label="Font Size" [(ngModel)]="props.data.fontSize"></vezo-input>
+            <vezo-input [trailingText]="'px'" label="Font Size" [(ngModel)]="props.data.fontSize"></vezo-input>
             <vezo-input label="Font Weight" [(ngModel)]="props.data.fontWeight"></vezo-input>
         </div>
     </div>
     <div class="mt-2">
     </div>
     <div class="mt-2">
-        <vezo-colorpicker [label]="'Choose Color'" (colorChange)="props.data.fontColor=$event"
+        <vezo-colorpicker [label]="'Text Color'" (colorChange)="props.data.fontColor=$event"
             [inputVal]="props.data.fontColor"></vezo-colorpicker>
     </div>
     <div class="mt-2">
@@ -145,13 +145,13 @@
     </div>
 
     <div class="flex gap-2 mt-2">
-        <vezo-input label="Width" [(ngModel)]="props.data.width"></vezo-input>
-        <vezo-input label="Height" [(ngModel)]="props.data.height"></vezo-input>
+        <vezo-input label="Width" [trailingText]="'px'" [(ngModel)]="props.data.width"></vezo-input>
+        <vezo-input label="Height" [trailingText]="'px'" [(ngModel)]="props.data.height"></vezo-input>
     </div>
 
     <div class="flex gap-2 mt-2">
-        <vezo-input label="Font Size" [(ngModel)]="props.data.btnTextFont"></vezo-input>
-        <vezo-input label="Font Weight" [(ngModel)]="props.data.btnTextWeight"></vezo-input>
+        <vezo-input label="Font Size" [trailingText]="'px'" [(ngModel)]="props.data.btnTextFont"></vezo-input>
+        <vezo-input label="Font Weight" [trailingText]="'px'" [(ngModel)]="props.data.btnTextWeight"></vezo-input>
     </div>
     <!-- <div class="flex gap-2 mt-2" style="justify-content: space-between ; align-items: center;" >
         <div class="w-4/12">
@@ -169,10 +169,12 @@
     <div class="flex justify-center items-end mt-2">
         <div class="grid grid-cols-12 gap-2 w-full">
             <div class="col-span-6">
-                <vezo-input label="Border Width" [(ngModel)]="props.data.borderWidth"></vezo-input>
+                <vezo-input label="Border Width" [trailingText]="'px'"
+                    [(ngModel)]="props.data.borderWidth"></vezo-input>
             </div>
             <div class="col-span-6 ">
-                <vezo-input label="Border Radius" [(ngModel)]="props.data.borderRadius"></vezo-input>
+                <vezo-input label="Border Radius" [trailingText]="'px'"
+                    [(ngModel)]="props.data.borderRadius"></vezo-input>
             </div>
         </div>
     </div>
@@ -267,63 +269,6 @@
             </div>
         </div>
     </div>
-    <div class="mt-2 ">
-        <label class="">Padding Style</label>
-
-        <div class="flex justify-center items-center mt-2">
-            <div class="grid grid-cols-12 gap-2 w-full" style="justify-items: center;">
-                <div class="col-span-6 ">
-                    <!-- Content for the first div -->
-                    <div>Top</div>
-                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
-                        <div class="w-10/12">
-                            <input type="number" style="width:40px" [(ngModel)]="props.data.pt" />
-                        </div>
-                        <div class="w-2/12 mr-2">px</div>
-                    </div>
-
-                </div>
-                <div class="col-span-6">
-                    <!-- Content for the second div -->
-                    <div>Bottom</div>
-                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
-                        <div class="w-10/12">
-                            <input type="number" style="width:40px" [(ngModel)]="props.data.pb" />
-                        </div>
-                        <div class="w-2/12 mr-2">px</div>
-                    </div>
-
-                </div>
-                <div class="col-span-6">
-                    <!-- Content for the second div -->
-                    <div>Left</div>
-                    <div class="flex mt-1  gap-1 p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
-                        <div class="w-10/12">
-                            <input type="number" style="width:40px" [(ngModel)]="props.data.pl" />
-                        </div>
-                        <div class="w-2/12 mr-2">px</div>
-                    </div>
-
-                </div>
-                <div class="col-span-6">
-                    <!-- Content for the second div -->
-                    <div>Right</div>
-                    <div class="flex mt-1  gap-1  p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;  justify-content:end">
-                        <div class="w-10/12">
-                            <input type="number" style="width:40px" [(ngModel)]="props.data.pr" />
-                        </div>
-                        <div class="w-2/12 mr-2">px</div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
-    </div>
     <div class="mt-2 flex gap-4 justify-start items-center">
         <vezo-radiobutton [(ngModel)]="props.data.action" value="save" label="Save" name="action"
             className="mr-2"></vezo-radiobutton>
@@ -349,7 +294,7 @@
     <div class="flex justify-between items-center mt-2">
         <div class="grid grid-cols-12 gap-2 w-full">
             <div class="col-span-6 ">
-                <vezo-input label="Font Size (In px)" [(ngModel)]="props.data.labelFont"></vezo-input>
+                <vezo-input label="Font Size" [trailingText]="'px'" [(ngModel)]="props.data.labelFont"></vezo-input>
             </div>
             <div class="col-span-6">
                 <vezo-input label="Font Weight" [(ngModel)]="props.data.labelWeight"></vezo-input>
@@ -357,15 +302,15 @@
         </div>
     </div>
     <div class="mt-2">
-        <vezo-colorpicker [label]="'Choose Color'" (colorChange)="props.data.labelColor=$event"
+        <vezo-colorpicker [label]="'Label Color'" (colorChange)="props.data.labelColor=$event"
             [inputVal]="props.data.labelColor"></vezo-colorpicker>
     </div>
     <div class="mt-2">
-        <vezo-input label="Height (In px)" [(ngModel)]="props.data.fieldHeight"></vezo-input>
+        <vezo-input label="Height" [trailingText]="'px'" [(ngModel)]="props.data.fieldHeight"></vezo-input>
     </div>
     <div class="mt-2 flex gap-2">
-        <vezo-input label="Border Width (In px)" [(ngModel)]="props.data.borderWidth"></vezo-input>
-        <vezo-input label="Border Radius (In px)" [(ngModel)]="props.data.fieldRadius"></vezo-input>
+        <vezo-input label="Border Width" [trailingText]="'px'" [(ngModel)]="props.data.borderWidth"></vezo-input>
+        <vezo-input label="Border Radius" [trailingText]="'px'" [(ngModel)]="props.data.fieldRadius"></vezo-input>
     </div>
 
     <div class="flex gap-2 mt-2 ">
@@ -508,7 +453,7 @@
     <div class="flex justify-between items-center mt-2">
         <div class="grid grid-cols-12 gap-2 w-full">
             <div class="col-span-6 ">
-                <vezo-input label="Font Size (In px)" [(ngModel)]="props.data.labelFont"></vezo-input>
+                <vezo-input label="Font Size" [trailingText]="'px'" [(ngModel)]="props.data.labelFont"></vezo-input>
             </div>
             <div class="col-span-6">
                 <vezo-input label="Font Weight" [(ngModel)]="props.data.labelWeight"></vezo-input>
@@ -516,28 +461,33 @@
         </div>
     </div>
     <div class="mt-2">
-        <vezo-colorpicker [label]="'Choose Color'" (colorChange)="props.data.labelColor=$event"
+        <vezo-colorpicker [label]="'Label Color'" (colorChange)="props.data.labelColor=$event"
             [inputVal]="props.data.labelColor"></vezo-colorpicker>
+    </div>
+    <div class="mt-2">
+        <vezo-input label="Height" [trailingText]="'px'" [(ngModel)]="props.data.fieldHeight"></vezo-input>
     </div>
     <div class="flex justify-between items-center mt-2">
         <div class="grid grid-cols-12 gap-2 w-full">
             <div class="col-span-6 ">
-                <vezo-input label="Border Width (In px)" [(ngModel)]="props.data.borderWidth"></vezo-input>
+                <vezo-input label="Border Width" [trailingText]="'px'"
+                    [(ngModel)]="props.data.borderWidth"></vezo-input>
             </div>
             <div class="col-span-6">
-                <vezo-input label="Border Radius (In px)" [(ngModel)]="props.data.borderRadius"></vezo-input>
+                <vezo-input label="Border Radius" [trailingText]="'px'"
+                    [(ngModel)]="props.data.borderRadius"></vezo-input>
             </div>
         </div>
     </div>
     <div class="flex justify-between items-center mt-2">
         <div class="grid grid-cols-12 gap-2 w-full">
             <div class="col-span-6 ">
-                <vezo-colorpicker [label]="'Border Color'" (colorChange)="props.data.borderColor=$event"
-                    [inputVal]="props.data.borderColor"></vezo-colorpicker>
-            </div>
-            <div class="col-span-6">
                 <vezo-colorpicker [label]="'Fill Color'" (colorChange)="props.data.fillColor=$event"
                     [inputVal]="props.data.fillColor"></vezo-colorpicker>
+            </div>
+            <div class="col-span-6">
+                <vezo-colorpicker [label]="'Border Color'" (colorChange)="props.data.borderColor=$event"
+                    [inputVal]="props.data.borderColor"></vezo-colorpicker>
             </div>
         </div>
     </div>
@@ -675,7 +625,7 @@
     <div class="flex justify-between items-center mt-2">
         <div class="grid grid-cols-12 gap-2 w-full">
             <div class="col-span-6 ">
-                <vezo-input label="Font Size (In px)" [(ngModel)]="props.data.labelFont"></vezo-input>
+                <vezo-input label="Font Size" [trailingText]="'px'" [(ngModel)]="props.data.labelFont"></vezo-input>
             </div>
             <div class="col-span-6">
                 <vezo-input label="Font Weight" [(ngModel)]="props.data.labelWeight"></vezo-input>
@@ -686,13 +636,18 @@
         <vezo-colorpicker [label]="'Label Color'" (colorChange)="props.data.labelColor=$event"
             [inputVal]="props.data.labelColor"></vezo-colorpicker>
     </div>
+    <div class="mt-2">
+        <vezo-input label="Height" [trailingText]="'px'" [(ngModel)]="props.data.fieldHeight"></vezo-input>
+    </div>
     <div class="flex justify-between items-center mt-2">
         <div class="grid grid-cols-12 gap-2 w-full">
             <div class="col-span-6 ">
-                <vezo-input label="Border Width (In px)" [(ngModel)]="props.data.borderWidth"></vezo-input>
+                <vezo-input label="Border Width" [trailingText]="'px'"
+                    [(ngModel)]="props.data.borderWidth"></vezo-input>
             </div>
             <div class="col-span-6">
-                <vezo-input label="Border Radius (In px)" [(ngModel)]="props.data.fieldRadius"></vezo-input>
+                <vezo-input label="Border Radius" [trailingText]="'px'"
+                    [(ngModel)]="props.data.fieldRadius"></vezo-input>
             </div>
         </div>
     </div>
@@ -707,9 +662,6 @@
                     [inputVal]="props.data.borderColor"></vezo-colorpicker>
             </div>
         </div>
-    </div>
-    <div class="mt-2">
-        <vezo-input label="Height (in px)" [(ngModel)]="props.data.fieldHeight"></vezo-input>
     </div>
     <div class="mt-2">
         <label class="">Margin Style</label>
@@ -841,7 +793,7 @@
     <div class="flex justify-between items-center mt-2">
         <div class="grid grid-cols-12 gap-2 w-full">
             <div class="col-span-6 ">
-                <vezo-input label="Font Size (In px)" [(ngModel)]="props.data.labelFont"></vezo-input>
+                <vezo-input label="Font Size" [trailingText]="'px'" [(ngModel)]="props.data.labelFont"></vezo-input>
             </div>
             <div class="col-span-6">
                 <vezo-input label="Font Weight" [(ngModel)]="props.data.labelWeight"></vezo-input>
@@ -977,7 +929,7 @@
     <div class="flex justify-between items-center mt-2">
         <div class="grid grid-cols-12 gap-2 w-full">
             <div class="col-span-6 ">
-                <vezo-input label="Font Size (In px)" [(ngModel)]="props.data.labelFont"></vezo-input>
+                <vezo-input label="Font Size" [trailingText]="'px'" [(ngModel)]="props.data.labelFont"></vezo-input>
             </div>
             <div class="col-span-6">
                 <vezo-input label="Font Weight" [(ngModel)]="props.data.labelWeight"></vezo-input>
@@ -1113,7 +1065,7 @@
     <div class="flex justify-between items-center mt-2">
         <div class="grid grid-cols-12 gap-2 w-full">
             <div class="col-span-6 ">
-                <vezo-input label="Font Size (In px)" [(ngModel)]="props.data.labelFont"></vezo-input>
+                <vezo-input label="Font Size" [trailingText]="'px'" [(ngModel)]="props.data.labelFont"></vezo-input>
             </div>
             <div class="col-span-6">
                 <vezo-input label="Font Weight" [(ngModel)]="props.data.labelWeight"></vezo-input>

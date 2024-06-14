@@ -10,8 +10,7 @@
             [btnInfo]="{ btnTextSize: block.data?.btnTextFont+'px', btnTextWeight: block.data?.btnTextWeight, btnTextColor: block.data?.btnTextColor , 
             borderWidth: block.data?.borderWidth+'px', borderColor: block.data?.borderColor, borderRadius: block.data?.borderRadius+'px' ,  bgColor: block.data?.bgColor, width: block.data?.width+'px',  height: block.data?.height+'px' ,
             btnAlignment:  block.data?.btnAlignment, textAlignment:  block.data?.textAlignment ,
-            mt:  block.data?.mt+'px',  mb:  block.data?.mb+'px',  ml:  block.data?.ml+'px',  mr:  block.data?.mr+'px'  ,
-            pt: block.data?.pt+'px',pb: block.data?.pb+'px',pl: block.data?.pl+'px',pr: block.data?.pr+'px' }"></vezo-button>
+            mt:  block.data?.mt+'px',  mb:  block.data?.mb+'px',  ml:  block.data?.ml+'px',  mr:  block.data?.mr+'px'}"></vezo-button>
     </div>
 </ng-container>
 <ng-container *ngIf="block.name === 'input'">
@@ -23,7 +22,8 @@
 </ng-container>
 <ng-container *ngIf="block.name === 'textarea'">
     <vezo-textarea [label]="block.data?.label" [placeholder]="block.data?.placeholder" [labelInfo]="{ size: block.data?.labelFont+'px', weight: block.data?.labelWeight, color: block.data?.labelColor , fillColor: block.data?.fillColor,
-    borderColor: block.data?.borderColor , borderWidth: block.data?.borderWidth+'px', borderRadius: block.data?.borderRadius+'px',
+    borderColor: block.data?.borderColor , borderWidth: block.data?.borderWidth+'px',
+    height: block.data?.fieldHeight+'px', borderRadius: block.data?.borderRadius+'px',
     mt: block.data?.mt+'px',mb: block.data?.mb+'px',ml: block.data?.ml+'px',mr: block.data?.mr+'px' ,
     pt: block.data?.pt+'px',pb: block.data?.pb+'px',pl: block.data?.pl+'px',pr: block.data?.pr+'px' }"></vezo-textarea>
 </ng-container>

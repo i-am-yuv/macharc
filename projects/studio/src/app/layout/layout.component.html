@@ -86,10 +86,10 @@
     *ngIf="!showSideBar"
   >
     <div class="py-6 space-y-6">
-      <div class="cursor-pointer" routerLink="/" (click)="resetMenuItems()">
+      <div class="cursor-pointer" routerLink="/" >
         <img src="assets/macharc_icon.svg" class="w-6" />
       </div>
-      <div class="cursor-pointer" routerLink="/projects" (click)="resetMenuItems()">
+      <div class="cursor-pointer" routerLink="/projects" >
         <vezo-icon icon="arrowsRightLeft" [isTooltip]="true" [tooltipText]="'Projects'"></vezo-icon>
       </div>
       <div class="cursor-pointer" routerLink="/datasources" (click)="selectMenuItem('menuItemsBackend')">

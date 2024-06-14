@@ -12,7 +12,7 @@ import { FilterBuilder } from '../utils/FilterBuilder';
   styleUrls: ['./layout.component.scss'],
 })
 export class LayoutComponent {
-  showSideBar: boolean = false;
+  showSideBar: boolean | undefined= false;
   menuView: string = '';
   activeProject: Project | undefined = {
     id: '',
