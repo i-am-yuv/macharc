@@ -119,7 +119,7 @@
 
                     <ng-container *ngIf="item.name === 'grid'">
                         <div (dndDrop)="onDrop($event, item.children)" class="name gap-{{item.data.gap}} grid grid-cols-{{item.data.columns}} 
-                            justify-content items-center"
+                            justify-{{item.data.alignment}} items-{{item.data.vAlignment}}"
                             [ngClass]="{'p-8':  (!this.item.children || this.item.children.length === 0) }"
                             [ngStyle]="{'margin-top': item.data.startSpacing+'px' ,'margin-bottom': item.data.endSpacing+'px'}"
                             dndDropzone dndEffectAllowed="copyMove">

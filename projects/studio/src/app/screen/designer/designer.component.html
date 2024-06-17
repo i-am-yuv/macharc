@@ -145,11 +145,9 @@
                                 </div>
                             </div>
                         </ng-container>
-                        <ng-container *ngIf="item.name === 'form'">
-                            <div (dndDrop)="onDrop($event, item.children)"
-                                class="name p-4 gap-4 grid grid-cols-{{item.data.columns}} justify-content items-center"
-                                dndDropzone dndEffectAllowed="copyMove">
 
+                        <ng-container *ngIf="item.name === 'form'">
+                            <div class="name p-4 gap-4 grid grid-cols-{{item.data.columns}} justify-content items-center">
                                 <div *ngFor="let child of item.children" class="name">
                                     <ng-container *ngIf="child.name === 'grid'">
                                         <div
@@ -164,8 +162,8 @@
                                     <app-blocks [block]="child"
                                         (click)="handleClickForm($event, child , item)"></app-blocks>
                                 </div>
-                                <div class="dndPlaceholder h-16 p-5 border bg-blue-400 bg-opacity-25" dndPlaceholderRef>
-                                </div>
+                                <!-- <div class="dndPlaceholder h-16 p-5 border bg-blue-400 bg-opacity-25" dndPlaceholderRef>
+                                </div> -->
                             </div>
                         </ng-container>
                         <app-blocks [block]="item" (click)="handleClick($event, item)"

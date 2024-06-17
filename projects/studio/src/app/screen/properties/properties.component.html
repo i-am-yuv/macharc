@@ -12,38 +12,49 @@
         <vezo-colorpicker [label]="'Text Color'" (colorChange)="props.data.fontColor=$event"
             [inputVal]="props.data.fontColor"></vezo-colorpicker>
     </div>
-    <div class="mt-2">
-        <label class="">Alignment</label>
-        <div class="grid grid-cols-3 divide-x mt-2" style="border-color: #DFDFDF; border-width: 1px;">
-            <div class="p-2 flex justify-center cursor-pointer" (click)="props.data.alignment ='start'"
-                [ngClass]="{'bg-slate-200':props.data?.alignment =='start'}"><img src="assets/alignLeft.svg"></div>
-            <div class="p-2 flex justify-center cursor-pointer" (click)="props.data.alignment ='center'"
-                [ngClass]="{'bg-slate-200':props.data?.alignment =='center'}"><img src="assets/alignCenter.svg"></div>
-            <div class="p-2 flex justify-center cursor-pointer" (click)="props.data.alignment ='end'"
-                [ngClass]="{'bg-slate-200':props.data?.alignment =='end'}"><img src="assets/alignRight.svg"></div>
+    <div class="flex mt-2 justify-between">
+        <div class="w-6/12">
+            <label class="">Alignment</label>
+            <div class="flex mt-2 p-1 gap-2 w-fit" style="border-color: #DFDFDF; border-width: 1px; border-radius: 4px;">
+                <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.alignment ='start'"
+                    [ngClass]="{'bg-slate-100':props.data?.alignment =='start'}"><img src="assets/alignLeft.svg" style="width: 16px; height: 16px;"></div>
+                <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.alignment ='center'"
+                    [ngClass]="{'bg-slate-100':props.data?.alignment =='center'}"><img src="assets/alignCenter.svg" style="width: 16px; height: 16px;"></div>
+                <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.alignment ='end'"
+                    [ngClass]="{'bg-slate-100':props.data?.alignment =='end'}"><img src="assets/alignRight.svg" style="width: 16px; height: 16px;"></div>
+            </div>
+        </div>
+        <div class="w-6/12">
+            <label class="">Alignment</label>
+            <div class="flex mt-2 p-1 gap-2 w-fit" style="border-color: #DFDFDF; border-width: 1px; border-radius: 4px;">
+                <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.vAlignment ='end'"
+                    [ngClass]="{'bg-slate-100':props.data?.vAlignment =='end'}"><img src="assets/vertical_align_bottom.svg" style="width: 16px; height: 16px;"></div>
+                <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.vAlignment ='center'"
+                    [ngClass]="{'bg-slate-100':props.data?.vAlignment =='center'}"><img src="assets/vertical_align_center.svg" style="width: 16px; height: 16px;"></div>
+                <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.vAlignment ='start'"
+                    [ngClass]="{'bg-slate-100':props.data?.vAlignment =='start'}"><img src="assets/vertical_align_top.svg" style="width: 16px; height: 16px;"></div>
+            </div>
         </div>
     </div>
     <div class="mt-2">
         <label class="">Margin Style</label>
-        <div class="flex justify-center  items-center mt-2">
-            <div class="grid grid-cols-12 gap-2 w-full" style="justify-items: center;">
-                <div class="col-span-6 ">
-                    <!-- Content for the first div -->
+        <div class="flex justify-between  items-center mt-2 px-4">
+            <div class="grid grid-cols-2 gap-2 w-full justify-between">
+                <div class="flex justify-start items-center gap-4">
                     <div>Top</div>
-                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 "
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.mt" />
                         </div>
                         <div class="w-2/12 mr-2">px</div>
                     </div>
-
                 </div>
-                <div class="col-span-6">
+                <div class="flex justify-end items-center gap-4">
                     <!-- Content for the second div -->
                     <div>Bottom</div>
-                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20"
+                        style="height:30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.mb" />
                         </div>
@@ -51,11 +62,11 @@
                     </div>
 
                 </div>
-                <div class="col-span-6">
+                <div class="flex justify-start items-center gap-4">
                     <!-- Content for the second div -->
                     <div>Left</div>
-                    <div class="flex mt-1  gap-1 p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                    <div class="flex mt-1  gap-1 p-2 w-20"
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.ml" />
                         </div>
@@ -63,11 +74,11 @@
                     </div>
 
                 </div>
-                <div class="col-span-6">
+                <div class="flex  items-center gap-4 justify-end">
                     <!-- Content for the second div -->
                     <div>Right</div>
-                    <div class="flex mt-1  gap-1  p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;  justify-content:end">
+                    <div class="flex mt-1  gap-1  p-2 w-20"
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.mr" />
                         </div>
@@ -80,26 +91,23 @@
     </div>
     <div class="mt-2  mb-2">
         <label class="">Padding Style</label>
-
-        <div class="flex justify-center items-center mt-2">
-            <div class="grid grid-cols-12 gap-2 w-full" style="justify-items: center;">
-                <div class="col-span-6 ">
-                    <!-- Content for the first div -->
+        <div class="flex justify-between  items-center mt-2 px-4">
+            <div class="grid grid-cols-2 gap-2 w-full justify-between">
+                <div class="flex justify-start items-center gap-4">
                     <div>Top</div>
-                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 "
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.pt" />
                         </div>
                         <div class="w-2/12 mr-2">px</div>
                     </div>
-
                 </div>
-                <div class="col-span-6">
+                <div class="flex justify-end items-center gap-4">
                     <!-- Content for the second div -->
                     <div>Bottom</div>
-                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20"
+                        style="height:30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.pb" />
                         </div>
@@ -107,11 +115,11 @@
                     </div>
 
                 </div>
-                <div class="col-span-6">
+                <div class="flex justify-start items-center gap-4">
                     <!-- Content for the second div -->
                     <div>Left</div>
-                    <div class="flex mt-1  gap-1 p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                    <div class="flex mt-1  gap-1 p-2 w-20"
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.pl" />
                         </div>
@@ -119,11 +127,11 @@
                     </div>
 
                 </div>
-                <div class="col-span-6">
+                <div class="flex  items-center gap-4 justify-end">
                     <!-- Content for the second div -->
                     <div>Right</div>
-                    <div class="flex mt-1  gap-1  p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;  justify-content:end">
+                    <div class="flex mt-1  gap-1  p-2 w-20"
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.pr" />
                         </div>
@@ -133,7 +141,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 
 </ng-container>
@@ -190,51 +197,49 @@
             </div>
         </div>
     </div>
-    <div class="mt-2">
-        <label class="">Button Alignment</label>
-        <div class="grid grid-cols-3 divide-x mt-2" style="border-color: #DFDFDF; border-width: 1px;">
-            <div class="p-2 flex justify-center cursor-pointer" (click)="props.data.btnAlignment ='start'"
-                [ngClass]="{'bg-slate-200':props.data?.btnAlignment =='start'}"><img src="assets/alignLeft.svg"></div>
-            <div class="p-2 flex justify-center cursor-pointer" (click)="props.data.btnAlignment ='center'"
-                [ngClass]="{'bg-slate-200':props.data?.btnAlignment =='center'}"><img src="assets/alignCenter.svg">
+    <div class="flex justify-start items-end mt-2 gap-2">
+        <div class="w-6/12">
+            <label class="">Button Alignment</label>
+            <div class="flex mt-2 p-1 gap-2 w-fit" style="border-color: #DFDFDF; border-width: 1px; border-radius: 4px;">
+                <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.btnAlignment ='start'"
+                    [ngClass]="{'bg-slate-100':props.data?.btnAlignment =='start'}"><img src="assets/alignLeft.svg" style="width: 16px; height: 16px;"></div>
+                <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.btnAlignment ='center'"
+                    [ngClass]="{'bg-slate-100':props.data?.btnAlignment =='center'}"><img src="assets/alignCenter.svg" style="width: 16px; height: 16px;"></div>
+                <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.btnAlignment ='end'"
+                    [ngClass]="{'bg-slate-100':props.data?.btnAlignment =='end'}"><img src="assets/alignRight.svg" style="width: 16px; height: 16px;"></div>
             </div>
-            <div class="p-2 flex justify-center cursor-pointer" (click)="props.data.btnAlignment ='right'"
-                [ngClass]="{'bg-slate-200':props.data?.btnAlignment =='right'}"><img src="assets/alignRight.svg"></div>
         </div>
-    </div>
-    <div class="mt-2">
-        <label class="">Text Alignment</label>
-        <div class="grid grid-cols-3 divide-x mt-2" style="border-color: #DFDFDF; border-width: 1px;">
-            <div class="p-2 flex justify-center cursor-pointer" (click)="props.data.textAlignment ='start'"
-                [ngClass]="{'bg-slate-200':props.data?.textAlignment =='start'}"><img src="assets/alignLeft.svg"></div>
-            <div class="p-2 flex justify-center cursor-pointer" (click)="props.data.textAlignment ='center'"
-                [ngClass]="{'bg-slate-200':props.data?.textAlignment =='center'}"><img src="assets/alignCenter.svg">
+        <div class="w-6/12">
+            <label class="">Text Alignment</label>
+            <div class="flex mt-2 p-1 gap-2 w-fit" style="border-color: #DFDFDF; border-width: 1px; border-radius: 4px;">
+                <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.textAlignment ='start'"
+                    [ngClass]="{'bg-slate-100':props.data?.textAlignment =='start'}"><img src="assets/alignLeft.svg" style="width: 16px; height: 16px;"></div>
+                <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.textAlignment ='center'"
+                    [ngClass]="{'bg-slate-100':props.data?.textAlignment =='center'}"><img src="assets/alignCenter.svg" style="width: 16px; height: 16px;"></div>
+                <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.textAlignment ='end'"
+                    [ngClass]="{'bg-slate-100':props.data?.textAlignment =='end'}"><img src="assets/alignRight.svg" style="width: 16px; height: 16px;"></div>
             </div>
-            <div class="p-2 flex justify-center cursor-pointer" (click)="props.data.textAlignment ='end'"
-                [ngClass]="{'bg-slate-200':props.data?.textAlignment =='end'}"><img src="assets/alignRight.svg"></div>
         </div>
     </div>
     <div class="mt-2">
         <label class="">Margin Style</label>
-        <div class="flex justify-center items-center mt-2">
-            <div class="grid grid-cols-12 gap-2 w-full" style="justify-items: 'center';">
-                <div class="col-span-6 ">
-                    <!-- Content for the first div -->
+        <div class="flex justify-between  items-center mt-2 px-4">
+            <div class="grid grid-cols-2 gap-2 w-full justify-between">
+                <div class="flex justify-start items-center gap-4">
                     <div>Top</div>
-                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 "
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.mt" />
                         </div>
                         <div class="w-2/12 mr-2">px</div>
                     </div>
-
                 </div>
-                <div class="col-span-6">
+                <div class="flex justify-end items-center gap-4">
                     <!-- Content for the second div -->
                     <div>Bottom</div>
-                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20"
+                        style="height:30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.mb" />
                         </div>
@@ -242,11 +247,11 @@
                     </div>
 
                 </div>
-                <div class="col-span-6">
+                <div class="flex justify-start items-center gap-4">
                     <!-- Content for the second div -->
                     <div>Left</div>
-                    <div class="flex mt-1  gap-1 p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                    <div class="flex mt-1  gap-1 p-2 w-20"
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.ml" />
                         </div>
@@ -254,11 +259,11 @@
                     </div>
 
                 </div>
-                <div class="col-span-6">
+                <div class="flex  items-center gap-4 justify-end">
                     <!-- Content for the second div -->
                     <div>Right</div>
-                    <div class="flex mt-1  gap-1  p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;  justify-content:end">
+                    <div class="flex mt-1  gap-1  p-2 w-20"
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.mr" />
                         </div>
@@ -321,25 +326,23 @@
     </div>
     <div class="mt-2">
         <label class="">Margin Style</label>
-        <div class="flex justify-center  items-center mt-2">
-            <div class="grid grid-cols-12 gap-2 w-full" style="justify-items: center;">
-                <div class="col-span-6 ">
-                    <!-- Content for the first div -->
+        <div class="flex justify-between  items-center mt-2 px-4">
+            <div class="grid grid-cols-2 gap-2 w-full justify-between">
+                <div class="flex justify-start items-center gap-4">
                     <div>Top</div>
-                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 "
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.mt" />
                         </div>
                         <div class="w-2/12 mr-2">px</div>
                     </div>
-
                 </div>
-                <div class="col-span-6">
+                <div class="flex justify-end items-center gap-4">
                     <!-- Content for the second div -->
                     <div>Bottom</div>
-                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20"
+                        style="height:30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.mb" />
                         </div>
@@ -347,11 +350,11 @@
                     </div>
 
                 </div>
-                <div class="col-span-6">
+                <div class="flex justify-start items-center gap-4">
                     <!-- Content for the second div -->
                     <div>Left</div>
-                    <div class="flex mt-1  gap-1 p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                    <div class="flex mt-1  gap-1 p-2 w-20"
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.ml" />
                         </div>
@@ -359,11 +362,11 @@
                     </div>
 
                 </div>
-                <div class="col-span-6">
+                <div class="flex  items-center gap-4 justify-end">
                     <!-- Content for the second div -->
                     <div>Right</div>
-                    <div class="flex mt-1  gap-1  p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;  justify-content:end">
+                    <div class="flex mt-1  gap-1  p-2 w-20"
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.mr" />
                         </div>
@@ -374,28 +377,25 @@
             </div>
         </div>
     </div>
-    <div class="mt-2 ">
+    <div class="mt-2  mb-2">
         <label class="">Padding Style</label>
-
-        <div class="flex justify-center items-center mt-2">
-            <div class="grid grid-cols-12 gap-2 w-full" style="justify-items: center;">
-                <div class="col-span-6 ">
-                    <!-- Content for the first div -->
+        <div class="flex justify-between  items-center mt-2 px-4">
+            <div class="grid grid-cols-2 gap-2 w-full justify-between">
+                <div class="flex justify-start items-center gap-4">
                     <div>Top</div>
-                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 "
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.pt" />
                         </div>
                         <div class="w-2/12 mr-2">px</div>
                     </div>
-
                 </div>
-                <div class="col-span-6">
+                <div class="flex justify-end items-center gap-4">
                     <!-- Content for the second div -->
                     <div>Bottom</div>
-                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20"
+                        style="height:30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.pb" />
                         </div>
@@ -403,11 +403,11 @@
                     </div>
 
                 </div>
-                <div class="col-span-6">
+                <div class="flex justify-start items-center gap-4">
                     <!-- Content for the second div -->
                     <div>Left</div>
-                    <div class="flex mt-1  gap-1 p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                    <div class="flex mt-1  gap-1 p-2 w-20"
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.pl" />
                         </div>
@@ -415,11 +415,11 @@
                     </div>
 
                 </div>
-                <div class="col-span-6">
+                <div class="flex  items-center gap-4 justify-end">
                     <!-- Content for the second div -->
                     <div>Right</div>
-                    <div class="flex mt-1  gap-1  p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;  justify-content:end">
+                    <div class="flex mt-1  gap-1  p-2 w-20"
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.pr" />
                         </div>
@@ -429,7 +429,6 @@
                 </div>
             </div>
         </div>
-
     </div>
     <div class="mt-2">
         <vezo-select label="Field" optionLabel="fieldName" [items]="fields"
@@ -493,25 +492,23 @@
     </div>
     <div class="mt-2">
         <label class="">Margin Style</label>
-        <div class="flex justify-center  items-center mt-2">
-            <div class="grid grid-cols-12 gap-2 w-full" style="justify-items: center;">
-                <div class="col-span-6 ">
-                    <!-- Content for the first div -->
+        <div class="flex justify-between  items-center mt-2 px-4">
+            <div class="grid grid-cols-2 gap-2 w-full justify-between">
+                <div class="flex justify-start items-center gap-4">
                     <div>Top</div>
-                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 "
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.mt" />
                         </div>
                         <div class="w-2/12 mr-2">px</div>
                     </div>
-
                 </div>
-                <div class="col-span-6">
+                <div class="flex justify-end items-center gap-4">
                     <!-- Content for the second div -->
                     <div>Bottom</div>
-                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20"
+                        style="height:30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.mb" />
                         </div>
@@ -519,11 +516,11 @@
                     </div>
 
                 </div>
-                <div class="col-span-6">
+                <div class="flex justify-start items-center gap-4">
                     <!-- Content for the second div -->
                     <div>Left</div>
-                    <div class="flex mt-1  gap-1 p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                    <div class="flex mt-1  gap-1 p-2 w-20"
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.ml" />
                         </div>
@@ -531,11 +528,11 @@
                     </div>
 
                 </div>
-                <div class="col-span-6">
+                <div class="flex  items-center gap-4 justify-end">
                     <!-- Content for the second div -->
                     <div>Right</div>
-                    <div class="flex mt-1  gap-1  p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;  justify-content:end">
+                    <div class="flex mt-1  gap-1  p-2 w-20"
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.mr" />
                         </div>
@@ -546,28 +543,25 @@
             </div>
         </div>
     </div>
-    <div class="mt-2">
+    <div class="mt-2  mb-2">
         <label class="">Padding Style</label>
-
-        <div class="flex justify-center items-center mt-2">
-            <div class="grid grid-cols-12 gap-2 w-full" style="justify-items: center;">
-                <div class="col-span-6 ">
-                    <!-- Content for the first div -->
+        <div class="flex justify-between  items-center mt-2 px-4">
+            <div class="grid grid-cols-2 gap-2 w-full justify-between">
+                <div class="flex justify-start items-center gap-4">
                     <div>Top</div>
-                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 "
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.pt" />
                         </div>
                         <div class="w-2/12 mr-2">px</div>
                     </div>
-
                 </div>
-                <div class="col-span-6">
+                <div class="flex justify-end items-center gap-4">
                     <!-- Content for the second div -->
                     <div>Bottom</div>
-                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20"
+                        style="height:30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.pb" />
                         </div>
@@ -575,11 +569,11 @@
                     </div>
 
                 </div>
-                <div class="col-span-6">
+                <div class="flex justify-start items-center gap-4">
                     <!-- Content for the second div -->
                     <div>Left</div>
-                    <div class="flex mt-1  gap-1 p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                    <div class="flex mt-1  gap-1 p-2 w-20"
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.pl" />
                         </div>
@@ -587,11 +581,11 @@
                     </div>
 
                 </div>
-                <div class="col-span-6">
+                <div class="flex  items-center gap-4 justify-end">
                     <!-- Content for the second div -->
                     <div>Right</div>
-                    <div class="flex mt-1  gap-1  p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;  justify-content:end">
+                    <div class="flex mt-1  gap-1  p-2 w-20"
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.pr" />
                         </div>
@@ -601,7 +595,6 @@
                 </div>
             </div>
         </div>
-
     </div>
     <div class="mt-2">
         <vezo-select label="Field" optionLabel="fieldName" [items]="fields"
@@ -665,25 +658,23 @@
     </div>
     <div class="mt-2">
         <label class="">Margin Style</label>
-        <div class="flex justify-center  items-center mt-2">
-            <div class="grid grid-cols-12 gap-2 w-full" style="justify-items: center;">
-                <div class="col-span-6 ">
-                    <!-- Content for the first div -->
+        <div class="flex justify-between  items-center mt-2 px-4">
+            <div class="grid grid-cols-2 gap-2 w-full justify-between">
+                <div class="flex justify-start items-center gap-4">
                     <div>Top</div>
-                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 "
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.mt" />
                         </div>
                         <div class="w-2/12 mr-2">px</div>
                     </div>
-
                 </div>
-                <div class="col-span-6">
+                <div class="flex justify-end items-center gap-4">
                     <!-- Content for the second div -->
                     <div>Bottom</div>
-                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20"
+                        style="height:30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.mb" />
                         </div>
@@ -691,11 +682,11 @@
                     </div>
 
                 </div>
-                <div class="col-span-6">
+                <div class="flex justify-start items-center gap-4">
                     <!-- Content for the second div -->
                     <div>Left</div>
-                    <div class="flex mt-1  gap-1 p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                    <div class="flex mt-1  gap-1 p-2 w-20"
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.ml" />
                         </div>
@@ -703,11 +694,11 @@
                     </div>
 
                 </div>
-                <div class="col-span-6">
+                <div class="flex  items-center gap-4 justify-end">
                     <!-- Content for the second div -->
                     <div>Right</div>
-                    <div class="flex mt-1  gap-1  p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;  justify-content:end">
+                    <div class="flex mt-1  gap-1  p-2 w-20"
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.mr" />
                         </div>
@@ -718,28 +709,25 @@
             </div>
         </div>
     </div>
-    <div class="mt-2">
+    <div class="mt-2  mb-2">
         <label class="">Padding Style</label>
-
-        <div class="flex justify-center items-center mt-2">
-            <div class="grid grid-cols-12 gap-2 w-full" style="justify-items: center;">
-                <div class="col-span-6 ">
-                    <!-- Content for the first div -->
+        <div class="flex justify-between  items-center mt-2 px-4">
+            <div class="grid grid-cols-2 gap-2 w-full justify-between">
+                <div class="flex justify-start items-center gap-4">
                     <div>Top</div>
-                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 "
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.pt" />
                         </div>
                         <div class="w-2/12 mr-2">px</div>
                     </div>
-
                 </div>
-                <div class="col-span-6">
+                <div class="flex justify-end items-center gap-4">
                     <!-- Content for the second div -->
                     <div>Bottom</div>
-                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20"
+                        style="height:30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.pb" />
                         </div>
@@ -747,11 +735,11 @@
                     </div>
 
                 </div>
-                <div class="col-span-6">
+                <div class="flex justify-start items-center gap-4">
                     <!-- Content for the second div -->
                     <div>Left</div>
-                    <div class="flex mt-1  gap-1 p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                    <div class="flex mt-1  gap-1 p-2 w-20"
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.pl" />
                         </div>
@@ -759,11 +747,11 @@
                     </div>
 
                 </div>
-                <div class="col-span-6">
+                <div class="flex  items-center gap-4 justify-end">
                     <!-- Content for the second div -->
                     <div>Right</div>
-                    <div class="flex mt-1  gap-1  p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;  justify-content:end">
+                    <div class="flex mt-1  gap-1  p-2 w-20"
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.pr" />
                         </div>
@@ -773,7 +761,6 @@
                 </div>
             </div>
         </div>
-
     </div>
     <div class="mt-2">
         <vezo-select label="Field" optionLabel="fieldName" [items]="fields"
@@ -806,25 +793,23 @@
     </div>
     <div class="mt-2">
         <label class="">Margin Style</label>
-        <div class="flex justify-center  items-center mt-2">
-            <div class="grid grid-cols-12 gap-2 w-full" style="justify-items: center;">
-                <div class="col-span-6 ">
-                    <!-- Content for the first div -->
+        <div class="flex justify-between  items-center mt-2 px-4">
+            <div class="grid grid-cols-2 gap-2 w-full justify-between">
+                <div class="flex justify-start items-center gap-4">
                     <div>Top</div>
-                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 "
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.mt" />
                         </div>
                         <div class="w-2/12 mr-2">px</div>
                     </div>
-
                 </div>
-                <div class="col-span-6">
+                <div class="flex justify-end items-center gap-4">
                     <!-- Content for the second div -->
                     <div>Bottom</div>
-                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20"
+                        style="height:30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.mb" />
                         </div>
@@ -832,11 +817,11 @@
                     </div>
 
                 </div>
-                <div class="col-span-6">
+                <div class="flex justify-start items-center gap-4">
                     <!-- Content for the second div -->
                     <div>Left</div>
-                    <div class="flex mt-1  gap-1 p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                    <div class="flex mt-1  gap-1 p-2 w-20"
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.ml" />
                         </div>
@@ -844,11 +829,11 @@
                     </div>
 
                 </div>
-                <div class="col-span-6">
+                <div class="flex  items-center gap-4 justify-end">
                     <!-- Content for the second div -->
                     <div>Right</div>
-                    <div class="flex mt-1  gap-1  p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;  justify-content:end">
+                    <div class="flex mt-1  gap-1  p-2 w-20"
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.mr" />
                         </div>
@@ -859,28 +844,25 @@
             </div>
         </div>
     </div>
-    <div class="mt-2">
+    <div class="mt-2  mb-2">
         <label class="">Padding Style</label>
-
-        <div class="flex justify-center items-center mt-2">
-            <div class="grid grid-cols-12 gap-2 w-full" style="justify-items: center;">
-                <div class="col-span-6 ">
-                    <!-- Content for the first div -->
+        <div class="flex justify-between  items-center mt-2 px-4">
+            <div class="grid grid-cols-2 gap-2 w-full justify-between">
+                <div class="flex justify-start items-center gap-4">
                     <div>Top</div>
-                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 "
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.pt" />
                         </div>
                         <div class="w-2/12 mr-2">px</div>
                     </div>
-
                 </div>
-                <div class="col-span-6">
+                <div class="flex justify-end items-center gap-4">
                     <!-- Content for the second div -->
                     <div>Bottom</div>
-                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20"
+                        style="height:30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.pb" />
                         </div>
@@ -888,11 +870,11 @@
                     </div>
 
                 </div>
-                <div class="col-span-6">
+                <div class="flex justify-start items-center gap-4">
                     <!-- Content for the second div -->
                     <div>Left</div>
-                    <div class="flex mt-1  gap-1 p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                    <div class="flex mt-1  gap-1 p-2 w-20"
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.pl" />
                         </div>
@@ -900,11 +882,11 @@
                     </div>
 
                 </div>
-                <div class="col-span-6">
+                <div class="flex  items-center gap-4 justify-end">
                     <!-- Content for the second div -->
                     <div>Right</div>
-                    <div class="flex mt-1  gap-1  p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;  justify-content:end">
+                    <div class="flex mt-1  gap-1  p-2 w-20"
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.pr" />
                         </div>
@@ -914,7 +896,6 @@
                 </div>
             </div>
         </div>
-
     </div>
     <div class="mt-2">
         <vezo-select label="Field" optionLabel="fieldName" [items]="fields"
@@ -942,25 +923,23 @@
     </div>
     <div class="mt-2">
         <label class="">Margin Style</label>
-        <div class="flex justify-center  items-center mt-2">
-            <div class="grid grid-cols-12 gap-2 w-full" style="justify-items: center;">
-                <div class="col-span-6 ">
-                    <!-- Content for the first div -->
+        <div class="flex justify-between  items-center mt-2 px-4">
+            <div class="grid grid-cols-2 gap-2 w-full justify-between">
+                <div class="flex justify-start items-center gap-4">
                     <div>Top</div>
-                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 "
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.mt" />
                         </div>
                         <div class="w-2/12 mr-2">px</div>
                     </div>
-
                 </div>
-                <div class="col-span-6">
+                <div class="flex justify-end items-center gap-4">
                     <!-- Content for the second div -->
                     <div>Bottom</div>
-                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20"
+                        style="height:30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.mb" />
                         </div>
@@ -968,11 +947,11 @@
                     </div>
 
                 </div>
-                <div class="col-span-6">
+                <div class="flex justify-start items-center gap-4">
                     <!-- Content for the second div -->
                     <div>Left</div>
-                    <div class="flex mt-1  gap-1 p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                    <div class="flex mt-1  gap-1 p-2 w-20"
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.ml" />
                         </div>
@@ -980,11 +959,11 @@
                     </div>
 
                 </div>
-                <div class="col-span-6">
+                <div class="flex  items-center gap-4 justify-end">
                     <!-- Content for the second div -->
                     <div>Right</div>
-                    <div class="flex mt-1  gap-1  p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;  justify-content:end">
+                    <div class="flex mt-1  gap-1  p-2 w-20"
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.mr" />
                         </div>
@@ -995,28 +974,25 @@
             </div>
         </div>
     </div>
-    <div class="mt-2">
+    <div class="mt-2  mb-2">
         <label class="">Padding Style</label>
-
-        <div class="flex justify-center items-center mt-2">
-            <div class="grid grid-cols-12 gap-2 w-full" style="justify-items: center;">
-                <div class="col-span-6 ">
-                    <!-- Content for the first div -->
+        <div class="flex justify-between  items-center mt-2 px-4">
+            <div class="grid grid-cols-2 gap-2 w-full justify-between">
+                <div class="flex justify-start items-center gap-4">
                     <div>Top</div>
-                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 "
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.pt" />
                         </div>
                         <div class="w-2/12 mr-2">px</div>
                     </div>
-
                 </div>
-                <div class="col-span-6">
+                <div class="flex justify-end items-center gap-4">
                     <!-- Content for the second div -->
                     <div>Bottom</div>
-                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20"
+                        style="height:30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.pb" />
                         </div>
@@ -1024,11 +1000,11 @@
                     </div>
 
                 </div>
-                <div class="col-span-6">
+                <div class="flex justify-start items-center gap-4">
                     <!-- Content for the second div -->
                     <div>Left</div>
-                    <div class="flex mt-1  gap-1 p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                    <div class="flex mt-1  gap-1 p-2 w-20"
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.pl" />
                         </div>
@@ -1036,11 +1012,11 @@
                     </div>
 
                 </div>
-                <div class="col-span-6">
+                <div class="flex  items-center gap-4 justify-end">
                     <!-- Content for the second div -->
                     <div>Right</div>
-                    <div class="flex mt-1  gap-1  p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;  justify-content:end">
+                    <div class="flex mt-1  gap-1  p-2 w-20"
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.pr" />
                         </div>
@@ -1050,7 +1026,6 @@
                 </div>
             </div>
         </div>
-
     </div>
     <div class="mt-2">
         <vezo-select label="Field" optionLabel="fieldName" [items]="fields"
@@ -1078,25 +1053,23 @@
     </div>
     <div class="mt-2">
         <label class="">Margin Style</label>
-        <div class="flex justify-center  items-center mt-2">
-            <div class="grid grid-cols-12 gap-2 w-full" style="justify-items: center;">
-                <div class="col-span-6 ">
-                    <!-- Content for the first div -->
+        <div class="flex justify-between  items-center mt-2 px-4">
+            <div class="grid grid-cols-2 gap-2 w-full justify-between">
+                <div class="flex justify-start items-center gap-4">
                     <div>Top</div>
-                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 "
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.mt" />
                         </div>
                         <div class="w-2/12 mr-2">px</div>
                     </div>
-
                 </div>
-                <div class="col-span-6">
+                <div class="flex justify-end items-center gap-4">
                     <!-- Content for the second div -->
                     <div>Bottom</div>
-                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20"
+                        style="height:30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.mb" />
                         </div>
@@ -1104,11 +1077,11 @@
                     </div>
 
                 </div>
-                <div class="col-span-6">
+                <div class="flex justify-start items-center gap-4">
                     <!-- Content for the second div -->
                     <div>Left</div>
-                    <div class="flex mt-1  gap-1 p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                    <div class="flex mt-1  gap-1 p-2 w-20"
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.ml" />
                         </div>
@@ -1116,11 +1089,11 @@
                     </div>
 
                 </div>
-                <div class="col-span-6">
+                <div class="flex  items-center gap-4 justify-end">
                     <!-- Content for the second div -->
                     <div>Right</div>
-                    <div class="flex mt-1  gap-1  p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;  justify-content:end">
+                    <div class="flex mt-1  gap-1  p-2 w-20"
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.mr" />
                         </div>
@@ -1131,28 +1104,25 @@
             </div>
         </div>
     </div>
-    <div class="mt-2">
+    <div class="mt-2  mb-2">
         <label class="">Padding Style</label>
-
-        <div class="flex justify-center items-center mt-2">
-            <div class="grid grid-cols-12 gap-2 w-full" style="justify-items: center;">
-                <div class="col-span-6 ">
-                    <!-- Content for the first div -->
+        <div class="flex justify-between  items-center mt-2 px-4">
+            <div class="grid grid-cols-2 gap-2 w-full justify-between">
+                <div class="flex justify-start items-center gap-4">
                     <div>Top</div>
-                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 "
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.pt" />
                         </div>
                         <div class="w-2/12 mr-2">px</div>
                     </div>
-
                 </div>
-                <div class="col-span-6">
+                <div class="flex justify-end items-center gap-4">
                     <!-- Content for the second div -->
                     <div>Bottom</div>
-                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20"
+                        style="height:30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.pb" />
                         </div>
@@ -1160,11 +1130,11 @@
                     </div>
 
                 </div>
-                <div class="col-span-6">
+                <div class="flex justify-start items-center gap-4">
                     <!-- Content for the second div -->
                     <div>Left</div>
-                    <div class="flex mt-1  gap-1 p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                    <div class="flex mt-1  gap-1 p-2 w-20"
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.pl" />
                         </div>
@@ -1172,11 +1142,11 @@
                     </div>
 
                 </div>
-                <div class="col-span-6">
+                <div class="flex  items-center gap-4 justify-end">
                     <!-- Content for the second div -->
                     <div>Right</div>
-                    <div class="flex mt-1  gap-1  p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;  justify-content:end">
+                    <div class="flex mt-1  gap-1  p-2 w-20"
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.pr" />
                         </div>
@@ -1186,7 +1156,6 @@
                 </div>
             </div>
         </div>
-
     </div>
     <div class="mt-2">
         <vezo-select label="Field" optionLabel="fieldName" [items]="fields"
@@ -1284,6 +1253,30 @@
         <vezo-input label="Start Spacing" [trailingText]="'px'" [(ngModel)]="props.data.startSpacing"></vezo-input>
         <vezo-input label="End Spacing" [trailingText]="'px'" [(ngModel)]="props.data.endSpacing"></vezo-input>
     </div>
+    <div class="flex mt-2 justify-between">
+        <div class="w-6/12">
+            <label class="">Alignment</label>
+            <div class="flex mt-2 p-1 gap-2 w-fit" style="border-color: #DFDFDF; border-width: 1px; border-radius: 4px;">
+                <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.alignment ='start'"
+                    [ngClass]="{'bg-slate-100':props.data?.alignment =='start'}"><img src="assets/alignLeft.svg" style="width: 16px; height: 16px;"></div>
+                <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.alignment ='center'"
+                    [ngClass]="{'bg-slate-100':props.data?.alignment =='center'}"><img src="assets/alignCenter.svg" style="width: 16px; height: 16px;"></div>
+                <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.alignment ='end'"
+                    [ngClass]="{'bg-slate-100':props.data?.alignment =='end'}"><img src="assets/alignRight.svg" style="width: 16px; height: 16px;"></div>
+            </div>
+        </div>
+        <div class="w-6/12">
+            <label class="">Vertical Alignment</label>
+            <div class="flex mt-2 p-1 gap-2 w-fit" style="border-color: #DFDFDF; border-width: 1px; border-radius: 4px;">
+                <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.vAlignment ='end'"
+                    [ngClass]="{'bg-slate-100':props.data?.vAlignment =='end'}"><img src="assets/vertical_align_bottom.svg" style="width: 16px; height: 16px;"></div>
+                <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.vAlignment ='center'"
+                    [ngClass]="{'bg-slate-100':props.data?.vAlignment =='center'}"><img src="assets/vertical_align_center.svg" style="width: 16px; height: 16px;"></div>
+                <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.vAlignment ='start'"
+                    [ngClass]="{'bg-slate-100':props.data?.vAlignment =='start'}"><img src="assets/vertical_align_top.svg" style="width: 16px; height: 16px;"></div>
+            </div>
+        </div>
+    </div>
 </ng-container>
 <ng-container *ngIf="props?.name === 'image'">
     <div class="mt-2">
@@ -1295,36 +1288,34 @@
     </div>
     <div class="mt-2">
         <label class="">Alignment</label>
-        <div class="grid grid-cols-3 divide-x mt-2" style="border-color: #DFDFDF; border-width: 1px;">
-            <div class="p-2 flex justify-center cursor-pointer" (click)="props.data.alignment ='start'"
-                [ngClass]="{'bg-slate-200':props.data?.alignment =='start'}"><img src="assets/alignLeft.svg"></div>
-            <div class="p-2 flex justify-center cursor-pointer" (click)="props.data.alignment ='center'"
-                [ngClass]="{'bg-slate-200':props.data?.alignment =='center'}"><img src="assets/alignCenter.svg"></div>
-            <div class="p-2 flex justify-center cursor-pointer" (click)="props.data.alignment ='end'"
-                [ngClass]="{'bg-slate-200':props.data?.alignment =='end'}"><img src="assets/alignRight.svg"></div>
+        <div class="flex mt-2 p-1 gap-2 w-fit" style="border-color: #DFDFDF; border-width: 1px; border-radius: 4px;">
+            <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.alignment ='start'"
+                [ngClass]="{'bg-slate-100':props.data?.alignment =='start'}"><img src="assets/alignLeft.svg" style="width: 16px; height: 16px;"></div>
+            <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.alignment ='center'"
+                [ngClass]="{'bg-slate-100':props.data?.alignment =='center'}"><img src="assets/alignCenter.svg" style="width: 16px; height: 16px;"></div>
+            <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.alignment ='end'"
+                [ngClass]="{'bg-slate-100':props.data?.alignment =='end'}"><img src="assets/alignRight.svg" style="width: 16px; height: 16px;"></div>
         </div>
     </div>
     <div class="mt-2">
         <label class="">Margin Style</label>
-        <div class="flex justify-center  items-center mt-2">
-            <div class="grid grid-cols-12 gap-2 w-full" style="justify-items: center;">
-                <div class="col-span-6 ">
-                    <!-- Content for the first div -->
+        <div class="flex justify-between  items-center mt-2 px-4">
+            <div class="grid grid-cols-2 gap-2 w-full justify-between">
+                <div class="flex justify-start items-center gap-4">
                     <div>Top</div>
-                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 "
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.mt" />
                         </div>
                         <div class="w-2/12 mr-2">px</div>
                     </div>
-
                 </div>
-                <div class="col-span-6">
+                <div class="flex justify-end items-center gap-4">
                     <!-- Content for the second div -->
                     <div>Bottom</div>
-                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20"
+                        style="height:30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.mb" />
                         </div>
@@ -1332,11 +1323,11 @@
                     </div>
 
                 </div>
-                <div class="col-span-6">
+                <div class="flex justify-start items-center gap-4">
                     <!-- Content for the second div -->
                     <div>Left</div>
-                    <div class="flex mt-1  gap-1 p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                    <div class="flex mt-1  gap-1 p-2 w-20"
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.ml" />
                         </div>
@@ -1344,11 +1335,11 @@
                     </div>
 
                 </div>
-                <div class="col-span-6">
+                <div class="flex  items-center gap-4 justify-end">
                     <!-- Content for the second div -->
                     <div>Right</div>
-                    <div class="flex mt-1  gap-1  p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;  justify-content:end">
+                    <div class="flex mt-1  gap-1  p-2 w-20"
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.mr" />
                         </div>
@@ -1361,26 +1352,23 @@
     </div>
     <div class="mt-2  mb-2">
         <label class="">Padding Style</label>
-
-        <div class="flex justify-center items-center mt-2">
-            <div class="grid grid-cols-12 gap-2 w-full" style="justify-items: center;">
-                <div class="col-span-6 ">
-                    <!-- Content for the first div -->
+        <div class="flex justify-between  items-center mt-2 px-4">
+            <div class="grid grid-cols-2 gap-2 w-full justify-between">
+                <div class="flex justify-start items-center gap-4">
                     <div>Top</div>
-                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 "
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.pt" />
                         </div>
                         <div class="w-2/12 mr-2">px</div>
                     </div>
-
                 </div>
-                <div class="col-span-6">
+                <div class="flex justify-end items-center gap-4">
                     <!-- Content for the second div -->
                     <div>Bottom</div>
-                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20"
+                        style="height:30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.pb" />
                         </div>
@@ -1388,11 +1376,11 @@
                     </div>
 
                 </div>
-                <div class="col-span-6">
+                <div class="flex justify-start items-center gap-4">
                     <!-- Content for the second div -->
                     <div>Left</div>
-                    <div class="flex mt-1  gap-1 p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                    <div class="flex mt-1  gap-1 p-2 w-20"
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.pl" />
                         </div>
@@ -1400,11 +1388,11 @@
                     </div>
 
                 </div>
-                <div class="col-span-6">
+                <div class="flex  items-center gap-4 justify-end">
                     <!-- Content for the second div -->
                     <div>Right</div>
-                    <div class="flex mt-1  gap-1  p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;  justify-content:end">
+                    <div class="flex mt-1  gap-1  p-2 w-20"
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.pr" />
                         </div>
@@ -1414,7 +1402,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 </ng-container>
 <ng-container *ngIf="props?.name === 'divider'">
@@ -1428,36 +1415,34 @@
     </div>
     <div class="mt-2">
         <label class="">Alignment</label>
-        <div class="grid grid-cols-3 divide-x mt-2" style="border-color: #DFDFDF; border-width: 1px;">
-            <div class="p-2 flex justify-center cursor-pointer" (click)="props.data.alignment ='start'"
-                [ngClass]="{'bg-slate-200':props.data?.alignment =='start'}"><img src="assets/alignLeft.svg"></div>
-            <div class="p-2 flex justify-center cursor-pointer" (click)="props.data.alignment ='center'"
-                [ngClass]="{'bg-slate-200':props.data?.alignment =='center'}"><img src="assets/alignCenter.svg"></div>
-            <div class="p-2 flex justify-center cursor-pointer" (click)="props.data.alignment ='end'"
-                [ngClass]="{'bg-slate-200':props.data?.alignment =='end'}"><img src="assets/alignRight.svg"></div>
+        <div class="flex mt-2 p-1 gap-2 w-fit" style="border-color: #DFDFDF; border-width: 1px; border-radius: 4px;">
+            <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.alignment ='start'"
+                [ngClass]="{'bg-slate-100':props.data?.alignment =='start'}"><img src="assets/alignLeft.svg" style="width: 16px; height: 16px;"></div>
+            <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.alignment ='center'"
+                [ngClass]="{'bg-slate-100':props.data?.alignment =='center'}"><img src="assets/alignCenter.svg" style="width: 16px; height: 16px;"></div>
+            <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.alignment ='end'"
+                [ngClass]="{'bg-slate-100':props.data?.alignment =='end'}"><img src="assets/alignRight.svg" style="width: 16px; height: 16px;"></div>
         </div>
     </div>
     <div class="mt-2">
         <label class="">Margin Style</label>
-        <div class="flex justify-center  items-center mt-2">
-            <div class="grid grid-cols-12 gap-2 w-full" style="justify-items: center;">
-                <div class="col-span-6 ">
-                    <!-- Content for the first div -->
+        <div class="flex justify-between  items-center mt-2 px-4">
+            <div class="grid grid-cols-2 gap-2 w-full justify-between">
+                <div class="flex justify-start items-center gap-4">
                     <div>Top</div>
-                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 "
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.mt" />
                         </div>
                         <div class="w-2/12 mr-2">px</div>
                     </div>
-
                 </div>
-                <div class="col-span-6">
+                <div class="flex justify-end items-center gap-4">
                     <!-- Content for the second div -->
                     <div>Bottom</div>
-                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20"
+                        style="height:30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.mb" />
                         </div>
@@ -1465,11 +1450,11 @@
                     </div>
 
                 </div>
-                <div class="col-span-6">
+                <div class="flex justify-start items-center gap-4">
                     <!-- Content for the second div -->
                     <div>Left</div>
-                    <div class="flex mt-1  gap-1 p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                    <div class="flex mt-1  gap-1 p-2 w-20"
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.ml" />
                         </div>
@@ -1477,11 +1462,11 @@
                     </div>
 
                 </div>
-                <div class="col-span-6">
+                <div class="flex  items-center gap-4 justify-end">
                     <!-- Content for the second div -->
                     <div>Right</div>
-                    <div class="flex mt-1  gap-1  p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;  justify-content:end">
+                    <div class="flex mt-1  gap-1  p-2 w-20"
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.mr" />
                         </div>
@@ -1494,26 +1479,23 @@
     </div>
     <div class="mt-2  mb-2">
         <label class="">Padding Style</label>
-
-        <div class="flex justify-center items-center mt-2">
-            <div class="grid grid-cols-12 gap-2 w-full" style="justify-items: center;">
-                <div class="col-span-6 ">
-                    <!-- Content for the first div -->
+        <div class="flex justify-between  items-center mt-2 px-4">
+            <div class="grid grid-cols-2 gap-2 w-full justify-between">
+                <div class="flex justify-start items-center gap-4">
                     <div>Top</div>
-                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 "
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.pt" />
                         </div>
                         <div class="w-2/12 mr-2">px</div>
                     </div>
-
                 </div>
-                <div class="col-span-6">
+                <div class="flex justify-end items-center gap-4">
                     <!-- Content for the second div -->
                     <div>Bottom</div>
-                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20"
+                        style="height:30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.pb" />
                         </div>
@@ -1521,11 +1503,11 @@
                     </div>
 
                 </div>
-                <div class="col-span-6">
+                <div class="flex justify-start items-center gap-4">
                     <!-- Content for the second div -->
                     <div>Left</div>
-                    <div class="flex mt-1  gap-1 p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                    <div class="flex mt-1  gap-1 p-2 w-20"
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.pl" />
                         </div>
@@ -1533,11 +1515,11 @@
                     </div>
 
                 </div>
-                <div class="col-span-6">
+                <div class="flex  items-center gap-4 justify-end">
                     <!-- Content for the second div -->
                     <div>Right</div>
-                    <div class="flex mt-1  gap-1  p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;  justify-content:end">
+                    <div class="flex mt-1  gap-1  p-2 w-20"
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.pr" />
                         </div>
@@ -1547,7 +1529,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 </ng-container>
 <ng-container *ngIf="props?.name === 'card'">
@@ -1569,61 +1550,62 @@
         <vezo-textarea label="Description" [(ngModel)]="props.data.desc"></vezo-textarea>
     </div>
     <!-- Alignments -->
-    <div class="mt-2">
-        <label class="">Image Alignment</label>
-        <div class="grid grid-cols-3 divide-x mt-2" style="border-color: #DFDFDF; border-width: 1px;">
-            <div class="p-2 flex justify-center cursor-pointer" (click)="props.data.imageAlignment ='start'"
-                [ngClass]="{'bg-slate-200':props.data?.imageAlignment =='start'}"><img src="assets/alignLeft.svg"></div>
-            <div class="p-2 flex justify-center cursor-pointer" (click)="props.data.imageAlignment ='center'"
-                [ngClass]="{'bg-slate-200':props.data?.imageAlignment =='center'}"><img src="assets/alignCenter.svg"></div>
-            <div class="p-2 flex justify-center cursor-pointer" (click)="props.data.imageAlignment ='end'"
-                [ngClass]="{'bg-slate-200':props.data?.imageAlignment =='end'}"><img src="assets/alignRight.svg"></div>
+    <div class="mt-2 flex gap-2 justify-between">
+        <div class="w-4/12">
+            <label class="">Image</label>
+            <div class="flex mt-2 p-1 gap-2 w-fit" style="border-color: #DFDFDF; border-width: 1px; border-radius: 4px;">
+                <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.imageAlignment ='start'"
+                    [ngClass]="{'bg-slate-100':props.data?.imageAlignment =='start'}"><img src="assets/alignLeft.svg" style="width: 16px; height: 16px;"></div>
+                <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.imageAlignment ='center'"
+                    [ngClass]="{'bg-slate-100':props.data?.imageAlignment =='center'}"><img src="assets/alignCenter.svg" style="width: 16px; height: 16px;"></div>
+                <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.imageAlignment ='end'"
+                    [ngClass]="{'bg-slate-100':props.data?.imageAlignment =='end'}"><img src="assets/alignRight.svg" style="width: 16px; height: 16px;"></div>
+            </div>
+        </div>  
+        <div class="w-4/12">
+            <label class="">Title</label>
+            <div class="flex mt-2 p-1 gap-2 w-fit" style="border-color: #DFDFDF; border-width: 1px; border-radius: 4px;">
+                <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.titleAlignment ='start'"
+                    [ngClass]="{'bg-slate-100':props.data?.titleAlignment =='start'}"><img src="assets/alignLeft.svg" style="width: 16px; height: 16px;"></div>
+                <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.titleAlignment ='center'"
+                    [ngClass]="{'bg-slate-100':props.data?.titleAlignment =='center'}"><img src="assets/alignCenter.svg" style="width: 16px; height: 16px;"></div>
+                <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.titleAlignment ='end'"
+                    [ngClass]="{'bg-slate-100':props.data?.titleAlignment =='end'}"><img src="assets/alignRight.svg" style="width: 16px; height: 16px;"></div>
+            </div>
+        </div>
+        <div class="w-4/12">
+            <label class="">Description</label>
+            <div class="flex mt-2 p-1 gap-2 w-fit" style="border-color: #DFDFDF; border-width: 1px; border-radius: 4px;">
+                <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.descAlignment ='start'"
+                    [ngClass]="{'bg-slate-100':props.data?.descAlignment =='start'}"><img src="assets/alignLeft.svg" style="width: 16px; height: 16px;"></div>
+                <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.descAlignment ='center'"
+                    [ngClass]="{'bg-slate-100':props.data?.descAlignment =='center'}"><img src="assets/alignCenter.svg" style="width: 16px; height: 16px;"></div>
+                <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.descAlignment ='end'"
+                    [ngClass]="{'bg-slate-100':props.data?.descAlignment =='end'}"><img src="assets/alignRight.svg" style="width: 16px; height: 16px;"></div>
+            </div>
         </div>
     </div>
-    <div class="mt-2">
-        <label class="">Title Alignment</label>
-        <div class="grid grid-cols-3 divide-x mt-2" style="border-color: #DFDFDF; border-width: 1px;">
-            <div class="p-2 flex justify-center cursor-pointer" (click)="props.data.titleAlignment ='start'"
-                [ngClass]="{'bg-slate-200':props.data?.titleAlignment =='start'}"><img src="assets/alignLeft.svg"></div>
-            <div class="p-2 flex justify-center cursor-pointer" (click)="props.data.titleAlignment ='center'"
-                [ngClass]="{'bg-slate-200':props.data?.titleAlignment =='center'}"><img src="assets/alignCenter.svg"></div>
-            <div class="p-2 flex justify-center cursor-pointer" (click)="props.data.titleAlignment ='end'"
-                [ngClass]="{'bg-slate-200':props.data?.titleAlignment =='end'}"><img src="assets/alignRight.svg"></div>
-        </div>
-    </div>
-    <div class="mt-2">
-        <label class="">Description Alignment</label>
-        <div class="grid grid-cols-3 divide-x mt-2" style="border-color: #DFDFDF; border-width: 1px;">
-            <div class="p-2 flex justify-center cursor-pointer" (click)="props.data.descAlignment ='start'"
-                [ngClass]="{'bg-slate-200':props.data?.descAlignment =='start'}"><img src="assets/alignLeft.svg"></div>
-            <div class="p-2 flex justify-center cursor-pointer" (click)="props.data.descAlignment ='center'"
-                [ngClass]="{'bg-slate-200':props.data?.descAlignment =='center'}"><img src="assets/alignCenter.svg"></div>
-            <div class="p-2 flex justify-center cursor-pointer" (click)="props.data.descAlignment ='end'"
-                [ngClass]="{'bg-slate-200':props.data?.descAlignment =='end'}"><img src="assets/alignRight.svg"></div>
-        </div>
-    </div>
+    
     <!-- Alignments Ends -->
     <div class="mt-2">
         <label class="">Margin Style</label>
-        <div class="flex justify-center  items-center mt-2">
-            <div class="grid grid-cols-12 gap-2 w-full" style="justify-items: center;">
-                <div class="col-span-6 ">
-                    <!-- Content for the first div -->
+        <div class="flex justify-between  items-center mt-2 px-4">
+            <div class="grid grid-cols-2 gap-2 w-full justify-between">
+                <div class="flex justify-start items-center gap-4">
                     <div>Top</div>
-                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 "
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.mt" />
                         </div>
                         <div class="w-2/12 mr-2">px</div>
                     </div>
-
                 </div>
-                <div class="col-span-6">
+                <div class="flex justify-end items-center gap-4">
                     <!-- Content for the second div -->
                     <div>Bottom</div>
-                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20"
+                        style="height:30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.mb" />
                         </div>
@@ -1631,11 +1613,11 @@
                     </div>
 
                 </div>
-                <div class="col-span-6">
+                <div class="flex justify-start items-center gap-4">
                     <!-- Content for the second div -->
                     <div>Left</div>
-                    <div class="flex mt-1  gap-1 p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                    <div class="flex mt-1  gap-1 p-2 w-20"
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.ml" />
                         </div>
@@ -1643,11 +1625,11 @@
                     </div>
 
                 </div>
-                <div class="col-span-6">
+                <div class="flex  items-center gap-4 justify-end">
                     <!-- Content for the second div -->
                     <div>Right</div>
-                    <div class="flex mt-1  gap-1  p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;  justify-content:end">
+                    <div class="flex mt-1  gap-1  p-2 w-20"
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.mr" />
                         </div>
@@ -1660,26 +1642,23 @@
     </div>
     <div class="mt-2  mb-2">
         <label class="">Padding Style</label>
-
-        <div class="flex justify-center items-center mt-2">
-            <div class="grid grid-cols-12 gap-2 w-full" style="justify-items: center;">
-                <div class="col-span-6 ">
-                    <!-- Content for the first div -->
+        <div class="flex justify-between  items-center mt-2 px-4">
+            <div class="grid grid-cols-2 gap-2 w-full justify-between">
+                <div class="flex justify-start items-center gap-4">
                     <div>Top</div>
-                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 "
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.pt" />
                         </div>
                         <div class="w-2/12 mr-2">px</div>
                     </div>
-
                 </div>
-                <div class="col-span-6">
+                <div class="flex justify-end items-center gap-4">
                     <!-- Content for the second div -->
                     <div>Bottom</div>
-                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20"
+                        style="height:30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.pb" />
                         </div>
@@ -1687,11 +1666,11 @@
                     </div>
 
                 </div>
-                <div class="col-span-6">
+                <div class="flex justify-start items-center gap-4">
                     <!-- Content for the second div -->
                     <div>Left</div>
-                    <div class="flex mt-1  gap-1 p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                    <div class="flex mt-1  gap-1 p-2 w-20"
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.pl" />
                         </div>
@@ -1699,11 +1678,11 @@
                     </div>
 
                 </div>
-                <div class="col-span-6">
+                <div class="flex  items-center gap-4 justify-end">
                     <!-- Content for the second div -->
                     <div>Right</div>
-                    <div class="flex mt-1  gap-1  p-2 w-20 h-9"
-                        style="border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;  justify-content:end">
+                    <div class="flex mt-1  gap-1  p-2 w-20"
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
                         <div class="w-10/12">
                             <input type="number" style="width:40px" [(ngModel)]="props.data.pr" />
                         </div>
@@ -1713,7 +1692,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 </ng-container>
 

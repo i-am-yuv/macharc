@@ -39,7 +39,7 @@ export class FormDesignerComponent implements OnInit {
     {
       name: 'heading',
       content: 'Text',
-      data: { text: 'Hello World!', fontSize: '14', fontWeight: '400', fontColor: '#000000', alignment: 'start',
+      data: { text: 'Hello World!', fontSize: '14', fontWeight: '400', fontColor: '#000000', alignment: 'start', vAlignment:'start',
       mt:'0', mb:'0' , ml:'0', mr:'0' , pt:'0', pb:'0' , pl:'0', pr:'0'
        },
       effectAllowed: 'copy',
@@ -72,7 +72,7 @@ export class FormDesignerComponent implements OnInit {
     {
       name: 'grid',
       content: 'Grid',
-      data: { columns: 3 , gap:'4' , startSpacing:'16', endSpacing:'16'
+      data: { columns: 3 , gap:'4' , startSpacing:'16', endSpacing:'16', alignment: 'start' ,vAlignment:'start',
        },
       effectAllowed: 'copy',
       disable: false,

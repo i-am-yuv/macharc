@@ -1,5 +1,5 @@
 <ng-container *ngIf="block.name === 'heading'">
-    <div class="text-lg  min-w-full " contenteditable [(ngModel)]="block.data.text" [ngStyle]="{'display':'flex','justify-content':block.data?.alignment, 'font-size': block.data?.fontSize+'px' ,'font-weight':block.data?.fontWeight , 'color': block.data?.fontColor,
+    <div class="text-lg min-w-full " contenteditable [(ngModel)]="block.data.text" [ngStyle]="{'display':'flex','justify-content':block.data?.alignment,'align-items':block.data?.vAlignment ,'font-size': block.data?.fontSize+'px' ,'font-weight':block.data?.fontWeight , 'color': block.data?.fontColor,
         'margin-top':  block.data?.mt+'px', 'margin-bottom':  block.data?.mb+'px',  'margin-left':  block.data?.ml+'px',  'margin-right':  block.data?.mr+'px',
         'padding-top':  block.data?.pt+'px',  'padding-bottom':  block.data?.pb+'px',  'padding-left':  block.data?.pl+'px',  'padding-right':  block.data?.pr+'px'
      }">{{ block.data?.text }}</div>
