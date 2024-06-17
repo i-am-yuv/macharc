@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Router } from '@angular/router';
 import { MessageService } from '@splenta/vezo';
 
 @Component({
@@ -17,7 +18,8 @@ export class PropertiesComponent {
   column: any = {};
 
   constructor(
-    private messageService: MessageService
+    private messageService: MessageService,
+    private router : Router
   ) {
 
   }
@@ -64,9 +66,16 @@ export class PropertiesComponent {
 
   setForm() {
     this.props.children = JSON.parse(this.formData.formDefinition);
-    console.log(this.props);
+    this.props.data.formId = this.formData.id;
+    this.props.data.formName = this.formData.formName;
+    console.log(this.props.data);
   }
   getFields() {
     this.getCollectionFields.emit(this.props.data.collection.id);
+  }
+
+  findComponent(componentId : any)
+  {
+     this.router.navigate(['/builder/forms/designer/'+componentId]) ;
   }
 }

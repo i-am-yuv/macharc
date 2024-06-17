@@ -198,7 +198,16 @@ const routes: Routes = [
   },
   {
     path: 'builder/screens/designer/:id',
-    component: DesignerComponent,
+    component: LayoutComponent,
+    children: [
+      {
+        path: '',
+        component: DispatcherComponent,
+        children: [
+          { path: '', component: DesignerComponent }
+        ],
+      }
+    ]
   },
   // { path: 'actions', component: ActionsComponent },
   {

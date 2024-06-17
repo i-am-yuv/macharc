@@ -8,7 +8,8 @@ interface DraggableItem {
   disable: boolean;
   handle: boolean;
   data?: any;
-  children?: any[]
+  children?: any[];
+  id ?: any;
 }
 
 @Component({
@@ -20,5 +21,8 @@ export class BlocksComponent {
 
 
   @Input() block!: DraggableItem;
+
+  @Input() activeItem: any;
+
 
 }

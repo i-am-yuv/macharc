@@ -1,44 +1,85 @@
 <div class="">
-    <div class="grid grid-cols-12 gap-2 border-b" style="background-color: #EEF2FF;">
-        <div class="col-span-3 my-2 ml-3" style="background-color: #dfe7ff;">
-            <div class="text-center py-2" style="color: #4038CA;">
-                Microservice: <span>{{
-                    formData.collection?.microService?.microServiceCode }}</span>
+    <!-- top bar with the resize screen tab -->
+    <div class="flex justify-between items-center">
+        <div class="grid grid-cols-12 gap-2 w-full bg-gray-100 border">
+            <div class="col-span-4  gap-4 p-2 ml-4" style="display: flex; justify-content: start; align-items: center;">
+                <img src="assets/iconamoon_edit-thin.png" style="width: 18px; height: 18px;" />
+                <img src="assets/rotate-ccw.png" style="width: 18px; height: 18px;" />
+                <img src="assets/rotate-cw.png" style="width: 18px; height: 18px;" />
             </div>
-        </div>
-        <div class="col-span-3  my-2 " style="background-color: #dfe7ff;;">
-            <div class="text-center py-2" style="color: #4038CA;">Form: <span>{{ formData.formName }}</span></div>
-        </div>
-        <div class="col-span-2 my-2 " style="background-color: #dfe7ff;">
-            <!-- <div class="inline-block cursor-pointer">
-                    <vezo-icon icon="cursorArrowRays" className="w-4 h-4 mr-2 text-orange-400"></vezo-icon>
-                    <span class="text-orange-400 mr-4" (click)="generateComponent()">Generate Code</span>
-                </div> -->
-            <div class="flex justify-center py-2 gap-8">
-                <div class="col-12 cursor-pointer" (click)="saveDefinition()">
-                    <vezo-icon icon="inbox" className="w-3 h-3 mr-2" style="color: #4038CA;"></vezo-icon>
-                    <span class="" style="color: #4038CA;">Save</span>
+            <div class="col-span-4">
+                <div class="flex gap-4" style="justify-content: center; align-items: center;">
+                    <img src="assets/refresh-ccw.png" class="" style="width: 18px; height: 18px;" />
+                    <div class="px-2 py-1 flex justify-center items-center gap-1" style="background-color: #e7ecfd;">
+                        <img src="assets/circum_mobile-1.png" style="width: 25px; " />
+                        <img src="assets/elementsClose.svg" style="width: 12px ;">
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-span-4 p-2">
+                <div class="flex justify-center items-center">
+                    <div class="flex w-full">
+                        <div class="flex-1 gap-2 flex justify-center items-center">
+                            <img src="assets/icons8_plus.png" style="width: 18px ;">
+                            <div style="font-size: 14px; font-weight: 400; color: #6D6D6D;">Add Page</div>
+                        </div>
+                        <div class="flex-1 gap-2 flex justify-center items-center">
+                            <div style="font-size: 14px; font-weight: 400; color: #6D6D6D;">Preview</div>
+                            <img src="assets/elementsClose.svg" style="width: 12px ;">
+                        </div>
+                        <div class="flex-1 gap-2 flex justify-center items-center">
+                            <div style="font-size: 14px; font-weight: 400; color: #6D6D6D;">Deploy</div>
+                            <img src="assets/elementsClose.svg" style="width: 12px ;">
+                        </div>
+                    </div>
                 </div>
             </div>
-
         </div>
-        <div class="col-span-4  my-2 flex justify-end mr-4">
-            <div class="cursor-pointer py-2" routerLink="../../">
-                <vezo-icon icon="arrowUturnLeft" className="w-4 h-4 mr-2" style="color: #4038CA;"></vezo-icon>
-                <span class="" style="color: #4038CA;">Back</span>
+    </div>
+    <!-- top bar with microservie, form , Save and Back button -->
+    <div class="flex justify-center items-center border-b" style="background-color: #EEF2FF;">
+        <div class="w-full flex p-2">
+            <div class="flex-none w-4/5 flex justify-center items-center">
+                <div class="flex justify-center items-center w-full">
+                    <div class="flex w-full">
+                        <div class="flex-none w-2/5">
+                            <div class="text-center" style="color: #4038CA; font-size: 13px;font-weight: 400;">
+                                MICROSERVICES: <span>{{formData.collection?.microService?.microServiceCode | uppercase
+                                    }}</span>
+                            </div>
+                        </div>
+                        <div class="flex-none w-2/5 flex justify-center items-center">
+                            <div class="text-center" style="color: #4038CA; font-size: 13px;font-weight: 400;">FORM:
+                                <span>{{ formData.formName | uppercase}}</span>
+                            </div>
+                        </div>
+                        <div class="flex-none w-1/5 flex justify-center items-center">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex-none w-1/5 flex justify-end items-center pr-4 gap-8 ">
+                <div class=" flex cursor-pointer" (click)="saveDefinition()">
+                    <vezo-icon icon="inbox" className="w-3 h-3 mr-2" style="color: #4038CA;"></vezo-icon>
+                    <span class="" style="color: #4038CA; font-size: 13px;font-weight: 400;">Save</span>
+                </div>
+                <div class="cursor-pointer flex" routerLink="../../">
+                    <vezo-icon icon="arrowUturnLeft" className="w-3 h-3 mr-2" style="color: #4038CA;"></vezo-icon>
+                    <span class="" style="color: #4038CA; font-size: 13px;font-weight: 400;">Back</span>
+                </div>
             </div>
         </div>
-
     </div>
 </div>
 <div class="flex justify-start w-full">
 
-    <div class="border-l  border border-dashed border-yellow-600 m-12" [ngClass]="{'w-8/12 ' : this.rightPanelExpanded == true,'w-11/12' : this.rightPanelExpanded == false }">
+    <div [ngClass]="{'w-8/12 ' : this.rightPanelExpanded == true,'w-11/12' : this.rightPanelExpanded == false }"
+        class="border-l  border border-dashed border-yellow-600 m-12">
 
         <div [class.horizontal]="layout.dndHorizontal" [dndHorizontal]="layout.dndHorizontal"
-            (dndDrop)="onDrop($event, draggableListRight)" class="dndList  name border-b  border-l-0  h-[847px] overflow-y-scroll overflow-x: auto;
-            white-space: nowrap;" dndDropzone
-            dndEffectAllowed="copyMove">
+            (dndDrop)="onDrop($event, draggableListRight)" class="dndList name border-b  border-l-0  h-[847px] overflow-y-scroll overflow-x: auto;
+            white-space: nowrap;" dndDropzone dndEffectAllowed="copyMove">
             <div class="dndPlaceholder h-16 border bg-blue-400 bg-opacity-25" dndPlaceholderRef>
             </div>
             <div *ngFor="let item of draggableListRight" [dndDraggable]="item" (click)="handleClick($event, item)"
@@ -46,14 +87,17 @@
                 (dndCopied)="onDragged(item, draggableListRight, 'move')"
                 (dndLinked)="onDragged(item, draggableListRight, 'link')"
                 (dndMoved)="onDragged(item, draggableListRight, 'move')">
-                <div class="draggable-item  border border-dashed border-indigo-300 cursor-pointer relative overflow-x: auto;">
+                <div
+                    class="draggable-item  border border-dashed border-indigo-300 cursor-pointer relative overflow-x: auto;">
                     <!-- <div class="absolute bg-white right-0" *ngIf="activeItem === item"><vezo-icon icon="trash"
                                 className="text-red-400 w-4 h-4 -mt-16 mr-4"></vezo-icon>
                         </div> -->
-                    <ng-container *ngIf="item.name === 'section'">
+
+                    <!-- No Need for Columns now as we can use grid for it -->
+                    <!-- <ng-container *ngIf="item.name === 'section'">
                         <div (dndDrop)="onDrop($event, item.children)" class="name gap-{{item.data.gap}} grid grid-cols-{{item.data.columns}} 
                             justify-content items-center"
-                            [ngClass]="{'p-4':  (!this.item.children || this.item.children.length === 0) }"
+                            [ngClass]="{'p-8':  (!this.item.children || this.item.children.length === 0) }"
                             [ngStyle]="{'margin-top': item.data.startSpacing+'px' ,'margin-bottom': item.data.endSpacing+'px'}"
                             dndDropzone dndEffectAllowed="copyMove">
 
@@ -62,15 +106,48 @@
                                 (dndCopied)="onDragged(child, item.children!, 'move')"
                                 (dndLinked)="onDragged(child, item.children!, 'link')"
                                 (dndMoved)="onDragged(child, item.children!, 'move')" class="name">
-                                <div class="">
+
+                                <div class="border border-dashed border-indigo-300"
+                                    [ngClass]="{'p-8':  ((!this.child.children || this.child.children.length === 0) && this.child.name=='section') }">
                                     <app-blocks [block]="child" (click)="handleClick($event, child)"></app-blocks>
                                 </div>
                             </div>
-                            <div class="dndPlaceholder h-16 border bg-blue-400 bg-opacity-25" dndPlaceholderRef>
+                            <div class=" dndPlaceholder h-16 border bg-blue-400 bg-opacity-25" dndPlaceholderRef>
+                                </div>
+                            </div>
+                    </ng-container> -->
+
+                    <ng-container *ngIf="item.name === 'grid'">
+                        <div (dndDrop)="onDrop($event, item.children)" class="name gap-{{item.data.gap}} grid grid-cols-{{item.data.columns}} 
+                            justify-content items-center"
+                            [ngClass]="{'p-8':  (!this.item.children || this.item.children.length === 0) }"
+                            [ngStyle]="{'margin-top': item.data.startSpacing+'px' ,'margin-bottom': item.data.endSpacing+'px'}"
+                            dndDropzone dndEffectAllowed="copyMove">
+
+                            <div *ngFor="let child of item.children" [dndDraggable]="child"
+                                (dndCanceled)="onDragged(child, item.children!, 'none')"
+                                (dndCopied)="onDragged(child, item.children!, 'move')"
+                                (dndLinked)="onDragged(child, item.children!, 'link')"
+                                (dndMoved)="onDragged(child, item.children!, 'move')" class="name">
+
+                                <div class="border border-dashed border-indigo-300"
+                                    [ngClass]="{'p-8':  ((!this.child.children || this.child.children.length === 0) && this.child.name=='grid') }">
+                                    <app-blocks [block]="child" (click)="handleClick($event, child)"></app-blocks>
+                                </div>
+                            </div>
+                            <div class=" dndPlaceholder h-16 border bg-blue-400 bg-opacity-25" dndPlaceholderRef>
                             </div>
                         </div>
                     </ng-container>
-                    <app-blocks [block]="item" (click)="handleClick($event, item)" style="overflow-x: auto;"></app-blocks>
+
+                    <div class="relative-container">
+                        <div class="trash-icon" *ngIf="this.activeItem?.id === item?.id ">
+                            <vezo-icon icon="trash" class="mr-2  text-red-500 cursor-pointer" className="w-4 h-4"
+                                (click)="deleteActiveItem(true)"></vezo-icon>
+                        </div>
+                        <app-blocks [block]="item" (click)="handleClick($event, item)"
+                            class="block-content"></app-blocks>
+                    </div>
                 </div>
             </div>
         </div>
@@ -121,7 +198,7 @@
                     <!-- All elements -->
                     <div *ngIf="this.activeItem?.id == null" class="h-[800px] overflow-y-scroll">
                         <div class="m-3 bg-white">
-                            <vezo-searchfield type="text" placeholder="Search" className="p-1"></vezo-searchfield>
+                            <vezo-searchfield type="text" placeholder="Search"></vezo-searchfield>
                         </div>
                         <div class=" m-3 flex gap-2 justify-start align-middle" style="align-items: center;">
                             <div><img src="assets/elementsClose.svg"></div>
@@ -131,7 +208,7 @@
                             <div class="grid grid-cols-2 gap-2">
                                 <div *ngFor="let item of draggableListLeft" [dndDraggable]="item"
                                     [dndEffectAllowed]="item.effectAllowed" class="cursor-move">
-                                    <div class="draggable-item mb-2 border bg-white shadow-lg"
+                                    <div class="draggable-item mb-2 border bg-white shadow-sm"
                                         style="border-radius: 4px;">
                                         <div class="flex gap-3 py-2 px-2"
                                             style="justify-content: start; align-items: center;">
