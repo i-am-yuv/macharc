@@ -217,7 +217,7 @@ export class FormDesignerComponent implements OnInit {
   collections: Collection[] = [];
 
   rightPanelExpanded: boolean = true;
-
+  widgetTree: any[] = [];
   constructor(
     private formService: DataFormService,
     private fieldService: FieldService,
@@ -233,6 +233,7 @@ export class FormDesignerComponent implements OnInit {
       this.formData = res;
       if (res.formDefinition)
         this.draggableListRight = JSON.parse(res.formDefinition);
+      this.widgetTree = this.draggableListRight;
       console.log(this.draggableListRight);
       if (this.formData) {
         var filterStr = FilterBuilder.equal('collection.id', this.formData?.collection?.id!);
@@ -319,6 +320,18 @@ export class FormDesignerComponent implements OnInit {
   onClickPickElement() {
     var newItem: any;
     this.activeItem = newItem;
+  }
+
+  isExpanded: boolean = false;
+
+  toggle(item:any): void {
+    if (this.hasChildren(item)) {
+      this.isExpanded = !this.isExpanded;
+    }
+  }
+
+  hasChildren(item :any): boolean {
+    return item.children && item.children.length > 0;
   }
 
 }

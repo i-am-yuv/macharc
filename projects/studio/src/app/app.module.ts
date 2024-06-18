@@ -81,6 +81,8 @@ import { SettingsComponent } from './settings/settings.component';
 import { ContenteditableValueAccessor } from './utils/constenteditable.directive';
 import { SeachfieldModule } from '@splenta/vezo/searchfield';
 import { ColorpickerModule } from '@splenta/vezo/colorpicker';
+import { WidgetTreeNodeComponent } from './data-form/widget-tree-node/widget-tree-node.component';
+import { CapitalizePipe } from './data-form/capitalize.pipe';
 
 
 @NgModule({
@@ -129,6 +131,8 @@ import { ColorpickerModule } from '@splenta/vezo/colorpicker';
     DatasourceListComponent,
     DatasourceFormComponent,
     BusinessLogicAiComponent,
+    WidgetTreeNodeComponent,
+    CapitalizePipe,
   ],
   imports: [
     BrowserModule,

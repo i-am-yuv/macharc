@@ -1,0 +1,14 @@
+<div>
+  <div (click)="toggle()" style="display: flex;justify-content: start; align-items: center; cursor: pointer; gap: 4px;">
+    <span *ngIf="hasChildren()">
+      <img *ngIf="this.isExpanded == true" src="assets/Polygon 3.svg" style="width: 14px; height: 14px;" />
+      <img *ngIf="this.isExpanded == false" src="assets/Polygon 5.svg" style="width: 14px; height: 14px;" />
+    </span>
+    <span style="font-size: 14px; font-weight: 400; color: #000000;" class="mb-2">{{ node.name | capitalize }}</span>
+  </div>
+  <div *ngIf="isExpanded" style="margin-left: 1rem ; padding-left: 1rem ; border-left: 1px solid #ccc;">
+    <ng-container *ngFor="let child of node.children">
+      <app-widget-tree-node [node]="child"></app-widget-tree-node>
+    </ng-container>
+  </div>
+</div>

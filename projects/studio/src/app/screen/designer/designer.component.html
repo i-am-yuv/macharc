@@ -220,10 +220,10 @@
                         </div>
                         <!-- All elements -->
                         <div *ngIf="this.activeItem?.id == null" class="h-[800px] overflow-y-scroll">
-                            <div class="m-3 bg-white">
+                            <div *ngIf="!showProps" class="m-3 bg-white">
                                 <vezo-searchfield type="text" placeholder="Search" className="p-1"></vezo-searchfield>
                             </div>
-                            <div class=" m-3 flex gap-2 justify-start align-middle" style="align-items: center;">
+                            <div *ngIf="!showProps" class=" m-3 flex gap-2 justify-start align-middle" style="align-items: center;">
                                 <div><img src="assets/elementsClose.svg"></div>
                                 <div style="font-size: 16px; font-weight: 600; color: black;">Visual Elements</div>
                             </div>
@@ -245,6 +245,11 @@
                                 </div>
                             </div>
                             <div *ngIf="showProps" class="p-2">
+                                <div style="display: flex;flex-direction: column;">
+                                    <div *ngFor="let item of widgetTree">
+                                        <app-widget-tree-node [node]="item"></app-widget-tree-node>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <!-- Elements's Property -->

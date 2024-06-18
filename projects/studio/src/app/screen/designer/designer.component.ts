@@ -43,7 +43,8 @@ export class DesignerComponent implements OnInit {
       content: 'Text',
       data: {
         text: 'Hello World!', fontSize: '14', fontWeight: '400', fontColor: '#000000', alignment: 'start',
-        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'},
+        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
+      },
       effectAllowed: 'copy',
       disable: false,
       handle: false,
@@ -77,8 +78,9 @@ export class DesignerComponent implements OnInit {
     {
       name: 'grid',
       content: 'Grid',
-      data: { columns: 3 , gap:'4' , startSpacing:'16', endSpacing:'16'
-       },
+      data: {
+        columns: 3, gap: '4', startSpacing: '16', endSpacing: '16'
+      },
       effectAllowed: 'copy',
       disable: false,
       handle: false,
@@ -109,7 +111,7 @@ export class DesignerComponent implements OnInit {
     {
       name: 'form',
       content: 'Component',
-      data: { formName: 'none' , formId : ''},
+      data: { formName: 'none', formId: '' },
       effectAllowed: 'copy',
       disable: false,
       handle: false,
@@ -122,9 +124,10 @@ export class DesignerComponent implements OnInit {
       effectAllowed: 'copy',
       disable: false,
       handle: false,
-      data: { label: 'Input Label', placeholder: 'Placeholder', labelFont: '14', labelWeight: '400', labelColor: '#000000', fieldHeight: '35', fieldRadius: '4', fillColor: '#f1f3f6', borderColor: '#f1f3f6', borderWidth: '1',
-      mt:'0', mb:'0' , ml:'0', mr:'0' , pt:'0', pb:'0' , pl:'0', pr:'0'
-       },
+      data: {
+        label: 'Input Label', placeholder: 'Placeholder', labelFont: '14', labelWeight: '400', labelColor: '#000000', fieldHeight: '35', fieldRadius: '4', fillColor: '#f1f3f6', borderColor: '#f1f3f6', borderWidth: '1',
+        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
+      },
       icon: 'assets/button.svg'
     },
     {
@@ -133,10 +136,11 @@ export class DesignerComponent implements OnInit {
       effectAllowed: 'copy',
       disable: false,
       handle: false,
-      data: { label: 'Input Label', placeholder: 'Placeholder', labelFont: '14', labelWeight: '400', labelColor: '#000000', fieldHeight: '35', fieldRadius: '4', fillColor: '#f1f3f6', borderColor: '#f1f3f6', borderWidth: '1' ,
-      mt:'0', mb:'0' , ml:'0', mr:'0' , pt:'0', pb:'0' , pl:'0', pr:'0'
+      data: {
+        label: 'Input Label', placeholder: 'Placeholder', labelFont: '14', labelWeight: '400', labelColor: '#000000', fieldHeight: '35', fieldRadius: '4', fillColor: '#f1f3f6', borderColor: '#f1f3f6', borderWidth: '1',
+        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
       }
-      ,icon: 'assets/button.svg'
+      , icon: 'assets/button.svg'
     },
     {
       name: 'textarea',
@@ -144,10 +148,11 @@ export class DesignerComponent implements OnInit {
       effectAllowed: 'copy',
       disable: false,
       handle: false,
-      data: { label: 'Input Label', placeholder: 'Placeholder', labelFont: '14', labelWeight: '400', labelColor: '#000000',fieldHeight: '50' , fillColor: '#f1f3f6', borderColor: '#f1f3f6', borderWidth: '1', borderRadius: '4',
-      mt:'0', mb:'0' , ml:'0', mr:'0' , pt:'0', pb:'0' , pl:'0', pr:'0'
-       }
-      ,icon: 'assets/textField.svg'
+      data: {
+        label: 'Input Label', placeholder: 'Placeholder', labelFont: '14', labelWeight: '400', labelColor: '#000000', fieldHeight: '50', fillColor: '#f1f3f6', borderColor: '#f1f3f6', borderWidth: '1', borderRadius: '4',
+        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
+      }
+      , icon: 'assets/textField.svg'
     }
     ,
     {
@@ -195,8 +200,9 @@ export class DesignerComponent implements OnInit {
       effectAllowed: 'copy',
       disable: false,
       handle: false,
-      data: { mt:'0', mb:'0' , ml:'0', mr:'0' , pt:'0', pb:'0' , pl:'0', pr:'0', alignment: 'start',
-        width:'200' , height:'100', url:'https://primefaces.org/cdn/primeng/images/galleria/galleria10.jpg'
+      data: {
+        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0', alignment: 'start',
+        width: '200', height: '100', url: 'https://primefaces.org/cdn/primeng/images/galleria/galleria10.jpg'
       },
       icon: 'assets/image.svg'
     },
@@ -206,8 +212,9 @@ export class DesignerComponent implements OnInit {
       effectAllowed: 'copy',
       disable: false,
       handle: false,
-      data: { mt:'0', mb:'0' , ml:'0', mr:'0' , pt:'0', pb:'0' , pl:'0', pr:'0', alignment: 'start',width:'1',height:'10',
-      dividerColor:'#000000'
+      data: {
+        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0', alignment: 'start', width: '1', height: '10',
+        dividerColor: '#000000'
       },
       icon: 'assets/Line 45.svg'
     },
@@ -217,9 +224,10 @@ export class DesignerComponent implements OnInit {
       effectAllowed: 'copy',
       disable: false,
       handle: false,
-      data: { mt:'0', mb:'0' , ml:'0', mr:'0' , pt:'20', pb:'20' , pl:'20', pr:'20', imageAlignment: 'start',titleAlignment: 'start', descAlignment: 'start',
-        width:'200', imageUrl:'https://primefaces.org/cdn/primeng/images/card-ng.jpg', imageWidth:'100', title:' Card title', desc : 'Card Description',
-        fillColor:'#f1f3f6'
+      data: {
+        mt: '0', mb: '0', ml: '0', mr: '0', pt: '20', pb: '20', pl: '20', pr: '20', imageAlignment: 'start', titleAlignment: 'start', descAlignment: 'start',
+        width: '200', imageUrl: 'https://primefaces.org/cdn/primeng/images/card-ng.jpg', imageWidth: '100', title: ' Card title', desc: 'Card Description',
+        fillColor: '#f1f3f6'
       },
       icon: 'assets/solar_card-2-outline.svg'
     },
@@ -233,7 +241,7 @@ export class DesignerComponent implements OnInit {
         label: 'Input Label', btnTextFont: '12', btnTextWeight: '600', btnTextColor: '#4338ca',
         bgColor: '#e0e7ff', borderColor: '#c7d2fe', borderWidth: '1', borderRadius: '4', width: '100', height: '35',
         btnAlignment: 'center', textAlignment: 'center',
-        mt:'0', mb:'0' , ml:'0', mr:'0'
+        mt: '0', mb: '0', ml: '0', mr: '0'
       },
       icon: 'assets/button.svg'
     },
@@ -243,9 +251,10 @@ export class DesignerComponent implements OnInit {
       effectAllowed: 'copy',
       disable: false,
       handle: false,
-      data: { label: 'Input Label', labelFont: '14', labelWeight: '400', labelColor: '#000000',
-      mt:'0', mb:'0' , ml:'0', mr:'0' , pt:'0', pb:'0' , pl:'0', pr:'0'
-       },
+      data: {
+        label: 'Input Label', labelFont: '14', labelWeight: '400', labelColor: '#000000',
+        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
+      },
       icon: 'assets/checkBox.svg'
     },
     {
@@ -254,9 +263,10 @@ export class DesignerComponent implements OnInit {
       effectAllowed: 'copy',
       disable: false,
       handle: false,
-      data: { label: 'Input Label', labelFont: '14', labelWeight: '400', labelColor: '#000000',
-      mt:'0', mb:'0' , ml:'0', mr:'0' , pt:'0', pb:'0' , pl:'0', pr:'0'
-       },
+      data: {
+        label: 'Input Label', labelFont: '14', labelWeight: '400', labelColor: '#000000',
+        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
+      },
       icon: 'assets/checkBox.svg'
 
     },
@@ -266,9 +276,10 @@ export class DesignerComponent implements OnInit {
       effectAllowed: 'copy',
       disable: false,
       handle: false,
-      data: { label: 'Input Label', labelFont: '14', labelWeight: '400', labelColor: '#000000',
-      mt:'0', mb:'0' , ml:'0', mr:'0' , pt:'0', pb:'0' , pl:'0', pr:'0'
-       },
+      data: {
+        label: 'Input Label', labelFont: '14', labelWeight: '400', labelColor: '#000000',
+        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
+      },
       icon: 'assets/toggleOn.svg'
     }
   ];
@@ -292,6 +303,7 @@ export class DesignerComponent implements OnInit {
   collections: Collection[] = [];
   forms: DataForm[] = [];
   rightPanelExpanded: boolean = true;
+  widgetTree: any[] = [];
 
   constructor(
     private screenService: ScreenService,
@@ -310,6 +322,7 @@ export class DesignerComponent implements OnInit {
       this.screenData = res;
       if (res.screenDefinition)
         this.draggableListRight = JSON.parse(res.screenDefinition);
+      this.widgetTree = this.draggableListRight;
       if (this.screenData) {
         var filterStr = FilterBuilder.equal('collection.id', this.screenData?.collection?.id!);
         this.fieldService.getAllData(undefined, filterStr).then((res: any) => {
@@ -413,5 +426,15 @@ export class DesignerComponent implements OnInit {
   onClickPickElement() {
     var newItem: any;
     this.activeItem = newItem;
+  }
+
+  isExpanded: boolean = false;
+  toggle(item: any): void {
+    if (this.hasChildren(item)) {
+      this.isExpanded = !this.isExpanded;
+    }
+  }
+  hasChildren(item: any): boolean {
+    return item.children && item.children.length > 0;
   }
 }
