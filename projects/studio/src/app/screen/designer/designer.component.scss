@@ -1,0 +1,12 @@
+.relative-container {
+    // position: relative;
+    .trash-icon {
+        position: absolute;
+        top: -5px;
+        right: 0;
+        z-index: 10; // Ensure it overlaps above other elements
+    }
+    .block-content {
+        overflow-x: auto;
+    }
+}

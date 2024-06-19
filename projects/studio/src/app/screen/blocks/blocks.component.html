@@ -100,7 +100,7 @@
 <ng-container *ngIf="block.name === 'image'">
     <div class="flex" [ngStyle]="{ 'justify-content':block.data?.alignment }">
         <img src="{{block.data?.url}}" [ngStyle]="{ 'justify-content':block.data?.alignment ,'margin-top':  block.data?.mt+'px', 'margin-bottom':  block.data?.mb+'px',  'margin-left':  block.data?.ml+'px',  'margin-right':  block.data?.mr+'px','padding-top':  block.data?.pt+'px',  'padding-bottom':  block.data?.pb+'px',  'padding-left':  block.data?.pl+'px',  'padding-right':  block.data?.pr+'px' ,
-                'width':block.data?.width+'px' ,  'height':block.data?.height+'px' 
+                'width':block.data?.width ? block.data?.width+'px' : 'auto' ,  'height':block.data?.height ? block.data?.height+'px' : 'auto' 
             }">
     </div>
 </ng-container>
@@ -132,3 +132,24 @@
         </div>
     </div>
 </ng-container>
+<ng-container *ngIf="block.name === 'video'">
+    <div class="flex" [ngStyle]="{ 'justify-content':block.data?.alignment }">
+        <div [ngStyle]="{ 'justify-content':block.data?.alignment ,'margin-top':  block.data?.mt+'px', 'margin-bottom':  block.data?.mb+'px',  'margin-left':  block.data?.ml+'px',  'margin-right':  block.data?.mr+'px','padding-top':  block.data?.pt+'px',  'padding-bottom':  block.data?.pb+'px',  'padding-left':  block.data?.pl+'px',  'padding-right':  block.data?.pr+'px' ,
+        'width':block.data?.width+'px' ,  'height':block.data?.height+'px' }">
+            <video #videoPlayer controls>
+                <source src="{{block.data?.url}}" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <!-- <div>
+                <button (click)="playVideo()">Play</button>
+                <button (click)="pauseVideo()">Pause</button>
+                <button (click)="stopVideo()">Stop</button>
+            </div> -->
+        </div>
+    </div>
+</ng-container>
+<!-- <ng-container *ngIf="block.name === 'container'">
+    <div
+        [ngStyle]="{ 'width':block.data?.width+'px' ,  'height':block.data?.height+'px' , 'background-color':block.data?.bgColor }">
+    </div>
+</ng-container> -->

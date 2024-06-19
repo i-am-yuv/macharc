@@ -83,6 +83,7 @@ import { SeachfieldModule } from '@splenta/vezo/searchfield';
 import { ColorpickerModule } from '@splenta/vezo/colorpicker';
 import { WidgetTreeNodeComponent } from './data-form/widget-tree-node/widget-tree-node.component';
 import { CapitalizePipe } from './data-form/capitalize.pipe';
+import { GridComponent } from './data-form/grid/grid.component';
 
 
 @NgModule({
@@ -133,6 +134,7 @@ import { CapitalizePipe } from './data-form/capitalize.pipe';
     BusinessLogicAiComponent,
     WidgetTreeNodeComponent,
     CapitalizePipe,
+    GridComponent,
   ],
   imports: [
     BrowserModule,

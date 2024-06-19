@@ -1,16 +1,19 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-widget-tree-node',
   templateUrl: './widget-tree-node.component.html',
   styleUrls: ['./widget-tree-node.component.scss']
 })
-export class WidgetTreeNodeComponent {
+export class WidgetTreeNodeComponent implements OnInit {
 
   @Input() node: any;
   isExpanded: boolean = false;
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    console.log('this is node');
+    console.log(this.node);
+  }
 
   toggle(): void {
     if (this.hasChildren()) {

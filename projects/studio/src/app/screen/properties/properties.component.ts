@@ -58,6 +58,7 @@ export class PropertiesComponent {
 
   newColumn() {
     this.column = {};
+    this.props.data.cols.push(this.column);
   }
 
   setColumn(col: any) {

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { EffectAllowed } from 'ngx-drag-drop';
 
 interface DraggableItem {
@@ -20,9 +20,23 @@ interface DraggableItem {
 export class BlocksComponent {
 
 
-  @Input() block!: DraggableItem;
+   @Input() block!: DraggableItem;
 
-  @Input() activeItem: any;
+   @Input() activeItem: any;
 
+  // @ViewChild('videoPlayer') videoPlayer!: ElementRef;
+
+  // playVideo() {
+  //   this.videoPlayer.nativeElement.play();
+  // }
+
+  // pauseVideo() {
+  //   this.videoPlayer.nativeElement.pause();
+  // }
+
+  // stopVideo() {
+  //   this.videoPlayer.nativeElement.pause();
+  //   this.videoPlayer.nativeElement.currentTime = 0;
+  // }
 
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { DndDropEvent, DropEffect, EffectAllowed } from 'ngx-drag-drop';
 import { ScreenService } from '../screen.service';
 import { ActivatedRoute } from '@angular/router';
@@ -26,6 +26,7 @@ interface DraggableItem {
   data?: any;
   children?: any[],
   icon?: any;
+  id ?: any;
 }
 @Component({
   selector: 'app-designer',
@@ -170,7 +171,8 @@ export class DesignerComponent implements OnInit {
           icon: 'trash'
         }],
         caption: 'Table Heading',
-        cols: [{
+        cols: [
+          {
           heading: 'Code',
           field: 'code',
           sortable: true,
@@ -281,6 +283,29 @@ export class DesignerComponent implements OnInit {
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
       },
       icon: 'assets/toggleOn.svg'
+    },
+    {
+      name: 'video',
+      content: 'Video',
+      effectAllowed: 'copy',
+      disable: false,
+      handle: false,
+      data: { mt:'0', mb:'0' , ml:'0', mr:'0' , pt:'0', pb:'0' , pl:'0', pr:'0', alignment: 'start',
+        width:'200', url:'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4'
+      },
+      icon: 'assets/ph_video-light.svg'
+    },
+    {
+      name: 'container',
+      content: 'Container',
+      data: { width:'100', height:'100', bgColor:'#f1f3f6', gap:'0', columns:'2' , alignment: 'start', vAlignment : 'center',
+      mt:'0', mb:'0' , ml:'0', mr:'0' , pt:'0', pb:'0' , pl:'0', pr:'0', bgImage:''
+       },
+      effectAllowed: 'copy',
+      disable: false,
+      handle: false,
+      children: [],
+      icon: 'assets/button.svg'
     }
   ];
 
