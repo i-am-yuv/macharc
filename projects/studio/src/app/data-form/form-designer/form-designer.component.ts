@@ -205,7 +205,8 @@ export class FormDesignerComponent implements OnInit {
       name: 'grid',
       content: 'Grid',
       data: {
-        columns: 2, gap: '4', startSpacing: '16', endSpacing: '16', alignment: 'start', vAlignment: 'start',
+        columns: 2, gap: '4', mt: '0', mb: '0', ml:'0',mr:'0',pt: '0', pb: '0', pl:'0',pr:'0',
+         alignment: 'start', vAlignment: 'start',
       },
       effectAllowed: 'copy',
       disable: false,
@@ -265,7 +266,7 @@ export class FormDesignerComponent implements OnInit {
   virtualElementsExpand: boolean = true;
   layoutElementsExpand: boolean = true;
   pageElementsExpand: boolean = true;
-  
+
   private readonly verticalLayout: DropzoneLayout = {
     container: 'row',
     list: 'column',
@@ -350,6 +351,7 @@ export class FormDesignerComponent implements OnInit {
     // this.draggableListRight.splice(this.draggableListRight.findIndex((a: any) => a.id === this.activeItem.id), 1);
 
     // Check if the id matches a draggableListRight
+    // alert(this.activeItem);
     const objIndex = this.draggableListRight.findIndex((a: any) => a.id === this.activeItem.id);
     if (objIndex !== -1) {
       this.draggableListRight.splice(objIndex, 1);
@@ -358,15 +360,37 @@ export class FormDesignerComponent implements OnInit {
       return;
     } else {
       // If not, check within children if the person has a children field
-      for (const element of this.draggableListRight) {
+      for (var element of this.draggableListRight) {
         if (element.children && Array.isArray(element.children)) {
           const childIndex = element.children.findIndex((child: any) => child.id === this.activeItem.id);
+          // if (childIndex !== -1) {
+          //   element.children.splice(childIndex, 1);
+          //   var newItem: any;
+          //   this.activeItem = newItem;
+          //   return;
+          // }
+          var subChild = element.children ;
           if (childIndex !== -1) {
             element.children.splice(childIndex, 1);
             var newItem: any;
             this.activeItem = newItem;
             return;
+          } else {
+            // If not, check within children if the person has a children field
+            for (const nestedChild of subChild) {
+              if (nestedChild.children && Array.isArray(nestedChild.children)) {
+                const childIndex = nestedChild.children.findIndex((child: any) => child.id === this.activeItem.id);
+                if (childIndex !== -1) {
+                  nestedChild.children.splice(childIndex, 1);
+                  var newItem: any;
+                  this.activeItem = newItem;
+                  return;
+                }
+              }
+            }
           }
+
+
         }
       }
     }
@@ -374,8 +398,8 @@ export class FormDesignerComponent implements OnInit {
 
   handleClick(event: MouseEvent, item: any) {
     event.stopPropagation();
-    console.log('item on click');
     console.log(item);
+    console.log(item.name);
     this.activeItem = item;
   }
 

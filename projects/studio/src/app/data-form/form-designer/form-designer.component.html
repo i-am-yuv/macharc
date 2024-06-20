@@ -78,7 +78,7 @@
         class="border-l  border border-dashed border-yellow-600 m-12 overflow-auto">
 
         <div [class.horizontal]="layout.dndHorizontal" [dndHorizontal]="layout.dndHorizontal"
-            (dndDrop)="onDrop($event, draggableListRight)" class="dndList name border-b  border-l-0  h-[847px] overflow-y-scroll overflow-x: auto;
+            (dndDrop)="onDrop($event, draggableListRight)" class="dndList name border-b  border-l-0  overflow-x: auto;
             white-space: nowrap;" dndDropzone dndEffectAllowed="copyMove">
             <div class="dndPlaceholder h-16 border bg-blue-400 bg-opacity-25" dndPlaceholderRef>
             </div>
@@ -93,8 +93,11 @@
                     <ng-container *ngIf="item.name === 'grid'">
                         <div (dndDrop)="onDrop($event, item.children)" class="name gap-{{item.data.gap}} grid grid-cols-{{item.data.columns}}
                             justify-{{item.data.alignment}} items-{{item.data.vAlignment}}"
-                            [ngClass]="{'p-4':  (!this.item.children || this.item.children.length === 0) }"
-                            [ngStyle]="{'margin-top': item.data.startSpacing+'px' ,'margin-bottom': item.data.endSpacing+'px'}"
+                            [ngClass]="{'p-8':  (!this.item.children || this.item.children.length === 0) }" [ngStyle]="{'margin-top': item.data?.mt+'px', 'margin-bottom': item.data?.mb+'px', 'margin-left': item.data?.ml+'px', 'margin-right': item.data?.mr+'px' ,
+                            'padding-top': (item.children && item.children.length > 0 ? item.data?.pt : 32) + 'px',
+                            'padding-bottom': (item.children && item.children.length > 0 ? item.data?.pb : 32) + 'px',
+                            'padding-left': (item.children && item.children.length > 0 ? item.data?.pl : 32) + 'px',
+                            'padding-right': (item.children && item.children.length > 0 ? item.data?.pr : 32) + 'px'}"
                             dndDropzone dndEffectAllowed="copyMove">
 
                             <div *ngFor="let child of item.children" [dndDraggable]="child"
@@ -104,7 +107,7 @@
                                 (dndMoved)="onDragged(child, item.children!, 'move')" class="name">
 
                                 <div class="border border-dashed border-indigo-300"
-                                    [ngClass]="{'p-4':  ((!this.child.children || this.child.children.length === 0) && this.child.name=='grid') }">
+                                    [ngClass]="{'p-8':  ((!this.child.children || this.child.children.length === 0) && this.child.name=='grid') }">
                                     <!-- This line was not working in the case of nested grid -->
                                     <!-- <app-blocks [block]="child" (click)="handleClick($event, child)"></app-blocks> -->
 
@@ -113,7 +116,7 @@
                                         <!-- Recursive call for nested grid -->
                                         <div (dndDrop)="onDrop($event, child.children)"
                                             class="name gap-{{child.data.gap}} grid grid-cols-{{child.data.columns}} justify-{{child.data.alignment}} items-{{child.data.vAlignment}}"
-                                            [ngClass]="{'p-4':  (!child.children || child.children.length === 0) }"
+                                            [ngClass]="{'p-8':  (!child.children || child.children.length === 0) }"
                                             [ngStyle]="{'margin-top': child.data.startSpacing+'px' ,'margin-bottom': child.data.endSpacing+'px'}"
                                             dndDropzone dndEffectAllowed="copyMove"
                                             (click)="handleClick($event, child)">
@@ -124,7 +127,7 @@
                                                 (dndMoved)="onDragged(nestedChild, child.children!, 'move')"
                                                 class="name">
                                                 <div class="border border-dashed border-indigo-300"
-                                                    [ngClass]="{'p-4':  ((!nestedChild.children || nestedChild.children.length === 0) && nestedChild.name=='grid') }">
+                                                    [ngClass]="{'p-8':  ((!nestedChild.children || nestedChild.children.length === 0) && nestedChild.name=='grid') }">
                                                     <app-blocks [block]="nestedChild"
                                                         (click)="handleClick($event, nestedChild)"></app-blocks>
                                                 </div>
@@ -144,53 +147,88 @@
                     </ng-container>
 
                     <ng-container *ngIf="item.name === 'container'">
-                        <div (dndDrop)="onDrop($event, item.children)" class="name gap-{{item.data.gap}} grid grid-cols-{{item.data.columns}}
-                            justify-{{item.data.alignment}} items-{{item.data.vAlignment}}" [ngStyle]="{ 'width' : item.data?.width ? item.data?.width+'px':'auto' ,'height' :item.data?.height? item.data?.height+'px':'auto' , 'background-color' : item.data?.bgColor ,
-                                'background-image': 'url(' + item.data?.bgImage + ')' , 'background-size': 'cover', 'background-position':'center'
-                            }" [ngClass]="{'p-4':  (!this.item.children || this.item.children.length === 0) }"
-                            dndDropzone dndEffectAllowed="copyMove">
-
+                        <div (dndDrop)="onDrop($event, item.children)"
+                            class="name gap-{{item.data.gap}} grid grid-cols-{{item.data.columns}} flex justify-{{item.data.alignment}} items-{{item.data.vAlignment}}"
+                            [ngStyle]="{ 'width' : item.data?.width ? item.data?.width+'px':'auto' ,'height' :item.data?.height? item.data?.height+'px':'auto' , 'background-color' : item.data?.bgColor ,
+                                'background-image': 'url(' + item.data?.bgImage + ')' , 'background-size': 'cover', 'background-position':'center' ,
+                                'margin-top': item.data?.mt+'px', 'margin-bottom': item.data?.mb+'px', 'margin-left': item.data?.ml+'px', 'margin-right': item.data?.mr+'px' ,
+                                'padding-top': item.data?.pt+'px','padding-bottom': item.data?.pb+'px', 'padding-left': item.data?.pl+'px', 'padding-right': item.data?.pr+'px'}"
+                            [ngClass]="{'p-4':  (!this.item.children || this.item.children.length === 0) }" dndDropzone
+                            dndEffectAllowed="copyMove">
                             <div *ngFor="let child of item.children" [dndDraggable]="child"
                                 (dndCanceled)="onDragged(child, item.children!, 'none')"
-                                (dndCopied)="onDragged(child, item.children!, 'move')"
-                                (dndLinked)="onDragged(child, item.children!, 'link')"
+                                (dndCopied)="onDragged(child, item.children!, 'move'  )"
+                                (dndLinked)="onDragged(child, item.children!, 'link'  )"
                                 (dndMoved)="onDragged(child, item.children!, 'move')" class="">
+
                                 <div class="border border-dashed border-indigo-300 "
-                                    [ngClass]="{'p-4':  ((!this.child.children || this.child.children.length === 0) && this.child.name=='grid') }">
+                                    [ngClass]="{'p-8':  ((!this.child.children || this.child.children.length === 0) && this.child.name=='grid') }">
                                     <!-- Because This line was not working in the case of nested grid -->
                                     <!-- <app-blocks [block]="child" (click)="handleClick($event, child)"></app-blocks> -->
 
                                     <!-- Solution for nested grid -->
                                     <ng-container *ngIf="child.name === 'grid'; else otherBlocks">
                                         <!-- Recursive call for nested grid -->
-                                        <div (dndDrop)="onDrop($event, child.children)"
-                                            class=" gap-{{child.data.gap}} grid grid-cols-{{child.data.columns}} justify-{{child.data.alignment}} items-{{child.data.vAlignment}}"
-                                            [ngClass]="{'p-4':  (!child.children || child.children.length === 0) }"
-                                            [ngStyle]="{'margin-top': child.data.startSpacing+'px' ,'margin-bottom': child.data.endSpacing+'px'}"
-                                            dndDropzone dndEffectAllowed="copyMove"
-                                            (click)="handleClick($event, child)">
-                                            <div *ngFor="let nestedChild of child.children" [dndDraggable]="nestedChild"
-                                                (dndCanceled)="onDragged(nestedChild, child.children!, 'none')"
-                                                (dndCopied)="onDragged(nestedChild, child.children!, 'move')"
-                                                (dndLinked)="onDragged(nestedChild, child.children!, 'link')"
-                                                (dndMoved)="onDragged(nestedChild, child.children!, 'move')"
-                                                class="name">
-                                                <div class="border border-dashed border-indigo-300"
-                                                    [ngClass]="{'p-4':  ((!nestedChild.children || nestedChild.children.length === 0) && nestedChild.name=='grid') }">
-                                                    <app-blocks [block]="nestedChild"
-                                                        (click)="handleClick($event, nestedChild)"></app-blocks>
-                                                </div>
+                                        <div (dndDrop)="onDrop($event, child.children)" class="name gap-{{child.data.gap}} grid grid-cols-{{child.data.columns}}
+                                        justify-{{child.data.alignment}} items-{{child.data.vAlignment}}"
+                                        [ngClass]="{'p-8':  (!this.child.children || this.child.children.length === 0) }" [ngStyle]="{'margin-top': child.data?.mt+'px', 'margin-bottom': child.data?.mb+'px', 'margin-left': child.data?.ml+'px', 'margin-right': child.data?.mr+'px' ,
+                                        'padding-top': (child.children && child.children.length > 0 ? child.data?.pt : 32) + 'px',
+                                        'padding-bottom': (child.children && child.children.length > 0 ? child.data?.pb : 32) + 'px',
+                                        'padding-left': (child.children && child.children.length > 0 ? child.data?.pl : 32) + 'px',
+                                        'padding-right': (child.children && child.children.length > 0 ? child.data?.pr : 32) + 'px'}"
+                                        dndDropzone dndEffectAllowed="copyMove" (click)="handleClick($event, child)">
+            
+                                        <div *ngFor="let subChild of child.children" [dndDraggable]="subChild"
+                                            (dndCanceled)="onDragged(child, child.children!, 'none')"
+                                            (dndCopied)="onDragged(child, child.children!, 'move')"
+                                            (dndLinked)="onDragged(child, child.children!, 'link')"
+                                            (dndMoved)="onDragged(child, child.children!, 'move')" class="name">
+            
+                                            <div class="border border-dashed border-indigo-300"
+                                                [ngClass]="{'p-8':  ((!this.subChild.children || this.subChild.children.length === 0) && this.subChild.name=='grid') }">
+                                                <!-- This line was not working in the case of nested grid -->
+                                                <!-- <app-blocks [block]="child" (click)="handleClick($event, child)"></app-blocks> -->
+            
+                                                <!-- Solution for nested grid -->
+                                                <ng-container *ngIf="subChild.name === 'grid'; else otherBlocks">
+                                                    <!-- Recursive call for nested grid -->
+                                                    <div (dndDrop)="onDrop($event, subChild.children)"
+                                                        class="name gap-{{subChild.data.gap}} grid grid-cols-{{subChild.data.columns}} justify-{{subChild.data.alignment}} items-{{subChild.data.vAlignment}}"
+                                                        [ngClass]="{'p-8':  (!subChild.children || subChild.children.length === 0) }"
+                                                        [ngStyle]="{'margin-top': subChild.data.startSpacing+'px' ,'margin-bottom': subChild.data.endSpacing+'px'}"
+                                                        dndDropzone dndEffectAllowed="copyMove"
+                                                        (click)="handleClick($event, subChild)">
+                                                        <div *ngFor="let nestedChild of subChild.children" [dndDraggable]="nestedChild"
+                                                            (dndCanceled)="onDragged(nestedChild, subChild.children!, 'none')"
+                                                            (dndCopied)="onDragged(nestedChild, subChild.children!, 'move')"
+                                                            (dndLinked)="onDragged(nestedChild, subChild.children!, 'link')"
+                                                            (dndMoved)="onDragged(nestedChild, subChild.children!, 'move')"
+                                                            class="name">
+                                                            <div class="border border-dashed border-indigo-300"
+                                                                [ngClass]="{'p-8':  ((!nestedChild.children || nestedChild.children.length === 0) && nestedChild.name=='grid') }">
+                                                                <app-blocks [block]="nestedChild"
+                                                                    (click)="handleClick($event, nestedChild)"></app-blocks>
+                                                            </div>
+                                                        </div>
+                                                        <!-- <div class="dndPlaceholder h-16 border bg-blue-400 bg-opacity-25"
+                                                            dndPlaceholderRef></div> -->
+                                                    </div>
+                                                </ng-container>
+                                                <ng-template #otherBlocks>
+                                                    <app-blocks [block]="subChild" (click)="handleClick($event, subChild)"></app-blocks>
+                                                </ng-template>
                                             </div>
-                                            <!-- <div class="dndPlaceholder h-16 border bg-blue-400 bg-opacity-25"
-                                                dndPlaceholderRef></div> -->
                                         </div>
+                                        <div class=" dndPlaceholder h-16 border bg-blue-400 bg-opacity-25" dndPlaceholderRef>
+                                        </div>
+                                    </div>
                                     </ng-container>
                                     <ng-template #otherBlocks>
                                         <app-blocks [block]="child" (click)="handleClick($event, child)"></app-blocks>
                                     </ng-template>
                                 </div>
-                            </div>
-                            <div class=" dndPlaceholder h-16 border bg-blue-400 bg-opacity-25" dndPlaceholderRef>
+                                <!-- <div class=" dndPlaceholder h-16 border bg-blue-400 bg-opacity-25" dndPlaceholderRef>
+                                </div> -->
                             </div>
                         </div>
                     </ng-container>
@@ -231,7 +269,7 @@
             </div>
         </div>
     </div>
-    <div [ngClass]="{'w-4/12 ' : this.rightPanelExpanded == true}">
+    <div [ngClass]="{'w-4/12 ' : this.rightPanelExpanded == true}" class="h-[600px] overflow-y-scroll" style=" position: -webkit-sticky; /* For Safari */ position: sticky;top: 0;">
         <div *ngIf="this.rightPanelExpanded">
             <div class="flex justify-end align-top">
                 <div class="w-1/12">
@@ -275,7 +313,7 @@
                         </div>
                     </div>
                     <!-- All elements -->
-                    <div *ngIf="this.activeItem?.id == null" class="h-[800px] overflow-y-scroll">
+                    <div *ngIf="this.activeItem?.id == null" class="">
                         <div *ngIf="!showProps">
                             <div class="m-3 bg-white">
                                 <vezo-searchfield type="text" placeholder="Search"></vezo-searchfield>
@@ -377,7 +415,7 @@
                         </div>
                     </div>
                     <!-- Elements's Property -->
-                    <div *ngIf="this.activeItem?.id != null" class="h-[800px] overflow-y-scroll p-3">
+                    <div *ngIf="this.activeItem?.id != null" class="p-3">
                         <div class="min-h-[24rem]">
                             <app-properties [fields]="fields" [props]="activeItem" [collections]="collections"
                                 (deleteProp)="deleteActiveItem($event)"></app-properties>

@@ -1268,10 +1268,113 @@
     <div class="mt-2">
         <vezo-input label="Number of columns" [(ngModel)]="props.data.columns"></vezo-input>
     </div>
-    <div class="flex gap-2 mt-2 mb-2">
-        <vezo-input label="Start Spacing" [trailingText]="'px'" [(ngModel)]="props.data.startSpacing"></vezo-input>
-        <vezo-input label="End Spacing" [trailingText]="'px'" [(ngModel)]="props.data.endSpacing"></vezo-input>
+    <div class="mt-2">
+        <label class="">Margin Style</label>
+        <div class="flex justify-between  items-center mt-2 ">
+            <div class="grid grid-cols-2  w-full justify-between">
+                <div class="flex justify-start items-center gap-4">
+                    <div>Top</div>
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 "
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.mt" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex justify-end items-center gap-4">
+                    <!-- Content for the second div -->
+                    <div>Bottom</div>
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20"
+                        style="height:30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.mb" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+                <div class="flex justify-start items-center gap-4">
+                    <!-- Content for the second div -->
+                    <div>Left</div>
+                    <div class="flex mt-1  gap-1 p-2 w-20"
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.ml" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+                <div class="flex  items-center gap-4 justify-end">
+                    <!-- Content for the second div -->
+                    <div>Right</div>
+                    <div class="flex mt-1  gap-1  p-2 w-20"
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.mr" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
     </div>
+    <div class="mt-2">
+        <label class="">Padding Style</label>
+        <div class="flex justify-between  items-center mt-2">
+            <div class="grid grid-cols-2 w-full justify-between">
+                <div class="flex justify-start items-center gap-4">
+                    <div>Top</div>
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20 "
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.pt" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex justify-end items-center gap-4">
+                    <!-- Content for the second div -->
+                    <div>Bottom</div>
+                    <div class="flex mt-1  gap-1 justify-between p-2 w-20"
+                        style="height:30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center; justify-content:end">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.pb" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+                <div class="flex justify-start items-center gap-4">
+                    <!-- Content for the second div -->
+                    <div>Left</div>
+                    <div class="flex mt-1  gap-1 p-2 w-20"
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.pl" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+                <div class="flex  items-center gap-4 justify-end">
+                    <!-- Content for the second div -->
+                    <div>Right</div>
+                    <div class="flex mt-1  gap-1  p-2 w-20"
+                        style="height: 30px; border-width: 1px; border-color: #DFDFDF; border-radius: 4px; align-items: center;">
+                        <div class="w-10/12">
+                            <input type="number" style="width:40px" [(ngModel)]="props.data.pr" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <div class="flex mt-2 justify-between mb-2">
         <div class="w-6/12">
             <label class="">Alignment</label>

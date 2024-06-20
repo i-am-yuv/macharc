@@ -10,3 +10,9 @@
         overflow-x: auto;
     }
 }
+
+.second-child {
+    position: -webkit-sticky; /* For Safari */
+    position: sticky;
+    top: 0; /* Adjust as needed */
+  }

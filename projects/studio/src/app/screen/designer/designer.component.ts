@@ -80,7 +80,7 @@ export class DesignerComponent implements OnInit {
       name: 'grid',
       content: 'Grid',
       data: {
-        columns: 3, gap: '4', startSpacing: '16', endSpacing: '16'
+        columns: 3, gap: '4', mt: '0', mb: '0', ml:'0',mr:'0',pt: '0', pb: '0', pl:'0',pr:'0'
       },
       effectAllowed: 'copy',
       disable: false,
@@ -301,6 +301,19 @@ export class DesignerComponent implements OnInit {
       data: { width:'100', height:'100', bgColor:'#f1f3f6', gap:'0', columns:'2' , alignment: 'start', vAlignment : 'center',
       mt:'0', mb:'0' , ml:'0', mr:'0' , pt:'0', pb:'0' , pl:'0', pr:'0', bgImage:''
        },
+      effectAllowed: 'copy',
+      disable: false,
+      handle: false,
+      children: [],
+      icon: 'assets/button.svg'
+    },
+    {
+      name: 'row',
+      content: 'Row',
+      data: {
+        width: 'auto', height: 'auto', gap: '0', alignment: 'start', vAlignment: 'center',
+        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0', startSpacing: '0', endSpacing: '0'
+      },
       effectAllowed: 'copy',
       disable: false,
       handle: false,

@@ -124,8 +124,8 @@
                             </div>
                         </ng-container> -->
                         <ng-container *ngIf="item.name === 'grid'">
-                            <div (dndDrop)="onDrop($event, item.children)" class="name gap-{{item.data.gap}} grid grid-cols-{{item.data.columns}} 
-                                justify-content items-center"
+                            <div (dndDrop)="onDrop($event, item.children)" class="name gap-{{item.data.gap}} grid grid-cols-{{item.data.columns}}
+                                justify-{{item.data.alignment}} items-{{item.data.vAlignment}}"
                                 [ngClass]="{'p-4':  (!this.item.children || this.item.children.length === 0) }"
                                 [ngStyle]="{'margin-top': item.data.startSpacing+'px' ,'margin-bottom': item.data.endSpacing+'px'}"
                                 dndDropzone dndEffectAllowed="copyMove">
@@ -138,8 +138,9 @@
 
                                     <div class="border border-dashed border-indigo-300"
                                         [ngClass]="{'p-4':  ((!this.child.children || this.child.children.length === 0) && this.child.name=='grid') }">
-
+                                        <!-- This line was not working in the case of nested grid -->
                                         <!-- <app-blocks [block]="child" (click)="handleClick($event, child)"></app-blocks> -->
+
                                         <!-- Solution for nested grid -->
                                         <ng-container *ngIf="child.name === 'grid'; else otherBlocks">
                                             <!-- Recursive call for nested grid -->
@@ -163,14 +164,13 @@
                                                     </div>
                                                 </div>
                                                 <!-- <div class="dndPlaceholder h-16 border bg-blue-400 bg-opacity-25"
-                                                dndPlaceholderRef></div> -->
+                                                    dndPlaceholderRef></div> -->
                                             </div>
                                         </ng-container>
                                         <ng-template #otherBlocks>
                                             <app-blocks [block]="child"
                                                 (click)="handleClick($event, child)"></app-blocks>
                                         </ng-template>
-
                                     </div>
                                 </div>
                                 <div class=" dndPlaceholder h-16 border bg-blue-400 bg-opacity-25" dndPlaceholderRef>
@@ -182,10 +182,21 @@
                             <div class="name">
                                 <div *ngFor="let child of item.children" class="name">
                                     <ng-container *ngIf="child.name === 'grid'">
-                                        <div
-                                            class="name gap-{{child.data.gap}} grid grid-cols-{{child.data.columns}} justify-content items-center">
+                                        <div [ngStyle]="{'margin-top': child.data?.mt+'px', 'margin-bottom': child.data?.mb+'px', 'margin-left': child.data?.ml+'px', 'margin-right': child.data?.mr+'px' ,
+                                        'padding-top': child.data?.pt+'px','padding-bottom': child.data?.pb+'px', 'padding-left': child.data?.pl+'px', 'padding-right': child.data?.pr+'px'}"
+                                            class="name gap-{{child.data.gap}} grid grid-cols-{{child.data.columns}}  justify-{{child.data.alignment}} items-{{child.data.vAlignment}}">
 
                                             <div *ngFor="let subChild of child.children" class="name">
+                                                <ng-container *ngIf="subChild.name === 'grid'">
+                                                    <div [ngStyle]="{'margin-top': subChild.data.startSpacing+'px' ,'margin-bottom': subChild.data.endSpacing+'px'}"
+                                                        class="name gap-{{subChild.data.gap}} grid grid-cols-{{subChild.data.columns}}  justify-{{subChild.data.alignment}} items-{{subChild.data.vAlignment}}">
+                                                        <div *ngFor="let nextSubChild of subChild.children"
+                                                            class="name">
+                                                            <app-blocks [block]="nextSubChild"
+                                                                (click)="handleClickForm($event, nextSubChild , item)"></app-blocks>
+                                                        </div>
+                                                    </div>
+                                                </ng-container>
                                                 <app-blocks [block]="subChild"
                                                     (click)="handleClickForm($event, subChild , item)"></app-blocks>
                                             </div>
@@ -193,15 +204,17 @@
                                     </ng-container>
                                     <ng-container *ngIf="child.name === 'container'">
                                         <div class="name gap-{{child.data.gap}} grid grid-cols-{{child.data.columns}}
-                                        justify-{{child.data.alignment}} items-{{child.data.vAlignment}}" [ngStyle]="{ 'width' : child.data?.width ? child.data?.width+'px': 'auto' ,'height' :child.data?.height? child.data?.height+'px':'auto' , 'background-color' : child.data?.bgColor ,
-                                            'background-image': 'url(' + child.data?.bgImage + ')' , 'background-size': 'cover', 'background-position':'center'
-                                        }"
+                                             justify-{{child.data.alignment}} items-{{child.data.vAlignment}}"
+                                            [ngStyle]="{ 'width' : child.data?.width ? child.data?.width+'px': 'auto' ,'height' :child.data?.height? child.data?.height+'px':'auto' , 'background-color' : child.data?.bgColor ,
+                                            'background-image': 'url(' + child.data?.bgImage + ')' , 'background-size': 'cover', 'background-position':'center',
+                                            'margin-top': child.data?.mt+'px', 'margin-bottom': child.data?.mb+'px', 'margin-left': child.data?.ml+'px', 'margin-right': child.data?.mr+'px' ,
+                                             'padding-top': child.data?.pt+'px','padding-bottom': child.data?.pb+'px', 'padding-left': child.data?.pl+'px', 'padding-right': child.data?.pr+'px'}"
                                             [ngClass]="{'p-4':  (!this.child.children || this.child.children.length === 0) }">
                                             <div *ngFor="let subChild of child.children" class="name">
                                                 <ng-container *ngIf="subChild.name === 'grid'; else otherBlocks">
                                                     <!-- Recursive call for nested grid -->
-                                                    <div
-                                                        class="name gap-{{subChild.data.gap}} grid grid-cols-{{subChild.data.columns}} justify-content items-center">
+                                                    <div [ngStyle]="{'margin-top': subChild.data.startSpacing+'px' ,'margin-bottom': subChild.data.endSpacing+'px'}"
+                                                        class="name gap-{{subChild.data.gap}} grid grid-cols-{{subChild.data.columns}} justify-{{subChild.data.alignment}} items-{{subChild.data.vAlignment}}">
                                                         <div *ngFor="let nestedChild of subChild.children" class="name">
                                                             <app-blocks [block]="nestedChild"
                                                                 (click)="handleClickForm($event, nestedChild , item)">
@@ -210,216 +223,240 @@
                                                     </div>
                                                 </ng-container>
                                                 <ng-template #otherBlocks>
-                                                    <app-blocks [block]="subChild" (click)="handleClickForm($event, subChild , item)"></app-blocks>
+                                                    <app-blocks [block]="subChild"
+                                                        (click)="handleClickForm($event, subChild , item)"></app-blocks>
                                                 </ng-template>
                                             </div>
                                         </div>
                                     </ng-container>
                                     <app-blocks [block]=" child"
-                                                        (click)="handleClickForm($event, child , item)"></app-blocks>
-                                            </div>
-                                            <!-- <div class="dndPlaceholder h-16 p-5 border bg-blue-400 bg-opacity-25" dndPlaceholderRef>
+                                        (click)="handleClickForm($event, child , item)"></app-blocks>
+                                </div>
+                                <!-- <div class="dndPlaceholder h-16 p-5 border bg-blue-400 bg-opacity-25" dndPlaceholderRef>
                                 </div> -->
-                                        </div>
-                                    </ng-container>
+                            </div>
+                        </ng-container>
 
-                                    <ng-container *ngIf="item.name === 'container'">
-                                        <div (dndDrop)="onDrop($event, item.children)" class="name gap-{{item.data.gap}} grid grid-cols-{{item.data.columns}}
+                        <ng-container *ngIf="item.name === 'container'">
+                            <div (dndDrop)="onDrop($event, item.children)" class="name gap-{{item.data.gap}} grid grid-cols-{{item.data.columns}}
                                 justify-{{item.data.alignment}} items-{{item.data.vAlignment}}" [ngStyle]="{ 'width' : item.data?.width+'px' ,'height' :item.data?.height? item.data?.height+'px':'auto' , 'background-color' : item.data?.bgColor ,
-                                    'background-image': 'url(' + item.data?.bgImage + ')' , 'background-size': 'cover', 'background-position':'center'
+                                    'background-image': 'url(' + item.data?.bgImage + ')' , 'background-size': 'cover', 'background-position':'center',
+                                    'margin-top': item.data?.mt+'px', 'margin-bottom': item.data?.mb+'px', 'margin-left': item.data?.ml+'px', 'margin-right': item.data?.mr+'px' ,
+                                'padding-top': item.data?.pt+'px','padding-bottom': item.data?.pb+'px', 'padding-left': item.data?.pl+'px', 'padding-right': item.data?.pr+'px'
                                 }" [ngClass]="{'p-4':  (!this.item.children || this.item.children.length === 0) }"
-                                            dndDropzone dndEffectAllowed="copyMove">
+                                dndDropzone dndEffectAllowed="copyMove">
 
-                                            <div *ngFor="let child of item.children" [dndDraggable]="child"
-                                                (dndCanceled)="onDragged(child, item.children!, 'none')"
-                                                (dndCopied)="onDragged(child, item.children!, 'move')"
-                                                (dndLinked)="onDragged(child, item.children!, 'link')"
-                                                (dndMoved)="onDragged(child, item.children!, 'move')" class="">
-                                                <div class="border border-dashed border-indigo-300 "
-                                                    [ngClass]="{'p-4':  ((!this.child.children || this.child.children.length === 0) && this.child.name=='grid') }">
-                                                    <!-- Because This line was not working in the case of nested grid -->
-                                                    <!-- <app-blocks [block]="child" (click)="handleClick($event, child)"></app-blocks> -->
+                                <div *ngFor="let child of item.children" [dndDraggable]="child"
+                                    (dndCanceled)="onDragged(child, item.children!, 'none')"
+                                    (dndCopied)="onDragged(child, item.children!, 'move')"
+                                    (dndLinked)="onDragged(child, item.children!, 'link')"
+                                    (dndMoved)="onDragged(child, item.children!, 'move')" class="">
+                                    <div class="border border-dashed border-indigo-300 "
+                                        [ngClass]="{'p-4':  ((!this.child.children || this.child.children.length === 0) && this.child.name=='grid') }">
+                                        <!-- Because This line was not working in the case of nested grid -->
+                                        <!-- <app-blocks [block]="child" (click)="handleClick($event, child)"></app-blocks> -->
 
-                                                    <!-- Solution for nested grid -->
-                                                    <ng-container *ngIf="child.name === 'grid'; else otherBlocks">
-                                                        <!-- Recursive call for nested grid -->
-                                                        <div (dndDrop)="onDrop($event, child.children)"
-                                                            class=" gap-{{child.data.gap}} grid grid-cols-{{child.data.columns}} justify-{{child.data.alignment}} items-{{child.data.vAlignment}}"
-                                                            [ngClass]="{'p-4':  (!child.children || child.children.length === 0) }"
-                                                            [ngStyle]="{'margin-top': child.data.startSpacing+'px' ,'margin-bottom': child.data.endSpacing+'px'}"
-                                                            dndDropzone dndEffectAllowed="copyMove"
-                                                            (click)="handleClick($event, child)">
-                                                            <div *ngFor="let nestedChild of child.children"
-                                                                [dndDraggable]="nestedChild"
-                                                                (dndCanceled)="onDragged(nestedChild, child.children!, 'none')"
-                                                                (dndCopied)="onDragged(nestedChild, child.children!, 'move')"
-                                                                (dndLinked)="onDragged(nestedChild, child.children!, 'link')"
-                                                                (dndMoved)="onDragged(nestedChild, child.children!, 'move')"
-                                                                class="name">
-                                                                <div class="border border-dashed border-indigo-300"
-                                                                    [ngClass]="{'p-4':  ((!nestedChild.children || nestedChild.children.length === 0) && nestedChild.name=='grid') }">
-                                                                    <app-blocks [block]="nestedChild"
-                                                                        (click)="handleClick($event, nestedChild)"></app-blocks>
-                                                                </div>
-                                                            </div>
-                                                            <!-- <div class="dndPlaceholder h-16 border bg-blue-400 bg-opacity-25"
-                                                    dndPlaceholderRef></div> -->
-                                                        </div>
-                                                    </ng-container>
-                                                    <ng-template #otherBlocks>
-                                                        <app-blocks [block]="child"
-                                                            (click)="handleClick($event, child)"></app-blocks>
-                                                    </ng-template>
-                                                </div>
-                                            </div>
-                                            <div class=" dndPlaceholder h-16 border bg-blue-400 bg-opacity-25"
-                                                dndPlaceholderRef>
-                                            </div>
-                                        </div>
-                                    </ng-container>
-
-                                    <div class="relative-container">
-                                        <div class="trash-icon" *ngIf="this.activeItem?.id === item.id ">
-                                            <vezo-icon icon="trash" class="mr-2  text-red-500 cursor-pointer"
-                                                className="w-4 h-4" (click)="deleteActiveItem(true)"></vezo-icon>
-                                        </div>
-                                        <app-blocks [block]="item" (click)="handleClick($event, item)"
-                                            class="block-content"></app-blocks>
-                                    </div>
-                                </div>
-                            </div>
-                    </div>
-                </div>
-
-                <!-- Right Side Elements and Properties Code -->
-                <div [ngClass]="{'w-4/12 ' : this.rightPanelExpanded == true}">
-                    <div *ngIf="this.rightPanelExpanded">
-                        <div class="flex justify-end align-top">
-                            <div class="w-1/12">
-                                <div style="height: 47px; border-bottom-left-radius: 4px; align-items: center;"
-                                    class="border-b  border-l border-r flex justify-center px-2 shadow-md bg-white"
-                                    (click)="this.rightPanelExpanded =  !this.rightPanelExpanded">
-                                    <vezo-icon [icon]="'chevronRight'" className="cursor-pointer w-5 h-5"
-                                        style="color:black"></vezo-icon>
-                                    <!-- <vezo-icon *ngIf="this.rightPanelExpanded==false " [icon]="'chevronLeft'"
-                            className="cursor-pointer w-5 h-5" style="color:black"></vezo-icon> -->
-                                </div>
-                            </div>
-                            <div class="w-11/12  bg-white border-l border-b" style="border-color:#818CF8;">
-                                <div class="flex">
-                                    <div class="w-6/12 p-3 cursor-pointer"
-                                        [style.background-color]=" this.activeItem?.id === null? '#4038CA' : '#C7D2FE'"
-                                        (click)="onClickPickElement()">
-                                        <div class="flex justify-between gap-3">
-                                            <div class="w-11/12">
-                                                <span *ngIf="!showProps"
-                                                    [style.color]=" this.activeItem?.id === null? '#F6F6F6' : '#454545'"
-                                                    style="font-size: 12px; font-weight: 500;">PICK AN
-                                                    ELEMENT</span>
-                                                <span *ngIf="showProps"
-                                                    [style.color]=" this.activeItem?.id === null? '#F6F6F6' : '#454545'"
-                                                    style="font-size: 12px; font-weight: 500;">Widgets</span>
-                                            </div>
-                                            <div class="w-1/12">
-                                                <vezo-icon icon="bars2" *ngIf="!showProps"
-                                                    className="cursor-pointer w-4 h-4" (click)="showProps=!showProps"
-                                                    style="color:white"></vezo-icon>
-                                                <vezo-icon icon="squares2x2" *ngIf="showProps"
-                                                    className="cursor-pointer w-4 h-4" style="color:white"
-                                                    (click)="showProps=!showProps"></vezo-icon>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="w-6/12 p-3 justify-center"
-                                        [style.background-color]=" this.activeItem?.id !== null? '#4038CA' : '#C7D2FE'">
-                                        <div [style.color]=" this.activeItem?.id !== null? '#F6F6F6' : '#454545'"
-                                            style="font-size: 12px; font-weight: 500; display: flex; justify-content: center; align-items: center;">
-                                            STYLES</div>
-                                    </div>
-                                </div>
-                                <!-- All elements -->
-                                <div *ngIf="this.activeItem?.id == null" class="h-[800px] overflow-y-scroll">
-                                    <div *ngIf="!showProps" class="m-3 bg-white">
-                                        <vezo-searchfield type="text" placeholder="Search"
-                                            className="p-1"></vezo-searchfield>
-                                    </div>
-                                    <div *ngIf="!showProps" class=" m-3 flex gap-2 justify-start align-middle"
-                                        style="align-items: center;">
-                                        <div><img src="assets/elementsClose.svg"></div>
-                                        <div style="font-size: 16px; font-weight: 600; color: black;">Visual
-                                            Elements</div>
-                                    </div>
-                                    <div class="dndList px-3 py-1 name" *ngIf="!showProps">
-                                        <div class="grid grid-cols-2 gap-2">
-                                            <div *ngFor="let item of draggableListLeft" [dndDraggable]="item"
-                                                [dndEffectAllowed]="item.effectAllowed" class="cursor-move">
-                                                <div class="draggable-item mb-2 border bg-white shadow-sm"
-                                                    style="border-radius: 4px;">
-                                                    <div class="flex gap-3 py-2 px-2"
-                                                        style="justify-content: start; align-items: center;">
-                                                        <div class="col-2">
-                                                            <img [src]="item.icon">
-                                                        </div>
-                                                        <div class="col-10"> {{item.content}}</div>
+                                        <!-- Solution for nested grid -->
+                                        <ng-container *ngIf="child.name === 'grid'; else otherBlocks">
+                                            <!-- Recursive call for nested grid -->
+                                            <div (dndDrop)="onDrop($event, child.children)"
+                                                class=" gap-{{child.data.gap}} grid grid-cols-{{child.data.columns}} justify-{{child.data.alignment}} items-{{child.data.vAlignment}}"
+                                                [ngClass]="{'p-4':  (!child.children || child.children.length === 0) }"
+                                                [ngStyle]="{'margin-top': child.data.startSpacing+'px' ,'margin-bottom': child.data.endSpacing+'px'}"
+                                                dndDropzone dndEffectAllowed="copyMove"
+                                                (click)="handleClick($event, child)">
+                                                <div *ngFor="let nestedChild of child.children"
+                                                    [dndDraggable]="nestedChild"
+                                                    (dndCanceled)="onDragged(nestedChild, child.children!, 'none')"
+                                                    (dndCopied)="onDragged(nestedChild, child.children!, 'move')"
+                                                    (dndLinked)="onDragged(nestedChild, child.children!, 'link')"
+                                                    (dndMoved)="onDragged(nestedChild, child.children!, 'move')"
+                                                    class="name">
+                                                    <div class="border border-dashed border-indigo-300"
+                                                        [ngClass]="{'p-4':  ((!nestedChild.children || nestedChild.children.length === 0)) }">
+                                                        <app-blocks [block]="nestedChild"
+                                                            (click)="handleClick($event, nestedChild)"></app-blocks>
                                                     </div>
                                                 </div>
+                                                <!-- <div class="dndPlaceholder h-16 border bg-blue-400 bg-opacity-25"
+                                                    dndPlaceholderRef></div> -->
                                             </div>
-                                        </div>
+                                        </ng-container>
+                                        <ng-template #otherBlocks>
+                                            <app-blocks [block]="child"
+                                                (click)="handleClick($event, child)"></app-blocks>
+                                        </ng-template>
                                     </div>
-                                    <div *ngIf="showProps" class="p-2">
-                                        <div style="display: flex;flex-direction: column;">
-                                            <div *ngFor="let item of widgetTree">
-                                                <app-widget-tree-node [node]="item"></app-widget-tree-node>
+                                </div>
+                                <!-- <div class=" dndPlaceholder h-16 border bg-blue-400 bg-opacity-25" dndPlaceholderRef>
+                                </div> -->
+                            </div>
+                        </ng-container>
+
+                        <ng-container *ngIf="item.name === 'row'">
+                            <div (dndDrop)="onDrop($event, item.children)"
+                                class="name gap-{{item.data.gap}} grid grid-rows-1 grid-flow-col justify-{{item.data.alignment}} items-{{item.data.vAlignment}}"
+                                [ngClass]="{'p-4':  (!this.item.children || this.item.children.length === 0) }"
+                                [ngStyle]="{'margin-top': item.data.startSpacing+'px' ,'margin-bottom': item.data.endSpacing+'px'}"
+                                dndDropzone dndEffectAllowed="copyMove">
+
+                                <div *ngFor="let child of item.children" [dndDraggable]="child"
+                                    (dndCanceled)="onDragged(child, item.children!, 'none')"
+                                    (dndCopied)="onDragged(child, item.children!, 'move')"
+                                    (dndLinked)="onDragged(child, item.children!, 'link')"
+                                    (dndMoved)="onDragged(child, item.children!, 'move')" class="name">
+
+                                    <div class="border border-dashed border-indigo-300"
+                                        [ngClass]="{'p-4':  ((!this.child.children || this.child.children.length === 0))}">
+                                        <!-- This line was not working in the case of nested -->
+                                        <app-blocks [block]="child" (click)="handleClick($event, child)"></app-blocks>
+                                    </div>
+                                </div>
+                                <div class=" dndPlaceholder h-16 border bg-blue-400 bg-opacity-25" dndPlaceholderRef>
+                                </div>
+                            </div>
+                        </ng-container>
+
+                        <div class="relative-container">
+                            <div class="trash-icon" *ngIf="this.activeItem?.id === item.id ">
+                                <vezo-icon icon="trash" class="mr-2  text-red-500 cursor-pointer" className="w-4 h-4"
+                                    (click)="deleteActiveItem(true)"></vezo-icon>
+                            </div>
+                            <app-blocks [block]="item" (click)="handleClick($event, item)"
+                                class="block-content"></app-blocks>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side Elements and Properties Code -->
+        <div [ngClass]="{'w-4/12 ' : this.rightPanelExpanded == true}">
+            <div *ngIf="this.rightPanelExpanded">
+                <div class="flex justify-end align-top">
+                    <div class="w-1/12">
+                        <div style="height: 47px; border-bottom-left-radius: 4px; align-items: center;"
+                            class="border-b  border-l border-r flex justify-center px-2 shadow-md bg-white"
+                            (click)="this.rightPanelExpanded =  !this.rightPanelExpanded">
+                            <vezo-icon [icon]="'chevronRight'" className="cursor-pointer w-5 h-5"
+                                style="color:black"></vezo-icon>
+                            <!-- <vezo-icon *ngIf="this.rightPanelExpanded==false " [icon]="'chevronLeft'"
+                            className="cursor-pointer w-5 h-5" style="color:black"></vezo-icon> -->
+                        </div>
+                    </div>
+                    <div class="w-11/12  bg-white border-l border-b" style="border-color:#818CF8;">
+                        <div class="flex">
+                            <div class="w-6/12 p-3 cursor-pointer"
+                                [style.background-color]=" this.activeItem?.id === null? '#4038CA' : '#C7D2FE'"
+                                (click)="onClickPickElement()">
+                                <div class="flex justify-between gap-3">
+                                    <div class="w-11/12">
+                                        <span *ngIf="!showProps"
+                                            [style.color]=" this.activeItem?.id === null? '#F6F6F6' : '#454545'"
+                                            style="font-size: 12px; font-weight: 500;">PICK AN
+                                            ELEMENT</span>
+                                        <span *ngIf="showProps"
+                                            [style.color]=" this.activeItem?.id === null? '#F6F6F6' : '#454545'"
+                                            style="font-size: 12px; font-weight: 500;">Widgets</span>
+                                    </div>
+                                    <div class="w-1/12">
+                                        <vezo-icon icon="bars2" *ngIf="!showProps" className="cursor-pointer w-4 h-4"
+                                            (click)="showProps=!showProps" style="color:white"></vezo-icon>
+                                        <vezo-icon icon="squares2x2" *ngIf="showProps"
+                                            className="cursor-pointer w-4 h-4" style="color:white"
+                                            (click)="showProps=!showProps"></vezo-icon>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="w-6/12 p-3 justify-center"
+                                [style.background-color]=" this.activeItem?.id !== null? '#4038CA' : '#C7D2FE'">
+                                <div [style.color]=" this.activeItem?.id !== null? '#F6F6F6' : '#454545'"
+                                    style="font-size: 12px; font-weight: 500; display: flex; justify-content: center; align-items: center;">
+                                    STYLES</div>
+                            </div>
+                        </div>
+                        <!-- All elements -->
+                        <div *ngIf="this.activeItem?.id == null" class="h-[800px] overflow-y-scroll">
+                            <div *ngIf="!showProps" class="m-3 bg-white">
+                                <vezo-searchfield type="text" placeholder="Search" className="p-1"></vezo-searchfield>
+                            </div>
+                            <div *ngIf="!showProps" class=" m-3 flex gap-2 justify-start align-middle"
+                                style="align-items: center;">
+                                <div><img src="assets/elementsClose.svg"></div>
+                                <div style="font-size: 16px; font-weight: 600; color: black;">Visual
+                                    Elements</div>
+                            </div>
+                            <div class="dndList px-3 py-1 name" *ngIf="!showProps">
+                                <div class="grid grid-cols-2 gap-2">
+                                    <div *ngFor="let item of draggableListLeft" [dndDraggable]="item"
+                                        [dndEffectAllowed]="item.effectAllowed" class="cursor-move">
+                                        <div class="draggable-item mb-2 border bg-white shadow-sm"
+                                            style="border-radius: 4px;">
+                                            <div class="flex gap-3 py-2 px-2"
+                                                style="justify-content: start; align-items: center;">
+                                                <div class="col-2">
+                                                    <img [src]="item.icon">
+                                                </div>
+                                                <div class="col-10"> {{item.content}}</div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <!-- Elements's Property -->
-                                <div *ngIf="this.activeItem?.id != null" class="h-[800px] overflow-y-scroll p-3">
-                                    <div class="min-h-[24rem]">
-                                        <app-properties [fields]="fields" [forms]="forms" [props]="activeItem"
-                                            [collections]="collections" (deleteProp)="deleteActiveItem($event)"
-                                            (getCollectionFields)="getFields($event)"></app-properties>
-                                        <div class="text-center m-8" *ngIf="!activeItem">Drag and drop from
-                                            blocks to center
-                                            panel to create
-                                            screen.</div>
+                            </div>
+                            <div *ngIf="showProps" class="p-2">
+                                <div style="display: flex;flex-direction: column;">
+                                    <div *ngFor="let item of widgetTree">
+                                        <app-widget-tree-node [node]="item"></app-widget-tree-node>
                                     </div>
-                                    <div class="mt-4">
-                                        <div>
-                                            <div class="bg-gray-50 border-b p-2 font-semibold">Page
-                                                Properties</div>
-                                            <div class="p-4">
-                                                <vezo-input label="Page URL"></vezo-input>
-                                                <vezo-input label="Primary Collection"></vezo-input>
-                                                <div class="text-right mb-8 pt-4">
-                                                    <vezo-button label="Save" className="bg-gray-50"
-                                                        (click)="saveDefinition()"></vezo-button>
-                                                </div>
-                                            </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Elements's Property -->
+                        <div *ngIf="this.activeItem?.id != null" class="h-[800px] overflow-y-scroll p-3">
+                            <div class="min-h-[24rem]">
+                                <app-properties [fields]="fields" [forms]="forms" [props]="activeItem"
+                                    [collections]="collections" (deleteProp)="deleteActiveItem($event)"
+                                    (getCollectionFields)="getFields($event)"></app-properties>
+                                <div class="text-center m-8" *ngIf="!activeItem">Drag and drop from
+                                    blocks to center
+                                    panel to create
+                                    screen.</div>
+                            </div>
+                            <div class="mt-4">
+                                <div>
+                                    <div class="bg-gray-50 border-b p-2 font-semibold">Page
+                                        Properties</div>
+                                    <div class="p-4">
+                                        <vezo-input label="Page URL"></vezo-input>
+                                        <vezo-input label="Primary Collection"></vezo-input>
+                                        <div class="text-right mb-8 pt-4">
+                                            <vezo-button label="Save" className="bg-gray-50"
+                                                (click)="saveDefinition()"></vezo-button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div *ngIf="!this.rightPanelExpanded">
-                        <div style="height: 47px; width: 32px; border-bottom-left-radius: 4px; align-items: center;"
-                            class="border-b  border-l border-r flex justify-center px-2 shadow-md bg-white"
-                            (click)="this.rightPanelExpanded =  !this.rightPanelExpanded">
-                            <!-- <vezo-icon *ngIf="this.rightPanelExpanded==true " [icon]="'chevronRight'"
-                        className="cursor-pointer w-5 h-5" style="color:black"></vezo-icon> -->
-                            <vezo-icon [icon]="'chevronLeft'" className="cursor-pointer w-5 h-5"
-                                style="color:black"></vezo-icon>
-                        </div>
-                    </div>
                 </div>
-
+            </div>
+            <div *ngIf="!this.rightPanelExpanded">
+                <div style="height: 47px; width: 32px; border-bottom-left-radius: 4px; align-items: center;"
+                    class="border-b  border-l border-r flex justify-center px-2 shadow-md bg-white"
+                    (click)="this.rightPanelExpanded =  !this.rightPanelExpanded">
+                    <!-- <vezo-icon *ngIf="this.rightPanelExpanded==true " [icon]="'chevronRight'"
+                        className="cursor-pointer w-5 h-5" style="color:black"></vezo-icon> -->
+                    <vezo-icon [icon]="'chevronLeft'" className="cursor-pointer w-5 h-5"
+                        style="color:black"></vezo-icon>
+                </div>
             </div>
         </div>
-        <vezo-toast></vezo-toast>
-        <!-- <pre>
+
+    </div>
+</div>
+<vezo-toast></vezo-toast>
+<!-- <pre>
         {{ draggableListRight | json }}
     </pre> -->
-        <!-- {{ activeItem | json }} -->
+<!-- {{ activeItem | json }} -->
