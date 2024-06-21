@@ -1,3 +1,4 @@
+<div class="p-3">
 <vezo-table [data]="data" [pageData]="pageData" (pageDataChange)="getAllData()">
     <ng-template vTemplate="caption">
         <div class="flex place-items-center">
@@ -42,7 +43,7 @@
         </tr>
     </ng-template>
 </vezo-table>
-
+</div>
 <vezo-modal [(visible)]="visible">
     <ng-template vTemplate="header">Data Form</ng-template>
     <ng-template vTemplate="content">

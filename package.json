@@ -34,6 +34,7 @@
     "ng2-charts": "4.1.0",
     "ngx-color-picker": "^16.0.0",
     "ngx-drag-drop": "^15.1.0",
+    "ngx-loading": "^2.0.1",
     "ngx-monaco-editor-v2": "^15.0.1",
     "redoc": "^2.0.0",
     "rxjs": "~7.5.0",

@@ -85,6 +85,7 @@ import { WidgetTreeNodeComponent } from './data-form/widget-tree-node/widget-tre
 import { CapitalizePipe } from './data-form/capitalize.pipe';
 import { MenuPanelComponent } from './data-form/menu-panel/menu-panel.component';
 import { MenuPanelCreateComponent } from './data-form/menu-panel/menu-panel-create/menu-panel-create.component';
+import { NgxLoadingModule } from 'ngx-loading';
 
 
 @NgModule({
@@ -173,7 +174,8 @@ import { MenuPanelCreateComponent } from './data-form/menu-panel/menu-panel-crea
     NgChartsModule,
     ChartModule,
     SeachfieldModule,
-    ColorpickerModule
+    ColorpickerModule,
+    NgxLoadingModule.forRoot({})
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [

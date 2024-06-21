@@ -287,6 +287,7 @@ export class FormDesignerComponent implements OnInit {
 
   currentScreenView:string= 'assets/circum_mobile-1.png';// Mobile View
   mutiScreenView:boolean = false;
+  loading: boolean = false;
 
   constructor(
     private formService: DataFormService,
@@ -299,12 +300,13 @@ export class FormDesignerComponent implements OnInit {
   }
   public ngOnInit() {
     this.formId = this.route.snapshot.paramMap.get('id');
+    this.loading = true;
     this.formService.getData({ id: this.formId }).then((res: any) => {
       this.formData = res;
       if (res.formDefinition)
         this.draggableListRight = JSON.parse(res.formDefinition);
       this.widgetTree = this.draggableListRight;
-      console.log(this.draggableListRight);
+     // console.log(this.draggableListRight);
       if (this.formData) {
         var filterStr = FilterBuilder.equal('collection.id', this.formData?.collection?.id!);
         this.fieldService.getAllData(undefined, filterStr).then((res: any) => {
@@ -314,6 +316,7 @@ export class FormDesignerComponent implements OnInit {
           this.collections = res.content;
         })
       }
+      this.loading = false;
     })
 
   }

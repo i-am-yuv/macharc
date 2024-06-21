@@ -140,24 +140,28 @@ export class LayoutComponent {
           label: 'Applications',
           icon: 'clipboard',
           routerLink: ['/applications'],
+          image:'assets/Application.svg'
         },
-        { label: 'Pages', icon: 'clipboard', routerLink: ['/builder/screens'] },
-        { label: 'Actions', icon: 'clipboard', routerLink: ['/actions'] },
+        { label: 'Pages', icon: 'clipboard', routerLink: ['/builder/screens'] ,  image:'assets/PAGES.svg'},
+        { label: 'Actions', icon: 'clipboard', routerLink: ['/actions'] , image:'assets/shuffle.svg'},
         {
           label: 'Components',
           icon: 'clipboard',
           routerLink: ['/builder/forms'],
+          image:'assets/Component.svg'
         },
         {
           label: 'Mobile Builder',
           icon: 'clipboard',
           routerLink: [''],
           externalUrl: 'https://www.splenta.com',
+          image:'assets/circum_mobile-1.svg'
         },
         {
           label: 'Menu Panel',
           icon: 'clipboard',
-          routerLink: ['/panelmenu']
+          routerLink: ['/panelmenu'],
+          image:'assets/menu.svg'
         },
       ],
       showSubMenu: true,

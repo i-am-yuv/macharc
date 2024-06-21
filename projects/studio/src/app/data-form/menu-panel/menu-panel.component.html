@@ -1,67 +1,69 @@
-<vezo-table [data]="data" [pageData]="pageData" (pageDataChange)="getAllData()">
-    <ng-template vTemplate="caption">
-        <div class="flex place-items-center">
-            <div class="title">FORMS</div>
-            <div class="flex-grow"></div>
-            <div class="w-72 pr-4">
-                <vezo-input label="" placeholder="Filter" className="bg-white"></vezo-input>
-            </div>
-            <div class="text-right">
-                <!-- <vezo-button label="Filter" icon="funnel" className="mr-2"></vezo-button> -->
-                <vezo-button label="Add New Form" icon="plus" (click)="addData()"
-                    className="bg-primary text-white hover:text-gray-700"></vezo-button>
-                <!-- <vezo-button [routerLink]="['templates']" icon="plus" label="Add New DataForm"
+<div class="p-3">
+    <vezo-table [data]="data" [pageData]="pageData" (pageDataChange)="getAllData()">
+        <ng-template vTemplate="caption">
+            <div class="flex place-items-center">
+                <div class="title">FORMS</div>
+                <div class="flex-grow"></div>
+                <div class="w-72 pr-4">
+                    <vezo-input label="" placeholder="Filter" className="bg-white"></vezo-input>
+                </div>
+                <div class="text-right">
+                    <!-- <vezo-button label="Filter" icon="funnel" className="mr-2"></vezo-button> -->
+                    <vezo-button label="Add New Form" icon="plus" (click)="addData()"
+                        className="bg-primary text-white hover:text-gray-700"></vezo-button>
+                    <!-- <vezo-button [routerLink]="['templates']" icon="plus" label="Add New DataForm"
                     className="mr-2"></vezo-button> -->
+                </div>
             </div>
-        </div>
 
-    </ng-template>
-    <ng-template vTemplate="header">
-        <tr>
-            <!-- <th class="w-4"><input type="checkbox" class="w-4 h-4" /></th> -->
-            <th>Microservice</th>
-            <th>Collection</th>
-            <th>DataForm Name</th>
-            <th [width]="150">Actions</th>
-        </tr>
-    </ng-template>
-    <ng-template vTemplate="body">
-        <tr *ngFor="let item of data">
-            <!-- <td><input type="checkbox" class="w-4 h-4" /></td> -->
-            <td>{{ item.collection?.microService?.microServiceName }}</td>
-            <td>{{ item.collection?.collectionName }}</td>
-            <td>{{ item.formName }}</td>
-            <td>
-                <vezo-icon icon="queueList" (click)="designDataForm(item)"
-                    className="mr-5 w-4 h-4 text-purple-400 cursor-pointer"></vezo-icon>
-                <vezo-icon icon="pencil" (click)="editData(item)"
-                    className="mr-5 w-4 h-4 text-indigo-400 cursor-pointer"></vezo-icon>
-                <vezo-icon icon="trash" (click)="deleteData(item)"
-                    className="w-4 h-4 text-red-400 cursor-pointer"></vezo-icon>
-            </td>
-        </tr>
-    </ng-template>
-</vezo-table>
+        </ng-template>
+        <ng-template vTemplate="header">
+            <tr>
+                <!-- <th class="w-4"><input type="checkbox" class="w-4 h-4" /></th> -->
+                <th>Microservice</th>
+                <th>Collection</th>
+                <th>DataForm Name</th>
+                <th [width]="150">Actions</th>
+            </tr>
+        </ng-template>
+        <ng-template vTemplate="body">
+            <tr *ngFor="let item of data">
+                <!-- <td><input type="checkbox" class="w-4 h-4" /></td> -->
+                <td>{{ item.collection?.microService?.microServiceName }}</td>
+                <td>{{ item.collection?.collectionName }}</td>
+                <td>{{ item.formName }}</td>
+                <td>
+                    <vezo-icon icon="queueList" (click)="designDataForm(item)"
+                        className="mr-5 w-4 h-4 text-purple-400 cursor-pointer"></vezo-icon>
+                    <vezo-icon icon="pencil" (click)="editData(item)"
+                        className="mr-5 w-4 h-4 text-indigo-400 cursor-pointer"></vezo-icon>
+                    <vezo-icon icon="trash" (click)="deleteData(item)"
+                        className="w-4 h-4 text-red-400 cursor-pointer"></vezo-icon>
+                </td>
+            </tr>
+        </ng-template>
+    </vezo-table>
 
-<vezo-modal [(visible)]="visible">
-    <ng-template vTemplate="header">Data Form</ng-template>
-    <ng-template vTemplate="content">
-        <form [formGroup]="form">
-            <vezo-select optionLabel="applicationName" [items]="applicationItems" formControlName="application"
-                label="Application"></vezo-select>
-            <vezo-select optionLabel="microServiceName" [items]="microserviceItems" formControlName="microService"
-                label="Microservice" *ngIf="!collectionId" (ngModelChange)="getCollectionItems()"></vezo-select>
-            <vezo-select optionLabel="collectionName" [items]="collectionItems" formControlName="collection"
-                label="Collection" *ngIf="!collectionId"></vezo-select>
-            <vezo-input label="Form Name" formControlName="formName"></vezo-input>
-            <error-message [controlName]="form.controls['formName']"></error-message>
-        </form>
-    </ng-template>
-    <ng-template vTemplate="footer">
-        <div class="text-right">
-            <vezo-button label="Save" [disabled]="!form.valid" (click)="saveData()"></vezo-button>
-        </div>
-    </ng-template>
-</vezo-modal>
+    <vezo-modal [(visible)]="visible">
+        <ng-template vTemplate="header">Data Form</ng-template>
+        <ng-template vTemplate="content">
+            <form [formGroup]="form">
+                <vezo-select optionLabel="applicationName" [items]="applicationItems" formControlName="application"
+                    label="Application"></vezo-select>
+                <vezo-select optionLabel="microServiceName" [items]="microserviceItems" formControlName="microService"
+                    label="Microservice" *ngIf="!collectionId" (ngModelChange)="getCollectionItems()"></vezo-select>
+                <vezo-select optionLabel="collectionName" [items]="collectionItems" formControlName="collection"
+                    label="Collection" *ngIf="!collectionId"></vezo-select>
+                <vezo-input label="Form Name" formControlName="formName"></vezo-input>
+                <error-message [controlName]="form.controls['formName']"></error-message>
+            </form>
+        </ng-template>
+        <ng-template vTemplate="footer">
+            <div class="text-right">
+                <vezo-button label="Save" [disabled]="!form.valid" (click)="saveData()"></vezo-button>
+            </div>
+        </ng-template>
+    </vezo-modal>
+</div>
 
 <vezo-toast></vezo-toast>
