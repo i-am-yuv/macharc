@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GridComponent } from './grid.component';
+import { MenuPanelComponent } from './menu-panel.component';
 
-describe('GridComponent', () => {
-  let component: GridComponent;
-  let fixture: ComponentFixture<GridComponent>;
+describe('MenuPanelComponent', () => {
+  let component: MenuPanelComponent;
+  let fixture: ComponentFixture<MenuPanelComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ GridComponent ]
+      declarations: [ MenuPanelComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(GridComponent);
+    fixture = TestBed.createComponent(MenuPanelComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

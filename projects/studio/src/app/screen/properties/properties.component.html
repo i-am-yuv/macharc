@@ -1844,7 +1844,7 @@
 </ng-container>
 <ng-container *ngIf="props?.name === 'video'">
     <div class="mt-2">
-        <vezo-input label="Image URL" [(ngModel)]="props.data.url"></vezo-input>
+        <vezo-input label="Video URL" [(ngModel)]="props.data.url"></vezo-input>
     </div>
     <div class="mt-2">
         <vezo-input label="Width" [trailingText]="'px'" [(ngModel)]="props.data.width"></vezo-input>
@@ -2176,8 +2176,8 @@
         </div>
     </div>
 </ng-container>
-<div *ngIf="props?.name" class="text-right" (click)="deleteProperty()">
-    <vezo-button label="Delete"></vezo-button>
+<div *ngIf="props?.name" class="text-right" >
+    <vezo-button label="Delete" (click)="deleteProperty()"></vezo-button>
 </div>
 
 

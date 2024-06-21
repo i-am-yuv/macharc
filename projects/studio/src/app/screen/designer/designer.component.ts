@@ -43,7 +43,7 @@ export class DesignerComponent implements OnInit {
       name: 'heading',
       content: 'Text',
       data: {
-        text: 'Hello World!', fontSize: '14', fontWeight: '400', fontColor: '#000000', alignment: 'start',
+        text: 'Text', fontSize: '14', fontWeight: '400', fontColor: '#000000', alignment: 'start',
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
       },
       effectAllowed: 'copy',

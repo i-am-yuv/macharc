@@ -154,6 +154,11 @@ export class LayoutComponent {
           routerLink: [''],
           externalUrl: 'https://www.splenta.com',
         },
+        {
+          label: 'Menu Panel',
+          icon: 'clipboard',
+          routerLink: ['/panelmenu']
+        },
       ],
       showSubMenu: true,
     }

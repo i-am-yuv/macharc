@@ -66,7 +66,7 @@ export class FormDesignerComponent implements OnInit {
       name: 'heading',
       content: 'Text',
       data: {
-        text: 'Hello World!', fontSize: '14', fontWeight: '400', fontColor: '#000000', alignment: 'start', vAlignment: 'start',
+        text: 'Text', fontSize: '14', fontWeight: '400', fontColor: '#000000', alignment: 'start', vAlignment: 'start',
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
       },
       effectAllowed: 'copy',
@@ -181,11 +181,12 @@ export class FormDesignerComponent implements OnInit {
       handle: false,
       data: {
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0', alignment: 'start',
-        width: '200', url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4'
+        width: '200', url: 'https://elementor.com/wp-content/uploads/2023/09/02_MainVideo_1066_600_1-1.mp4'
       },
       icon: 'assets/ph_video-light.svg'
     }
   ];
+
   // Layout Elements
   draggableListLeftLE: DraggableItem[] = [
     {
@@ -205,8 +206,8 @@ export class FormDesignerComponent implements OnInit {
       name: 'grid',
       content: 'Grid',
       data: {
-        columns: 2, gap: '4', mt: '0', mb: '0', ml:'0',mr:'0',pt: '0', pb: '0', pl:'0',pr:'0',
-         alignment: 'start', vAlignment: 'start',
+        columns: 2, gap: '4', mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0',
+        alignment: 'start', vAlignment: 'start',
       },
       effectAllowed: 'copy',
       disable: false,
@@ -242,6 +243,7 @@ export class FormDesignerComponent implements OnInit {
     }
   ];
 
+  // Page Elements
   draggableListLeftPE: DraggableItem[] = [
     {
       name: 'card',
@@ -258,6 +260,7 @@ export class FormDesignerComponent implements OnInit {
     }
   ];
 
+  // List that is Visible on the canvas
   draggableListRight: DraggableItem[] = [
   ];
 
@@ -281,6 +284,10 @@ export class FormDesignerComponent implements OnInit {
 
   rightPanelExpanded: boolean = true;
   widgetTree: any[] = [];
+
+  currentScreenView:string= 'assets/circum_mobile-1.png';// Mobile View
+  mutiScreenView:boolean = false;
+
   constructor(
     private formService: DataFormService,
     private fieldService: FieldService,
@@ -310,7 +317,7 @@ export class FormDesignerComponent implements OnInit {
     })
 
   }
-  onDragged(item: any, list: any[], effect: DropEffect) {
+  onDragged(item: any, list: any, effect: DropEffect) {
     // this.currentDragEffectMsg = `Drag ended with effect "${effect}"!`;
 
     if (effect === 'move') {
@@ -369,7 +376,7 @@ export class FormDesignerComponent implements OnInit {
           //   this.activeItem = newItem;
           //   return;
           // }
-          var subChild = element.children ;
+          var subChild = element.children;
           if (childIndex !== -1) {
             element.children.splice(childIndex, 1);
             var newItem: any;
@@ -418,6 +425,16 @@ export class FormDesignerComponent implements OnInit {
 
   hasChildren(item: any): boolean {
     return item.children && item.children.length > 0;
+  }
+
+  getBackgroundColor() {
+    return this.mutiScreenView == false ? '#e7ecfd' : '#C7D2FE'; 
+  }
+
+  changeScreen(screenURL : string)
+  {
+    this.currentScreenView = screenURL ;
+    this.mutiScreenView = false;
   }
 
 }

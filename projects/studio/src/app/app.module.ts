@@ -83,7 +83,8 @@ import { SeachfieldModule } from '@splenta/vezo/searchfield';
 import { ColorpickerModule } from '@splenta/vezo/colorpicker';
 import { WidgetTreeNodeComponent } from './data-form/widget-tree-node/widget-tree-node.component';
 import { CapitalizePipe } from './data-form/capitalize.pipe';
-import { GridComponent } from './data-form/grid/grid.component';
+import { MenuPanelComponent } from './data-form/menu-panel/menu-panel.component';
+import { MenuPanelCreateComponent } from './data-form/menu-panel/menu-panel-create/menu-panel-create.component';
 
 
 @NgModule({
@@ -134,7 +135,8 @@ import { GridComponent } from './data-form/grid/grid.component';
     BusinessLogicAiComponent,
     WidgetTreeNodeComponent,
     CapitalizePipe,
-    GridComponent,
+    MenuPanelComponent,
+    MenuPanelCreateComponent 
   ],
   imports: [
     BrowserModule,
