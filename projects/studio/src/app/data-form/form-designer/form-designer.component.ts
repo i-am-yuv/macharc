@@ -440,4 +440,9 @@ export class FormDesignerComponent implements OnInit {
     this.mutiScreenView = false;
   }
 
+  onItemReceived(item: any) {
+    this.activeItem = item;
+    console.log('Item received from child:', item);
+  }
+
 }

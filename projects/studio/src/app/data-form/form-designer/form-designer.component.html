@@ -262,8 +262,8 @@
 
                     <ng-container *ngIf="item.name === 'row'">
                         <div (dndDrop)="onDrop($event, item.children)"
-                            class="name gap-{{item.data.gap}} grid grid-rows-1 grid-flow-col justify-{{item.data.alignment}} items-{{item.data.vAlignment}}"
-                            [ngClass]="{'p-4':  (!this.item.children || this.item.children.length === 0) }"
+                            class="name gap-{{item.data.gap}} grid grid-rows-1 grid-flow-col justify-{{item.data.alignment}} items-{{item.data.vAlignment}} bg-red-500"
+                            [ngClass]="{'p-8':  (!this.item.children || this.item.children.length === 0) }"
                             [ngStyle]="{'margin-top': item.data.startSpacing+'px' ,'margin-bottom': item.data.endSpacing+'px'}"
                             dndDropzone dndEffectAllowed="copyMove">
 
@@ -273,8 +273,7 @@
                                 (dndLinked)="onDragged(child, item.children!, 'link')"
                                 (dndMoved)="onDragged(child, item.children!, 'move')" class="name">
 
-                                <div class="border border-dashed border-indigo-300"
-                                    [ngClass]="{'p-4':  ((!this.child.children || this.child.children.length === 0))}">
+                                <div class="border border-dashed border-indigo-300">
                                     <!-- This line was not working in the case of nested -->
                                     <app-blocks [block]="child" (click)="handleClick($event, child)"></app-blocks>
 
@@ -282,7 +281,7 @@
                                     <ng-container *ngIf="child.name === 'row'">
                                         <div (dndDrop)="onDrop($event, child.children)"
                                             class="name gap-{{child.data.gap}} grid grid-rows-1 grid-flow-col justify-{{child.data.alignment}} items-{{child.data.vAlignment}}"
-                                            [ngClass]="{'p-4':  (!this.child.children || this.child.children.length === 0) }"
+                                            [ngClass]="{'p-8':  (!this.child.children || this.child.children.length === 0) }"
                                             [ngStyle]="{'margin-top': child.data.startSpacing+'px' ,'margin-bottom': child.data.endSpacing+'px'}"
                                             dndDropzone dndEffectAllowed="copyMove"
                                             (click)="handleClick($event, child)">
@@ -293,8 +292,7 @@
                                                 (dndLinked)="onDragged(subChild, child.children!, 'link')"
                                                 (dndMoved)="onDragged(subChild, child.children!, 'move')" class="name">
 
-                                                <div class="border border-dashed border-indigo-300"
-                                                    [ngClass]="{'p-4':  ((!this.subChild.children || this.subChild.children.length === 0))}">
+                                                <div class="border border-dashed border-indigo-300 bg-green-500">
                                                     <!-- This line was not working in the case of nested -->
                                                     <app-blocks [block]="subChild"
                                                         (click)="handleClick($event, subChild)"></app-blocks>
@@ -336,9 +334,9 @@
             <div class="flex justify-end align-top">
                 <div class="w-1/12">
                     <div style="height: 47px; border-bottom-left-radius: 4px; align-items: center;"
-                        class="border-b  border-l border-r flex justify-center px-2 shadow-md bg-white"
+                        class="border-b cursor-pointer  border-l border-r flex justify-center px-2 shadow-md bg-white"
                         (click)="this.rightPanelExpanded =  !this.rightPanelExpanded">
-                        <vezo-icon [icon]="'chevronRight'" className="cursor-pointer w-5 h-5"
+                        <vezo-icon [icon]="'chevronRight'" className=" w-5 h-5"
                             style="color:black"></vezo-icon>
                         <!-- <vezo-icon *ngIf="this.rightPanelExpanded==false " [icon]="'chevronLeft'"
                         className="cursor-pointer w-5 h-5" style="color:black"></vezo-icon> -->
@@ -471,12 +469,13 @@
                         <div *ngIf="showProps" class="p-2">
                             <div style="display: flex;flex-direction: column;">
                                 <div *ngFor="let item of widgetTree">
-                                    <app-widget-tree-node [node]="item"></app-widget-tree-node>
+                                    <app-widget-tree-node [node]="item" (nodeClicked)="onItemReceived($event)"></app-widget-tree-node>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <!-- Elements's Property -->
+                    <div *ngIf="this.activeItem?.id != null" class="ml-2 mt-2" style="font-size: 16px; font-weight: 400; color:#2e2e2e">Element- {{this.activeItem?.name | capitalize}}</div>
                     <div *ngIf="this.activeItem?.id != null" class="p-3">
                         <div class="min-h-[24rem]">
                             <app-properties [fields]="fields" [props]="activeItem" [collections]="collections"

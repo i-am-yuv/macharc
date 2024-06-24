@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-widget-tree-node',
@@ -8,11 +8,10 @@ import { Component, Input, OnInit } from '@angular/core';
 export class WidgetTreeNodeComponent implements OnInit {
 
   @Input() node: any;
+  @Output() nodeClicked = new EventEmitter<any>();
   isExpanded: boolean = false;
 
   ngOnInit(): void {
-    console.log('this is node');
-    console.log(this.node);
   }
 
   toggle(): void {
@@ -23,6 +22,15 @@ export class WidgetTreeNodeComponent implements OnInit {
 
   hasChildren(): boolean {
     return this.node.children && this.node.children.length > 0;
+  }
+
+  handleClick(event: Event, node: any) {
+    event.stopPropagation(); // Stop the event from bubbling up
+    this.nodeClicked.emit(node);
+  }
+
+  onChildNodeClicked(node: any) {
+    this.nodeClicked.emit(node);
   }
 
 }
