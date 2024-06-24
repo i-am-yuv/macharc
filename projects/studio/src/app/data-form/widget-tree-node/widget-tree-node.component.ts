@@ -15,7 +15,8 @@ export class WidgetTreeNodeComponent implements OnInit {
   }
 
   toggle(): void {
-    if (this.hasChildren()) {
+    // for form or component we wont be able to see the nested elements
+    if (this.hasChildren() && this.node.name!='form' ) {
       this.isExpanded = !this.isExpanded;
     }
   }

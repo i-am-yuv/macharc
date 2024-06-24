@@ -1,6 +1,6 @@
 <div>
     <div (dndDrop)="onDrop($event, row.children)"
-        class="name bg-green-500 gap-{{row.data.gap}} grid grid-rows-1 grid-flow-col justify-{{row.data.alignment}} items-{{row.data.vAlignment}} bg-red-500"
+        class="name gap-{{row.data.gap}} grid grid-rows-1 grid-flow-col justify-{{row.data.alignment}} items-{{row.data.vAlignment}} "
         [ngStyle]="{'margin-top': row.data.startSpacing+'px' ,'margin-bottom': row.data.endSpacing+'px'}" dndDropzone
         dndEffectAllowed="copyMove" (click)="handleClick($event, row)"
         [ngClass]="{'p-8':  (!this.row.children || this.row.children.length === 0) }">

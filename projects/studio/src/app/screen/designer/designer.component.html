@@ -331,7 +331,8 @@
         </div>
 
         <!-- Right Side Elements and Properties Code -->
-        <div [ngClass]="{'w-4/12 ' : this.rightPanelExpanded == true}">
+        <div [ngClass]="{'w-4/12 ' : this.rightPanelExpanded == true}" class="h-[600px] overflow-y-scroll"
+            style=" position: -webkit-sticky; /* For Safari */ position: sticky;top: 0;">
             <div *ngIf="this.rightPanelExpanded">
                 <div class="flex justify-end align-top">
                     <div class="w-1/12">
@@ -377,43 +378,113 @@
                             </div>
                         </div>
                         <!-- All elements -->
-                        <div *ngIf="this.activeItem?.id == null" class="h-[800px] overflow-y-scroll">
-                            <div *ngIf="!showProps" class="m-3 bg-white">
-                                <vezo-searchfield type="text" placeholder="Search" className="p-1"></vezo-searchfield>
-                            </div>
-                            <div *ngIf="!showProps" class=" m-3 flex gap-2 justify-start align-middle"
-                                style="align-items: center;">
-                                <div><img src="assets/elementsClose.svg"></div>
-                                <div style="font-size: 16px; font-weight: 600; color: black;">Visual
-                                    Elements</div>
-                            </div>
-                            <div class="dndList px-3 py-1 name" *ngIf="!showProps">
-                                <div class="grid grid-cols-2 gap-2">
-                                    <div *ngFor="let item of draggableListLeft" [dndDraggable]="item"
-                                        [dndEffectAllowed]="item.effectAllowed" class="cursor-move">
-                                        <div class="draggable-item mb-2 border bg-white shadow-sm"
-                                            style="border-radius: 4px;">
-                                            <div class="flex gap-3 py-2 px-2"
-                                                style="justify-content: start; align-items: center;">
-                                                <div class="col-2">
-                                                    <img [src]="item.icon">
+                        <div *ngIf="this.activeItem?.id == null" >
+                            <div *ngIf="!showProps">
+                                <div class="m-3 bg-white">
+                                    <vezo-searchfield type="text" placeholder="Search"></vezo-searchfield>
+                                </div>
+                                <!-- Virtual Elements -->
+                                <div class=" m-3 flex gap-2 justify-start align-middle" style="align-items: center;">
+                                    <div *ngIf="virtualElementsExpand" class="cursor-pointer"
+                                        (click)="virtualElementsExpand = !virtualElementsExpand"><img
+                                            src="assets/elementsClose.svg"></div>
+                                    <div *ngIf="!virtualElementsExpand" class="cursor-pointer"
+                                        (click)="virtualElementsExpand = !virtualElementsExpand"><img
+                                            *ngIf="this.isExpanded == false" src="assets/Polygon 5.svg"
+                                            style="width: 7px; height: 14px;" /></div>
+                                    <div style="font-size: 16px; font-weight: 600; color: black;">Visual Elements</div>
+                                </div>
+                                <div *ngIf="virtualElementsExpand" class="dndList px-3 py-1 name">
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <div *ngFor="let item of draggableListLeftVE" [dndDraggable]="item"
+                                            [dndEffectAllowed]="item.effectAllowed" class="cursor-move">
+                                            <div class="draggable-item mb-2 border bg-white shadow-sm"
+                                                style="border-radius: 4px;">
+                                                <div class="flex gap-3 py-2 px-2"
+                                                    style="justify-content: start; align-items: center;">
+                                                    <div class="col-2">
+                                                        <img [src]="item.icon">
+                                                    </div>
+                                                    <div class="col-10"> {{item.content}}</div>
                                                 </div>
-                                                <div class="col-10"> {{item.content}}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Layout Elements -->
+                                <div class=" m-3 flex gap-2 justify-start align-middle" style="align-items: center;">
+                                    <div *ngIf="layoutElementsExpand" class="cursor-pointer"
+                                        (click)="layoutElementsExpand = !layoutElementsExpand"><img
+                                            src="assets/elementsClose.svg"></div>
+                                    <div *ngIf="!layoutElementsExpand" class="cursor-pointer"
+                                        (click)="layoutElementsExpand = !layoutElementsExpand"><img
+                                            *ngIf="this.isExpanded == false" src="assets/Polygon 5.svg"
+                                            style="width: 7px; height: 14px;" /></div>
+                                    <div style="font-size: 16px; font-weight: 600; color: black;">Layout Elements</div>
+                                </div>
+                                <div *ngIf="layoutElementsExpand" class="dndList px-3 py-1 name">
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <div *ngFor="let item of draggableListLeftLE" [dndDraggable]="item"
+                                            [dndEffectAllowed]="item.effectAllowed" class="cursor-move">
+                                            <div class="draggable-item mb-2 border bg-white shadow-sm"
+                                                style="border-radius: 4px;">
+                                                <div class="flex gap-3 py-2 px-2"
+                                                    style="justify-content: start; align-items: center;">
+                                                    <div class="col-2">
+                                                        <img [src]="item.icon">
+                                                    </div>
+                                                    <div class="col-10"> {{item.content}}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Page Elements -->
+                                <div class=" m-3 flex gap-2 justify-start align-middle" style="align-items: center;">
+                                    <div *ngIf="pageElementsExpand" class="cursor-pointer"
+                                        (click)="pageElementsExpand = !pageElementsExpand"><img
+                                            src="assets/elementsClose.svg"></div>
+                                    <div *ngIf="!pageElementsExpand" class="cursor-pointer"
+                                        (click)="pageElementsExpand = !pageElementsExpand"><img
+                                            *ngIf="this.isExpanded == false" src="assets/Polygon 5.svg"
+                                            style="width: 7px; height: 14px;" /></div>
+                                    <div style="font-size: 16px; font-weight: 600; color: black;">Page Elements</div>
+                                </div>
+                                <div *ngIf="pageElementsExpand" class="dndList px-3 py-1 name">
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <div *ngFor="let item of draggableListLeftPE" [dndDraggable]="item"
+                                            [dndEffectAllowed]="item.effectAllowed" class="cursor-move">
+                                            <div class="draggable-item mb-2 border bg-white shadow-sm"
+                                                style="border-radius: 4px;">
+                                                <div class="flex gap-3 py-2 px-2"
+                                                    style="justify-content: start; align-items: center;">
+                                                    <div class="col-2">
+                                                        <img [src]="item.icon">
+                                                    </div>
+                                                    <div class="col-10"> {{item.content}}</div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
                             <div *ngIf="showProps" class="p-2">
                                 <div style="display: flex;flex-direction: column;">
                                     <div *ngFor="let item of widgetTree">
-                                        <app-widget-tree-node [node]="item"></app-widget-tree-node>
+                                        <app-widget-tree-node [node]="item"
+                                            (nodeClicked)="onItemReceived($event)"></app-widget-tree-node>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <!-- Elements's Property -->
-                        <div *ngIf="this.activeItem?.id != null" class="h-[800px] overflow-y-scroll p-3">
+                        <div *ngIf="this.activeItem?.id != null" class="ml-2 mt-2"
+                        style="font-size: 16px; font-weight: 400; color:#2e2e2e">Element- {{this.activeItem?.name |
+                        capitalize}}</div>
+                        <div *ngIf="this.activeItem?.id != null" class=" p-3">
                             <div class="min-h-[24rem]">
                                 <app-properties [fields]="fields" [forms]="forms" [props]="activeItem"
                                     [collections]="collections" (deleteProp)="deleteActiveItem($event)"

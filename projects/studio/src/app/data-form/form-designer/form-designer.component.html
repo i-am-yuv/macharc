@@ -262,7 +262,7 @@
 
                     <ng-container *ngIf="item.name === 'row'">
                         <div (dndDrop)="onDrop($event, item.children)"
-                            class="name gap-{{item.data.gap}} grid grid-rows-1 grid-flow-col justify-{{item.data.alignment}} items-{{item.data.vAlignment}} bg-red-500"
+                            class="name gap-{{item.data.gap}} grid grid-rows-1 grid-flow-col justify-{{item.data.alignment}} items-{{item.data.vAlignment}}"
                             [ngClass]="{'p-8':  (!this.item.children || this.item.children.length === 0) }"
                             [ngStyle]="{'margin-top': item.data.startSpacing+'px' ,'margin-bottom': item.data.endSpacing+'px'}"
                             dndDropzone dndEffectAllowed="copyMove">
@@ -438,7 +438,7 @@
                             </div>
                         </div>
                         <!-- Widget Tree Code -->
-                        <div *ngIf="showProps" class="p-2">
+                        <div *ngIf="showProps" class="p-2 bg-gray-100">
                             <div style="display: flex;flex-direction: column;">
                                 <div *ngFor="let item of widgetTree">
                                     <app-widget-tree-node [node]="item"

@@ -37,87 +37,19 @@ export class DesignerComponent implements OnInit {
 
   loading: boolean = false;
 
-  draggableListLeft: DraggableItem[] = [
-
+   // Virtual Elements
+   draggableListLeftVE: DraggableItem[] = [
     {
       name: 'heading',
       content: 'Text',
       data: {
-        text: 'Text', fontSize: '14', fontWeight: '400', fontColor: '#000000', alignment: 'start',
+        text: 'Text', fontSize: '14', fontWeight: '400', fontColor: '#000000', alignment: 'start', vAlignment: 'start',
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
       },
       effectAllowed: 'copy',
       disable: false,
       handle: false,
       icon: 'assets/textField.svg'
-    }
-    // {
-    //   name: 'section',
-    //   content: 'Columns 2',
-    //   data: {
-    //     columns: 2, gap: '16', startSpacing: '16', endSpacing: '16'
-    //   },
-    //   effectAllowed: 'copy',
-    //   disable: false,
-    //   handle: false,
-    //   children: [],
-    //   icon: 'assets/column.svg'
-    // },
-    // {
-    //   name: 'section',
-    //   content: 'Columns 3',
-    //   data: {
-    //     columns: 3, gap: '16', startSpacing: '16', endSpacing: '16'
-    //   },
-    //   effectAllowed: 'copy',
-    //   disable: false,
-    //   handle: false,
-    //   children: [],
-    //   icon: 'assets/column.svg'
-    // }
-    ,
-    {
-      name: 'grid',
-      content: 'Grid',
-      data: {
-        columns: 3, gap: '4', mt: '0', mb: '0', ml:'0',mr:'0',pt: '0', pb: '0', pl:'0',pr:'0'
-      },
-      effectAllowed: 'copy',
-      disable: false,
-      handle: false,
-      children: [],
-      icon: 'assets/bitcoin-icons_grid-outline.svg'
-
-    },
-    // {
-    //   name: 'card',
-    //   content: 'Card',
-    //   data: {},
-    //   effectAllowed: 'copy',
-    //   disable: false,
-    //   handle: false,
-    //   children: [],
-    //   icon: 'assets/textField.svg'
-    // },
-    {
-      name: 'accordion',
-      content: 'Accordion',
-      data: {},
-      effectAllowed: 'copy',
-      disable: false,
-      handle: false,
-      children: [],
-      icon: 'assets/textField.svg'
-    },
-    {
-      name: 'form',
-      content: 'Component',
-      data: { formName: 'none', formId: '' },
-      effectAllowed: 'copy',
-      disable: false,
-      handle: false,
-      children: [],
-      icon: 'assets/bitcoin-icons_grid-outline.svg'
     },
     {
       name: 'input',
@@ -154,84 +86,6 @@ export class DesignerComponent implements OnInit {
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
       }
       , icon: 'assets/textField.svg'
-    }
-    ,
-    {
-      name: 'table',
-      content: 'Table',
-      effectAllowed: 'copy',
-      disable: false,
-      handle: false,
-      data: {
-        actions: [{
-          label: 'Edit',
-          icon: 'pencil'
-        }, {
-          label: 'Delete',
-          icon: 'trash'
-        }],
-        caption: 'Table Heading',
-        cols: [
-          {
-          heading: 'Code',
-          field: 'code',
-          sortable: true,
-          filterable: true
-        }, {
-          heading: 'Name',
-          field: 'name',
-          sortable: true,
-          filterable: true
-        }],
-        rows: [{
-          code: 1,
-          name: 'Name 1'
-        }, {
-          code: 2,
-          name: 'Name 2'
-        }, {
-          code: 3,
-          name: 'Name 3'
-        }]
-      },
-      icon: 'assets/Line 45.svg'
-    },
-    {
-      name: 'image',
-      content: 'Image',
-      effectAllowed: 'copy',
-      disable: false,
-      handle: false,
-      data: {
-        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0', alignment: 'start',
-        width: '200', height: '100', url: 'https://primefaces.org/cdn/primeng/images/galleria/galleria10.jpg'
-      },
-      icon: 'assets/image.svg'
-    },
-    {
-      name: 'divider',
-      content: 'Divider',
-      effectAllowed: 'copy',
-      disable: false,
-      handle: false,
-      data: {
-        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0', alignment: 'start', width: '1', height: '10',
-        dividerColor: '#000000'
-      },
-      icon: 'assets/Line 45.svg'
-    },
-    {
-      name: 'card',
-      content: 'Card',
-      effectAllowed: 'copy',
-      disable: false,
-      handle: false,
-      data: {
-        mt: '0', mb: '0', ml: '0', mr: '0', pt: '20', pb: '20', pl: '20', pr: '20', imageAlignment: 'start', titleAlignment: 'start', descAlignment: 'start',
-        width: '200', imageUrl: 'https://primefaces.org/cdn/primeng/images/card-ng.jpg', imageWidth: '100', title: ' Card title', desc: 'Card Description',
-        fillColor: '#f1f3f6'
-      },
-      icon: 'assets/solar_card-2-outline.svg'
     },
     {
       name: 'button',
@@ -285,27 +139,119 @@ export class DesignerComponent implements OnInit {
       icon: 'assets/toggleOn.svg'
     },
     {
+      name: 'image',
+      content: 'Image',
+      effectAllowed: 'copy',
+      disable: false,
+      handle: false,
+      data: {
+        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0', alignment: 'start',
+        width: '200', height: '100', url: 'https://primefaces.org/cdn/primeng/images/galleria/galleria10.jpg'
+      },
+      icon: 'assets/image.svg'
+    },
+    {
       name: 'video',
       content: 'Video',
       effectAllowed: 'copy',
       disable: false,
       handle: false,
-      data: { mt:'0', mb:'0' , ml:'0', mr:'0' , pt:'0', pb:'0' , pl:'0', pr:'0', alignment: 'start',
-        width:'200', url:'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4'
+      data: {
+        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0', alignment: 'start',
+        width: '200', url: 'https://elementor.com/wp-content/uploads/2023/09/02_MainVideo_1066_600_1-1.mp4'
       },
       icon: 'assets/ph_video-light.svg'
     },
     {
+      name: 'accordion',
+      content: 'Accordion',
+      data: {},
+      effectAllowed: 'copy',
+      disable: false,
+      handle: false,
+      children: [],
+      icon: 'assets/textField.svg'
+    },
+    {
+      name: 'form',
+      content: 'Component',
+      data: { formName: 'none', formId: '' },
+      effectAllowed: 'copy',
+      disable: false,
+      handle: false,
+      children: [],
+      icon: 'assets/bitcoin-icons_grid-outline.svg'
+    },
+    {
+      name: 'table',
+      content: 'Table',
+      effectAllowed: 'copy',
+      disable: false,
+      handle: false,
+      data: {
+        actions: [{
+          label: 'Edit',
+          icon: 'pencil'
+        }, {
+          label: 'Delete',
+          icon: 'trash'
+        }],
+        caption: 'Table Heading',
+        cols: [
+          {
+          heading: 'Code',
+          field: 'code',
+          sortable: true,
+          filterable: true
+        }, {
+          heading: 'Name',
+          field: 'name',
+          sortable: true,
+          filterable: true
+        }],
+        rows: [{
+          code: 1,
+          name: 'Name 1'
+        }, {
+          code: 2,
+          name: 'Name 2'
+        }, {
+          code: 3,
+          name: 'Name 3'
+        }]
+      },
+      icon: 'assets/Line 45.svg'
+    },
+  ];
+
+  // Layout Elements
+  draggableListLeftLE: DraggableItem[] = [
+    {
       name: 'container',
       content: 'Container',
-      data: { width:'100', height:'100', bgColor:'#f1f3f6', gap:'0', columns:'2' , alignment: 'start', vAlignment : 'center',
-      mt:'0', mb:'0' , ml:'0', mr:'0' , pt:'0', pb:'0' , pl:'0', pr:'0', bgImage:''
-       },
+      data: {
+        width: '100', height: '100', bgColor: '#f1f3f6', gap: '0', columns: '2', alignment: 'start', vAlignment: 'center',
+        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0', bgImage: ''
+      },
       effectAllowed: 'copy',
       disable: false,
       handle: false,
       children: [],
       icon: 'assets/button.svg'
+    },
+    {
+      name: 'grid',
+      content: 'Grid',
+      data: {
+        columns: 2, gap: '4', mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0',
+        alignment: 'start', vAlignment: 'start',
+      },
+      effectAllowed: 'copy',
+      disable: false,
+      handle: false,
+      children: [],
+      icon: 'assets/bitcoin-icons_grid-outline.svg'
+
     },
     {
       name: 'row',
@@ -319,14 +265,46 @@ export class DesignerComponent implements OnInit {
       handle: false,
       children: [],
       icon: 'assets/button.svg'
+    },
+    {
+      name: 'divider',
+      content: 'Divider',
+      effectAllowed: 'copy',
+      disable: false,
+      handle: false,
+      data: {
+        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0', alignment: 'start', width: '1', height: '10',
+        dividerColor: '#000000'
+      },
+      icon: 'assets/Line 45.svg'
     }
   ];
 
-  draggableListRight: DraggableItem[] = [
+  // Page Elements
+  draggableListLeftPE: DraggableItem[] = [
+    {
+      name: 'card',
+      content: 'Card',
+      effectAllowed: 'copy',
+      disable: false,
+      handle: false,
+      data: {
+        mt: '0', mb: '0', ml: '0', mr: '0', pt: '20', pb: '20', pl: '20', pr: '20', imageAlignment: 'start', titleAlignment: 'start', descAlignment: 'start',
+        width: '200', imageUrl: 'https://primefaces.org/cdn/primeng/images/card-ng.jpg', imageWidth: '100', title: ' Card title', desc: 'Card Description',
+        fillColor: '#f1f3f6'
+      },
+      icon: 'assets/solar_card-2-outline.svg'
+    }
+  ];
 
+
+  draggableListRight: DraggableItem[] = [
   ];
 
   screenData: Screen = {};
+  virtualElementsExpand: boolean = true;
+  layoutElementsExpand: boolean = true;
+  pageElementsExpand: boolean = true;
 
   private readonly verticalLayout: DropzoneLayout = {
     container: 'row',
@@ -474,5 +452,10 @@ export class DesignerComponent implements OnInit {
   }
   hasChildren(item: any): boolean {
     return item.children && item.children.length > 0;
+  }
+
+  onItemReceived(item: any) {
+    this.activeItem = item;
+    console.log('Item received from child:', item);
   }
 }
