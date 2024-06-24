@@ -1,0 +1,21 @@
+<div>
+    <div (dndDrop)="onDrop($event, row.children)"
+        class="name bg-green-500 gap-{{row.data.gap}} grid grid-rows-1 grid-flow-col justify-{{row.data.alignment}} items-{{row.data.vAlignment}} bg-red-500"
+        [ngStyle]="{'margin-top': row.data.startSpacing+'px' ,'margin-bottom': row.data.endSpacing+'px'}" dndDropzone
+        dndEffectAllowed="copyMove" (click)="handleClick($event, row)"
+        [ngClass]="{'p-8':  (!this.row.children || this.row.children.length === 0) }">
+        <div *ngFor="let item of row.children" [dndDraggable]="item"
+            (dndCanceled)="onDragged(item, row.children!, 'none')" (dndCopied)="onDragged(item, row.children!,'move')"
+            (dndLinked)="onDragged(item, row.children!, 'link')" (dndMoved)="onDragged(item, row.children!, 'move')">
+            <div
+                class="draggable-item border border-dashed border-indigo-300 cursor-pointer relative overflow-x: auto;">
+                <ng-container *ngIf="item.name === 'row'">
+                    <app-nested [row]="item" [layout]="layout" (nodeClicked)="onChildNodeClicked($event)"></app-nested>
+                </ng-container>
+                <ng-container *ngIf="item.name !== 'row'">
+                    <app-blocks [block]="item" (click)="handleClick($event, item)"></app-blocks>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</div>

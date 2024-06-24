@@ -356,53 +356,28 @@ export class FormDesignerComponent implements OnInit {
     })
   }
 
+
   deleteActiveItem(val: boolean) {
-    // This was not working in the case of children
-    // this.draggableListRight.splice(this.draggableListRight.findIndex((a: any) => a.id === this.activeItem.id), 1);
-
-    // Check if the id matches a draggableListRight
-    // alert(this.activeItem);
-    const objIndex = this.draggableListRight.findIndex((a: any) => a.id === this.activeItem.id);
-    if (objIndex !== -1) {
-      this.draggableListRight.splice(objIndex, 1);
-      var newItem: any;
-      this.activeItem = newItem;
-      return;
-    } else {
-      // If not, check within children if the person has a children field
-      for (var element of this.draggableListRight) {
-        if (element.children && Array.isArray(element.children)) {
-          const childIndex = element.children.findIndex((child: any) => child.id === this.activeItem.id);
-          // if (childIndex !== -1) {
-          //   element.children.splice(childIndex, 1);
-          //   var newItem: any;
-          //   this.activeItem = newItem;
-          //   return;
-          // }
-          var subChild = element.children;
-          if (childIndex !== -1) {
-            element.children.splice(childIndex, 1);
-            var newItem: any;
-            this.activeItem = newItem;
-            return;
-          } else {
-            // If not, check within children if the person has a children field
-            for (const nestedChild of subChild) {
-              if (nestedChild.children && Array.isArray(nestedChild.children)) {
-                const childIndex = nestedChild.children.findIndex((child: any) => child.id === this.activeItem.id);
-                if (childIndex !== -1) {
-                  nestedChild.children.splice(childIndex, 1);
-                  var newItem: any;
-                  this.activeItem = newItem;
-                  return;
-                }
-              }
-            }
+    // Recursive function to find and delete the item
+    const findAndDelete = (list: any[]): boolean => {
+      for (let i = 0; i < list.length; i++) {
+        if (list[i].id === this.activeItem.id) {
+          list.splice(i, 1);
+          this.activeItem = null;
+          return true;
+        }
+        if (list[i].children && Array.isArray(list[i].children)) {
+          if (findAndDelete(list[i].children)) {
+            return true;
           }
-
-
         }
       }
+      return false;
+    };
+  
+    // Start the search and deletion process
+    if (!findAndDelete(this.draggableListRight)) {
+      console.warn("Active item not found for deletion");
     }
   }
 

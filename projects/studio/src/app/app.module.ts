@@ -86,6 +86,7 @@ import { CapitalizePipe } from './data-form/capitalize.pipe';
 import { MenuPanelComponent } from './data-form/menu-panel/menu-panel.component';
 import { MenuPanelCreateComponent } from './data-form/menu-panel/menu-panel-create/menu-panel-create.component';
 import { NgxLoadingModule } from 'ngx-loading';
+import { NestedComponent } from './data-form/nested/nested.component';
 
 
 @NgModule({
@@ -137,7 +138,8 @@ import { NgxLoadingModule } from 'ngx-loading';
     WidgetTreeNodeComponent,
     CapitalizePipe,
     MenuPanelComponent,
-    MenuPanelCreateComponent 
+    MenuPanelCreateComponent,
+    NestedComponent 
   ],
   imports: [
     BrowserModule,
