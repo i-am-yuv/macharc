@@ -420,4 +420,9 @@ export class FormDesignerComponent implements OnInit {
     console.log('Item received from child:', item);
   }
 
+  onSearchValueChange(e:any)
+  { 
+    alert(e);
+  }
+
 }

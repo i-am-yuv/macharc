@@ -97,10 +97,10 @@
 <div class="flex justify-start w-full">
 
     <div [ngClass]="{'w-8/12 ' : this.rightPanelExpanded == true,'w-11/12' : this.rightPanelExpanded == false }"
-        class="border-l  border border-dashed border-yellow-600 m-8 overflow-auto">
+        class="">
 
         <div [class.horizontal]="layout.dndHorizontal" [dndHorizontal]="layout.dndHorizontal"
-            (dndDrop)="onDrop($event, draggableListRight)" class="dndList name border-b h-[800px] overflow-y-scroll  border-l-0  overflow-x: auto;
+            (dndDrop)="onDrop($event, draggableListRight)" class="dndList m-8 name border-b h-full overflow-y-scroll  border-l-0  overflow-x: auto;
             white-space: nowrap;" dndDropzone dndEffectAllowed="copyMove">
             <div class="dndPlaceholder h-16 border bg-blue-400 bg-opacity-25" dndPlaceholderRef>
             </div>
@@ -301,7 +301,7 @@
             </div>
         </div>
     </div>
-    <div [ngClass]="{'w-4/12 ' : this.rightPanelExpanded == true}" class="h-[600px] overflow-y-scroll"
+    <div [ngClass]="{'w-4/12 overflow-y-scroll' : this.rightPanelExpanded == true}" class="h-[600px] "
         style=" position: -webkit-sticky; /* For Safari */ position: sticky;top: 0;">
         <div *ngIf="this.rightPanelExpanded">
             <div class="flex justify-end align-top">
@@ -348,7 +348,7 @@
                     <div *ngIf="this.activeItem?.id == null" class="">
                         <div *ngIf="!showProps">
                             <div class="m-3 bg-white">
-                                <vezo-searchfield type="text" placeholder="Search"></vezo-searchfield>
+                                <vezo-searchfield type="text" placeholder="Search" (valueChange)="onSearchValueChange($event)"></vezo-searchfield>
                             </div>
                             <!-- Virtual Elements -->
                             <div class=" m-3 flex gap-2 justify-start align-middle" style="align-items: center;">

@@ -296,20 +296,24 @@
                         <ng-container *ngIf="item.name === 'row'">
                             <div (dndDrop)="onDrop($event, item.children)"
                                 class="name gap-{{item.data.gap}} grid grid-rows-1 grid-flow-col justify-{{item.data.alignment}} items-{{item.data.vAlignment}}"
-                                [ngClass]="{'p-4':  (!this.item.children || this.item.children.length === 0) }"
+                                [ngClass]="{'p-8':  (!this.item.children || this.item.children.length === 0) }"
                                 [ngStyle]="{'margin-top': item.data.startSpacing+'px' ,'margin-bottom': item.data.endSpacing+'px'}"
                                 dndDropzone dndEffectAllowed="copyMove">
-
+    
                                 <div *ngFor="let child of item.children" [dndDraggable]="child"
                                     (dndCanceled)="onDragged(child, item.children!, 'none')"
                                     (dndCopied)="onDragged(child, item.children!, 'move')"
                                     (dndLinked)="onDragged(child, item.children!, 'link')"
                                     (dndMoved)="onDragged(child, item.children!, 'move')" class="name">
-
-                                    <div class="border border-dashed border-indigo-300"
-                                        [ngClass]="{'p-4':  ((!this.child.children || this.child.children.length === 0))}">
-                                        <!-- This line was not working in the case of nested -->
-                                        <app-blocks [block]="child" (click)="handleClick($event, child)"></app-blocks>
+    
+                                    <div class="border border-dashed border-indigo-300">
+                                        <ng-container *ngIf="child.name === 'row'; else otherBlocks">
+                                            <app-nested [row]="child" [layout]="layout"
+                                                (nodeClicked)="onItemReceived($event)"></app-nested>
+                                        </ng-container>
+                                        <ng-template #otherBlocks>
+                                            <app-blocks [block]="child" (click)="handleClick($event, child)"></app-blocks>
+                                        </ng-template>
                                     </div>
                                 </div>
                                 <div class=" dndPlaceholder h-16 border bg-blue-400 bg-opacity-25" dndPlaceholderRef>
