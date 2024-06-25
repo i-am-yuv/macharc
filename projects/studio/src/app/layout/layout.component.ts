@@ -157,12 +157,18 @@ export class LayoutComponent {
           externalUrl: 'https://www.splenta.com',
           image:'assets/circum_mobile-1.svg'
         },
-        {
-          label: 'Menu Panel',
+         {
+          label: 'Media Manager',
           icon: 'clipboard',
-          routerLink: ['/panelmenu'],
-          image:'assets/menu.svg'
+          routerLink: ['/media-manager'],
+          image:'assets/image.svg'
         },
+        // {
+        //   label: 'Menu Panel',
+        //   icon: 'clipboard',
+        //   routerLink: ['/panelmenu'],
+        //   image:'assets/menu.svg'
+        // },
       ],
       showSubMenu: true,
     }

@@ -87,6 +87,7 @@ import { MenuPanelComponent } from './data-form/menu-panel/menu-panel.component'
 import { MenuPanelCreateComponent } from './data-form/menu-panel/menu-panel-create/menu-panel-create.component';
 import { NgxLoadingModule } from 'ngx-loading';
 import { NestedComponent } from './data-form/nested/nested.component';
+import { MediaManagerComponent } from './data-form/media-manager/media-manager.component';
 
 
 @NgModule({
@@ -139,7 +140,8 @@ import { NestedComponent } from './data-form/nested/nested.component';
     CapitalizePipe,
     MenuPanelComponent,
     MenuPanelCreateComponent,
-    NestedComponent 
+    NestedComponent,
+    MediaManagerComponent 
   ],
   imports: [
     BrowserModule,

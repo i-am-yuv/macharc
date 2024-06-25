@@ -43,6 +43,7 @@ import { TemplatesComponent } from './screen/templates/templates.component';
 import { SettingsComponent } from './settings/settings.component';
 import { MenuPanelComponent } from './data-form/menu-panel/menu-panel.component';
 import { MenuPanelCreateComponent } from './data-form/menu-panel/menu-panel-create/menu-panel-create.component';
+import { MediaManagerComponent } from './data-form/media-manager/media-manager.component';
 
 const routes: Routes = [
   {
@@ -252,6 +253,19 @@ const routes: Routes = [
         children: [
           { path: '', component: MenuPanelComponent },
           { path: 'create', component: MenuPanelCreateComponent }
+        ],
+      }
+    ]
+  },
+  {
+    path: 'media-manager',
+    component: LayoutComponent,
+    children: [
+      {
+        path: '',
+        component: DispatcherComponent,
+        children: [
+          { path: '', component: MediaManagerComponent }
         ],
       }
     ]
