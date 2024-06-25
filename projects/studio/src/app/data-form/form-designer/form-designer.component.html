@@ -128,35 +128,14 @@
                                 (dndLinked)="onDragged(child, item.children!, 'link')"
                                 (dndMoved)="onDragged(child, item.children!, 'move')" class="name">
 
-                                <div class="border border-dashed border-indigo-300"
-                                    [ngClass]="{'p-8':  ((!this.child.children || this.child.children.length === 0) && this.child.name=='grid') }">
+                                <div class="border border-dashed border-indigo-300">
                                     <!-- This line was not working in the case of nested grid -->
                                     <!-- <app-blocks [block]="child" (click)="handleClick($event, child)"></app-blocks> -->
 
                                     <!-- Solution for nested grid -->
                                     <ng-container *ngIf="child.name === 'grid'; else otherBlocks">
-                                        <!-- Recursive call for nested grid -->
-                                        <div (dndDrop)="onDrop($event, child.children)"
-                                            class="name gap-{{child.data.gap}} grid grid-cols-{{child.data.columns}} justify-{{child.data.alignment}} items-{{child.data.vAlignment}}"
-                                            [ngClass]="{'p-8':  (!child.children || child.children.length === 0) }"
-                                            [ngStyle]="{'margin-top': child.data.startSpacing+'px' ,'margin-bottom': child.data.endSpacing+'px'}"
-                                            dndDropzone dndEffectAllowed="copyMove"
-                                            (click)="handleClick($event, child)">
-                                            <div *ngFor="let nestedChild of child.children" [dndDraggable]="nestedChild"
-                                                (dndCanceled)="onDragged(nestedChild, child.children!, 'none')"
-                                                (dndCopied)="onDragged(nestedChild, child.children!, 'move')"
-                                                (dndLinked)="onDragged(nestedChild, child.children!, 'link')"
-                                                (dndMoved)="onDragged(nestedChild, child.children!, 'move')"
-                                                class="name">
-                                                <div class="border border-dashed border-indigo-300"
-                                                    [ngClass]="{'p-8':  ((!nestedChild.children || nestedChild.children.length === 0) && nestedChild.name=='grid') }">
-                                                    <app-blocks [block]="nestedChild"
-                                                        (click)="handleClick($event, nestedChild)"></app-blocks>
-                                                </div>
-                                            </div>
-                                            <!-- <div class="dndPlaceholder h-16 border bg-blue-400 bg-opacity-25"
-                                                dndPlaceholderRef></div> -->
-                                        </div>
+                                        <app-nested [child]="child" [layout]="layout" [nestedElement]="'grid'"
+                                            (nodeClicked)="onItemReceived($event)"></app-nested>
                                     </ng-container>
                                     <ng-template #otherBlocks>
                                         <app-blocks [block]="child" (click)="handleClick($event, child)"></app-blocks>

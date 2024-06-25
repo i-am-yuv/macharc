@@ -4,6 +4,8 @@
         [ngStyle]="{'margin-top': child.data.startSpacing+'px' ,'margin-bottom': child.data.endSpacing+'px'}"
         dndDropzone dndEffectAllowed="copyMove" (click)="handleClick($event, child)"
         [ngClass]="{'p-8':  (!this.child.children || this.child.children.length === 0) }">
+        <div class=" dndPlaceholder h-16 border bg-blue-400 bg-opacity-25" dndPlaceholderRef>
+        </div>
         <div *ngFor="let item of child.children" [dndDraggable]="item"
             (dndCanceled)="onDragged(item, child.children!, 'none')"
             (dndCopied)="onDragged(item, child.children!,'move')" (dndLinked)="onDragged(item, child.children!, 'link')"
@@ -22,7 +24,7 @@
     </div>
 </div>
 
-<div *ngIf="nestedElement == 'container' ">
+<div *ngIf="nestedElement == 'container'">
     <div (dndDrop)="onDrop($event, child.children)" (click)="handleClick($event, child)"
         class="name gap-{{child.data.gap}} grid grid-cols-{{child.data.columns}} flex justify-{{child.data.alignment}} items-{{child.data.vAlignment}}"
         [ngStyle]="{ 'width' : child.data?.width ? child.data?.width+'px':'auto' ,'height' :child.data?.height? child.data?.height+'px':'auto' , 'background-color' : child.data?.bgColor ,
@@ -52,6 +54,34 @@
                 </ng-container>
             </div>
 
+        </div>
+    </div>
+</div>
+
+<div *ngIf="nestedElement == 'grid'">
+    <div (dndDrop)="onDrop($event, child.children)"
+        class="name gap-{{child.data.gap}} grid grid-cols-{{child.data.columns}} justify-{{child.data.alignment}} items-{{child.data.vAlignment}}"
+        [ngClass]="{'p-8':  (!child.children || child.children.length === 0) }"
+        [ngStyle]="{'margin-top': child.data.startSpacing+'px' ,'margin-bottom': child.data.endSpacing+'px'}"
+        dndDropzone dndEffectAllowed="copyMove" (click)="handleClick($event, child)">
+        <div class=" dndPlaceholder h-16 border bg-blue-400 bg-opacity-25" dndPlaceholderRef>
+        </div>
+        <div *ngFor="let subChild of child.children" [dndDraggable]="subChild"
+            (dndCanceled)="onDragged(subChild, child.children!, 'none')"
+            (dndCopied)="onDragged(subChild, child.children!, 'move')"
+            (dndLinked)="onDragged(subChild, child.children!, 'link')"
+            (dndMoved)="onDragged(subChild, child.children!, 'move')" class="name">
+            <div class="border border-dashed border-indigo-300 ">
+                <!-- Because This line was not working in the case of nested grid -->
+                <!-- <app-blocks [block]="child" (click)="handleClick($event, child)"></app-blocks> -->
+                <ng-container *ngIf="subChild.name === 'grid'">
+                    <app-nested [child]="subChild" [layout]="layout" [nestedElement]="'grid'"
+                        (nodeClicked)="onChildNodeClicked($event)"></app-nested>
+                </ng-container>
+                <ng-container *ngIf="subChild.name !== 'grid'">
+                    <app-blocks [block]="subChild" (click)="handleClick($event, subChild)"></app-blocks>
+                </ng-container>
+            </div>
         </div>
     </div>
 </div>
