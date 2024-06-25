@@ -285,8 +285,8 @@ export class FormDesignerComponent implements OnInit {
   rightPanelExpanded: boolean = true;
   widgetTree: any[] = [];
 
-  currentScreenView:string= 'assets/circum_mobile-1.png';// Mobile View
-  mutiScreenView:boolean = false;
+  currentScreenView: string = 'assets/circum_mobile-1.png';// Mobile View
+  mutiScreenView: boolean = false;
   loading: boolean = false;
 
   constructor(
@@ -306,7 +306,7 @@ export class FormDesignerComponent implements OnInit {
       if (res.formDefinition)
         this.draggableListRight = JSON.parse(res.formDefinition);
       this.widgetTree = this.draggableListRight;
-     // console.log(this.draggableListRight);
+      // console.log(this.draggableListRight);
       if (this.formData) {
         var filterStr = FilterBuilder.equal('collection.id', this.formData?.collection?.id!);
         this.fieldService.getAllData(undefined, filterStr).then((res: any) => {
@@ -335,10 +335,18 @@ export class FormDesignerComponent implements OnInit {
       if (typeof index === 'undefined') {
         index = list.length;
       }
-      event.data['id'] = Math.floor(Math.random() * 1000000);
-      list.splice(index, 0, event.data);
+      // event.data['id'] = Math.floor(Math.random() * 1000000);
+      // list.splice(index, 0, event.data);
+      // this.activeItem = event.data;
 
-      this.activeItem = event.data;
+      // Ensure event.data is an object and has no previous id
+      if (event.data && typeof event.data === 'object') {
+        const newItem = { ...event.data, id: Math.floor(Math.random() * 1000000) };
+        list.splice(index, 0, newItem);
+        this.activeItem = newItem;
+      } else {
+        console.error('Invalid data dropped:', event.data);
+      }
 
     }
   }
@@ -374,7 +382,7 @@ export class FormDesignerComponent implements OnInit {
       }
       return false;
     };
-  
+
     // Start the search and deletion process
     if (!findAndDelete(this.draggableListRight)) {
       console.warn("Active item not found for deletion");
@@ -406,12 +414,11 @@ export class FormDesignerComponent implements OnInit {
   }
 
   getBackgroundColor() {
-    return this.mutiScreenView == false ? '#e7ecfd' : '#C7D2FE'; 
+    return this.mutiScreenView == false ? '#e7ecfd' : '#C7D2FE';
   }
 
-  changeScreen(screenURL : string)
-  {
-    this.currentScreenView = screenURL ;
+  changeScreen(screenURL: string) {
+    this.currentScreenView = screenURL;
     this.mutiScreenView = false;
   }
 
@@ -420,9 +427,37 @@ export class FormDesignerComponent implements OnInit {
     console.log('Item received from child:', item);
   }
 
-  onSearchValueChange(e:any)
-  { 
-    alert(e);
+  searchValue: string = '';
+  filteredDraggableListLeftVE: DraggableItem[] = [...this.draggableListLeftVE];
+  filteredDraggableListLeftLE: DraggableItem[] = [...this.draggableListLeftLE];
+  filteredDraggableListLeftPE: DraggableItem[] = [...this.draggableListLeftPE];
+
+  onSearchValueChange(value: any) {
+    this.searchValue = value;
+    this.filterLists();
+  }
+
+  filterLists() {
+    if (this.searchValue.trim() === '') {
+      this.filteredDraggableListLeftVE = [...this.draggableListLeftVE];
+      this.filteredDraggableListLeftLE = [...this.draggableListLeftLE];
+      this.filteredDraggableListLeftPE = [...this.draggableListLeftPE];
+    } else {
+      this.filteredDraggableListLeftVE = this.filterList(this.draggableListLeftVE);
+      this.filteredDraggableListLeftLE = this.filterList(this.draggableListLeftLE);
+      this.filteredDraggableListLeftPE = this.filterList(this.draggableListLeftPE);
+    }
+  }
+
+
+  filterList(list: DraggableItem[]): DraggableItem[] {
+    return list.filter(item =>
+      item.name.toLowerCase().includes(this.searchValue.toLowerCase())
+    );
+  }
+
+  getList(originalList: DraggableItem[], filteredList: DraggableItem[]): DraggableItem[] {
+    return this.searchValue.trim() === '' ? originalList : filteredList;
   }
 
 }

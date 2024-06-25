@@ -7,7 +7,11 @@ import { DndDropEvent, DropEffect } from 'ngx-drag-drop';
   styleUrls: ['./nested.component.scss']
 })
 export class NestedComponent implements OnInit {
-  @Input() row: any;
+
+  @Input() nestedElement!: string;
+
+
+  @Input() child: any;
   @Input() layout: any;
   activeItem: any;
   @Output() nodeClicked = new EventEmitter<any>();

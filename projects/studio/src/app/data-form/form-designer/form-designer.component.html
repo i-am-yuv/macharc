@@ -175,7 +175,7 @@
                                 'background-image': 'url(' + item.data?.bgImage + ')' , 'background-size': 'cover', 'background-position':'center' ,
                                 'margin-top': item.data?.mt+'px', 'margin-bottom': item.data?.mb+'px', 'margin-left': item.data?.ml+'px', 'margin-right': item.data?.mr+'px' ,
                                 'padding-top': item.data?.pt+'px','padding-bottom': item.data?.pb+'px', 'padding-left': item.data?.pl+'px', 'padding-right': item.data?.pr+'px'}"
-                            [ngClass]="{'p-4':  (!this.item.children || this.item.children.length === 0) }" dndDropzone
+                            [ngClass]="{'p-8':  (!this.item.children || this.item.children.length === 0) }" dndDropzone
                             dndEffectAllowed="copyMove">
                             <div *ngFor="let child of item.children" [dndDraggable]="child"
                                 (dndCanceled)="onDragged(child, item.children!, 'none')"
@@ -183,12 +183,15 @@
                                 (dndLinked)="onDragged(child, item.children!, 'link'  )"
                                 (dndMoved)="onDragged(child, item.children!, 'move')" class="">
 
-                                <div class="border border-dashed border-indigo-300 "
-                                    [ngClass]="{'p-8':  ((!this.child.children || this.child.children.length === 0) && this.child.name=='grid') }">
+                                <div class="border border-dashed border-indigo-300 ">
                                     <!-- Because This line was not working in the case of nested grid -->
                                     <!-- <app-blocks [block]="child" (click)="handleClick($event, child)"></app-blocks> -->
 
                                     <!-- Solution for nested grid -->
+                                    <ng-container *ngIf="child.name === 'container'">
+                                        <app-nested [child]="child" [layout]="layout" [nestedElement]="'container'"
+                                            (nodeClicked)="onItemReceived($event)"></app-nested>
+                                    </ng-container>
                                     <ng-container *ngIf="child.name === 'grid'; else otherBlocks">
                                         <!-- Recursive call for nested grid -->
                                         <div (dndDrop)="onDrop($event, child.children)" class="name gap-{{child.data.gap}} grid grid-cols-{{child.data.columns}}
@@ -275,7 +278,7 @@
 
                                 <div class="border border-dashed border-indigo-300">
                                     <ng-container *ngIf="child.name === 'row'; else otherBlocks">
-                                        <app-nested [row]="child" [layout]="layout"
+                                        <app-nested [child]="child" [layout]="layout" [nestedElement]="'row'"
                                             (nodeClicked)="onItemReceived($event)"></app-nested>
                                     </ng-container>
                                     <ng-template #otherBlocks>
@@ -363,7 +366,8 @@
                             </div>
                             <div *ngIf="virtualElementsExpand" class="dndList px-3 py-1 name">
                                 <div class="grid grid-cols-2 gap-2">
-                                    <div *ngFor="let item of draggableListLeftVE" [dndDraggable]="item"
+                                    <div *ngFor="let item of getList(draggableListLeftVE, filteredDraggableListLeftVE)"
+                                     [dndDraggable]="item"
                                         [dndEffectAllowed]="item.effectAllowed" class="cursor-move">
                                         <div class="draggable-item mb-2 border bg-white shadow-sm"
                                             style="border-radius: 4px;">
@@ -372,7 +376,7 @@
                                                 <div class="col-2">
                                                     <img [src]="item.icon">
                                                 </div>
-                                                <div class="col-10"> {{item.content}}</div>
+                                                <div class="col-10"> {{item.name | capitalize}}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -392,7 +396,7 @@
                             </div>
                             <div *ngIf="layoutElementsExpand" class="dndList px-3 py-1 name">
                                 <div class="grid grid-cols-2 gap-2">
-                                    <div *ngFor="let item of draggableListLeftLE" [dndDraggable]="item"
+                                    <div  *ngFor="let item of getList(draggableListLeftLE, filteredDraggableListLeftLE)" [dndDraggable]="item"
                                         [dndEffectAllowed]="item.effectAllowed" class="cursor-move">
                                         <div class="draggable-item mb-2 border bg-white shadow-sm"
                                             style="border-radius: 4px;">
@@ -421,7 +425,7 @@
                             </div>
                             <div *ngIf="pageElementsExpand" class="dndList px-3 py-1 name">
                                 <div class="grid grid-cols-2 gap-2">
-                                    <div *ngFor="let item of draggableListLeftPE" [dndDraggable]="item"
+                                    <div  *ngFor="let item of getList(draggableListLeftPE, filteredDraggableListLeftPE)" [dndDraggable]="item"
                                         [dndEffectAllowed]="item.effectAllowed" class="cursor-move">
                                         <div class="draggable-item mb-2 border bg-white shadow-sm"
                                             style="border-radius: 4px;">
