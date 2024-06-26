@@ -64,9 +64,10 @@
 
     <!-- Uploaded Images Showen here -->
     <div class="overflow-y-auto" style="height: calc(100% - 55px);">
-        <div [ngClass]="{'drop-zone backdrop-blur-sm bg-white/30':isDragging}"  (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)"
-            (drop)="onDrop($event)">
-            <input type="file" #fileInput (change)="onFileSelected($event)" hidden accept="image/png, image/jpeg, image/svg+xml">
+        <div [ngClass]="{'drop-zone backdrop-blur-sm bg-white/30':isDragging}" (dragover)="onDragOver($event)"
+            (dragleave)="onDragLeave($event)" (drop)="onDrop($event)">
+            <input type="file" #fileInput (change)="onFileSelected($event)" hidden
+                accept="image/png, image/jpeg, image/svg+xml">
             <button (click)="fileInput.click()"></button>
             <div style="margin: 40px;">
                 <div class="flex flex-wrap gap-6 justify-start" style="justify-items: center;">
@@ -79,12 +80,16 @@
                             </div>
                             <div class="flex justify-between items-center mt-4">
                                 <div style="display: flex; flex-direction: column;" class="gap-1">
-                                    <div style="font-size: 12px; font-weight: 500; color: #4F46E5;">Img123456.jpg</div>
-                                    <div style="font-size: 12px; font-weight: 500; color: #B0B0B0;">Uploaded June 25, 2024
+                                    <div style="font-size: 12px; font-weight: 500; color: #4F46E5;">Img123456.jpg
+                                    </div>
+                                    <div style="font-size: 12px; font-weight: 500; color: #B0B0B0;">Uploaded June
+                                        25, 2024
                                     </div>
                                 </div>
-    
-                                <div class="flex justify-center items-center mr-2 pl-1  pb-1 cursor-pointer" *ngIf="this.hoveredIndex == i" 
+
+                                <div class="flex justify-center items-center mr-2 pl-1  pb-1 cursor-pointer"
+                                    *ngIf="this.hoveredIndex == i"
+                                    (click)="openImageInNewTab( 'https://storage.googleapis.com/flutterflow-enterprise-india.appspot.com/projects/h-i-and-l-i-w33dc0/assets/0mssf53vr81r/Frame_1597881683_(1).png')"
                                     style="width: 24px; height: 24px; background-color: #4F46E5; border-radius: 4px;">
                                     <img style="width: 18px; height: 18px;" src="assets/Group 1171276934.svg" />
                                 </div>
@@ -93,8 +98,7 @@
                     </div>
                 </div>
             </div>
+            <!-- <img *ngIf="imageSrc" [src]="imageSrc" alt="Uploaded Image" class="preview"> -->
         </div>
-        <!-- <img *ngIf="imageSrc" [src]="imageSrc" alt="Uploaded Image" class="preview"> -->
-    </div>
 
-</div>
+    </div>

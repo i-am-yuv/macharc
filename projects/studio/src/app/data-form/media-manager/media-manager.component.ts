@@ -1,5 +1,6 @@
 import { HttpClient, HttpEventType } from '@angular/common/http';
 import { Component } from '@angular/core';
+import { DataForm } from '../data-form';
 
 @Component({
   selector: 'app-media-manager',
@@ -115,5 +116,10 @@ export class MediaManagerComponent {
   {
     this.isNavigationVisible  = false ;
     this.hoveredIndex = -1 ;
+  }
+
+  openImageInNewTab(imageUrl : string): void {
+    const url = '';
+    window.open(imageUrl, '_blank');
   }
 }
