@@ -16,7 +16,11 @@
                     <app-nested [child]="item" [layout]="layout" [nestedElement]="'row'"
                         (nodeClicked)="onChildNodeClicked($event)"></app-nested>
                 </ng-container>
-                <ng-container *ngIf="item.name !== 'row'">
+                <ng-container *ngIf="item.name === 'container'">
+                    <app-nested [child]="item" [layout]="layout" [nestedElement]="'container'"
+                        (nodeClicked)="onChildNodeClicked($event)"></app-nested>
+                </ng-container>
+                <ng-container *ngIf="item.name !== 'row' && item.name !== 'container' && item.name !== 'grid' ">
                     <app-blocks [block]="item" (click)="handleClick($event, item)"></app-blocks>
                 </ng-container>
             </div>
@@ -49,7 +53,15 @@
                     <app-nested [child]="subChild" [layout]="layout" [nestedElement]="'container'"
                         (nodeClicked)="onChildNodeClicked($event)"></app-nested>
                 </ng-container>
-                <ng-container *ngIf="subChild.name !== 'container'">
+                <ng-container *ngIf="subChild.name === 'row'">
+                    <app-nested [child]="subChild" [layout]="layout" [nestedElement]="'row'"
+                        (nodeClicked)="onChildNodeClicked($event)"></app-nested>
+                </ng-container>
+                <ng-container *ngIf="subChild.name === 'grid'">
+                    <app-nested [child]="subChild" [layout]="layout" [nestedElement]="'grid'"
+                        (nodeClicked)="onChildNodeClicked($event)"></app-nested>
+                </ng-container>
+                <ng-container *ngIf="subChild.name !== 'row' && subChild.name !== 'container' && subChild.name !== 'grid' ">
                     <app-blocks [block]="subChild" (click)="handleClick($event, subChild)"></app-blocks>
                 </ng-container>
             </div>
@@ -78,7 +90,15 @@
                     <app-nested [child]="subChild" [layout]="layout" [nestedElement]="'grid'"
                         (nodeClicked)="onChildNodeClicked($event)"></app-nested>
                 </ng-container>
-                <ng-container *ngIf="subChild.name !== 'grid'">
+                <ng-container *ngIf="subChild.name === 'container'">
+                    <app-nested [child]="subChild" [layout]="layout" [nestedElement]="'container'"
+                        (nodeClicked)="onChildNodeClicked($event)"></app-nested>
+                </ng-container>
+                <ng-container *ngIf="subChild.name === 'row'">
+                    <app-nested [child]="subChild" [layout]="layout" [nestedElement]="'row'"
+                        (nodeClicked)="onChildNodeClicked($event)"></app-nested>
+                </ng-container>
+                <ng-container *ngIf="subChild.name !== 'row' && subChild.name !== 'container' && subChild.name !== 'grid' ">
                     <app-blocks [block]="subChild" (click)="handleClick($event, subChild)"></app-blocks>
                 </ng-container>
             </div>
