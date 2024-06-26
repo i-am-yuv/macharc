@@ -32,7 +32,7 @@
     <div (dndDrop)="onDrop($event, child.children)" (click)="handleClick($event, child)"
         class="name gap-{{child.data.gap}} grid grid-cols-{{child.data.columns}} flex justify-{{child.data.alignment}} items-{{child.data.vAlignment}}"
         [ngStyle]="{ 'width' : child.data?.width ? child.data?.width+'px':'auto' ,'height' :child.data?.height? child.data?.height+'px':'auto' , 'background-color' : child.data?.bgColor ,
-        'background-image': 'url(' + child.data?.bgImage + ')' , 'background-size': 'cover', 'background-position':'center' ,
+        'background-image': 'url(' + child.data?.bgImage + ')' , 'background-size': 'cover', 'background-position':'center' ,'border-width': child.data.borderWidth+'px' ,'border-radius': child.data.borderRadius+'px' , 'border-color': child.data.borderColor,
         'margin-top': child.data?.mt+'px', 'margin-bottom': child.data?.mb+'px', 'margin-left': child.data?.ml+'px', 'margin-right': child.data?.mr+'px' ,
         'padding-top': child.data?.pt+'px','padding-bottom': child.data?.pb+'px', 'padding-left': child.data?.pl+'px', 'padding-right': child.data?.pr+'px'}"
         [ngClass]="{'p-8':  (!this.child.children || this.child.children.length === 0) }" dndDropzone

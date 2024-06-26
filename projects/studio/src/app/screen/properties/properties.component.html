@@ -1374,7 +1374,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="flex mt-2 justify-between mb-2">
         <div class="w-6/12">
             <label class="">Alignment</label>
@@ -1668,8 +1668,9 @@
     </div>
 </ng-container>
 <ng-container *ngIf="props?.name === 'card'">
-    <div class="mt-2">
+    <div class="mt-2 flex gap-2">
         <vezo-input label="Image URL" [(ngModel)]="props.data.imageUrl"></vezo-input>
+        <vezo-input label="Card Width" [trailingText]="'px'" [(ngModel)]="props.data.width"></vezo-input>
     </div>
 
     <div class="mt-2 flex gap-2">
@@ -1979,9 +1980,15 @@
         <vezo-input label="Gap" [(ngModel)]="props.data.gap"></vezo-input>
         <vezo-input label="Number of Columns" [(ngModel)]="props.data.columns"></vezo-input>
     </div>
-    <div class="mt-2">
+    <div class="mt-2 flex gap-2">
+        <vezo-input label="Border Width" [tainlingText]="'px'" [(ngModel)]="props.data.borderWidth"></vezo-input>
+        <vezo-input label="Border Radius" [tainlingText]="'px'" [(ngModel)]="props.data.borderRadius"></vezo-input>
+    </div>
+    <div class="mt-2 flex gap-2">
         <vezo-colorpicker [label]="'Fill Color'" (colorChange)="props.data.bgColor=$event"
             [inputVal]="props.data.bgColor"></vezo-colorpicker>
+        <vezo-colorpicker [label]="'Border Color'" (colorChange)="props.data.borderColor=$event"
+            [inputVal]="props.data.borderColor"></vezo-colorpicker>
     </div>
     <div class="mt-2">
         <vezo-input label="Background Image" [(ngModel)]="props.data.bgImage"></vezo-input>
@@ -2156,7 +2163,7 @@
                     [ngClass]="{'bg-slate-100':props.data?.alignment =='evenly'}">E</div>
             </div>
         </div>
-        
+
     </div>
     <div class="mt-2 mb-2">
         <div class="">
@@ -2176,7 +2183,7 @@
         </div>
     </div>
 </ng-container>
-<div *ngIf="props?.name" class="text-right" >
+<div *ngIf="props?.name" class="text-right">
     <vezo-button label="Delete" (click)="deleteProperty()"></vezo-button>
 </div>
 

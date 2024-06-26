@@ -194,7 +194,7 @@ export class FormDesignerComponent implements OnInit {
       content: 'Container',
       data: {
         width: '100', height: '100', bgColor: '#f1f3f6', gap: '0', columns: '2', alignment: 'start', vAlignment: 'center',
-        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0', bgImage: ''
+        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0', bgImage: '', borderWidth: '0' , borderColor:'#FFFFFF', borderRadius:'0'
       },
       effectAllowed: 'copy',
       disable: false,
