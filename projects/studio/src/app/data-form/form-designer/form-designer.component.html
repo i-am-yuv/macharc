@@ -155,7 +155,7 @@
 
                     <ng-container *ngIf="item.name === 'container'">
                         <div (dndDrop)="onDrop($event, item.children)"
-                            class="name gap-{{item.data.gap}} grid grid-cols-{{item.data.columns}} flex justify-{{item.data.alignment}} items-{{item.data.vAlignment}}"
+                            class="name gap-{{item.data.gap}} grid grid-cols-{{item.data.columns}} flex justify-{{item.data.alignment}} items-{{item.data.vAlignment}} shadow-{{item.data.shadow}}"
                             [ngStyle]="{ 'width' : item.data?.width ? item.data?.width+'px':'auto' ,'height' :item.data?.height? item.data?.height+'px':'auto' , 'background-color' : item.data?.bgColor ,
                                 'background-image': 'url(' + item.data?.bgImage + ')' , 'background-size': 'cover', 'background-position':'center' , 'border-width': item.data.borderWidth+'px' ,'border-radius': item.data.borderRadius+'px' , 'border-color': item.data.borderColor,
                                 'margin-top': item.data?.mt+'px', 'margin-bottom': item.data?.mb+'px', 'margin-left': item.data?.ml+'px', 'margin-right': item.data?.mr+'px' ,

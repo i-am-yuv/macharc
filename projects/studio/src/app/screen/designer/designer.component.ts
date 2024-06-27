@@ -232,7 +232,7 @@ export class DesignerComponent implements OnInit {
       data: {
         width: '100', height: '100', bgColor: '#f1f3f6', gap: '0', columns: '2', alignment: 'start', vAlignment: 'center',
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0', bgImage: '', borderWidth: '0', borderColor: '#FFFFFF', borderRadius: '0'
-      },
+       , shadow:'none'},
       effectAllowed: 'copy',
       disable: false,
       handle: false,
@@ -337,6 +337,7 @@ export class DesignerComponent implements OnInit {
   }
   public ngOnInit() {
     this.screenId = this.route.snapshot.paramMap.get('id');
+    this.loading = true;
     this.screenService.getData({ id: this.screenId }).then((res: any) => {
       console.log(res);
       this.screenData = res;
@@ -355,8 +356,11 @@ export class DesignerComponent implements OnInit {
           this.forms = res.content;
         })
       }
-    })
-
+      this.loading = false;
+    }).catch(error => {
+      this.loading = false;
+      console.error('Error fetching data:', error);
+    });
   }
   onDragged(item: any, list: any[], effect: DropEffect) {
     // this.currentDragEffectMsg = `Drag ended with effect "${effect}"!`;

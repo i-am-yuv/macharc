@@ -1,10 +1,10 @@
 <div class="">
-    <div *ngIf="loading"
+    <!-- <div *ngIf="loading"
         class="fixed top-0 left-0 right-0 bottom-0 w-full h-screen z-50 overflow-hidden bg-gray-700 opacity-75 flex flex-col items-center justify-center">
         <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12 mb-4"></div>
         <h2 class="text-center text-white text-xl font-semibold">Loading...</h2>
         <p class="w-1/3 text-center text-white">This may take a few seconds, please don't close this page.</p>
-    </div>
+    </div> -->
     <!-- top bar with the resize screen tab -->
     <div class="flex justify-between items-center">
         <div class="grid grid-cols-12 gap-2 w-full bg-gray-100 border">
@@ -169,7 +169,7 @@
 
                         <ng-container *ngIf="item.name === 'container'">
                             <div (dndDrop)="onDrop($event, item.children)"
-                                class="name gap-{{item.data.gap}} grid grid-cols-{{item.data.columns}} flex justify-{{item.data.alignment}} items-{{item.data.vAlignment}}"
+                                class="name gap-{{item.data.gap}} grid grid-cols-{{item.data.columns}} flex justify-{{item.data.alignment}} items-{{item.data.vAlignment}} shadow-{{item.data.shadow}}"
                                 [ngStyle]="{ 'width' : item.data?.width ? item.data?.width+'px':'auto' ,'height' :item.data?.height? item.data?.height+'px':'auto' , 'background-color' : item.data?.bgColor ,
                                 'background-image': 'url(' + item.data?.bgImage + ')' , 'background-size': 'cover', 'background-position':'center' , 'border-width': item.data.borderWidth+'px' ,'border-radius': item.data.borderRadius+'px' , 'border-color': item.data.borderColor,
                                 'margin-top': item.data?.mt+'px', 'margin-bottom': item.data?.mb+'px', 'margin-left': item.data?.ml+'px', 'margin-right': item.data?.mr+'px' ,
@@ -251,6 +251,7 @@
 
                         <ng-container *ngIf="item.name === 'form'">
                             <div class="name">
+                                <div [ngClass]="{'p-8':  (!this.item.children || this.item.children.length === 0) }"></div>
                                 <div *ngFor="let child of item.children" class="name">
                                     <ng-container *ngIf="child.name === 'container'">
                                         <app-nested [child]="child" [layout]="layout" [nestedElement]="'container'" [isParentForm]="true"
@@ -483,6 +484,7 @@
     </div>
 </div>
 <vezo-toast></vezo-toast>
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px' }"></ngx-loading>
 <!-- <pre>
         {{ draggableListRight | json }}
     </pre> -->

@@ -17,6 +17,8 @@ export class PropertiesComponent {
 
   column: any = {};
 
+  boxShawdowOptions : any = ['sm' , 'md' ,'lg' ,'xl','2xl', 'inner', 'none'];
+
   constructor(
     private messageService: MessageService,
     private router : Router

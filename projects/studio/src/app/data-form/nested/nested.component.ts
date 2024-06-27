@@ -72,4 +72,9 @@ export class NestedComponent implements OnInit {
       this.nodeClicked.emit(node);
     }
   }
+
+  getDndEffectAllowed()
+  {
+    return this.isParentForm == true ? 'none'  : 'copyMove';
+  }
 }
