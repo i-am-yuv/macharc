@@ -19,7 +19,7 @@
                         <div class="text-center"
                             style="margin-top: 30px; font-size: 28px; font-weight: 700; color: #000000;">Create Project
                         </div>
-                        <div class="ml-12" style="margin-top: 24px; margin-bottom: 30px;">
+                        <div class="ml-16" style="margin-top: 24px; margin-bottom: 30px;">
                             <div *ngFor="let item of milestoneItems ; let i = index">
                                 <div class="flex justify-start items-start gap-4">
                                     <div class="flex items-center justify-center" style="flex-direction: column; ">
@@ -58,22 +58,22 @@
                     
                     <div class="flex justify-center items-center"><img src="assets/macharcLogo.png" style="width: 235px;"/></div>
                     
-                    <div class="flex w-full" style="margin-top: 40px;">
+                    <div class="flex w-full" style="margin-top: 20px;">
                         <form [formGroup]="form" style="width: -webkit-fill-available" class="mx-6">
                             <div style="display: flex; flex-direction: column ;" class="">
                                 <div class="mt-8">
-                                    <vezo-input label="Project Code" placeholder="Enter Project Code"
-                                    formControlName="projectCode" class="h-11"></vezo-input>
+                                    <vezo-input [labelInfo]="labelStyle" label="Project Code" placeholder="Enter Project Code"
+                                    formControlName="projectCode" className="h-11"></vezo-input>
                                 </div>
                                 <div class="mt-8">
-                                    <vezo-input label="Project Name" placeholder="Enter Project Name"
-                                    formControlName="projectName"></vezo-input>
+                                    <vezo-input [labelInfo]="labelStyle" label="Project Name" placeholder="Enter Project Name"
+                                    formControlName="projectName" className="h-11"></vezo-input>
                                 </div>
                                 <div class="mt-8">
-                                    <vezo-textarea label="Project Description" placeholder="Enter Description"
+                                    <vezo-textarea [labelInfo]="labelStyle" label="Project Description" placeholder="Enter Description"
                                     formControlName="projectDescription"></vezo-textarea>
                                 </div>
-                                <div class="mt-8">
+                                <div class="mt-4">
                                     <vezo-switch label="Default" formControlName="isdefault"></vezo-switch>
                                 </div>
                             </div>

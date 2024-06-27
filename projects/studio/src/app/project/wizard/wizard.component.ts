@@ -75,6 +75,12 @@ export class WizardComponent extends GenericComponent {
     }
   ]
 
+  labelStyle = {
+    'size':'16px',
+    'weight':'400',
+    'color':'#000000'
+  }
+
   naviagateListingPage()
   {
     this.router.navigate(['projects']) ;
