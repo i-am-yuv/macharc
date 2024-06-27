@@ -9,6 +9,8 @@ import { DndDropEvent, DropEffect } from 'ngx-drag-drop';
 export class NestedComponent implements OnInit {
 
   @Input() nestedElement!: string;
+  @Input() isParentForm: boolean = false;
+
 
 
   @Input() child: any;
@@ -31,7 +33,7 @@ export class NestedComponent implements OnInit {
   }
 
   onDrop(event: DndDropEvent, list?: any[]) {
-    if (list && (event.dropEffect === 'copy' || event.dropEffect === 'move')) {
+    if (list && (event.dropEffect === 'copy' || event.dropEffect === 'move') && this.isParentForm == false) {
       let index = event.index;
 
       if (typeof index === 'undefined') {
@@ -42,16 +44,32 @@ export class NestedComponent implements OnInit {
 
       this.activeItem = event.data;
       this.nodeClicked.emit(this.activeItem);
+
+      // // Ensure event.data is an object and has no previous id
+      // if (event.data && typeof event.data === 'object') {
+      //   const newItem = { ...event.data, id: Math.floor(Math.random() * 1000000) };
+      //   list.splice(index, 0, newItem);
+      //   this.activeItem = newItem;
+      //   this.nodeClicked.emit(this.activeItem);
+      // } else {
+      //   console.error('Invalid data dropped:', event.data);
+      // }
+
     }
   }
 
   handleClick(event: MouseEvent, item: any) {
-    event.stopPropagation();
-    console.log(this.activeItem);
-    this.nodeClicked.emit(item);
+    if (this.isParentForm == false) {
+      event.stopPropagation();
+      //  console.log(this.activeItem);
+      this.nodeClicked.emit(item);
+    }
+
   }
 
   onChildNodeClicked(node: any) {
-    this.nodeClicked.emit(node);
+    if (this.isParentForm == false) {
+      this.nodeClicked.emit(node);
+    }
   }
 }

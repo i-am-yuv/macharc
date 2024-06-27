@@ -26,7 +26,7 @@ interface DraggableItem {
   data?: any;
   children?: any[],
   icon?: any;
-  id ?: any;
+  id?: any;
 }
 @Component({
   selector: 'app-designer',
@@ -37,8 +37,8 @@ export class DesignerComponent implements OnInit {
 
   loading: boolean = false;
 
-   // Virtual Elements
-   draggableListLeftVE: DraggableItem[] = [
+  // Virtual Elements
+  draggableListLeftVE: DraggableItem[] = [
     {
       name: 'heading',
       content: 'Text',
@@ -199,16 +199,16 @@ export class DesignerComponent implements OnInit {
         caption: 'Table Heading',
         cols: [
           {
-          heading: 'Code',
-          field: 'code',
-          sortable: true,
-          filterable: true
-        }, {
-          heading: 'Name',
-          field: 'name',
-          sortable: true,
-          filterable: true
-        }],
+            heading: 'Code',
+            field: 'code',
+            sortable: true,
+            filterable: true
+          }, {
+            heading: 'Name',
+            field: 'name',
+            sortable: true,
+            filterable: true
+          }],
         rows: [{
           code: 1,
           name: 'Name 1'
@@ -221,7 +221,7 @@ export class DesignerComponent implements OnInit {
         }]
       },
       icon: 'assets/Line 45.svg'
-    },
+    }
   ];
 
   // Layout Elements
@@ -231,7 +231,7 @@ export class DesignerComponent implements OnInit {
       content: 'Container',
       data: {
         width: '100', height: '100', bgColor: '#f1f3f6', gap: '0', columns: '2', alignment: 'start', vAlignment: 'center',
-        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0', bgImage: ''
+        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0', bgImage: '', borderWidth: '0', borderColor: '#FFFFFF', borderRadius: '0'
       },
       effectAllowed: 'copy',
       disable: false,
@@ -321,6 +321,10 @@ export class DesignerComponent implements OnInit {
   rightPanelExpanded: boolean = true;
   widgetTree: any[] = [];
 
+  currentScreenView: string = 'assets/circum_mobile-1.png';// Mobile View
+  mutiScreenView: boolean = false;
+  //loading: boolean = false;
+
   constructor(
     private screenService: ScreenService,
     private fieldService: FieldService,
@@ -369,11 +373,18 @@ export class DesignerComponent implements OnInit {
       if (typeof index === 'undefined') {
         index = list.length;
       }
-      event.data['id'] = Math.floor(Math.random() * 1000000);
-      list.splice(index, 0, event.data);
+      // event.data['id'] = Math.floor(Math.random() * 1000000);
+      // list.splice(index, 0, event.data);
+      // this.activeItem = event.data;
 
-      this.activeItem = event.data;
-
+      // Ensure event.data is an object and has no previous id
+      if (event.data && typeof event.data === 'object') {
+        const newItem = { ...event.data, id: Math.floor(Math.random() * 1000000) };
+        list.splice(index, 0, newItem);
+        this.activeItem = newItem;
+      } else {
+        console.error('Invalid data dropped:', event.data);
+      }
     }
   }
 
@@ -396,27 +407,25 @@ export class DesignerComponent implements OnInit {
   }
 
   deleteActiveItem(val: boolean) {
-    //this.draggableListRight.splice(this.draggableListRight.findIndex((a: any) => a.id === this.activeItem.id), 1);
-    // Check if the id matches a draggableListRight
-    const objIndex = this.draggableListRight.findIndex((a: any) => a.id === this.activeItem.id);
-    if (objIndex !== -1) {
-      this.draggableListRight.splice(objIndex, 1);
-      var newItem: any;
-      this.activeItem = newItem;
-      return;
-    } else {
-      // If not, check within children if the person has a children field
-      for (const element of this.draggableListRight) {
-        if (element.children && Array.isArray(element.children)) {
-          const childIndex = element.children.findIndex((child: any) => child.id === this.activeItem.id);
-          if (childIndex !== -1) {
-            element.children.splice(childIndex, 1);
-            var newItem: any;
-            this.activeItem = newItem;
-            return;
+    // Recursive function to find and delete the item
+    const findAndDelete = (list: any[]): boolean => {
+      for (let i = 0; i < list.length; i++) {
+        if (list[i].id === this.activeItem.id) {
+          list.splice(i, 1);
+          this.activeItem = null;
+          return true;
+        }
+        if (list[i].children && Array.isArray(list[i].children)) {
+          if (findAndDelete(list[i].children)) {
+            return true;
           }
         }
       }
+      return false;
+    };
+    // Start the search and deletion process
+    if (!findAndDelete(this.draggableListRight)) {
+      console.warn("Active item not found for deletion");
     }
   }
 
@@ -454,8 +463,51 @@ export class DesignerComponent implements OnInit {
     return item.children && item.children.length > 0;
   }
 
+  getBackgroundColor() {
+    return this.mutiScreenView == false ? '#e7ecfd' : '#C7D2FE';
+  }
+
+  changeScreen(screenURL: string) {
+    this.currentScreenView = screenURL;
+    this.mutiScreenView = false;
+  }
+
   onItemReceived(item: any) {
     this.activeItem = item;
     console.log('Item received from child:', item);
   }
+
+  searchValue: string = '';
+  filteredDraggableListLeftVE: DraggableItem[] = [...this.draggableListLeftVE];
+  filteredDraggableListLeftLE: DraggableItem[] = [...this.draggableListLeftLE];
+  filteredDraggableListLeftPE: DraggableItem[] = [...this.draggableListLeftPE];
+
+  onSearchValueChange(value: any) {
+    this.searchValue = value;
+    this.filterLists();
+  }
+
+  filterLists() {
+    if (this.searchValue.trim() === '') {
+      this.filteredDraggableListLeftVE = [...this.draggableListLeftVE];
+      this.filteredDraggableListLeftLE = [...this.draggableListLeftLE];
+      this.filteredDraggableListLeftPE = [...this.draggableListLeftPE];
+    } else {
+      this.filteredDraggableListLeftVE = this.filterList(this.draggableListLeftVE);
+      this.filteredDraggableListLeftLE = this.filterList(this.draggableListLeftLE);
+      this.filteredDraggableListLeftPE = this.filterList(this.draggableListLeftPE);
+    }
+  }
+
+
+  filterList(list: DraggableItem[]): DraggableItem[] {
+    return list.filter(item =>
+      item.name.toLowerCase().includes(this.searchValue.toLowerCase())
+    );
+  }
+
+  getList(originalList: DraggableItem[], filteredList: DraggableItem[]): DraggableItem[] {
+    return this.searchValue.trim() === '' ? originalList : filteredList;
+  }
+
 }
