@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MessageService } from '@splenta/vezo';
 import { DropEffect, DndDropEvent, EffectAllowed } from 'ngx-drag-drop';
@@ -194,8 +194,9 @@ export class FormDesignerComponent implements OnInit {
       content: 'Container',
       data: {
         width: '100', height: '100', bgColor: '#f1f3f6', gap: '0', columns: '2', alignment: 'start', vAlignment: 'center',
-        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0', bgImage: '', borderWidth: '0' , borderColor:'#FFFFFF', borderRadius:'0'
-       , shadow :'none'},
+        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0', bgImage: '', borderWidth: '0', borderColor: '#FFFFFF', borderRadius: '0'
+        , shadow: 'none'
+      },
       effectAllowed: 'copy',
       disable: false,
       handle: false,
@@ -300,6 +301,8 @@ export class FormDesignerComponent implements OnInit {
   }
   public ngOnInit() {
     this.formId = this.route.snapshot.paramMap.get('id');
+    this.updateChildStyles();
+
     this.loading = true;
     this.formService.getData({ id: this.formId }).then((res: any) => {
       this.formData = res;
@@ -417,9 +420,20 @@ export class FormDesignerComponent implements OnInit {
     return this.mutiScreenView == false ? '#e7ecfd' : '#C7D2FE';
   }
 
-  changeScreen(screenURL: string) {
+  changeScreen(screenURL: string, screenName: string) {
     this.currentScreenView = screenURL;
     this.mutiScreenView = false;
+    if (screenName == 'mobile') {
+      this.childWidth = 360;
+    }
+    else if (screenName == 'tablet') {
+      this.childWidth = 1024;
+
+
+    } else if (screenName == 'desktop') {
+      this.childWidth = 1440;
+    }
+    this.resetZoom();
   }
 
   onItemReceived(item: any) {
@@ -460,4 +474,38 @@ export class FormDesignerComponent implements OnInit {
     return this.searchValue.trim() === '' ? originalList : filteredList;
   }
 
+  //---------- Zoom and Screen Resize code from here
+  @ViewChild('parent') parent !: ElementRef;
+
+  //childHeight = 500;
+  childWidth = 700; // giving default width as 700 to our component
+  zoom = 0.3;
+
+  get childStyles() {
+    return {
+      // height: `${this.childHeight}px`,
+      // height:'auto'+50,
+      width: `${this.childWidth? this.childWidth : 700}px`,
+      transform: `scale(${this.zoom})`,
+      transformOrigin: 'top center'
+    };
+  }
+
+  zoomIn() {
+    this.zoom = Math.min(this.zoom + 0.1, 3); // Maximum zoom level of 300%
+  }
+
+  zoomOut() {
+    this.zoom = Math.max(this.zoom - 0.1, 0.1); // Minimum zoom level of 10%
+  }
+
+  resetZoom() {
+    this.zoom = 0.3;
+  }
+
+  updateChildStyles() {
+    if (this.parent) {
+      this.parent.nativeElement.scrollTo(0, 0); // Reset scroll position to top-left
+    }
+  }
 }

@@ -9,7 +9,8 @@
             </div>
             <div class="col-span-4">
                 <div class="flex gap-4" style="justify-content: center; align-items: center;">
-                    <img src="assets/refresh-ccw.png" class="" style="width: 18px; height: 18px;" />
+                    <img src="assets/refresh-ccw.png" class="" style="width: 18px; height: 18px;" class="cursor-pointer"
+                        (click)="resetZoom()" />
 
                     <div class="px-2 py-2 flex justify-center items-center gap-1"
                         [ngStyle]="{'background-color': getBackgroundColor()}">
@@ -17,18 +18,20 @@
                         <div>
                             <!-- Choosed Screen -->
                             <div *ngIf="this.mutiScreenView == false"><img src="{{this.currentScreenView}}"
-                                    style="width: 25px; " /></div>
+                                    style="width: 25px; cursor: pointer;" (click)="mutiScreenView=!mutiScreenView" /></div>
 
                             <!-- Screen to Choose from -->
                             <div *ngIf="this.mutiScreenView == true" class="flex gap-3 px-2">
-                                <div (click)="changeScreen('assets/circum_mobile-1.png')" class="cursor-pointer"><img
-                                        src="assets/circum_mobile-1.png" style="width: 25px; " /></div>
-                                <div (click)="changeScreen('assets/material-symbols-light_tablet-android-outline.svg')"
+                                <div (click)="changeScreen('assets/circum_mobile-1.png' , 'mobile')"
+                                    class="cursor-pointer"><img src="assets/circum_mobile-1.png"
+                                        style="width: 25px; " /></div>
+                                <div (click)="changeScreen('assets/material-symbols-light_tablet-android-outline.svg' , 'tablet')"
                                     class="cursor-pointer"><img
                                         src="assets/material-symbols-light_tablet-android-outline.svg"
                                         style="width: 25px; " /></div>
-                                <div (click)="changeScreen('assets/monitor-smartphone.svg')" class="cursor-pointer"><img
-                                        src="assets/monitor-smartphone.svg" style="width: 25px; " /></div>
+                                <div (click)="changeScreen('assets/monitor-smartphone.svg' , 'desktop')"
+                                    class="cursor-pointer"><img src="assets/monitor-smartphone.svg"
+                                        style="width: 25px; " /></div>
                             </div>
 
                         </div>
@@ -36,8 +39,14 @@
                                 src="assets/elementsClose.svg" style="width: 12px ;"></div>
 
                     </div>
-                </div>
+                    <!-- <div>{{this.childWidth}}px</div> -->
+                    <div class="flex justify-start gap-1 px-2" style="border-width: 1px; border-color: #ffffff; border-radius: 4px;">
+                        <input [(ngModel)]="this.childWidth" 
+                            style="width: 45px;" />
+                        <span> px</span>
+                    </div>
 
+                </div>
             </div>
             <div class="col-span-4 p-2">
                 <div class="flex justify-center items-center">
@@ -97,11 +106,23 @@
 <div class="flex justify-start w-full">
 
     <div [ngClass]="{'w-8/12 ' : this.rightPanelExpanded == true,'w-11/12' : this.rightPanelExpanded == false }"
-        class="">
-
+        class="parent "  #parent>
+        <!-- Zoom in and out Code -->
+        <div class="flex justify-start items-center gap-4 m-3"
+            style="position: sticky;z-index: 100;  top: 0;left: 0; padding: 10px;">
+            <div class="flex gap-2 justify-center items-center">
+                <button (click)="zoomIn()">
+                    <img src="assets/add_circle_outline.svg" style="height: 24px; width: 24px;" />
+                </button>
+                <button (click)="zoomOut()">
+                    <img src="assets/remove_circle_outline.svg" style="height: 24px; width: 24px;" />
+                </button>
+            </div>
+            <div>Zoom: {{ zoom * 100  | number:'1.2-2' }}%</div>
+        </div>
         <div [class.horizontal]="layout.dndHorizontal" [dndHorizontal]="layout.dndHorizontal"
-            (dndDrop)="onDrop($event, draggableListRight)" class="dndList m-8 name border-b h-full  border-l-0  overflow-x: auto;
-        white-space: nowrap;" dndDropzone dndEffectAllowed="copyMove">
+            (dndDrop)="onDrop($event, draggableListRight)" class=" child dndList m-8 name border-2 border-dotted h-full  border-cyan-600  overflow-x: auto;
+        white-space: nowrap; " dndDropzone dndEffectAllowed="copyMove" [ngStyle]="childStyles">
             <div class="dndPlaceholder h-16 border bg-blue-400 bg-opacity-25" dndPlaceholderRef>
             </div>
             <div *ngFor="let item of draggableListRight" [dndDraggable]="item" (click)="handleClick($event, item)"
@@ -247,7 +268,7 @@
             </div>
         </div>
     </div>
-    <div [ngClass]="{'w-4/12 overflow-y-scroll' : this.rightPanelExpanded == true}"  class="h-[600px] "
+    <div [ngClass]="{'w-4/12 overflow-y-scroll' : this.rightPanelExpanded == true}" class="h-[600px] "
         style=" position: -webkit-sticky; /* For Safari */ position: sticky;top: 0;" appendTo="body">
         <div *ngIf="this.rightPanelExpanded">
             <div class="flex justify-end align-top">

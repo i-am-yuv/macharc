@@ -76,8 +76,10 @@
                             style="background-color: #FFFFFF; width: 232px; height:272px ; border-radius: 8px; border-width: 3px; border-color:#ffffff; padding: 12px;">
                             <div class="flex justify-center items-center p-4"
                                 style="width: auto; height:188px ; border-radius: 8px; border-width: 1px; border-color:#000000;">
-                                <img *ngIf="i%2==0" src="https://storage.googleapis.com/flutterflow-enterprise-india.appspot.com/projects/h-i-and-l-i-w33dc0/assets/8nbuda5ca8cl/Rectangle_26479_(1).png" />
-                                <img *ngIf="i%2!=0" src="https://storage.googleapis.com/flutterflow-enterprise-india.appspot.com/projects/h-i-and-l-i-w33dc0/assets/l280cbr2nimh/Rectangle_26480_(2).png" />
+                                <img *ngIf="i%2==0"
+                                    src="https://storage.googleapis.com/flutterflow-enterprise-india.appspot.com/projects/h-i-and-l-i-w33dc0/assets/8nbuda5ca8cl/Rectangle_26479_(1).png" />
+                                <img *ngIf="i%2!=0"
+                                    src="https://storage.googleapis.com/flutterflow-enterprise-india.appspot.com/projects/h-i-and-l-i-w33dc0/assets/l280cbr2nimh/Rectangle_26480_(2).png" />
                             </div>
                             <div class="flex justify-between items-center mt-4">
                                 <div style="display: flex; flex-direction: column;" class="gap-1">
@@ -87,13 +89,16 @@
                                         25, 2024
                                     </div>
                                 </div>
-
-                                <div class="flex justify-center items-center mr-2 pl-1  pb-1 cursor-pointer"
-                                    *ngIf="this.hoveredIndex == i"
-                                    (click)="openImageInNewTab( i%2==0?'https://storage.googleapis.com/flutterflow-enterprise-india.appspot.com/projects/h-i-and-l-i-w33dc0/assets/8nbuda5ca8cl/Rectangle_26479_(1).png' : 'https://storage.googleapis.com/flutterflow-enterprise-india.appspot.com/projects/h-i-and-l-i-w33dc0/assets/l280cbr2nimh/Rectangle_26480_(2).png')"
-                                    style="width: 24px; height: 24px; background-color: #4F46E5; border-radius: 4px;">
-                                    <img style="width: 18px; height: 18px;" src="assets/Group 1171276934.svg" />
+                                <div class="flex justify-center gap-2">
+                                    <img *ngIf="this.hoveredIndex == i" src="assets/copy-clipboard.svg" style="width: 20px; height: 20px; cursor: pointer;"/>
+                                    <div class="flex justify-center items-center mr-2 pl-1  pb-1 cursor-pointer"
+                                        *ngIf="this.hoveredIndex == i"
+                                        (click)="openImageInNewTab( i%2==0?'https://storage.googleapis.com/flutterflow-enterprise-india.appspot.com/projects/h-i-and-l-i-w33dc0/assets/8nbuda5ca8cl/Rectangle_26479_(1).png' : 'https://storage.googleapis.com/flutterflow-enterprise-india.appspot.com/projects/h-i-and-l-i-w33dc0/assets/l280cbr2nimh/Rectangle_26480_(2).png')"
+                                        style="width: 24px; height: 24px; background-color: #4F46E5; border-radius: 4px;">
+                                        <img style="width: 18px; height: 18px;" src="assets/Group 1171276934.svg" />
+                                    </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>
