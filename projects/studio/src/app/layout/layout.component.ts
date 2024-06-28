@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
 import { Project } from '../project/project';
 import { ProjectService } from '../project/project.service';
 import { LayoutService } from './layout.service';
 import { FilterBuilder } from '../utils/FilterBuilder';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-layout',
@@ -203,9 +204,11 @@ export class LayoutComponent {
 
   roles: any;
   username: string = '';
+  isPageOrComponent = false;
 
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
     private authService: AuthService,
     private projectService: ProjectService,
     private layoutService: LayoutService
@@ -235,6 +238,15 @@ export class LayoutComponent {
       sessionStorage.setItem('menuItemName', this.menuView);
 
     }
+
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      this.checkRoute();
+    });
+
+    // Initial check
+    this.checkRoute();
   }
 
   logout() {
@@ -271,5 +283,10 @@ export class LayoutComponent {
   resetMenuItems() {
     this.menuView = '';
     sessionStorage.removeItem('menuItemName');
+  }
+
+  checkRoute(): void {
+    const currentUrl = this.router.url;
+    this.isPageOrComponent = (currentUrl.includes('/builder/screens/designer/') || currentUrl.includes('/builder/forms/designer/') || currentUrl.includes('/media-manager') || currentUrl.includes('/actions') ) ; 
   }
 }
