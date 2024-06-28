@@ -1,0 +1,15 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M13 16C12.2044 16 11.4413 15.6839 10.8787 15.1213C10.3161 14.5587 10 13.7956 10 13C10 12.2044 10.3161 11.4413 10.8787 10.8787C11.4413 10.3161 12.2044 10 13 10" stroke="black" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M12.935 3H10.981L10.349 5.401L7.704 6.516L6 5L4 7L5.453 8.789L4.373 11.446L2 12V14L4.401 14.656L5.516 17.3L4 19L6 21L7.791 19.54L10.397 20.612L11 23H13" stroke="black" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M13 23L13 3" stroke="black"/>
+<path d="M13 7.82812H16V5.57812" stroke="black"/>
+<path d="M13 10.0781H17.5L19.375 8.20312" stroke="black"/>
+<path d="M13.2363 13.2031H19.2363" stroke="black"/>
+<path d="M13 16.8281H17.5L18.9868 17.5781" stroke="black"/>
+<path d="M13 19.0742H16V20.9492" stroke="black"/>
+<circle cx="15.9365" cy="4.5" r="1" stroke="black"/>
+<circle cx="19.7363" cy="7.70312" r="1" stroke="black"/>
+<circle cx="19.7363" cy="13.2031" r="1" stroke="black"/>
+<circle cx="19.7363" cy="17.8984" r="1" stroke="black"/>
+<circle cx="16.0361" cy="22.2031" r="1" stroke="black"/>
+</svg>

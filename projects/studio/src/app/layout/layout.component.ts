@@ -117,16 +117,19 @@ export class LayoutComponent {
           label: 'Microservices',
           icon: 'clipboard',
           routerLink: ['/builder/microservices'],
+          image:'assets/microservice_L.svg'
         },
         {
           label: 'Models',
           icon: 'clipboard',
           routerLink: ['/builder/collections'],
+          image:'assets/collection_L.svg'
         },
         {
           label: 'Services',
           icon: 'clipboard',
           routerLink: ['/builder/services'],
+          image:'assets/Services_L.svg'
         },
       ],
       showSubMenu: true,
@@ -144,12 +147,12 @@ export class LayoutComponent {
           image:'assets/Application.svg'
         },
         { label: 'Pages', icon: 'clipboard', routerLink: ['/builder/screens'] ,  image:'assets/PAGES.svg'},
-        { label: 'Actions', icon: 'clipboard', routerLink: ['/actions'] , image:'assets/shuffle.svg'},
+        { label: 'Actions', icon: 'clipboard', routerLink: ['/actions'] , image:'assets/Action_R.svg'},
         {
           label: 'Components',
           icon: 'clipboard',
           routerLink: ['/builder/forms'],
-          image:'assets/Component.svg'
+          image:'assets/Component _R.svg'
         },
         {
           label: 'Mobile Builder',
@@ -162,7 +165,7 @@ export class LayoutComponent {
           label: 'Media Manager',
           icon: 'clipboard',
           routerLink: ['/media-manager'],
-          image:'assets/image.svg'
+          image:'assets/IMAGE ADD.svg'
         },
         // {
         //   label: 'Menu Panel',
@@ -179,18 +182,24 @@ export class LayoutComponent {
     {
       label: 'Utilities',
       items: [
-        { label: 'Settings', icon: 'cog8Tooth', routerLink: ['/settings'], },
+        { label: 'Settings', icon: 'cog8Tooth', routerLink: ['/settings'],
+        image:'assets/settings_L.svg'
+         },
         {
           label: 'Business Process',
           icon: 'clipboard',
           routerLink: ['/builder/processes'],
+          image:'assets/Integration_L.svg'
         },
         {
           label: 'Reports',
           icon: 'clipboard',
           routerLink: ['/builder/reports'],
+          image:'assets/Reports_L.svg'
         },
-        { label: 'Releases', icon: 'clipboard', routerLink: ['/releases'] },
+        { label: 'Releases', icon: 'clipboard', routerLink: ['/releases'] ,
+        image:'assets/Releases-L.svg'
+        },
         { label: 'Logs', icon: 'clipboard', routerLink: ['/system-logs'] },
         // {
         //   label: 'Integrations',
@@ -287,6 +296,8 @@ export class LayoutComponent {
 
   checkRoute(): void {
     const currentUrl = this.router.url;
-    this.isPageOrComponent = (currentUrl.includes('/builder/screens/designer/') || currentUrl.includes('/builder/forms/designer/') || currentUrl.includes('/media-manager') || currentUrl.includes('/actions') ) ; 
+    this.isPageOrComponent = (currentUrl.includes('/builder/screens/designer/') || currentUrl.includes('/builder/forms/designer/') 
+    || currentUrl.includes('/media-manager') || currentUrl.includes('/actions') || currentUrl.includes('/projects/manage')
+    || currentUrl.includes('/applications/manage') ) ; 
   }
 }

@@ -36,22 +36,26 @@
           <div class="cursor-pointer  px-3 py-2"
             [ngClass]="{'bg-indigo-50 rounded-r-lg' : this.menuView =='menuItemsBackend' }"
             (click)="selectMenuItem('menuItemsBackend')" [routerLink]="['/builder/microservices/' + activeProject?.id]">
-            <vezo-icon icon="rectangleStack"></vezo-icon>
+            <!-- <vezo-icon icon="rectangleStack"></vezo-icon> -->
+            <img src="assets/microservice_L.svg" style="width: 24px; height: 24px;" />
           </div>
           <div class="cursor-pointer px-3 py-2"
             [ngClass]="{'bg-indigo-50 rounded-r-lg' : this.menuView =='menuItemsFrontendWeb' }"
             routerLink="/applications" (click)="selectMenuItem('menuItemsFrontendWeb')">
-            <vezo-icon icon="cubeTransparent"></vezo-icon>
+            <!-- <vezo-icon icon="cubeTransparent"></vezo-icon> -->
+            <img src="assets/front-end web_L.svg" style="width: 24px; height: 24px;" />
           </div>
           <div class="cursor-pointer  px-3 py-2"
             [ngClass]="{'bg-indigo-50 rounded-r-lg' : this.menuView =='menuItemsFrontendMobile' }" routerLink="/"
             (click)="selectMenuItem('menuItemsFrontendMobile')">
-            <vezo-icon icon="devicePhoneMobile"></vezo-icon>
+            <!-- <vezo-icon icon="devicePhoneMobile"></vezo-icon> -->
+            <img src="assets/circum_mobile-1.svg" style="width: 24px; height: 24px;" />
           </div>
           <div class="cursor-pointer px-3 py-2"
             [ngClass]="{'bg-indigo-50 rounded-r-lg' : this.menuView =='menuItemsSettings' }" routerLink="/settings"
             (click)="selectMenuItem('menuItemsSettings')">
-            <vezo-icon icon="cog8Tooth"></vezo-icon>
+            <!-- <vezo-icon icon="cog8Tooth"></vezo-icon> -->
+            <img src="assets/settings_L.svg" style="width: 24px; height: 24px;" />
           </div>
         </div>
         <div class="overflow-y-scroll h-[67vh]">

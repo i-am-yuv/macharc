@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from '@splenta/vezo';
 import { ApplicationService } from '../../application/application.service';
 import { GenericComponent } from '../../utils/genericcomponent';
@@ -29,10 +29,33 @@ export class AppWizardComponent extends GenericComponent {
       ]
     }
   ]
+
+  milestoneItems = [
+    {
+      'name': 'Define Application'
+    },
+    {
+      'name': 'Create Forms'
+    },
+    {
+      'name': 'Create Screens'
+    },
+    {
+      'name': 'Create Reports'
+    },
+    {
+      'name': 'Define Processes'
+    },
+    {
+      'name': 'Build and Deploy'
+    }
+  ]
+
   constructor(
     applicationService: ApplicationService,
     messageService: MessageService,
     private fb: FormBuilder,
+    private router: Router ,
     private route: ActivatedRoute) {
     super(applicationService, messageService);
 
@@ -51,5 +74,16 @@ export class AppWizardComponent extends GenericComponent {
     if (this.id) {
       this.getData({ id: this.id }, (res) => { this.form.patchValue({ ...res }) });
     }
+  }
+
+  labelStyle = {
+    'size':'16px',
+    'weight':'400',
+    'color':'#000000'
+  }
+  
+  naviagateListingPage()
+  {
+    this.router.navigate(['applications']) ;
   }
 }

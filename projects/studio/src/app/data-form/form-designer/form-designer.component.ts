@@ -96,7 +96,7 @@ export class FormDesignerComponent implements OnInit {
         label: 'Input Label', placeholder: 'Placeholder', labelFont: '14', labelWeight: '400', labelColor: '#000000', fieldHeight: '35', fieldRadius: '4', fillColor: '#f1f3f6', borderColor: '#f1f3f6', borderWidth: '1',
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
       }
-      , icon: 'assets/button.svg'
+      , icon: 'assets/dropdown_N.svg'
     },
     {
       name: 'textarea',
@@ -108,7 +108,7 @@ export class FormDesignerComponent implements OnInit {
         label: 'Input Label', placeholder: 'Placeholder', labelFont: '14', labelWeight: '400', labelColor: '#000000', fieldHeight: '50', fillColor: '#f1f3f6', borderColor: '#f1f3f6', borderWidth: '1', borderRadius: '4',
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
       }
-      , icon: 'assets/textField.svg'
+      , icon: 'assets/Text Area_N.svg'
     },
     {
       name: 'button',
@@ -146,7 +146,7 @@ export class FormDesignerComponent implements OnInit {
         label: 'Input Label', labelFont: '14', labelWeight: '400', labelColor: '#000000',
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
       },
-      icon: 'assets/checkBox.svg'
+      icon: 'assets/Radio-button_N.svg'
 
     },
     {
@@ -227,7 +227,7 @@ export class FormDesignerComponent implements OnInit {
       disable: false,
       handle: false,
       children: [],
-      icon: 'assets/button.svg'
+      icon: 'assets/row_N.svg'
     },
     {
       name: 'divider',

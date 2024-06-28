@@ -264,7 +264,7 @@ export class DesignerComponent implements OnInit {
       disable: false,
       handle: false,
       children: [],
-      icon: 'assets/button.svg'
+      icon: 'assets/row_N.svg'
     },
     {
       name: 'divider',
