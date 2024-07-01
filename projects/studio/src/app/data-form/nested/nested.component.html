@@ -1,8 +1,12 @@
 <div *ngIf="nestedElement == 'row' ">
     <div (dndDrop)="onDrop($event, child.children)"
-        class="name gap-{{child.data.gap}} grid grid-rows-1 grid-flow-col justify-{{child.data.alignment}} items-{{child.data.vAlignment}} "
-        [ngStyle]="{'margin-top': child.data.startSpacing+'px' ,'margin-bottom': child.data.endSpacing+'px'}"
-        dndDropzone dndEffectAllowed="copyMove" (click)="handleClick($event, child)"
+        class="name gap-{{child.data.gap}} flex justify-{{child.data.alignment}} items-{{child.data.vAlignment}} "
+        [ngStyle]="{'margin-top': child.data.mt+'px' ,'margin-bottom': child.data.mb+'px' , 'margin-left':child.data.ml+'px', 'margin-right':child.data.mr+'px',
+        'padding-top': (child.children && child.children.length > 0 ? child.data?.pt : 32) + 'px',
+        'padding-bottom': (child.children && child.children.length > 0 ? child.data?.pb : 32) + 'px',
+        'padding-left': (child.children && child.children.length > 0 ? child.data?.pl : 32) + 'px',
+         'padding-right': (child.children && child.children.length > 0 ? child.data?.pr : 32) + 'px'
+     }" dndDropzone dndEffectAllowed="copyMove" (click)="handleClick($event, child)"
         [ngClass]="{'p-8':  (!this.child.children || this.child.children.length === 0) }">
         <div class=" dndPlaceholder h-16 border bg-blue-400 bg-opacity-25" dndPlaceholderRef>
         </div>
@@ -13,18 +17,22 @@
             <div [ngClass]="{'border border-dashed border-indigo-300': this.isParentForm == false}"
                 class="draggable-item  cursor-pointer relative overflow-x: auto;">
                 <ng-container *ngIf="item.name === 'row'">
-                    <app-nested [child]="item" [layout]="layout" [nestedElement]="'row'" [isParentForm]="this.isParentForm"
-                        (nodeClicked)="onChildNodeClicked($event)"></app-nested>
+                    <app-nested [child]="item" [layout]="layout" [nestedElement]="'row'"
+                        [isParentForm]="this.isParentForm" (nodeClicked)="onChildNodeClicked($event)"></app-nested>
+                </ng-container>
+                <ng-container *ngIf="item.name === 'column'">
+                    <app-nested [child]="item" [layout]="layout" [nestedElement]="'column'"
+                        [isParentForm]="this.isParentForm" (nodeClicked)="onChildNodeClicked($event)"></app-nested>
                 </ng-container>
                 <ng-container *ngIf="item.name === 'container'">
-                    <app-nested [child]="item" [layout]="layout" [nestedElement]="'container'" [isParentForm]="this.isParentForm"
-                        (nodeClicked)="onChildNodeClicked($event)"></app-nested>
+                    <app-nested [child]="item" [layout]="layout" [nestedElement]="'container'"
+                        [isParentForm]="this.isParentForm" (nodeClicked)="onChildNodeClicked($event)"></app-nested>
                 </ng-container>
                 <ng-container *ngIf="item.name === 'grid'">
-                    <app-nested [child]="item" [layout]="layout" [nestedElement]="'grid'" [isParentForm]="this.isParentForm"
-                        (nodeClicked)="onChildNodeClicked($event)"></app-nested>
+                    <app-nested [child]="item" [layout]="layout" [nestedElement]="'grid'"
+                        [isParentForm]="this.isParentForm" (nodeClicked)="onChildNodeClicked($event)"></app-nested>
                 </ng-container>
-                <ng-container *ngIf="item.name !== 'row' && item.name !== 'container' && item.name !== 'grid' ">
+                <ng-container *ngIf="item.name !== 'row' && item.name !== 'container' && item.name !== 'grid' && item.name !== 'column' ">
                     <app-blocks [block]="item" (click)="handleClick($event, item)"></app-blocks>
                 </ng-container>
             </div>
@@ -35,7 +43,7 @@
 <div *ngIf="nestedElement == 'container'">
     <div (dndDrop)="onDrop($event, child.children)" (click)="handleClick($event, child)"
         class="name gap-{{child.data.gap}} grid grid-cols-{{child.data.columns}} flex justify-{{child.data.alignment}} items-{{child.data.vAlignment}} shadow-{{child.data.shadow}}"
-        [ngStyle]="{ 'width' : child.data?.width ? child.data?.width+'px':'auto' ,'height' :child.data?.height? child.data?.height+'px':'auto' , 'background-color' : child.data?.bgColor ,
+        [ngStyle]="{ 'width' : child.data?.width ? child.data?.width+'px':'full' ,'height' :child.data?.height? child.data?.height+'px':'auto' , 'background-color' : child.data?.bgColor ,
         'background-image': 'url(' + child.data?.bgImage + ')' , 'background-size': 'cover', 'background-position':'center' ,'border-width': child.data.borderWidth+'px' ,'border-radius': child.data.borderRadius+'px' , 'border-color': child.data.borderColor,
         'margin-top': child.data?.mt+'px', 'margin-bottom': child.data?.mb+'px', 'margin-left': child.data?.ml+'px', 'margin-right': child.data?.mr+'px' ,
         'padding-top': child.data?.pt+'px','padding-bottom': child.data?.pb+'px', 'padding-left': child.data?.pl+'px', 'padding-right': child.data?.pr+'px'}"
@@ -47,25 +55,30 @@
             (dndCanceled)="onDragged(subChild, child.children!, 'none')"
             (dndCopied)="onDragged(subChild, child.children!, 'move'  )"
             (dndLinked)="onDragged(subChild, child.children!, 'link'  )"
-            (dndMoved)="onDragged(subChild, child.children!, 'move')" class="">
+            (dndMoved)="onDragged(subChild, child.children!, 'move')">
 
-            <div [ngClass]="{'border border-dashed border-indigo-300': this.isParentForm == false}">
+            <div [ngClass]="{'border border-dashed border-indigo-300': this.isParentForm == false} ">
                 <!-- Because This line was not working in the case of nested grid -->
                 <!-- <app-blocks [block]="child" (click)="handleClick($event, child)"></app-blocks> -->
 
                 <ng-container *ngIf="subChild.name === 'container'">
-                    <app-nested [child]="subChild" [layout]="layout" [nestedElement]="'container'" [isParentForm]="this.isParentForm"
-                        (nodeClicked)="onChildNodeClicked($event)"></app-nested>
+                    <app-nested [child]="subChild" [layout]="layout" [nestedElement]="'container'"
+                        [isParentForm]="this.isParentForm" (nodeClicked)="onChildNodeClicked($event)"></app-nested>
                 </ng-container>
                 <ng-container *ngIf="subChild.name === 'row'">
-                    <app-nested [child]="subChild" [layout]="layout" [nestedElement]="'row'" [isParentForm]="this.isParentForm"
-                        (nodeClicked)="onChildNodeClicked($event)"></app-nested>
+                    <app-nested [child]="subChild" [layout]="layout" [nestedElement]="'row'"
+                        [isParentForm]="this.isParentForm" (nodeClicked)="onChildNodeClicked($event)"></app-nested>
+                </ng-container>
+                <ng-container *ngIf="subChild.name === 'column'">
+                    <app-nested [child]="subChild" [layout]="layout" [nestedElement]="'column'"
+                        [isParentForm]="this.isParentForm" (nodeClicked)="onChildNodeClicked($event)"></app-nested>
                 </ng-container>
                 <ng-container *ngIf="subChild.name === 'grid'">
-                    <app-nested [child]="subChild" [layout]="layout" [nestedElement]="'grid'" [isParentForm]="this.isParentForm"
-                        (nodeClicked)="onChildNodeClicked($event)"></app-nested>
+                    <app-nested [child]="subChild" [layout]="layout" [nestedElement]="'grid'"
+                        [isParentForm]="this.isParentForm" (nodeClicked)="onChildNodeClicked($event)"></app-nested>
                 </ng-container>
-                <ng-container *ngIf="subChild.name !== 'row' && subChild.name !== 'container' && subChild.name !== 'grid' ">
+                <ng-container
+                    *ngIf="subChild.name !== 'row' && subChild.name !== 'container' && subChild.name !== 'grid' && subChild.name !== 'column' ">
                     <app-blocks [block]="subChild" (click)="handleClick($event, subChild)"></app-blocks>
                 </ng-container>
             </div>
@@ -91,19 +104,67 @@
                 <!-- Because This line was not working in the case of nested grid -->
                 <!-- <app-blocks [block]="child" (click)="handleClick($event, child)"></app-blocks> -->
                 <ng-container *ngIf="subChild.name === 'grid'">
-                    <app-nested [child]="subChild" [layout]="layout" [nestedElement]="'grid'" [isParentForm]="this.isParentForm"
-                        (nodeClicked)="onChildNodeClicked($event)"></app-nested>
+                    <app-nested [child]="subChild" [layout]="layout" [nestedElement]="'grid'"
+                        [isParentForm]="this.isParentForm" (nodeClicked)="onChildNodeClicked($event)"></app-nested>
                 </ng-container>
                 <ng-container *ngIf="subChild.name === 'container'">
-                    <app-nested [child]="subChild" [layout]="layout" [nestedElement]="'container'" [isParentForm]="this.isParentForm"
-                        (nodeClicked)="onChildNodeClicked($event)"></app-nested>
+                    <app-nested [child]="subChild" [layout]="layout" [nestedElement]="'container'"
+                        [isParentForm]="this.isParentForm" (nodeClicked)="onChildNodeClicked($event)"></app-nested>
                 </ng-container>
                 <ng-container *ngIf="subChild.name === 'row'">
-                    <app-nested [child]="subChild" [layout]="layout" [nestedElement]="'row'" [isParentForm]="this.isParentForm"
-                        (nodeClicked)="onChildNodeClicked($event)"></app-nested>
+                    <app-nested [child]="subChild" [layout]="layout" [nestedElement]="'row'"
+                        [isParentForm]="this.isParentForm" (nodeClicked)="onChildNodeClicked($event)"></app-nested>
                 </ng-container>
-                <ng-container *ngIf="subChild.name !== 'row' && subChild.name !== 'container' && subChild.name !== 'grid' ">
+                <ng-container *ngIf="subChild.name === 'column'">
+                    <app-nested [child]="subChild" [layout]="layout" [nestedElement]="'column'"
+                        [isParentForm]="this.isParentForm" (nodeClicked)="onChildNodeClicked($event)"></app-nested>
+                </ng-container>
+                <ng-container
+                    *ngIf="subChild.name !== 'row' && subChild.name !== 'container' && subChild.name !== 'grid' && subChild.name !== 'column' ">
                     <app-blocks [block]="subChild" (click)="handleClick($event, subChild)"></app-blocks>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="nestedElement == 'column'" style="height: -webkit-fill-available;">
+    <div (dndDrop)="onDrop($event, child.children)" style="height: -webkit-fill-available;"
+        class="name justify-center  gap-{{child.data.gap}} flex flex-col items-{{child.data.hAlignment}} "
+        [ngStyle]="{'margin-top': child.data.mt+'px' ,'margin-bottom': child.data.mb+'px' , 'margin-left':child.data.ml+'px', 'margin-right':child.data.mr+'px',
+        'padding-top': (child.children && child.children.length > 0 ? child.data?.pt : 32) + 'px',
+        'padding-bottom': (child.children && child.children.length > 0 ? child.data?.pb : 32) + 'px',
+        'padding-left': (child.children && child.children.length > 0 ? child.data?.pl : 32) + 'px',
+         'padding-right': (child.children && child.children.length > 0 ? child.data?.pr : 32) + 'px',
+         'justify-content': child.data.alignment
+     }" dndDropzone dndEffectAllowed="copyMove" (click)="handleClick($event, child)"
+        [ngClass]="{'p-8':  (!this.child.children || this.child.children.length === 0) }">
+        <div class=" dndPlaceholder h-16 border bg-blue-400 bg-opacity-25" dndPlaceholderRef>
+        </div>
+        <div *ngFor="let item of child.children" [dndDraggable]="item"
+            (dndCanceled)="onDragged(item, child.children!, 'none')"
+            (dndCopied)="onDragged(item, child.children!,'move')" (dndLinked)="onDragged(item, child.children!, 'link')"
+            (dndMoved)="onDragged(item, child.children!, 'move')" class="">
+            <div [ngClass]="{'border border-dashed border-indigo-300': this.isParentForm== false}"
+                class="draggable-item  cursor-pointer relative overflow-x: auto;">
+                <ng-container *ngIf="item.name === 'row'">
+                    <app-nested [child]="item" [layout]="layout" [nestedElement]="'row'"
+                        [isParentForm]="this.isParentForm" (nodeClicked)="onChildNodeClicked($event)"></app-nested>
+                </ng-container>
+                <ng-container *ngIf="item.name === 'column'">
+                    <app-nested [child]="item" [layout]="layout" [nestedElement]="'column'"
+                        [isParentForm]="this.isParentForm" (nodeClicked)="onChildNodeClicked($event)"></app-nested>
+                </ng-container>
+                <ng-container *ngIf="item.name === 'container'">
+                    <app-nested [child]="item" [layout]="layout" [nestedElement]="'container'"
+                        [isParentForm]="this.isParentForm" (nodeClicked)="onChildNodeClicked($event)"></app-nested>
+                </ng-container>
+                <ng-container *ngIf="item.name === 'grid'">
+                    <app-nested [child]="item" [layout]="layout" [nestedElement]="'grid'"
+                        [isParentForm]="this.isParentForm" (nodeClicked)="onChildNodeClicked($event)"></app-nested>
+                </ng-container>
+                <ng-container *ngIf="item.name !== 'row' && item.name !== 'container' && item.name !== 'grid' && item.name !== 'column' ">
+                    <app-blocks [block]="item" (click)="handleClick($event, item)"></app-blocks>
                 </ng-container>
             </div>
         </div>

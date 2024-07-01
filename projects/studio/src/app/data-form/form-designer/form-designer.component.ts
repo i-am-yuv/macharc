@@ -132,7 +132,7 @@ export class FormDesignerComponent implements OnInit {
       handle: false,
       data: {
         label: 'Input Label', labelFont: '14', labelWeight: '400', labelColor: '#000000',
-        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
+        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0' ,alignment: 'start'
       },
       icon: 'assets/checkBox.svg'
     },
@@ -143,7 +143,7 @@ export class FormDesignerComponent implements OnInit {
       disable: false,
       handle: false,
       data: {
-        label: 'Input Label', labelFont: '14', labelWeight: '400', labelColor: '#000000',
+        label: 'Input Label', labelFont: '14', labelWeight: '400', labelColor: '#000000',alignment: 'start',
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
       },
       icon: 'assets/Radio-button_N.svg'
@@ -157,7 +157,7 @@ export class FormDesignerComponent implements OnInit {
       handle: false,
       data: {
         label: 'Input Label', labelFont: '14', labelWeight: '400', labelColor: '#000000',
-        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
+        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0',alignment: 'start'
       },
       icon: 'assets/toggleOn.svg'
     },
@@ -193,7 +193,7 @@ export class FormDesignerComponent implements OnInit {
       name: 'container',
       content: 'Container',
       data: {
-        width: '100', height: '100', bgColor: '#f1f3f6', gap: '0', columns: '2', alignment: 'start', vAlignment: 'center',
+        width: '100', columns:'2', height: '100', bgColor: '#f1f3f6', gap: '0', alignment: 'start', vAlignment: 'start',
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0', bgImage: '', borderWidth: '0', borderColor: '#FFFFFF', borderRadius: '0'
         , shadow: 'none'
       },
@@ -222,13 +222,26 @@ export class FormDesignerComponent implements OnInit {
       content: 'Row',
       data: {
         width: 'auto', height: 'auto', gap: '0', alignment: 'start', vAlignment: 'center',
-        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0', startSpacing: '0', endSpacing: '0'
+        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
       },
       effectAllowed: 'copy',
       disable: false,
       handle: false,
       children: [],
       icon: 'assets/row_N.svg'
+    },
+    {
+      name: 'column',
+      content: 'Column',
+      data: {
+        width: 'auto', height: 'auto', alignment: 'center', hAlignment: 'center', gap:'0',
+        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
+      },
+      effectAllowed: 'copy',
+      disable: false,
+      handle: false,
+      children: [],
+      icon: 'assets/columnIcon.svg'
     },
     {
       name: 'divider',
