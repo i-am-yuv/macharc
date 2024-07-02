@@ -2,6 +2,10 @@ import { HttpClient, HttpEventType } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { DataForm } from '../data-form';
 import { MessageService } from '@splenta/vezo';
+import { Clipboard } from '@angular/cdk/clipboard';
+import { DataFormService } from '../data-form.service';
+import { FormBuilder, FormGroup, MinLengthValidator, MinValidator, Validators } from '@angular/forms';
+
 
 @Component({
   selector: 'app-media-manager',
@@ -11,9 +15,31 @@ import { MessageService } from '@splenta/vezo';
 export class MediaManagerComponent {
 
   times: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  folders = [
+    {
+      'id': '1',
+      'name': 'Macharc'
+    },
+    {
+      'id': '2',
+      'name': 'Neomaxer'
+    }
+  ]
 
-  constructor(private http: HttpClient , private msgService: MessageService) {
-   }
+  activeFolder: number = 0;
+  formData: DataForm = {};
+  form!: FormGroup<any>;
+  visible: boolean = false;
+  currentView: string = 'grid';
+
+
+  constructor(private http: HttpClient, private msgService: MessageService,
+    private clipboard: Clipboard, private formService: DataFormService, private fb: FormBuilder) {
+    this.form = this.fb.group({
+      id: '',
+      folderName: [''],
+    })
+  }
 
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
@@ -43,7 +69,7 @@ export class MediaManagerComponent {
   }
 
   // Logic of Drag and drop image
-  isDragging !:boolean ;
+  isDragging !: boolean;
   imageSrc: any;
 
   onDragOver(event: DragEvent): void {
@@ -105,30 +131,74 @@ export class MediaManagerComponent {
     //     console.error('Error:', error);
     //   });
   }
-  
 
-  isNavigationVisible : boolean = false ;
-  hoveredIndex : number = -1 ;
-  onHoverStart( itemNo : any )
-  {
-       this.hoveredIndex = itemNo - 1 ;
+
+  isNavigationVisible: boolean = false;
+  hoveredIndex: number = -1;
+  onHoverStart(itemNo: any) {
+    this.hoveredIndex = itemNo - 1;
   }
-  onHoverEnd()
-  {
-    this.isNavigationVisible  = false ;
-    this.hoveredIndex = -1 ;
+  onHoverEnd() {
+    this.isNavigationVisible = false;
+    this.hoveredIndex = -1;
   }
 
-  openImageInNewTab(imageUrl : string): void {
+  openImageInNewTab(imageUrl: string): void {
     const url = '';
     window.open(imageUrl, '_blank');
   }
 
-  copyToClipbord( imageUrl:string )
-  {
-     // Copying to clip-bord code starts
-     //...
-     // Copying to clip-bord code Ends
-     this.msgService.add({ severity: 'success', summary: 'Copied', detail: 'URL path copied successfully' });
+  copyToClipbord(imageUrl: string) {
+    // Copying to clip-bord code starts
+    this.clipboard.copy(imageUrl);
+    // Copying to clip-bord code Ends
+    this.msgService.add({ severity: 'success', summary: 'Copied', detail: 'URL path copied successfully' });
   }
+
+  newFolder() {
+    this.form.reset();
+    this.visible = true;
+    //this.folders.push(this.folders.length);
+  }
+
+  activeFolderSelect(index: any) {
+    this.activeFolder = index;
+  }
+
+  saveData() {
+    //this.folders.push(this.folders.length);
+    if (this.form.value.folderName == '' || this.form.value.folderName == null) {
+      this.msgService.add({ severity: 'error', summary: 'Error', detail: 'Please enter the folder name' });
+    }
+    else {
+      var folder = {
+        'id': this.folders.length + '',
+        'name': this.form.value.folderName + ''
+      };
+      this.folders.push(folder);
+      this.visible = false;
+    }
+
+  }
+
+  people = [
+    { name: 'John Doe', age: 30, city: 'New York' },
+    { name: 'Jane Smith', age: 25, city: 'Los Angeles' },
+    { name: 'Mike Johnson', age: 35, city: 'Chicago' },
+    { name: 'Mike Johnson', age: 35, city: 'Chicago' },
+    { name: 'Mike Johnson', age: 35, city: 'Chicago' },
+    { name: 'Mike Johnson', age: 35, city: 'Chicago' },
+    { name: 'Mike Johnson', age: 35, city: 'Chicago' },
+    { name: 'Mike Johnson', age: 35, city: 'Chicago' }
+  ];
+
+  getBg(clickedView: string) {
+    if (clickedView === this.currentView) {
+      return '#D9D9D9';
+    }
+    else {
+      return '#F5F6F9';
+    }
+  }
+
 }

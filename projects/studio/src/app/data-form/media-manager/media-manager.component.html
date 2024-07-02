@@ -1,4 +1,4 @@
-<div class="overflow-hidden" style="background-color: #EEF2FF; height: 100%;">
+<div class="" style=" height: 100%;">
     <!-- Header bar Code -->
     <div class="flex items-center border-b" style="width:auto; height: 55px; background-color: #FFFFFF;">
 
@@ -36,12 +36,14 @@
                 </div>
                 <div class="w-2/12">
                     <div class="flex justify-center">
-                        <div class="flex items-center justify-center cursor-pointer"
-                            style="background-color: #F5F6F9; border-width: 1px; border-color: #E9E9FB; height: 32px; width: 32px; border-top-left-radius: 4px; border-bottom-left-radius: 4px;">
-                            <img src="assets/list_new.svg" style="width: 24px; height: 24px;" />
+                        <div class="flex items-center justify-center cursor-pointer" (click)="this.currentView = 'list'"
+                            [ngStyle]="{'background-color': getBg('list')}"
+                            style=" border-width: 1px; border-color: #E9E9FB; height: 32px; width: 32px; border-top-left-radius: 4px; border-bottom-left-radius: 4px;">
+                            <img src="assets/listViewNew.svg" style="width: 16px; height: 16px;" />
                         </div>
-                        <div class="flex items-center justify-center cursor-pointer"
-                            style="background-color: #F5F6F9; border-width: 1px; border-color: #E9E9FB; height: 32px; width: 32px; border-top-right-radius: 4px; border-bottom-right-radius: 4px;">
+                        <div class="flex items-center justify-center cursor-pointer" (click)="this.currentView = 'grid'"
+                            [ngStyle]="{'background-color': getBg('grid')}"
+                            style=" border-width: 1px; border-color: #E9E9FB; height: 32px; width: 32px; border-top-right-radius: 4px; border-bottom-right-radius: 4px;">
                             <img src="assets/grid_new1.svg" style="width: 16px; height: 16px;" />
                         </div>
                     </div>
@@ -51,63 +53,164 @@
 
 
         </div>
-        <div class="w-3/12 flex justify-center items-center">
-            <div class="flex justify-center items-center gap-2 cursor-pointer" (click)="triggerFileInput()"
+        <div class="w-3/12 flex justify-end items-center mr-12 gap-2 cursor-pointer" (click)="newFolder()">
+            <!-- <div class="flex justify-center items-center cursor-pointer" 
                 style="width: 102px; height: 32px; background-color: #6366F1; border-radius: 4px; border-width: 1px;">
-                <img src="assets/upload_vector.svg" style="height: 16px; width: 16px;" />
-                <div style="font-size: 14px; font-weight: 500; color: #FFFFFF;">Upload</div>
-            </div>
-            <input type="file" id="fileInput" style="display: none;" (change)="onFileSelected($event)" />
+                <div style="font-size: 14px; font-weight: 500; color: #FFFFFF; ">Add Folder</div>
+            </div> -->
+            <img src="assets/icons8_plus.png" style="width: 18px ;">
+            <div style="font-size: 14px; font-weight: 400; color: #6D6D6D;">Add Folder</div>
         </div>
     </div>
 
-    <!-- Uploaded Images Showen here -->
-    <div class="overflow-y-auto" style="height: calc(100% - 55px);">
-        <div [ngClass]="{'drop-zone backdrop-blur-sm bg-white/30':isDragging}" (dragover)="onDragOver($event)"
-            (dragleave)="onDragLeave($event)" (drop)="onDrop($event)">
-            <input type="file" #fileInput (change)="onFileSelected($event)" hidden
-                accept="image/png, image/jpeg, image/svg+xml">
-            <button (click)="fileInput.click()"></button>
-            <div style="margin: 40px;">
-                <div>Drag and drop anywhere here to upload</div>
-                <div class="flex flex-wrap gap-6 justify-start" style="justify-items: center;">
-                    <div *ngFor="let time of times; let i = index">
-                        <div (mouseenter)="onHoverStart(time)" (mouseleave)="onHoverEnd()"
-                            [ngClass]="{'currentPick': this.hoveredIndex == i}"
-                            style="background-color: #FFFFFF; width: 232px; height:272px ; border-radius: 8px;  padding: 12px;">
-                            <div class="flex justify-center items-center p-4"
-                                style="width: auto; height:188px ; border-radius: 8px; border-width: 1px; border-color:#000000;">
-                                <img *ngIf="i%2==0"
-                                    src="https://storage.googleapis.com/flutterflow-enterprise-india.appspot.com/projects/h-i-and-l-i-w33dc0/assets/8nbuda5ca8cl/Rectangle_26479_(1).png" />
-                                <img *ngIf="i%2!=0"
-                                    src="https://storage.googleapis.com/flutterflow-enterprise-india.appspot.com/projects/h-i-and-l-i-w33dc0/assets/l280cbr2nimh/Rectangle_26480_(2).png" />
+    <div class="flex w-full overflow-auto" style="height: calc(100% - 55px);">
+
+        <div class="w-2/12 overflow-auto border-r" style="background-color: #FFFFFF;">
+            <!-- All Folder Visible Here -->
+            <div>
+                <div *ngFor="let oneFolder of folders ; let i = index">
+                    <div class="m-2 flex justify-start gap-2 p-2 cursor-pointer "
+                        [ngClass]="{'bg-indigo-50': this.activeFolder == i}" (click)="activeFolderSelect(i)">
+                        <img src="assets/folderSVG.svg" style="width: 24px; height: 24px;" />
+                        <div style="font-size: 14px; font-weight: 400; color: #2e2e2e; ">{{oneFolder.name}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-10/12  overflow-y-scroll" style="background-color: #EEF2FF;">
+            <!-- Uploaded Images Showen here -->
+            <div class="overflow-y-auto">
+                <div [ngClass]="{'drop-zone backdrop-blur-sm bg-white/30':isDragging}" (dragover)="onDragOver($event)"
+                    (dragleave)="onDragLeave($event)" (drop)="onDrop($event)">
+                    <input type="file" #fileInput (change)="onFileSelected($event)" hidden
+                        accept="image/png, image/jpeg, image/svg+xml">
+                    <button (click)="fileInput.click()"></button>
+                    <div>
+                        <div class="flex justify-between items-center mx-8">
+                            <div class="" style="font-size: 14px; font-weight: 500; color:#2e2e2e">
+                                Drag And Drop Anywhere Here To Upload The Assets.
                             </div>
-                            <div class="flex justify-between items-center mt-4">
-                                <div style="display: flex; flex-direction: column;" class="gap-1">
-                                    <div style="font-size: 12px; font-weight: 500; color: #4F46E5;">Img123456.jpg
-                                    </div>
-                                    <div style="font-size: 12px; font-weight: 500; color: #B0B0B0;">Uploaded June
-                                        25, 2024
-                                    </div>
+                            <div>
+                                <div class="flex justify-center items-center gap-2 cursor-pointer"
+                                    (click)="triggerFileInput()"
+                                    style="width: 102px; height: 32px; background-color: #6366F1; border-radius: 4px; border-width: 1px;">
+                                    <img src="assets/upload_vector.svg" style="height: 16px; width: 16px;" />
+                                    <div style="font-size: 14px; font-weight: 500; color: #FFFFFF;">Upload</div>
                                 </div>
-                                <div class="flex justify-center gap-2">
-                                    <img *ngIf="this.hoveredIndex == i" src="assets/copy-clipboard.svg"
-                                        style="width: 20px; height: 20px; cursor: pointer;" (click)="copyToClipbord(i%2==0?'https://storage.googleapis.com/flutterflow-enterprise-india.appspot.com/projects/h-i-and-l-i-w33dc0/assets/8nbuda5ca8cl/Rectangle_26479_(1).png' : 'https://storage.googleapis.com/flutterflow-enterprise-india.appspot.com/projects/h-i-and-l-i-w33dc0/assets/l280cbr2nimh/Rectangle_26480_(2).png')" />
-                                    <div class="flex justify-center items-center mr-2 pl-1  pb-1 cursor-pointer"
-                                        *ngIf="this.hoveredIndex == i"
-                                        (click)="openImageInNewTab( i%2==0?'https://storage.googleapis.com/flutterflow-enterprise-india.appspot.com/projects/h-i-and-l-i-w33dc0/assets/8nbuda5ca8cl/Rectangle_26479_(1).png' : 'https://storage.googleapis.com/flutterflow-enterprise-india.appspot.com/projects/h-i-and-l-i-w33dc0/assets/l280cbr2nimh/Rectangle_26480_(2).png')"
-                                        style="width: 24px; height: 24px; background-color: #4F46E5; border-radius: 4px;">
-                                        <img style="width: 18px; height: 18px;" src="assets/Group 1171276934.svg" />
+                                <input type="file" id="fileInput" style="display: none;"
+                                    (change)="onFileSelected($event)" />
+                            </div>
+                        </div>
+
+                        <!-- Code for the Grid View Assets -->
+                        <div *ngIf="this.currentView== 'grid'" class="flex flex-wrap gap-6 justify-start mx-8 my-6"
+                            style="justify-items: center;">
+                            <div *ngFor="let time of times; let i = index">
+                                <div (mouseenter)="onHoverStart(time)" (mouseleave)="onHoverEnd()"
+                                    [ngClass]="{'currentPick': this.hoveredIndex == i}"
+                                    style="background-color: #FFFFFF; width: 232px; height:272px ; border-radius: 8px;  padding: 12px;">
+                                    <div class="flex justify-center items-center p-4"
+                                        style="width: auto; height:188px ; border-radius: 8px; border-width: 1px; border-color:#000000;">
+                                        <img *ngIf="i%2==0"
+                                            src="https://storage.googleapis.com/flutterflow-enterprise-india.appspot.com/projects/h-i-and-l-i-w33dc0/assets/8nbuda5ca8cl/Rectangle_26479_(1).png" />
+                                        <img *ngIf="i%2!=0"
+                                            src="https://storage.googleapis.com/flutterflow-enterprise-india.appspot.com/projects/h-i-and-l-i-w33dc0/assets/l280cbr2nimh/Rectangle_26480_(2).png" />
+                                    </div>
+                                    <div class="flex justify-between items-center mt-4">
+                                        <div style="display: flex; flex-direction: column;" class="gap-1">
+                                            <div style="font-size: 12px; font-weight: 500; color: #4F46E5;">
+                                                Img123456.jpg
+                                            </div>
+                                            <div style="font-size: 12px; font-weight: 500; color: #B0B0B0;">Uploaded
+                                                June
+                                                25, 2024
+                                            </div>
+                                        </div>
+                                        <div class="flex justify-center gap-2">
+                                            <img *ngIf="this.hoveredIndex == i" src="assets/copy-clipboard.svg"
+                                                style="width: 20px; height: 20px; cursor: pointer;"
+                                                (click)="copyToClipbord(i%2==0?'https://storage.googleapis.com/flutterflow-enterprise-india.appspot.com/projects/h-i-and-l-i-w33dc0/assets/8nbuda5ca8cl/Rectangle_26479_(1).png' : 'https://storage.googleapis.com/flutterflow-enterprise-india.appspot.com/projects/h-i-and-l-i-w33dc0/assets/l280cbr2nimh/Rectangle_26480_(2).png')" />
+                                            <div class="flex justify-center items-center mr-2 pl-1  pb-1 cursor-pointer"
+                                                *ngIf="this.hoveredIndex == i"
+                                                (click)="openImageInNewTab( i%2==0?'https://storage.googleapis.com/flutterflow-enterprise-india.appspot.com/projects/h-i-and-l-i-w33dc0/assets/8nbuda5ca8cl/Rectangle_26479_(1).png' : 'https://storage.googleapis.com/flutterflow-enterprise-india.appspot.com/projects/h-i-and-l-i-w33dc0/assets/l280cbr2nimh/Rectangle_26480_(2).png')"
+                                                style="width: 24px; height: 24px; background-color: #4F46E5; border-radius: 4px;">
+                                                <img style="width: 18px; height: 18px;"
+                                                    src="assets/Group 1171276934.svg" />
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <!-- Code for the list View Assets -->
+                        <div *ngIf="this.currentView== 'list'" class="mx-8 my-6">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th style="border-top-left-radius: 12px !important;">NAME</th>
+                                        <th>FILE NAME</th>
+                                        <th>FILE TYPE</th>
+                                        <th>DATE</th>
+                                        <th style="border-top-right-radius: 12px !important;"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let person of people">
+                                        <td>
+                                            <div class="flex justify-center gap-4 items-center">
+                                                <div class="flex justify-center items-center"
+                                                    style="width: 40px; height: 40px; background-color: #4F46E5; border-radius: 50%;">
+                                                    <img src="assets/defaultListImage.svg"
+                                                        style="width: 16px; height: 16px;" />
+                                                </div>
+                                                <div style="font-size: 14px; font-weight: 600; color: #101828;">
+                                                    Image123456.jpg</div>
+                                            </div>
+                                        </td>
+                                        <td>45kb</td>
+                                        <td>JPG Image</td>
+                                        <td>June 24, 2024</td>
+                                        <td>
+                                            <div class="flex justify-center gap-4">
+                                                <img  src="assets/copy-clipboard.svg"
+                                                    style="width: 20px; height: 20px; cursor: pointer;"
+                                                    (click)="copyToClipbord('https://storage.googleapis.com/flutterflow-enterprise-india.appspot.com/projects/h-i-and-l-i-w33dc0/assets/8nbuda5ca8cl/Rectangle_26479_(1).png')"/>
+                                                <div class="flex justify-center items-center mr-2 pl-1  pb-1 cursor-pointer"
+                                                    (click)="openImageInNewTab('https://storage.googleapis.com/flutterflow-enterprise-india.appspot.com/projects/h-i-and-l-i-w33dc0/assets/8nbuda5ca8cl/Rectangle_26479_(1).png')"
+                                                    style="width: 24px; height: 24px; background-color: #4F46E5; border-radius: 4px;">
+                                                    <img style="width: 18px; height: 18px;"
+                                                        src="assets/Group 1171276934.svg" />
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
+                    <!-- <img *ngIf="imageSrc" [src]="imageSrc" alt="Uploaded Image" class="preview"> -->
                 </div>
             </div>
-            <!-- <img *ngIf="imageSrc" [src]="imageSrc" alt="Uploaded Image" class="preview"> -->
         </div>
 
     </div>
+
+    <!-- Adding new Folder PopUp Form -->
+    <vezo-modal [(visible)]="visible">
+        <ng-template vTemplate="header">New Asset Folder</ng-template>
+        <ng-template vTemplate="content">
+            <form [formGroup]="form">
+                <vezo-input label="Folder Name" formControlName="folderName"></vezo-input>
+                <error-message [controlName]="form.controls['folderName']"></error-message>
+            </form>
+        </ng-template>
+        <ng-template vTemplate="footer">
+            <div class="text-right">
+                <vezo-button label="Save" [disabled]="!form.valid" (click)="saveData()"></vezo-button>
+            </div>
+        </ng-template>
+    </vezo-modal>
+
 </div>
 <vezo-toast></vezo-toast>
