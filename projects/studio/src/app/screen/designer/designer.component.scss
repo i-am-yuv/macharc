@@ -10,3 +10,33 @@
         overflow-x: auto;
     }
 }
+
+
+.second-child {
+    position: -webkit-sticky;
+    /* For Safari */
+    position: sticky;
+    top: 0;
+    /* Adjust as needed */
+}
+
+.parent {
+    flex-grow: 1;
+    overflow: auto;
+    position: relative;
+     background-color: #f5feff;
+     overflow-x:scroll;
+}
+
+.child {
+    // position: absolute;
+
+     background-color: rgb(255, 255, 255);
+    transition: transform 0.3s ease;
+    /* Smooth transition for scaling */
+    transform-origin: top center;
+    padding-bottom: 100px; // for the extra space to drag and drop
+    /* Keep scaling from the top-left corner */
+    // transform-origin: top center;
+    // transform: translateX(-50%);
+}

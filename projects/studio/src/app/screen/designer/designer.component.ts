@@ -109,7 +109,7 @@ export class DesignerComponent implements OnInit {
       handle: false,
       data: {
         label: 'Input Label', labelFont: '14', labelWeight: '400', labelColor: '#000000',
-        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
+        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0' ,alignment: 'start'
       },
       icon: 'assets/checkBox.svg'
     },
@@ -120,10 +120,10 @@ export class DesignerComponent implements OnInit {
       disable: false,
       handle: false,
       data: {
-        label: 'Input Label', labelFont: '14', labelWeight: '400', labelColor: '#000000',
+        label: 'Input Label', labelFont: '14', labelWeight: '400', labelColor: '#000000',alignment: 'start',
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
       },
-      icon: 'assets/checkBox.svg'
+      icon: 'assets/Radio-button_N.svg'
 
     },
     {
@@ -134,7 +134,7 @@ export class DesignerComponent implements OnInit {
       handle: false,
       data: {
         label: 'Input Label', labelFont: '14', labelWeight: '400', labelColor: '#000000',
-        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
+        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0',alignment: 'start'
       },
       icon: 'assets/toggleOn.svg'
     },
@@ -258,13 +258,26 @@ export class DesignerComponent implements OnInit {
       content: 'Row',
       data: {
         width: 'auto', height: 'auto', gap: '0', alignment: 'start', vAlignment: 'center',
-        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0', startSpacing: '0', endSpacing: '0'
+        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
       },
       effectAllowed: 'copy',
       disable: false,
       handle: false,
       children: [],
       icon: 'assets/row_N.svg'
+    },
+    {
+      name: 'column',
+      content: 'Column',
+      data: {
+        width: 'auto', height: 'auto', alignment: 'center', hAlignment: 'center', gap:'0',
+        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
+      },
+      effectAllowed: 'copy',
+      disable: false,
+      handle: false,
+      children: [],
+      icon: 'assets/columnIcon.svg'
     },
     {
       name: 'divider',
@@ -337,6 +350,7 @@ export class DesignerComponent implements OnInit {
   }
   public ngOnInit() {
     this.screenId = this.route.snapshot.paramMap.get('id');
+    this.updateChildStyles();
     this.loading = true;
     this.screenService.getData({ id: this.screenId }).then((res: any) => {
       console.log(res);
@@ -471,9 +485,20 @@ export class DesignerComponent implements OnInit {
     return this.mutiScreenView == false ? '#e7ecfd' : '#C7D2FE';
   }
 
-  changeScreen(screenURL: string) {
+  changeScreen(screenURL: string, screenName: string) {
     this.currentScreenView = screenURL;
     this.mutiScreenView = false;
+    if (screenName == 'mobile') {
+      this.childWidth = 360;
+    }
+    else if (screenName == 'tablet') {
+      this.childWidth = 1024;
+
+
+    } else if (screenName == 'desktop') {
+      this.childWidth = 1440;
+    }
+    this.resetZoom();
   }
 
   onItemReceived(item: any) {
@@ -506,12 +531,47 @@ export class DesignerComponent implements OnInit {
 
   filterList(list: DraggableItem[]): DraggableItem[] {
     return list.filter(item =>
-      item.name.toLowerCase().includes(this.searchValue.toLowerCase())
+      item.content.toLowerCase().includes(this.searchValue.toLowerCase())
     );
   }
 
   getList(originalList: DraggableItem[], filteredList: DraggableItem[]): DraggableItem[] {
     return this.searchValue.trim() === '' ? originalList : filteredList;
   }
+
+   //---------- Zoom and Screen Resize code from here -------------------//
+   @ViewChild('parent') parent !: ElementRef;
+
+   //childHeight = 500;
+   childWidth = 700; // giving default width as 700 to our component
+   zoom = 0.3;
+ 
+   get childStyles() {
+     return {
+       // height: `${this.childHeight}px`,
+       // height:'auto'+50,
+       width: `${this.childWidth? this.childWidth : 700}px`,
+       transform: `scale(${this.zoom})`,
+       transformOrigin: 'top center'
+     };
+   }
+ 
+   zoomIn() {
+     this.zoom = Math.min(this.zoom + 0.1, 3); // Maximum zoom level can be enable by user is given 300%
+   }
+ 
+   zoomOut() {
+     this.zoom = Math.max(this.zoom - 0.1, 0.1); // Minimum zoom level can be enable by user is given 10%
+   }
+ 
+   resetZoom() {
+     this.zoom = 0.3;
+   }
+ 
+   updateChildStyles() {
+     if (this.parent) {
+       this.parent.nativeElement.scrollTo(0, 0); // Resetting   scroll position to top-left
+     }
+   }
 
 }

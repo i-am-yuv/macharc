@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MessageService } from '@splenta/vezo';
 import { DropEffect, DndDropEvent, EffectAllowed } from 'ngx-drag-drop';

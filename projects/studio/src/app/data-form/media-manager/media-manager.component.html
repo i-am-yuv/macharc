@@ -1,7 +1,6 @@
 <div class="overflow-hidden" style="background-color: #EEF2FF; height: 100%;">
     <!-- Header bar Code -->
-    <div class="flex items-center"
-        style="width:auto; height: 55px; background-color: #FFFFFF; border-width: 0.5px; border-color: #4038CA;">
+    <div class="flex items-center border-b" style="width:auto; height: 55px; background-color: #FFFFFF;">
 
         <div class="w-5/12 flex justify-center items-center gap-4">
             <div style="font-size: 24px; font-weight: 600; line-height: 29.05px ; color: #000000">
@@ -70,10 +69,12 @@
                 accept="image/png, image/jpeg, image/svg+xml">
             <button (click)="fileInput.click()"></button>
             <div style="margin: 40px;">
+                <div>Drag and drop anywhere here to upload</div>
                 <div class="flex flex-wrap gap-6 justify-start" style="justify-items: center;">
                     <div *ngFor="let time of times; let i = index">
                         <div (mouseenter)="onHoverStart(time)" (mouseleave)="onHoverEnd()"
-                            style="background-color: #FFFFFF; width: 232px; height:272px ; border-radius: 8px; border-width: 3px; border-color:#ffffff; padding: 12px;">
+                            [ngClass]="{'currentPick': this.hoveredIndex == i}"
+                            style="background-color: #FFFFFF; width: 232px; height:272px ; border-radius: 8px;  padding: 12px;">
                             <div class="flex justify-center items-center p-4"
                                 style="width: auto; height:188px ; border-radius: 8px; border-width: 1px; border-color:#000000;">
                                 <img *ngIf="i%2==0"
@@ -90,7 +91,8 @@
                                     </div>
                                 </div>
                                 <div class="flex justify-center gap-2">
-                                    <img *ngIf="this.hoveredIndex == i" src="assets/copy-clipboard.svg" style="width: 20px; height: 20px; cursor: pointer;"/>
+                                    <img *ngIf="this.hoveredIndex == i" src="assets/copy-clipboard.svg"
+                                        style="width: 20px; height: 20px; cursor: pointer;" (click)="copyToClipbord(i%2==0?'https://storage.googleapis.com/flutterflow-enterprise-india.appspot.com/projects/h-i-and-l-i-w33dc0/assets/8nbuda5ca8cl/Rectangle_26479_(1).png' : 'https://storage.googleapis.com/flutterflow-enterprise-india.appspot.com/projects/h-i-and-l-i-w33dc0/assets/l280cbr2nimh/Rectangle_26480_(2).png')" />
                                     <div class="flex justify-center items-center mr-2 pl-1  pb-1 cursor-pointer"
                                         *ngIf="this.hoveredIndex == i"
                                         (click)="openImageInNewTab( i%2==0?'https://storage.googleapis.com/flutterflow-enterprise-india.appspot.com/projects/h-i-and-l-i-w33dc0/assets/8nbuda5ca8cl/Rectangle_26479_(1).png' : 'https://storage.googleapis.com/flutterflow-enterprise-india.appspot.com/projects/h-i-and-l-i-w33dc0/assets/l280cbr2nimh/Rectangle_26480_(2).png')"
@@ -98,7 +100,6 @@
                                         <img style="width: 18px; height: 18px;" src="assets/Group 1171276934.svg" />
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -108,3 +109,5 @@
         </div>
 
     </div>
+</div>
+<vezo-toast></vezo-toast>

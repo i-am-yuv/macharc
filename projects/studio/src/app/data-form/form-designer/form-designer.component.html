@@ -69,6 +69,7 @@
             </div>
         </div>
     </div>
+
     <!-- top bar with microservie, form , Save and Back button -->
     <div class="flex justify-center items-center border-b" style="background-color: #EEF2FF;">
         <div class="w-full flex p-2">
@@ -77,7 +78,8 @@
                     <div class="flex w-full">
                         <div class="flex-none w-2/5">
                             <div class="text-center" style="color: #4038CA; font-size: 13px;font-weight: 400;">
-                                MICROSERVICES: <span>{{formData.collection?.microService?.microServiceCode | uppercase
+                                MICROSERVICES: <span>{{formData.collection?.microService?.microServiceCode |
+                                    uppercase
                                     }}</span>
                             </div>
                         </div>
@@ -107,9 +109,9 @@
 <div class="flex justify-start w-full">
 
     <div [ngClass]="{'w-8/12 ' : this.rightPanelExpanded == true,'w-11/12' : this.rightPanelExpanded == false }"
-        class="parent " #parent>
+        class="parent " #parent style="display: flex; flex-direction: column; align-items: center; ">
         <!-- Zoom in and out Code -->
-        <div class="flex justify-start items-center gap-4 m-3"
+        <div class="flex justify-start items-center gap-4 m-3 w-full"
             style="position: sticky;z-index: 100;  top: 0;left: 0; padding: 10px;">
             <div class="flex gap-2 justify-center items-center">
                 <button (click)="zoomIn()">
@@ -122,7 +124,7 @@
             <div>Zoom: {{ zoom * 100 | number:'1.2-2' }}%</div>
         </div>
         <div [class.horizontal]="layout.dndHorizontal" [dndHorizontal]="layout.dndHorizontal"
-            (dndDrop)="onDrop($event, draggableListRight)" class=" child dndList m-8 name border-2 border-dotted h-full  border-cyan-600  overflow-x: auto;
+            (dndDrop)="onDrop($event, draggableListRight)" class=" child dndList m-8 name border-2 border-dotted h-full  border-cyan-600 overflow-x: auto;
         white-space: nowrap; " dndDropzone dndEffectAllowed="copyMove" [ngStyle]="childStyles">
             <div class="dndPlaceholder h-16 border bg-blue-400 bg-opacity-25" dndPlaceholderRef>
             </div>
@@ -183,9 +185,10 @@
 
                     <ng-container *ngIf="item.name === 'container'">
                         <div (dndDrop)="onDrop($event, item.children)"
-                            class="name gap-{{item.data.gap}} grid grid-cols-{{item.data.columns}}  flex justify-{{item.data.alignment}} items-{{item.data.vAlignment}} shadow-{{item.data.shadow}}"
+                            class="name gap-{{item.data.gap}} grid grid-cols-{{item.data.columns}}  items-{{item.data.vAlignment}} shadow-{{item.data.shadow}}"
                             [ngStyle]="{ 'width' : item.data?.width ? item.data?.width+'px':'auto' ,'height' :item.data?.height? item.data?.height+'px':'auto' , 'background-color' : item.data?.bgColor ,
                             'background-image': 'url(' + item.data?.bgImage + ')' , 'background-size': 'cover', 'background-position':'center' , 'border-width': item.data.borderWidth+'px' ,'border-radius': item.data.borderRadius+'px' , 'border-color': item.data.borderColor,
+                            'justify-items': item.data.alignment,
                             'margin-top': item.data?.mt+'px', 'margin-bottom': item.data?.mb+'px', 'margin-left': item.data?.ml+'px', 'margin-right': item.data?.mr+'px' ,
                             'padding-top': item.data?.pt+'px','padding-bottom': item.data?.pb+'px', 'padding-left': item.data?.pl+'px', 'padding-right': item.data?.pr+'px'}"
                             [ngClass]="{'p-8':  (!this.item.children || this.item.children.length === 0) }" dndDropzone
@@ -196,7 +199,7 @@
                                 (dndCanceled)="onDragged(child, item.children!, 'none')"
                                 (dndCopied)="onDragged(child, item.children!, 'move'  )"
                                 (dndLinked)="onDragged(child, item.children!, 'link'  )"
-                                (dndMoved)="onDragged(child, item.children!, 'move')" >
+                                (dndMoved)="onDragged(child, item.children!, 'move')">
 
                                 <div class="border border-dashed border-indigo-300 ">
                                     <!-- Because This line was not working in the case of nested grid -->
@@ -211,7 +214,7 @@
                                         <app-nested [child]="child" [layout]="layout" [nestedElement]="'row'"
                                             (nodeClicked)="onItemReceived($event)"></app-nested>
                                     </ng-container>
-                                    <ng-container *ngIf="child.name === 'column'" >
+                                    <ng-container *ngIf="child.name === 'column'">
                                         <app-nested [child]="child" [layout]="layout" [nestedElement]="'column'"
                                             (nodeClicked)="onItemReceived($event)"></app-nested>
                                     </ng-container>
@@ -330,7 +333,7 @@
         </div>
     </div>
     <div [ngClass]="{'w-4/12 overflow-y-scroll' : this.rightPanelExpanded == true}" class="h-[600px] "
-        style=" position: -webkit-sticky; /* For Safari */ position: sticky;top: 0;" appendTo="body">
+        style="position: -webkit-sticky; position: sticky; top: 0; ">
         <div *ngIf="this.rightPanelExpanded">
             <div class="flex justify-end align-top">
                 <div class="w-1/12">
@@ -477,7 +480,8 @@
                                         (nodeClicked)="onItemReceived($event)"></app-widget-tree-node>
                                 </div>
                                 <div *ngIf="widgetTree.length == 0 ">
-                                    <div style="font-size: 14px; font-weight: 500; color:#2e2e2e">No Widget Tree Available.</div>
+                                    <div style="font-size: 14px; font-weight: 500; color:#2e2e2e">No Widget Tree
+                                        Available.</div>
                                 </div>
                             </div>
                         </div>
@@ -490,7 +494,8 @@
                         <div class="min-h-[24rem]">
                             <app-properties [fields]="fields" [props]="activeItem" [collections]="collections"
                                 (deleteProp)="deleteActiveItem($event)"></app-properties>
-                            <div class="text-center m-8" *ngIf="!activeItem">Drag and drop from blocks to center panel
+                            <div class="text-center m-8" *ngIf="!activeItem">Drag and drop from blocks to center
+                                panel
                                 to
                                 create
                                 form. </div>

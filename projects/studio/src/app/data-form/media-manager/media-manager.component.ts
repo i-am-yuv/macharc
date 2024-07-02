@@ -1,6 +1,7 @@
 import { HttpClient, HttpEventType } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { DataForm } from '../data-form';
+import { MessageService } from '@splenta/vezo';
 
 @Component({
   selector: 'app-media-manager',
@@ -11,7 +12,7 @@ export class MediaManagerComponent {
 
   times: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient , private msgService: MessageService) {
    }
 
   onFileSelected(event: any) {
@@ -121,5 +122,13 @@ export class MediaManagerComponent {
   openImageInNewTab(imageUrl : string): void {
     const url = '';
     window.open(imageUrl, '_blank');
+  }
+
+  copyToClipbord( imageUrl:string )
+  {
+     // Copying to clip-bord code starts
+     //...
+     // Copying to clip-bord code Ends
+     this.msgService.add({ severity: 'success', summary: 'Copied', detail: 'URL path copied successfully' });
   }
 }
