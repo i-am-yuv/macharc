@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MessageService } from '@splenta/vezo';
 import { DropEffect, DndDropEvent, EffectAllowed } from 'ngx-drag-drop';
@@ -132,7 +132,7 @@ export class FormDesignerComponent implements OnInit {
       handle: false,
       data: {
         label: 'Input Label', labelFont: '14', labelWeight: '400', labelColor: '#000000',
-        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0' ,alignment: 'start'
+        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0', alignment: 'start'
       },
       icon: 'assets/checkBox.svg'
     },
@@ -143,7 +143,7 @@ export class FormDesignerComponent implements OnInit {
       disable: false,
       handle: false,
       data: {
-        label: 'Input Label', labelFont: '14', labelWeight: '400', labelColor: '#000000',alignment: 'start',
+        label: 'Input Label', labelFont: '14', labelWeight: '400', labelColor: '#000000', alignment: 'start',
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
       },
       icon: 'assets/Radio-button_N.svg'
@@ -157,7 +157,7 @@ export class FormDesignerComponent implements OnInit {
       handle: false,
       data: {
         label: 'Input Label', labelFont: '14', labelWeight: '400', labelColor: '#000000',
-        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0',alignment: 'start'
+        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0', alignment: 'start'
       },
       icon: 'assets/toggleOn.svg'
     },
@@ -193,7 +193,7 @@ export class FormDesignerComponent implements OnInit {
       name: 'container',
       content: 'Container',
       data: {
-        width: '100', columns:'2', height: '100', bgColor: '#f1f3f6', gap: '0', alignment: 'start', vAlignment: 'start',
+        width: '100', columns: '2', height: '100', bgColor: '#f1f3f6', gap: '0', alignment: 'start', vAlignment: 'start',
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0', bgImage: '', borderWidth: '0', borderColor: '#FFFFFF', borderRadius: '0'
         , shadow: 'none'
       },
@@ -234,7 +234,7 @@ export class FormDesignerComponent implements OnInit {
       name: 'column',
       content: 'Column',
       data: {
-        width: 'auto', height: 'auto', alignment: 'center', hAlignment: 'center', gap:'0',
+        width: 'auto', height: 'auto', alignment: 'center', hAlignment: 'center', gap: '0',
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
       },
       effectAllowed: 'copy',
@@ -498,7 +498,7 @@ export class FormDesignerComponent implements OnInit {
     return {
       // height: `${this.childHeight}px`,
       // height:'auto'+50,
-      width: `${this.childWidth? this.childWidth : 700}px`,
+      width: `${this.childWidth ? this.childWidth : 700}px`,
       transform: `scale(${this.zoom})`,
       transformOrigin: 'top center'
     };

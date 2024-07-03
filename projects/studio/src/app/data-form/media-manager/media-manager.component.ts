@@ -5,6 +5,7 @@ import { MessageService } from '@splenta/vezo';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { DataFormService } from '../data-form.service';
 import { FormBuilder, FormGroup, MinLengthValidator, MinValidator, Validators } from '@angular/forms';
+import { GenericComponent } from '../../utils/genericcomponent';
 
 
 @Component({
@@ -12,29 +13,30 @@ import { FormBuilder, FormGroup, MinLengthValidator, MinValidator, Validators } 
   templateUrl: './media-manager.component.html',
   styleUrls: ['./media-manager.component.scss']
 })
-export class MediaManagerComponent {
+export class MediaManagerComponent extends GenericComponent {
+  data: DataForm[] = [];
+  componentName: string = 'DataForm';
 
   times: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   folders = [
     {
-      'id': '1',
-      'name': 'Macharc'
+      'id': '0',
+      'folderName': 'Macharc'
     },
     {
-      'id': '2',
-      'name': 'Neomaxer'
+      'id': '1',
+      'folderName': 'Neomaxer'
     }
   ]
 
   activeFolder: number = 0;
   formData: DataForm = {};
   form!: FormGroup<any>;
-  visible: boolean = false;
   currentView: string = 'grid';
 
 
-  constructor(private http: HttpClient, private msgService: MessageService,
-    private clipboard: Clipboard, private formService: DataFormService, private fb: FormBuilder) {
+  constructor(private http: HttpClient, private msgService: MessageService, private clipboard: Clipboard, private formService: DataFormService, private fb: FormBuilder) {
+    super(formService, msgService);
     this.form = this.fb.group({
       id: '',
       folderName: [''],
@@ -155,29 +157,45 @@ export class MediaManagerComponent {
     this.msgService.add({ severity: 'success', summary: 'Copied', detail: 'URL path copied successfully' });
   }
 
-  newFolder() {
-    this.form.reset();
-    this.visible = true;
-    //this.folders.push(this.folders.length);
-  }
+  // newFolder() {
+  //   this.form.reset();
+  //   this.visible = true;
+  //   //this.folders.push(this.folders.length);
+  // }
 
   activeFolderSelect(index: any) {
     this.activeFolder = index;
   }
 
-  saveData() {
+  override saveData() {
     //this.folders.push(this.folders.length);
-    if (this.form.value.folderName == '' || this.form.value.folderName == null) {
-      this.msgService.add({ severity: 'error', summary: 'Error', detail: 'Please enter the folder name' });
+
+    if (this.form.value.id == null || this.form.value.id == '') {
+      if (this.form.value.folderName == '' || this.form.value.folderName == null) {
+        this.msgService.add({ severity: 'error', summary: 'Error', detail: 'Please enter the folder name' });
+      }
+      else {
+        var folder = {
+          'id': this.folders.length + '',
+          'folderName': this.form.value.folderName + ''
+        };
+        this.folders.push(folder);
+        this.visible = false;
+      }
     }
     else {
-      var folder = {
-        'id': this.folders.length + '',
-        'name': this.form.value.folderName + ''
-      };
-      this.folders.push(folder);
-      this.visible = false;
+      if (this.form.value.folderName == '' || this.form.value.folderName == null) {
+        this.msgService.add({ severity: 'error', summary: 'Error', detail: 'Please enter the folder name' });
+      }
+      else {
+        const index = this.folders.findIndex(a => a.id === this.form.value.id);
+        if (index !== -1) {
+          this.folders[index] = this.form.value;
+        }
+        this.visible = false;
+      }
     }
+
 
   }
 
@@ -199,6 +217,26 @@ export class MediaManagerComponent {
     else {
       return '#F5F6F9';
     }
+  }
+
+  // editFolder(folder: any) {
+  //   //this.form.patchValue(folder);
+  //   //this.form.value.folderName = folder.name;
+  //   this.form.patchValue({ ...folder });
+
+  //   //alert(this.form.value.folderName );
+  //   this.visible = true;
+  // }
+
+  override addData(): void {
+    this.form.reset();
+    this.visible = true;
+  }
+
+  override editData(ds: any): void {
+    console.log(ds);
+    this.form.patchValue({ ...ds });
+    this.visible = true;
   }
 
 }

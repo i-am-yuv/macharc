@@ -248,7 +248,7 @@
                                 'padding-left': (item.children && item.children.length > 0 ? item.data?.pl : 32) + 'px',
                                  'padding-right': (item.children && item.children.length > 0 ? item.data?.pr : 32) + 'px',
                                  'justify-content': item.data.alignment
-                             }" dndDropzone dndEffectAllowed="copyMove">
+                             }" dndDropzone dndEffectAllowed="copyMove" style="width: -webkit-fill-available;">
                                 <div class="dndPlaceholder h-16 border bg-blue-400 bg-opacity-25" dndPlaceholderRef>
                                 </div>
                                 <div *ngFor="let child of item.children" [dndDraggable]="child"
@@ -294,7 +294,7 @@
                                 'padding-bottom': (item.children && item.children.length > 0 ? item.data?.pb : 32) + 'px',
                                 'padding-left': (item.children && item.children.length > 0 ? item.data?.pl : 32) + 'px',
                                  'padding-right': (item.children && item.children.length > 0 ? item.data?.pr : 32) + 'px'
-                             }" dndDropzone dndEffectAllowed="copyMove">
+                             }" dndDropzone dndEffectAllowed="copyMove"  style="width: -webkit-fill-available;">
                                 <div class="dndPlaceholder h-16 border bg-blue-400 bg-opacity-25" dndPlaceholderRef>
                                 </div>
                                 <div *ngFor="let child of item.children" [dndDraggable]="child"
@@ -529,7 +529,8 @@
                         </div>
                         <!-- Elements's Property -->
                         <div *ngIf="this.activeItem?.id != null" class="ml-2 mt-2"
-                            style="font-size: 16px; font-weight: 400; color:#2e2e2e">Element- {{this.activeItem?.content |
+                            style="font-size: 16px; font-weight: 400; color:#2e2e2e">Element- {{this.activeItem?.content
+                            |
                             capitalize}}</div>
                         <div *ngIf="this.activeItem?.id != null" class="p-3">
                             <div class="min-h-[24rem]">
