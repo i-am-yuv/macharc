@@ -248,14 +248,14 @@
                                 'padding-left': (item.children && item.children.length > 0 ? item.data?.pl : 32) + 'px',
                                  'padding-right': (item.children && item.children.length > 0 ? item.data?.pr : 32) + 'px',
                                  'justify-content': item.data.alignment
-                             }" dndDropzone dndEffectAllowed="copyMove" style="width: -webkit-fill-available;">
+                             }" dndDropzone dndEffectAllowed="copyMove" >
                                 <div class="dndPlaceholder h-16 border bg-blue-400 bg-opacity-25" dndPlaceholderRef>
                                 </div>
                                 <div *ngFor="let child of item.children" [dndDraggable]="child"
                                     (dndCanceled)="onDragged(child, item.children!, 'none')"
                                     (dndCopied)="onDragged(child, item.children!, 'move')"
                                     (dndLinked)="onDragged(child, item.children!, 'link')"
-                                    (dndMoved)="onDragged(child, item.children!, 'move')" class="name">
+                                    (dndMoved)="onDragged(child, item.children!, 'move')" class="name" style="width: -webkit-fill-available;">
 
                                     <div class="border border-dashed border-indigo-300">
                                         <!-- Solution for nested grid -->
@@ -301,7 +301,7 @@
                                     (dndCanceled)="onDragged(child, item.children!, 'none')"
                                     (dndCopied)="onDragged(child, item.children!, 'move')"
                                     (dndLinked)="onDragged(child, item.children!, 'link')"
-                                    (dndMoved)="onDragged(child, item.children!, 'move')" class="name">
+                                    (dndMoved)="onDragged(child, item.children!, 'move')" class="name" style="width: -webkit-fill-available;">
 
                                     <div class="border border-dashed border-indigo-300">
                                         <!-- Solution for nested grid -->
@@ -309,7 +309,7 @@
                                             <app-nested [child]="child" [layout]="layout" [nestedElement]="'column'"
                                                 (nodeClicked)="onItemReceived($event)"></app-nested>
                                         </ng-container>
-                                        <ng-container *ngIf="child.name === 'container'">
+                                        <ng-container *ngIf="child.name === 'container'">''
                                             <app-nested [child]="child" [layout]="layout" [nestedElement]="'container'"
                                                 (nodeClicked)="onItemReceived($event)"></app-nested>
                                         </ng-container>
