@@ -23,6 +23,7 @@ interface DraggableItem {
   disable: boolean;
   handle: boolean;
   data?: any;
+  mappedData ?: any ;
   children?: any[];
   icon?: any;
   id?: any;
@@ -69,6 +70,7 @@ export class FormDesignerComponent implements OnInit {
         text: 'Text', fontSize: '14', fontWeight: '400', fontColor: '#000000', alignment: 'start', vAlignment: 'start',
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
       },
+      mappedData:{},
       effectAllowed: 'copy',
       disable: false,
       handle: false,

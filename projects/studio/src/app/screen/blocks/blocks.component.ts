@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { EffectAllowed } from 'ngx-drag-drop';
 
 interface DraggableItem {
@@ -8,6 +8,7 @@ interface DraggableItem {
   disable: boolean;
   handle: boolean;
   data?: any;
+  mappedData ?: any ;
   children?: any[];
   id ?: any;
 }

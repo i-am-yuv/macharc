@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { MessageService } from '@splenta/vezo';
+import { iif } from 'rxjs';
 
 @Component({
   selector: 'app-properties',
@@ -12,16 +13,17 @@ export class PropertiesComponent {
   @Input() fields: any[] = [];
   @Input() collections: any[] = [];
   @Input() forms: any[] = [];
+  @Input() comingFromForm: boolean = false;
 
   @Output() getCollectionFields: EventEmitter<string> = new EventEmitter<string>();;
 
   column: any = {};
 
-  boxShawdowOptions : any = ['sm' , 'md' ,'lg' ,'xl','2xl', 'inner', 'none'];
+  boxShawdowOptions: any = ['sm', 'md', 'lg', 'xl', '2xl', 'inner', 'none'];
 
   constructor(
     private messageService: MessageService,
-    private router : Router
+    private router: Router
   ) {
 
   }
@@ -77,8 +79,43 @@ export class PropertiesComponent {
     this.getCollectionFields.emit(this.props.data.collection.id);
   }
 
-  findComponent(componentId : any)
-  {
-     this.router.navigate(['/builder/forms/designer/'+componentId]) ;
+  findComponent(componentId: any) {
+    this.router.navigate(['/builder/forms/designer/' + componentId]);
+  }
+
+  makeItMapped(item: any , element : any) {
+    if (!item) {
+      item = {}; // Initialize mappedData if it's undefined
+    }
+    item.mappedData[element] = '[isMapped]'; // Set 'text' property
+    console.log(item);
+  }
+
+  // Function to handle changes to the ngModel
+  handleInputChange(value: string, element: any): void {
+    if (this.comingFromForm) {
+      this.props.mappedData[element] = value;
+    } else {
+      this.props.data[element] = value;
+    }
+  }
+
+  // Function to get the appropriate value based on isPerson
+  getInputValue(element: any): string {
+   // console.log(this.comingFromForm ? this.props.mappedData[element] : this.props.data[element]) ;
+    //return this.comingFromForm ? this.props.mappedData[element] : this.props.data[element];
+    if( this.comingFromForm ==  true )
+      {
+        return this.props.mappedData[element] ;
+      }
+    else{
+          if(this.props.mappedData != null && this.props.mappedData[element] != null )
+            { 
+              return this.props.mappedData[element] ;
+            }
+            else{
+              return this.props.data[element] ;
+            }
+    }
   }
 }
