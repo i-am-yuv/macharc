@@ -1,19 +1,28 @@
 <ng-container *ngIf="block.name === 'heading'">
-    <div class="text-lg min-w-full text-{{block.data?.alignment}}" contenteditable 
-        [ngStyle]="{'display':'flex','justify-content':block.data?.alignment,'align-items':block.data?.vAlignment ,
+    <div class="text-lg min-w-full text-{{block.data?.alignment}}" contenteditable [ngStyle]="{'display':'flex','justify-content':block.data?.alignment,'align-items':block.data?.vAlignment ,
         'font-size': (block.mappedData?.fontSize == null ) ? block.data?.fontSize+'px' : block.mappedData?.fontSize+'px',
         'font-weight':(block.mappedData?.fontWeight == null ) ? block.data?.fontWeight: block.mappedData?.fontWeight,
-        'color': block.data?.fontColor,
+        'color': (block.mappedData?.fontColor == null ) ? block.data?.fontColor: block.mappedData?.fontColor,
         'margin-top':  block.data?.mt+'px', 'margin-bottom':  block.data?.mb+'px',  'margin-left':  block.data?.ml+'px',  'margin-right':  block.data?.mr+'px',
         'padding-top':  block.data?.pt+'px',  'padding-bottom':  block.data?.pb+'px',  'padding-left':  block.data?.pl+'px',  'padding-right':  block.data?.pr+'px'
      }">{{ (block.mappedData?.text == null ) ? block.data?.text : block.mappedData?.text }}</div>
 </ng-container>
 <ng-container *ngIf="block.name === 'button'">
     <div class="text-{{ block.data?.align ? block.data.align : block.data?.btnAlignment }}">
-        <vezo-button [label]="block.data?.label"
-            [btnInfo]="{ btnTextSize: block.data?.btnTextFont+'px', btnTextWeight: block.data?.btnTextWeight, btnTextColor: block.data?.btnTextColor , 
-            borderWidth: block.data?.borderWidth+'px', borderColor: block.data?.borderColor, borderRadius: block.data?.borderRadius+'px' ,  bgColor: block.data?.bgColor, width: block.data?.width+'px',  height: block.data?.height+'px' ,
-            btnAlignment:  block.data?.btnAlignment, textAlignment:  block.data?.textAlignment ,
+        <vezo-button 
+        [label]="(block.mappedData?.label == null ) ? block.data?.label : block.mappedData?.label"
+        [btnInfo]="{ 
+            btnTextSize: (block.mappedData?.btnTextFont == null ) ? block.data?.btnTextFont+'px' : block.mappedData?.btnTextFont+'px', 
+            btnTextWeight:(block.mappedData?.btnTextWeight == null ) ? block.data?.btnTextWeight : block.mappedData?.btnTextWeight, 
+            btnTextColor:(block.mappedData?.btnTextColor == null ) ? block.data?.btnTextColor : block.mappedData?.btnTextColor, 
+            borderWidth: (block.mappedData?.borderWidth == null ) ? block.data?.borderWidth+'px' : block.mappedData?.borderWidth+'px', 
+            borderColor: (block.mappedData?.borderColor == null ) ? block.data?.borderColor : block.mappedData?.borderColor, 
+            borderRadius: (block.mappedData?.borderRadius == null ) ? block.data?.borderRadius+'px' : block.mappedData?.borderRadius+'px',   
+            bgColor:(block.mappedData?.bgColor == null ) ? block.data?.bgColor : block.mappedData?.bgColor, 
+            width: (block.mappedData?.width == null ) ? block.data?.width+'px' : block.mappedData?.width+'px',    
+            height: (block.mappedData?.height == null ) ? block.data?.height+'px' : block.mappedData?.height+'px',    
+            btnAlignment:  block.data?.btnAlignment, textAlignment: 
+            block.data?.textAlignment ,
             mt:  block.data?.mt+'px',  mb:  block.data?.mb+'px',  ml:  block.data?.ml+'px',  mr:  block.data?.mr+'px'}"></vezo-button>
     </div>
 </ng-container>
@@ -32,38 +41,72 @@
     </ng-container>
 </div> -->
 <ng-container *ngIf="block.name === 'input'">
-    <vezo-input [label]="block.data?.label" [placeholder]="block.data?.placeholder" [labelInfo]="{ size: block.data?.labelFont+'px', weight: block.data?.labelWeight, color: block.data?.labelColor, 
-    height: block.data?.fieldHeight+'px' , radius: block.data?.fieldRadius+'px' , fillColor: block.data?.fillColor,
-    borderColor: block.data?.borderColor , borderWidth: block.data?.borderWidth+'px' ,
+    <vezo-input [label]="(block.mappedData?.label == null ) ? block.data?.label : block.mappedData?.label"
+        [placeholder]="(block.mappedData?.placeholder == null ) ? block.data?.placeholder : block.mappedData?.placeholder"
+        [labelInfo]="{ size:(block.mappedData?.labelFont == null ) ? block.data?.labelFont+'px' : block.mappedData?.labelFont+'px',
+     weight: (block.mappedData?.labelWeight == null ) ? block.data?.labelWeight : block.mappedData?.labelWeight, 
+     color:(block.mappedData?.labelColor == null ) ? block.data?.labelColor : block.mappedData?.labelColor, 
+    height: (block.mappedData?.fieldHeight == null ) ? block.data?.fieldHeight+'px' : block.mappedData?.fieldHeight+'px' ,
+     radius:(block.mappedData?.fieldRadius == null ) ? block.data?.fieldRadius+'px' : block.mappedData?.fieldRadius+'px' , 
+     fillColor: (block.mappedData?.fillColor == null ) ? block.data?.fillColor : block.mappedData?.fillColor,
+    borderColor:(block.mappedData?.borderColor == null ) ? block.data?.borderColor : block.mappedData?.borderColor, 
+    borderWidth: (block.mappedData?.borderWidth == null ) ? block.data?.borderWidth+'px' : block.mappedData?.borderWidth+'px'  ,
     mt: block.data?.mt+'px',mb: block.data?.mb+'px',ml: block.data?.ml+'px',mr: block.data?.mr+'px' ,
     pt: block.data?.pt+'px',pb: block.data?.pb+'px',pl: block.data?.pl+'px',pr: block.data?.pr+'px' }"></vezo-input>
 </ng-container>
 <ng-container *ngIf="block.name === 'textarea'">
-    <vezo-textarea [label]="block.data?.label" [placeholder]="block.data?.placeholder" [labelInfo]="{ size: block.data?.labelFont+'px', weight: block.data?.labelWeight, color: block.data?.labelColor , fillColor: block.data?.fillColor,
-    borderColor: block.data?.borderColor , borderWidth: block.data?.borderWidth+'px',
-    height: block.data?.fieldHeight+'px', borderRadius: block.data?.borderRadius+'px',
+    <vezo-textarea [label]="(block.mappedData?.label == null ) ? block.data?.label : block.mappedData?.label"
+        [placeholder]="(block.mappedData?.placeholder == null ) ? block.data?.placeholder : block.mappedData?.placeholder"
+        [labelInfo]="{ 
+        size: (block.mappedData?.labelFont == null ) ? block.data?.labelFont+'px' : block.mappedData?.labelFont+'px',
+         weight: (block.mappedData?.labelWeight == null ) ? block.data?.labelWeight : block.mappedData?.labelWeight, 
+         color: (block.mappedData?.labelColor == null ) ? block.data?.labelColor : block.mappedData?.labelColor, 
+         fillColor:  (block.mappedData?.fillColor == null ) ? block.data?.fillColor : block.mappedData?.fillColor,
+    borderColor: (block.mappedData?.borderColor == null ) ? block.data?.borderColor : block.mappedData?.borderColor,
+    borderWidth: (block.mappedData?.borderWidth == null ) ? block.data?.borderWidth+'px' : block.mappedData?.borderWidth+'px'  ,
+    height:(block.mappedData?.fieldHeight == null ) ? block.data?.fieldHeight+'px' : block.mappedData?.fieldHeight+'px' ,
+    borderRadius: (block.mappedData?.borderRadius == null ) ? block.data?.borderRadius+'px' : block.mappedData?.borderRadius+'px' , 
     mt: block.data?.mt+'px',mb: block.data?.mb+'px',ml: block.data?.ml+'px',mr: block.data?.mr+'px' ,
     pt: block.data?.pt+'px',pb: block.data?.pb+'px',pl: block.data?.pl+'px',pr: block.data?.pr+'px' }"></vezo-textarea>
 </ng-container>
 <ng-container *ngIf="block.name === 'dropdown'">
-    <vezo-select [label]="block.data?.label" [placeholder]="block.data?.placeholder" [labelInfo]="{ size: block.data?.labelFont+'px', weight: block.data?.labelWeight, color: block.data?.labelColor
-       , height: block.data?.fieldHeight+'px' , radius: block.data?.fieldRadius+'px' , fillColor: block.data?.fillColor,
-    borderColor: block.data?.borderColor , borderWidth: block.data?.borderWidth+'px' ,
+    <vezo-select [label]="(block.mappedData?.label == null ) ? block.data?.label : block.mappedData?.label"
+        [placeholder]="(block.mappedData?.placeholder == null ) ? block.data?.placeholder : block.mappedData?.placeholder"
+        [labelInfo]="{ 
+        size:(block.mappedData?.labelFont == null ) ? block.data?.labelFont+'px' : block.mappedData?.labelFont+'px', 
+        weight:(block.mappedData?.labelWeight == null ) ? block.data?.labelWeight : block.mappedData?.labelWeight, 
+        color:(block.mappedData?.labelColor == null ) ? block.data?.labelColor : block.mappedData?.labelColor, 
+        height:(block.mappedData?.fieldHeight == null ) ? block.data?.fieldHeight+'px' : block.mappedData?.fieldHeight+'px' ,
+       radius: (block.mappedData?.fieldRadius == null ) ? block.data?.fieldRadius+'px' : block.mappedData?.fieldRadius+'px' , 
+       fillColor: (block.mappedData?.fillColor == null ) ? block.data?.fillColor : block.mappedData?.fillColor,
+       borderColor: (block.mappedData?.borderColor == null ) ? block.data?.borderColor : block.mappedData?.borderColor,
+       borderWidth: (block.mappedData?.borderWidth == null ) ? block.data?.borderWidth+'px' : block.mappedData?.borderWidth+'px'  ,
     mt: block.data?.mt+'px',mb: block.data?.mb+'px',ml: block.data?.ml+'px',mr: block.data?.mr+'px' ,
     pt: block.data?.pt+'px',pb: block.data?.pb+'px',pl: block.data?.pl+'px',pr: block.data?.pr+'px'
      }"></vezo-select>
 </ng-container>
 <ng-container *ngIf="block.name === 'checkbox'">
     <div class="flex" [ngStyle]="{'justify-content' : block.data.alignment}">
-        <vezo-checkbox [label]="block.data?.label" [labelInfo]="{ size: block.data?.labelFont+'px', weight: block.data?.labelWeight, color: block.data?.labelColor,
-        mt: block.data?.mt+'px',mb: block.data?.mb+'px',ml: block.data?.ml+'px',mr: block.data?.mr+'px' ,
+        <vezo-checkbox 
+        [label]="(block.mappedData?.label == null ) ? block.data?.label : block.mappedData?.label" 
+        [labelInfo]="{ 
+            size:(block.mappedData?.labelFont == null ) ? block.data?.labelFont+'px' : block.mappedData?.labelFont+'px', 
+            weight: (block.mappedData?.labelWeight == null ) ? block.data?.labelWeight : block.mappedData?.labelWeight, 
+            color:(block.mappedData?.labelColor == null ) ? block.data?.labelColor : block.mappedData?.labelColor, 
+        mt: block.data?.mt+'px',
+        mb: block.data?.mb+'px',ml: block.data?.ml+'px',mr: block.data?.mr+'px' ,
          pt: block.data?.pt+'px',pb: block.data?.pb+'px',pl: block.data?.pl+'px',pr: block.data?.pr+'px'
      }"></vezo-checkbox>
     </div>
 </ng-container>
 <ng-container *ngIf="block.name === 'radio'">
     <div class="flex" [ngStyle]="{'justify-content' : block.data.alignment}">
-        <vezo-radiobutton [label]="block.data?.label" [labelInfo]="{ size: block.data?.labelFont+'px', weight: block.data?.labelWeight, color: block.data?.labelColor,
+        <vezo-radiobutton 
+        [label]="(block.mappedData?.label == null ) ? block.data?.label : block.mappedData?.label" 
+        [labelInfo]="{
+             size: (block.mappedData?.labelFont == null ) ? block.data?.labelFont+'px' : block.mappedData?.labelFont+'px', 
+              weight:(block.mappedData?.labelWeight == null ) ? block.data?.labelWeight : block.mappedData?.labelWeight, 
+              color: (block.mappedData?.labelColor == null ) ? block.data?.labelColor : block.mappedData?.labelColor, 
             mt: block.data?.mt+'px',mb: block.data?.mb+'px',ml: block.data?.ml+'px',mr: block.data?.mr+'px' ,
     pt: block.data?.pt+'px',pb: block.data?.pb+'px',pl: block.data?.pl+'px',pr: block.data?.pr+'px'
          }"></vezo-radiobutton>
@@ -71,7 +114,12 @@
 </ng-container>
 <ng-container *ngIf="block.name === 'switch'">
     <div class="flex" [ngStyle]="{'justify-content' : block.data.alignment}">
-        <vezo-switch [label]="block.data?.label" [labelInfo]="{ size: block.data?.labelFont+'px', weight: block.data?.labelWeight, color: block.data?.labelColor,
+        <vezo-switch 
+        [label]="(block.mappedData?.label == null ) ? block.data?.label : block.mappedData?.label" 
+        [labelInfo]="{ 
+            size: (block.mappedData?.labelFont == null ) ? block.data?.labelFont+'px' : block.mappedData?.labelFont+'px', 
+            weight: (block.mappedData?.labelWeight == null ) ? block.data?.labelWeight : block.mappedData?.labelWeight, 
+            color:(block.mappedData?.labelColor == null ) ? block.data?.labelColor : block.mappedData?.labelColor, 
             mt: block.data?.mt+'px',mb: block.data?.mb+'px',ml: block.data?.ml+'px',mr: block.data?.mr+'px' ,
     pt: block.data?.pt+'px',pb: block.data?.pb+'px',pl: block.data?.pl+'px',pr: block.data?.pr+'px'
          }"></vezo-switch>
@@ -109,7 +157,8 @@
 </ng-container>
 <ng-container *ngIf="block.name === 'image'">
     <div class="flex" [ngStyle]="{ 'justify-content':block.data?.alignment }">
-        <img src="{{block.data?.url}}" [ngStyle]="{ 'justify-content':block.data?.alignment ,'margin-top':  block.data?.mt+'px', 'margin-bottom':  block.data?.mb+'px',  'margin-left':  block.data?.ml+'px',  'margin-right':  block.data?.mr+'px','padding-top':  block.data?.pt+'px',  'padding-bottom':  block.data?.pb+'px',  'padding-left':  block.data?.pl+'px',  'padding-right':  block.data?.pr+'px' ,
+        <img src="{{ (block.mappedData?.url == null ) ? block.data?.url : block.mappedData?.url }}" 
+        [ngStyle]="{ 'justify-content':block.data?.alignment ,'margin-top':  block.data?.mt+'px', 'margin-bottom':  block.data?.mb+'px',  'margin-left':  block.data?.ml+'px',  'margin-right':  block.data?.mr+'px','padding-top':  block.data?.pt+'px',  'padding-bottom':  block.data?.pb+'px',  'padding-left':  block.data?.pl+'px',  'padding-right':  block.data?.pr+'px' ,
                 'width':block.data?.width ? block.data?.width+'px' : 'auto' ,  'height':block.data?.height ? block.data?.height+'px' : 'auto' 
             }">
     </div>
@@ -123,22 +172,26 @@
     </div>
 </ng-container>
 <ng-container *ngIf="block.name === 'card'">
-    <div class="shadow-md p-8 w-auto" style="border-radius: 8px;" [ngStyle]="{ 'justify-content':block.data?.alignment ,'margin-top':  block.data?.mt+'px', 'margin-bottom':  block.data?.mb+'px',  'margin-left':  block.data?.ml+'px',  'margin-right':  block.data?.mr+'px','padding-top':  block.data?.pt+'px',  'padding-bottom':  block.data?.pb+'px',  'padding-left':  block.data?.pl+'px',  'padding-right':  block.data?.pr+'px' ,
-        'background-color':block.data?.fillColor , 'width': block.data?.width+'px'
+    <div class="shadow-md p-8 w-auto" style="border-radius: 8px;" [ngStyle]="{ 
+        'justify-content':block.data?.alignment ,
+        'margin-top':  block.data?.mt+'px', 'margin-bottom':  block.data?.mb+'px',  'margin-left':  block.data?.ml+'px',  'margin-right':  block.data?.mr+'px','padding-top':  block.data?.pt+'px',  'padding-bottom':  block.data?.pb+'px',  'padding-left':  block.data?.pl+'px',  'padding-right':  block.data?.pr+'px' ,
+        'background-color':(block.mappedData?.fillColor == null ) ? block.data?.fillColor : block.mappedData?.fillColor  , 
+        'width':(block.mappedData?.width == null ) ? block.data?.width+'px' : block.mappedData?.width+'px'
     }">
         <!-- Image of the Card -->
         <div class="flex" [ngStyle]="{ 'justify-content':block.data?.imageAlignment}">
-            <img src="{{block.data?.imageUrl}}" [ngStyle]="{ 'width':block.data?.imageWidth+'px' }">
+            <img src="{{(block.mappedData?.imageUrl == null ) ? block.data?.imageUrl : block.mappedData?.imageUrl}}"
+             [ngStyle]="{ 'width':(block.mappedData?.imageWidth == null ) ? block.data?.imageWidth+'px' : block.mappedData?.imageWidth+'px' }">
         </div>
         <!-- Title Text of the Card -->
         <div class="pt-3 flex" style="font-size: 16px; font-weight: 600;"
             [ngStyle]="{ 'justify-content':block.data?.titleAlignment}">
-            {{block.data?.title}}
+            {{ (block.mappedData?.title == null ) ? block.data?.title : block.mappedData?.title  }}
         </div>
         <!-- Description Text of the card -->
         <div class="mt-3 flex" style="font-size: 14px; font-weight: 400;"
             [ngStyle]="{ 'justify-content':block.data?.descAlignment}">
-            {{block.data?.desc}}
+            {{(block.mappedData?.desc == null ) ? block.data?.desc : block.mappedData?.desc}}
         </div>
     </div>
 </ng-container>
@@ -147,7 +200,7 @@
         <div [ngStyle]="{ 'justify-content':block.data?.alignment ,'margin-top':  block.data?.mt+'px', 'margin-bottom':  block.data?.mb+'px',  'margin-left':  block.data?.ml+'px',  'margin-right':  block.data?.mr+'px','padding-top':  block.data?.pt+'px',  'padding-bottom':  block.data?.pb+'px',  'padding-left':  block.data?.pl+'px',  'padding-right':  block.data?.pr+'px' ,
         'width':block.data?.width+'px' ,  'height':block.data?.height+'px' }">
             <video #videoPlayer controls>
-                <source src="{{block.data?.url}}" type="video/mp4">
+                <source src="{{ (block.mappedData?.url == null ) ? block.data?.url : block.mappedData?.url }}" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
             <!-- <div>

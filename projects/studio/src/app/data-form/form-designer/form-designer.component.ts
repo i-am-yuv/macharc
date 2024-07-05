@@ -23,7 +23,7 @@ interface DraggableItem {
   disable: boolean;
   handle: boolean;
   data?: any;
-  mappedData ?: any ;
+  mappedData?: any;
   children?: any[];
   icon?: any;
   id?: any;
@@ -70,7 +70,7 @@ export class FormDesignerComponent implements OnInit {
         text: 'Text', fontSize: '14', fontWeight: '400', fontColor: '#000000', alignment: 'start', vAlignment: 'start',
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
       },
-      mappedData:{},
+      mappedData: {}, // this will consist of the data that is mapped 
       effectAllowed: 'copy',
       disable: false,
       handle: false,
@@ -86,6 +86,7 @@ export class FormDesignerComponent implements OnInit {
         label: 'Input Label', placeholder: 'Placeholder', labelFont: '14', labelWeight: '400', labelColor: '#000000', fieldHeight: '35', fieldRadius: '4', fillColor: '#f1f3f6', borderColor: '#f1f3f6', borderWidth: '1',
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
       },
+      mappedData: {}, // this will consist of the data that is mapped 
       icon: 'assets/button.svg'
     },
     {
@@ -97,8 +98,9 @@ export class FormDesignerComponent implements OnInit {
       data: {
         label: 'Input Label', placeholder: 'Placeholder', labelFont: '14', labelWeight: '400', labelColor: '#000000', fieldHeight: '35', fieldRadius: '4', fillColor: '#f1f3f6', borderColor: '#f1f3f6', borderWidth: '1',
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
-      }
-      , icon: 'assets/dropdown_N.svg'
+      },
+      mappedData: {}, // this will consist of the data that is mapped 
+      icon: 'assets/dropdown_N.svg'
     },
     {
       name: 'textarea',
@@ -109,7 +111,8 @@ export class FormDesignerComponent implements OnInit {
       data: {
         label: 'Input Label', placeholder: 'Placeholder', labelFont: '14', labelWeight: '400', labelColor: '#000000', fieldHeight: '50', fillColor: '#f1f3f6', borderColor: '#f1f3f6', borderWidth: '1', borderRadius: '4',
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
-      }
+      },
+      mappedData: {} // this will consist of the data that is mapped 
       , icon: 'assets/Text Area_N.svg'
     },
     {
@@ -124,6 +127,7 @@ export class FormDesignerComponent implements OnInit {
         btnAlignment: 'center', textAlignment: 'center',
         mt: '0', mb: '0', ml: '0', mr: '0'
       },
+      mappedData: {}, // this will consist of the data that is mapped 
       icon: 'assets/button.svg'
     },
     {
@@ -136,6 +140,7 @@ export class FormDesignerComponent implements OnInit {
         label: 'Input Label', labelFont: '14', labelWeight: '400', labelColor: '#000000',
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0', alignment: 'start'
       },
+      mappedData: {}, // this will consist of the data that is mapped 
       icon: 'assets/checkBox.svg'
     },
     {
@@ -148,6 +153,7 @@ export class FormDesignerComponent implements OnInit {
         label: 'Input Label', labelFont: '14', labelWeight: '400', labelColor: '#000000', alignment: 'start',
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
       },
+      mappedData: {}, // this will consist of the data that is mapped 
       icon: 'assets/Radio-button_N.svg'
 
     },
@@ -161,6 +167,7 @@ export class FormDesignerComponent implements OnInit {
         label: 'Input Label', labelFont: '14', labelWeight: '400', labelColor: '#000000',
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0', alignment: 'start'
       },
+      mappedData: {}, // this will consist of the data that is mapped 
       icon: 'assets/toggleOn.svg'
     },
     {
@@ -173,6 +180,7 @@ export class FormDesignerComponent implements OnInit {
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0', alignment: 'start',
         width: '200', height: '100', url: 'https://primefaces.org/cdn/primeng/images/galleria/galleria10.jpg'
       },
+      mappedData: {}, // this will consist of the data that is mapped 
       icon: 'assets/image.svg'
     },
     {
@@ -185,6 +193,7 @@ export class FormDesignerComponent implements OnInit {
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0', alignment: 'start',
         width: '200', url: 'https://elementor.com/wp-content/uploads/2023/09/02_MainVideo_1066_600_1-1.mp4'
       },
+      mappedData: {}, // this will consist of the data that is mapped 
       icon: 'assets/ph_video-light.svg'
     }
   ];
@@ -199,6 +208,7 @@ export class FormDesignerComponent implements OnInit {
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0', bgImage: '', borderWidth: '0', borderColor: '#FFFFFF', borderRadius: '0'
         , shadow: 'none'
       },
+      mappedData: {}, // this will consist of the data that is mapped 
       effectAllowed: 'copy',
       disable: false,
       handle: false,
@@ -212,6 +222,7 @@ export class FormDesignerComponent implements OnInit {
         columns: 2, gap: '4', mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0',
         alignment: 'start', vAlignment: 'start',
       },
+      mappedData: {}, // this will consist of the data that is mapped 
       effectAllowed: 'copy',
       disable: false,
       handle: false,
@@ -226,6 +237,7 @@ export class FormDesignerComponent implements OnInit {
         width: 'auto', height: 'auto', gap: '0', alignment: 'start', vAlignment: 'center',
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
       },
+      mappedData: {}, // this will consist of the data that is mapped 
       effectAllowed: 'copy',
       disable: false,
       handle: false,
@@ -239,6 +251,7 @@ export class FormDesignerComponent implements OnInit {
         width: 'auto', height: 'auto', alignment: 'center', hAlignment: 'center', gap: '0',
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
       },
+      mappedData: {}, // this will consist of the data that is mapped 
       effectAllowed: 'copy',
       disable: false,
       handle: false,
@@ -272,6 +285,7 @@ export class FormDesignerComponent implements OnInit {
         width: '200', imageUrl: 'https://primefaces.org/cdn/primeng/images/card-ng.jpg', imageWidth: '100', title: ' Card title', desc: 'Card Description',
         fillColor: '#f1f3f6'
       },
+      mappedData: {}, // this will consist of the data that is mapped 
       icon: 'assets/solar_card-2-outline.svg'
     }
   ];

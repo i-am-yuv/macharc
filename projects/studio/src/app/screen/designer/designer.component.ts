@@ -63,6 +63,7 @@ export class DesignerComponent implements OnInit {
         label: 'Input Label', placeholder: 'Placeholder', labelFont: '14', labelWeight: '400', labelColor: '#000000', fieldHeight: '35', fieldRadius: '4', fillColor: '#f1f3f6', borderColor: '#f1f3f6', borderWidth: '1',
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
       },
+      mappedData:{}, // this will consist of the data that is mapped 
       icon: 'assets/button.svg'
     },
     {

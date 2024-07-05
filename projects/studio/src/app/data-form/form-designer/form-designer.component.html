@@ -194,8 +194,13 @@
                         <ng-container *ngIf="item.name === 'container'">
                             <div (dndDrop)="onDrop($event, item.children)"
                                 class="name gap-{{item.data.gap}} grid grid-cols-{{item.data.columns}}  items-{{item.data.vAlignment}} shadow-{{item.data.shadow}}"
-                                [ngStyle]="{ 'width' : item.data?.width ? item.data?.width+'px':'auto' ,'height' :item.data?.height? item.data?.height+'px':'auto' , 'background-color' : item.data?.bgColor ,
-                            'background-image': 'url(' + item.data?.bgImage + ')' , 'background-size': 'cover', 'background-position':'center' , 'border-width': item.data.borderWidth+'px' ,'border-radius': item.data.borderRadius+'px' , 'border-color': item.data.borderColor,
+                                [ngStyle]="{ 'width' : item.data?.width ? item.data?.width+'px':'auto' ,'height' :item.data?.height? item.data?.height+'px':'auto' , 
+                            'background-color' :(item.mappedData?.bgColor == null ) ? item.data?.bgColor : item.mappedData?.bgColor,
+                            'background-image': 'url(' + (item.mappedData?.bgImage == null ? item.data?.bgImage : item.mappedData?.bgImage) + ')',
+                            'background-size': 'cover', 'background-position':'center' , 
+                            'border-width': item.data.borderWidth+'px' ,
+                            'border-radius': item.data.borderRadius+'px' , 
+                            'border-color': (item.mappedData?.borderColor == null ) ? item.data?.borderColor : item.mappedData?.borderColor,
                             'justify-items': item.data.alignment,
                             'margin-top': item.data?.mt+'px', 'margin-bottom': item.data?.mb+'px', 'margin-left': item.data?.ml+'px', 'margin-right': item.data?.mr+'px' ,
                             'padding-top': item.data?.pt+'px','padding-bottom': item.data?.pb+'px', 'padding-left': item.data?.pl+'px', 'padding-right': item.data?.pr+'px'}"

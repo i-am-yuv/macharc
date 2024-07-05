@@ -87,7 +87,7 @@ export class PropertiesComponent {
     if (!item) {
       item = {}; // Initialize mappedData if it's undefined
     }
-    item.mappedData[element] = '[isMapped]'; // Set 'text' property
+    item.mappedData[element] = '[isMapped]'; 
     console.log(item);
   }
 
@@ -100,10 +100,7 @@ export class PropertiesComponent {
     }
   }
 
-  // Function to get the appropriate value based on isPerson
   getInputValue(element: any): string {
-   // console.log(this.comingFromForm ? this.props.mappedData[element] : this.props.data[element]) ;
-    //return this.comingFromForm ? this.props.mappedData[element] : this.props.data[element];
     if( this.comingFromForm ==  true )
       {
         return this.props.mappedData[element] ;
