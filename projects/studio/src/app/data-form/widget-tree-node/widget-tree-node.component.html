@@ -4,8 +4,13 @@
       <img *ngIf="this.isExpanded == true" src="assets/Polygon 3.svg" style="width: 18px; height: 18px;" />
       <img *ngIf="this.isExpanded == false" src="assets/Polygon 5.svg" style="width: 18px; height: 18px;" />
     </span>
-    <span style="font-size: 16px; font-weight: 400; color: #000000;" class="mb-2"  >{{ node.name=='form'? 'Component ('+node.data.formName+')' : node.name | capitalize }}</span>
-    <span *ngIf="node.name!='form'"><img src="assets/code.svg" style="width: 12px; height: 12px;" class="ml-1 mb-2 cursor-pointer" (click)="handleClick($event, node)"/></span>
+    <div class="flex justify-start items-center gap-2">
+      <img *ngIf="node.name=='form'" src="assets/Component _R.svg" style="width: 14px;" />
+      <span style="font-size: 16px; font-weight: 400; color: #000000;" class="mb-2">{{ node.name=='form'?
+        node.data.formName : node.name | capitalize }}</span>
+    </div>
+    <span *ngIf="node.name!='form'"><img src="assets/code.svg" style="width: 12px; height: 12px;"
+        class="ml-1 mb-2 cursor-pointer" (click)="handleClick($event, node)" /></span>
   </div>
   <div *ngIf="isExpanded" style="margin-left: 1rem ; padding-left: 1rem ; border-left: 1px solid #ccc;">
     <ng-container *ngFor="let child of node.children">

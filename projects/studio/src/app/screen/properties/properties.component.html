@@ -418,13 +418,13 @@
             </div>
         </div>
     </div>
-    <div class="mt-2 flex gap-4 justify-start items-center">
+    <div class="mt-2 flex gap-4 justify-start items-center" *ngIf="(this.comingFromForm==false || ( props.mappedData !== null && props.mappedData?.action != null ))">
         <vezo-radiobutton [(ngModel)]="props.data.action" value="save" label="Save" name="action"
             className="mr-2"></vezo-radiobutton>
         <vezo-radiobutton [(ngModel)]="props.data.action" value="custom_save" label="Custom Save" name="action"
             className="ml-4"></vezo-radiobutton>
     </div>
-    <div class="mt-2">
+    <div class="mt-2" *ngIf="(this.comingFromForm==false || ( props.mappedData !== null && props.mappedData?.endPoint != null ))">
         <vezo-input label="Endpoint" [(ngModel)]="props.data.endpoint" *ngIf="props.data.action==='custom_save'"
             className="mb-2"></vezo-input>
     </div>
@@ -672,11 +672,11 @@
             </div>
         </div>
     </div>
-    <div class="mt-2">
+    <div class="mt-2" *ngIf="(this.comingFromForm==false || ( props.mappedData !== null && props.mappedData?.fieldName != null ))">
         <vezo-select label="Field" optionLabel="fieldName" [items]="fields"
             [(ngModel)]="props.data.field"></vezo-select>
     </div>
-    <div class="mt-2">
+    <div class="mt-2" *ngIf="(this.comingFromForm==false || ( props.mappedData !== null && props.mappedData?.validation != null ))">
         <vezo-select label="Validation" [items]="validations" [(ngModel)]="props.data.validation"></vezo-select>
     </div>
 </ng-container>
@@ -958,11 +958,11 @@
             </div>
         </div>
     </div>
-    <div class="mt-2">
+    <div class="mt-2" *ngIf="(this.comingFromForm==false || ( props.mappedData !== null && props.mappedData?.field != null ))">
         <vezo-select label="Field" optionLabel="fieldName" [items]="fields"
             [(ngModel)]="props.data.field"></vezo-select>
     </div>
-    <div class="mt-2">
+    <div class="mt-2" *ngIf="(this.comingFromForm==false || ( props.mappedData !== null && props.mappedData?.validation != null ))">
         <vezo-select label="Validation" [items]="validations" [(ngModel)]="props.data.validation"></vezo-select>
     </div>
 
@@ -1237,16 +1237,16 @@
             </div>
         </div>
     </div>
-    <div class="mt-2">
+    <div class="mt-2" *ngIf="(this.comingFromForm==false || ( props.mappedData !== null && props.mappedData?.field != null ))">
         <vezo-select label="Field" optionLabel="fieldName" [items]="fields"
             [(ngModel)]="props.data.field"></vezo-select>
     </div>
 
-    <div class="mt-2">
+    <div class="mt-2" *ngIf="(this.comingFromForm==false || ( props.mappedData !== null && props.mappedData?.collectionName != null ))">
         <vezo-select label="Options" optionLabel="collectionName" [items]="collections"
             [(ngModel)]="props.data.field"></vezo-select>
     </div>
-    <div class="mt-2">
+    <div class="mt-2" *ngIf="(this.comingFromForm==false || ( props.mappedData !== null && props.mappedData?.validation != null ))">
         <vezo-select label="Validation" [items]="validations" [(ngModel)]="props.data.validation"></vezo-select>
     </div>
 </ng-container>
@@ -1443,11 +1443,11 @@
                     style="width: 16px; height: 16px;"></div>
         </div>
     </div>
-    <div class="mt-2">
+    <div class="mt-2" *ngIf="(this.comingFromForm==false || ( props.mappedData !== null && props.mappedData?.fieldName != null ))">
         <vezo-select label="Field" optionLabel="fieldName" [items]="fields"
             [(ngModel)]="props.data.field"></vezo-select>
     </div>
-    <div class="mt-2">
+    <div class="mt-2" *ngIf="(this.comingFromForm==false || ( props.mappedData !== null && props.mappedData?.validation != null ))">
         <vezo-select label="Validation" [items]="validations" [(ngModel)]="props.data.validation"></vezo-select>
     </div>
 </ng-container>
@@ -1644,11 +1644,11 @@
                     style="width: 16px; height: 16px;"></div>
         </div>
     </div>
-    <div class="mt-2">
+    <div class="mt-2" *ngIf="(this.comingFromForm==false || ( props.mappedData !== null && props.mappedData?.fieldName != null ))">
         <vezo-select label="Field" optionLabel="fieldName" [items]="fields"
             [(ngModel)]="props.data.field"></vezo-select>
     </div>
-    <div class="mt-2">
+    <div class="mt-2" *ngIf="(this.comingFromForm==false || ( props.mappedData !== null && props.mappedData?.validation != null ))">
         <vezo-select label="Validation" [items]="validations" [(ngModel)]="props.data.validation"></vezo-select>
     </div>
 </ng-container>
@@ -1845,11 +1845,11 @@
                     style="width: 16px; height: 16px;"></div>
         </div>
     </div>
-    <div class="mt-2">
+    <div class="mt-2" *ngIf="(this.comingFromForm==false || ( props.mappedData !== null && props.mappedData?.fieldName != null ))">
         <vezo-select label="Field" optionLabel="fieldName" [items]="fields"
             [(ngModel)]="props.data.field"></vezo-select>
     </div>
-    <div class="mt-2">
+    <div class="mt-2" *ngIf="(this.comingFromForm==false || ( props.mappedData !== null && props.mappedData?.validation != null ))">
         <vezo-select label="Validation" [items]="validations" [(ngModel)]="props.data.validation"></vezo-select>
     </div>
 </ng-container>

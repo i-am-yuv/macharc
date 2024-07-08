@@ -2,7 +2,6 @@ import { HttpClient, HttpEventType } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { DataForm } from '../data-form';
 import { MessageService } from '@splenta/vezo';
-import { Clipboard } from '@angular/cdk/clipboard';
 import { DataFormService } from '../data-form.service';
 import { FormBuilder, FormGroup, MinLengthValidator, MinValidator, Validators } from '@angular/forms';
 import { GenericComponent } from '../../utils/genericcomponent';
@@ -35,7 +34,7 @@ export class MediaManagerComponent extends GenericComponent {
   currentView: string = 'grid';
 
 
-  constructor(private http: HttpClient, private msgService: MessageService, private clipboard: Clipboard, private formService: DataFormService, private fb: FormBuilder) {
+  constructor(private http: HttpClient, private msgService: MessageService, private formService: DataFormService, private fb: FormBuilder) {
     super(formService, msgService);
     this.form = this.fb.group({
       id: '',
@@ -151,10 +150,18 @@ export class MediaManagerComponent extends GenericComponent {
   }
 
   copyToClipbord(imageUrl: string) {
-    // Copying to clip-bord code starts
-    this.clipboard.copy(imageUrl);
-    // Copying to clip-bord code Ends
-    this.msgService.add({ severity: 'success', summary: 'Copied', detail: 'URL path copied successfully' });
+
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(imageUrl).then(() => {
+        this.msgService.add({ severity: 'success', summary: 'Copied', detail: 'URL path copied successfully.' });
+
+      }).catch(err => {
+        this.msgService.add({ severity: 'error', summary: 'Error', detail: 'Error occur while copying.' });
+
+      });
+    } else {
+      this.msgService.add({ severity: 'error', summary: 'Error', detail: 'Something went wrong.' });
+    }
   }
 
   // newFolder() {

@@ -9,12 +9,12 @@
     "test": "ng test",
     "docs:json": "compodoc -p ./tsconfig.json -e json -d .",
     "storybook": "npm run docs:json && start-storybook -p 6006",
-    "build-storybook": "npm run docs:json && build-storybook"
+    "build-storybook": "npm run docs:json && build-storybook",
+    "postinstall": "ngCC"
   },
   "private": true,
   "dependencies": {
     "@angular/animations": "^15.0.0",
-    "@angular/cdk": "^18.0.5",
     "@angular/common": "^15.0.0",
     "@angular/compiler": "^15.0.0",
     "@angular/core": "^15.0.0",
