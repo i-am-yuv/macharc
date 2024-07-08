@@ -124,6 +124,6 @@ export class PropertiesComponent {
   }
 
   getDataFieldCount(props: any): number {
-    return Object.keys(props.mappedData).length;
+    return props && props.mappedData ? Object.keys(props.mappedData).length : 0;
   }
 }

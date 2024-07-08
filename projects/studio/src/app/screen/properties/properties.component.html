@@ -1909,8 +1909,8 @@
     </div>
 </ng-container>
 <ng-container *ngIf="props?.name === 'form'">
-    <vezo-select label="Select Component" [placeholder]="'Select Component'" [(ngModel)]="formData"
-        optionLabel="formName" [items]="forms" (ngModelChange)="setForm()"></vezo-select>
+    <vezo-select label="Select Component" [placeholder]="props.data?.formId ? props.data.formName : 'Select component'"
+        [(ngModel)]="formData" optionLabel="formName" [items]="forms" (ngModelChange)="setForm()"></vezo-select>
     <div *ngIf="props.data.formId" class="mt-2 mb-4">
         <div class="flex  justify-between align-middle items-center">
             <div class="" style="color: #000000; font-size: 14px; font-weight: 400;">
@@ -2101,7 +2101,7 @@
             <div style="position: relative; display: inline-block; " class="w-full"
                 *ngIf="(this.comingFromForm==false || ( props.mappedData !== null && props.mappedData?.url != null ))">
                 <div style=" position: absolute; top: 0; right: 0; cursor: pointer; z-index: 1;" class="mb-1"
-                    [ngClass]="{'bg-gray-200 p-1 rounded-md' : ( props.mappedData !== null && props.mappedData?.url )}"
+                    [ngClass]="{'bg-gray-200 rounded-md p-1' : ( props.mappedData !== null && props.mappedData?.url )}"
                     *ngIf="this.comingFromForm == false" (click)="makeItMapped(props , 'url')">
                     <img src="assets/tune.svg" style="width: 14px; height: auto;" />
                 </div>
