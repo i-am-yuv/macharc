@@ -1,5 +1,5 @@
 <ng-container *ngIf="props?.name === 'heading'">
-    <div *ngIf="( props.mappedData !== null)"
+    <div *ngIf=" this.getDataFieldCount(props) > 0 && this.comingFromForm == true "
         style="font-size:16px ; font-weight:600 ; color:#2e2e2e; text-decoration: underline;" class="mb-2">
         {{props.name}}'s parameter:</div>
     <div *ngIf="(this.comingFromForm==false || ( props.mappedData !== null && props.mappedData?.text != null ))"
@@ -194,7 +194,7 @@
     </div>
 </ng-container>
 <ng-container *ngIf="props?.name === 'button'">
-    <div *ngIf="( props.mappedData !== null)"
+    <div *ngIf=" this.getDataFieldCount(props) > 0 && this.comingFromForm == true "
         style="font-size:16px ; font-weight:600 ; color:#2e2e2e; text-decoration: underline;" class="mb-2">
         {{props.name}}'s parameter:</div>
 
@@ -430,10 +430,11 @@
     </div>
 </ng-container>
 <ng-container *ngIf="props?.name === 'input'">
-    <div *ngIf="( props.mappedData !== null)"
+    <div *ngIf=" this.getDataFieldCount(props) > 0 && this.comingFromForm == true "
         style="font-size:16px ; font-weight:600 ; color:#2e2e2e; text-decoration: underline;" class="mb-2">
         {{props.name}}'s parameter:
     </div>
+
     <div class="mt-2">
         <div class="flex gap-2 w-full">
             <div style="position: relative; display: inline-block; " class="w-full"
@@ -680,7 +681,7 @@
     </div>
 </ng-container>
 <ng-container *ngIf="props?.name === 'textarea'">
-    <div *ngIf="( props.mappedData !== null)"
+    <div *ngIf=" this.getDataFieldCount(props) > 0 && this.comingFromForm == true "
         style="font-size:16px ; font-weight:600 ; color:#2e2e2e; text-decoration: underline;" class="mb-2">
         {{props.name}}'s parameter:</div>
     <div class="mt-2">
@@ -964,9 +965,10 @@
     <div class="mt-2">
         <vezo-select label="Validation" [items]="validations" [(ngModel)]="props.data.validation"></vezo-select>
     </div>
+
 </ng-container>
 <ng-container *ngIf="props?.name === 'dropdown'">
-    <div *ngIf="( props.mappedData !== null)"
+    <div *ngIf=" this.getDataFieldCount(props) > 0 && this.comingFromForm == true "
         style="font-size:16px ; font-weight:600 ; color:#2e2e2e; text-decoration: underline;" class="mb-2">
         {{props.name}}'s parameter:</div>
     <div class="mt-2">
@@ -1249,7 +1251,7 @@
     </div>
 </ng-container>
 <ng-container *ngIf="props?.name === 'checkbox'">
-    <div *ngIf="( props.mappedData !== null)"
+    <div *ngIf=" this.getDataFieldCount(props) > 0 && this.comingFromForm == true "
         style="font-size:16px ; font-weight:600 ; color:#2e2e2e; text-decoration: underline;" class="mb-2">
         {{props.name}}'s parameter:</div>
     <div class="mt-2">
@@ -1450,7 +1452,7 @@
     </div>
 </ng-container>
 <ng-container *ngIf="props?.name === 'radio'">
-    <div *ngIf="( props.mappedData !== null)"
+    <div *ngIf=" this.getDataFieldCount(props) > 0 && this.comingFromForm == true "
         style="font-size:16px ; font-weight:600 ; color:#2e2e2e; text-decoration: underline;" class="mb-2">
         {{props.name}}'s parameter:</div>
     <div class="mt-2">
@@ -1651,7 +1653,7 @@
     </div>
 </ng-container>
 <ng-container *ngIf="props?.name === 'switch'">
-    <div *ngIf="( props.mappedData !== null)"
+    <div *ngIf=" this.getDataFieldCount(props) > 0 && this.comingFromForm == true "
         style="font-size:16px ; font-weight:600 ; color:#2e2e2e; text-decoration: underline;" class="mb-2">
         {{props.name}}'s parameter:</div>
     <div class="mt-2">
@@ -1907,9 +1909,9 @@
     </div>
 </ng-container>
 <ng-container *ngIf="props?.name === 'form'">
-    <vezo-select label="Select Component" [placeholder]="'Select Component'" [(ngModel)]="formData" optionLabel="formName"
-        [items]="forms" (ngModelChange)="setForm()"></vezo-select>
-    <div class="mt-2 mb-4">
+    <vezo-select label="Select Component" [placeholder]="'Select Component'" [(ngModel)]="formData"
+        optionLabel="formName" [items]="forms" (ngModelChange)="setForm()"></vezo-select>
+    <div *ngIf="props.data.formId" class="mt-2 mb-4">
         <div class="flex  justify-between align-middle items-center">
             <div class="" style="color: #000000; font-size: 14px; font-weight: 400;">
                 {{props.data.formName}}<span style="color: #888888; font-size: 12px; font-weight: 400;">
@@ -2086,7 +2088,7 @@
     </div>
 </ng-container>
 <ng-container *ngIf="props?.name === 'image'">
-    <div *ngIf="( props.mappedData !== null)"
+    <div *ngIf=" this.getDataFieldCount(props) > 0 && this.comingFromForm == true "
         style="font-size:16px ; font-weight:600 ; color:#2e2e2e; text-decoration: underline;" class="mb-2">
         {{props.name}}'s parameter:</div>
 
@@ -2370,7 +2372,7 @@
     </div>
 </ng-container>
 <ng-container *ngIf="props?.name === 'card'">
-    <div *ngIf="( props.mappedData !== null)"
+    <div *ngIf=" this.getDataFieldCount(props) > 0 && this.comingFromForm == true "
         style="font-size:16px ; font-weight:600 ; color:#2e2e2e; text-decoration: underline;" class="mb-2">
         {{props.name}}'s parameter:</div>
     <div class="mt-2">
@@ -2633,7 +2635,7 @@
     </div>
 </ng-container>
 <ng-container *ngIf="props?.name === 'video'">
-    <div *ngIf="( props.mappedData !== null)"
+    <div *ngIf=" this.getDataFieldCount(props) > 0 && this.comingFromForm == true "
         style="font-size:16px ; font-weight:600 ; color:#2e2e2e; text-decoration: underline;" class="mb-2">
         {{props.name}}'s parameter:</div>
     <div class="mt-2">
@@ -2782,7 +2784,7 @@
     </div>
 </ng-container>
 <ng-container *ngIf="props?.name === 'container'">
-    <div *ngIf="( props.mappedData !== null)"
+    <div *ngIf=" this.getDataFieldCount(props) > 0 && this.comingFromForm == true "
         style="font-size:16px ; font-weight:600 ; color:#2e2e2e; text-decoration: underline;" class="mb-2">
         {{props.name}}'s parameter:</div>
 
