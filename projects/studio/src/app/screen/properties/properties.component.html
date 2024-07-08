@@ -1,4 +1,7 @@
 <ng-container *ngIf="props?.name === 'heading'">
+    <div *ngIf="( props.mappedData !== null)"
+        style="font-size:16px ; font-weight:600 ; color:#2e2e2e; text-decoration: underline;" class="mb-2">
+        {{props.name}}'s parameter:</div>
     <div *ngIf="(this.comingFromForm==false || ( props.mappedData !== null && props.mappedData?.text != null ))"
         style="position: relative; display: inline-block; " class="w-full">
         <div style=" position: absolute; top: 0; right: 0; cursor: pointer; z-index: 1;" class="mb-1"
@@ -191,6 +194,10 @@
     </div>
 </ng-container>
 <ng-container *ngIf="props?.name === 'button'">
+    <div *ngIf="( props.mappedData !== null)"
+        style="font-size:16px ; font-weight:600 ; color:#2e2e2e; text-decoration: underline;" class="mb-2">
+        {{props.name}}'s parameter:</div>
+
     <div class="mt-2 w-full" style="position: relative; display: inline-block; "
         *ngIf="(this.comingFromForm==false || ( props.mappedData !== null && props.mappedData?.label != null ))">
         <div style=" position: absolute; top: 0; right: 0; cursor: pointer; z-index: 1;" class="mb-1"
@@ -423,6 +430,9 @@
     </div>
 </ng-container>
 <ng-container *ngIf="props?.name === 'input'">
+    <div *ngIf="( props.mappedData !== null)"
+        style="font-size:16px ; font-weight:600 ; color:#2e2e2e; text-decoration: underline;" class="mb-2">
+        {{props.name}}'s parameter:</div>
     <div class="mt-2">
         <div class="flex gap-2 w-full">
             <div style="position: relative; display: inline-block; " class="w-full"
@@ -669,6 +679,9 @@
     </div>
 </ng-container>
 <ng-container *ngIf="props?.name === 'textarea'">
+    <div *ngIf="( props.mappedData !== null)"
+        style="font-size:16px ; font-weight:600 ; color:#2e2e2e; text-decoration: underline;" class="mb-2">
+        {{props.name}}'s parameter:</div>
     <div class="mt-2">
         <div class="flex gap-2 w-full">
             <div *ngIf="(this.comingFromForm==false || ( props.mappedData !== null && props.mappedData?.label != null ))"
@@ -952,6 +965,9 @@
     </div>
 </ng-container>
 <ng-container *ngIf="props?.name === 'dropdown'">
+    <div *ngIf="( props.mappedData !== null)"
+        style="font-size:16px ; font-weight:600 ; color:#2e2e2e; text-decoration: underline;" class="mb-2">
+        {{props.name}}'s parameter:</div>
     <div class="mt-2">
         <div class="flex gap-2 w-full">
             <div *ngIf="(this.comingFromForm==false || ( props.mappedData !== null && props.mappedData?.label != null ))"
@@ -1232,7 +1248,9 @@
     </div>
 </ng-container>
 <ng-container *ngIf="props?.name === 'checkbox'">
-
+    <div *ngIf="( props.mappedData !== null)"
+        style="font-size:16px ; font-weight:600 ; color:#2e2e2e; text-decoration: underline;" class="mb-2">
+        {{props.name}}'s parameter:</div>
     <div class="mt-2">
         <div *ngIf="(this.comingFromForm==false || ( props.mappedData !== null && props.mappedData?.label != null ))"
             style="position: relative; display: inline-block; " class="w-full">
@@ -1431,6 +1449,9 @@
     </div>
 </ng-container>
 <ng-container *ngIf="props?.name === 'radio'">
+    <div *ngIf="( props.mappedData !== null)"
+        style="font-size:16px ; font-weight:600 ; color:#2e2e2e; text-decoration: underline;" class="mb-2">
+        {{props.name}}'s parameter:</div>
     <div class="mt-2">
         <div *ngIf="(this.comingFromForm==false || ( props.mappedData !== null && props.mappedData?.label != null ))"
             style="position: relative; display: inline-block; " class="w-full">
@@ -1629,6 +1650,9 @@
     </div>
 </ng-container>
 <ng-container *ngIf="props?.name === 'switch'">
+    <div *ngIf="( props.mappedData !== null)"
+        style="font-size:16px ; font-weight:600 ; color:#2e2e2e; text-decoration: underline;" class="mb-2">
+        {{props.name}}'s parameter:</div>
     <div class="mt-2">
         <div *ngIf="(this.comingFromForm==false || ( props.mappedData !== null && props.mappedData?.label != null ))"
             style="position: relative; display: inline-block; " class="w-full">
@@ -2059,6 +2083,10 @@
     </div>
 </ng-container>
 <ng-container *ngIf="props?.name === 'image'">
+    <div *ngIf="( props.mappedData !== null)"
+        style="font-size:16px ; font-weight:600 ; color:#2e2e2e; text-decoration: underline;" class="mb-2">
+        {{props.name}}'s parameter:</div>
+
     <!-- <div class="mt-2">
         <vezo-input label="Image URL" [(ngModel)]="props.data.url"></vezo-input>
     </div> -->
@@ -2339,6 +2367,9 @@
     </div>
 </ng-container>
 <ng-container *ngIf="props?.name === 'card'">
+    <div *ngIf="( props.mappedData !== null)"
+        style="font-size:16px ; font-weight:600 ; color:#2e2e2e; text-decoration: underline;" class="mb-2">
+        {{props.name}}'s parameter:</div>
     <div class="mt-2">
         <div class="flex gap-2 w-full">
             <div *ngIf="(this.comingFromForm==false || ( props.mappedData !== null && props.mappedData?.imageUrl != null ))"
@@ -2599,9 +2630,9 @@
     </div>
 </ng-container>
 <ng-container *ngIf="props?.name === 'video'">
-    <!-- <div class="mt-2">
-        <vezo-input label="Video URL" [(ngModel)]="props.data.url"></vezo-input>
-    </div> -->
+    <div *ngIf="( props.mappedData !== null)"
+        style="font-size:16px ; font-weight:600 ; color:#2e2e2e; text-decoration: underline;" class="mb-2">
+        {{props.name}}'s parameter:</div>
     <div class="mt-2">
         <div *ngIf="(this.comingFromForm==false || ( props.mappedData !== null && props.mappedData?.url != null ))"
             style="position: relative; display: inline-block; " class="w-full">
@@ -2748,6 +2779,10 @@
     </div>
 </ng-container>
 <ng-container *ngIf="props?.name === 'container'">
+    <div *ngIf="( props.mappedData !== null)"
+        style="font-size:16px ; font-weight:600 ; color:#2e2e2e; text-decoration: underline;" class="mb-2">
+        {{props.name}}'s parameter:</div>
+
     <div class="mt-2 flex gap-2"
         *ngIf="(this.comingFromForm==false || ( props.mappedData !== null && props.mappedData?.widthHeight != null ))">
         <vezo-input label="Width" [tainlingText]="'px'" [(ngModel)]="props.data.width"></vezo-input>
@@ -3286,7 +3321,7 @@
         <app-properties [props]="key" [comingFromForm]="true"></app-properties>
     </div>
 </ng-container>
-<div *ngIf="(this.comingFromForm==false || ( props.name == 'form'))"  class="text-right">
+<div *ngIf="(this.comingFromForm==false || ( props.name == 'form'))" class="text-right">
     <vezo-button label="Delete" (click)="deleteProperty()"></vezo-button>
 </div>
 <vezo-toast></vezo-toast>
