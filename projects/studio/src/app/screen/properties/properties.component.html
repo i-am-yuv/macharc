@@ -432,7 +432,8 @@
 <ng-container *ngIf="props?.name === 'input'">
     <div *ngIf="( props.mappedData !== null)"
         style="font-size:16px ; font-weight:600 ; color:#2e2e2e; text-decoration: underline;" class="mb-2">
-        {{props.name}}'s parameter:</div>
+        {{props.name}}'s parameter:
+    </div>
     <div class="mt-2">
         <div class="flex gap-2 w-full">
             <div style="position: relative; display: inline-block; " class="w-full"
@@ -1906,7 +1907,7 @@
     </div>
 </ng-container>
 <ng-container *ngIf="props?.name === 'form'">
-    <vezo-select label="Component" [placeholder]="'Select Component'" [(ngModel)]="formData" optionLabel="formName"
+    <vezo-select label="Select Component" [placeholder]="'Select Component'" [(ngModel)]="formData" optionLabel="formName"
         [items]="forms" (ngModelChange)="setForm()"></vezo-select>
     <div class="mt-2 mb-4">
         <div class="flex  justify-between align-middle items-center">
@@ -1920,6 +1921,8 @@
                 <vezo-icon icon="pencil" className="w-3 h-3"></vezo-icon>
             </div>
         </div>
+        <div class="w-full mt-4" style="height:2px ; background-color:#f1f3f6 ;"></div>
+
         <div class="mt-2" *ngFor="let key of (props?.children)">
             <app-properties [props]="key" [comingFromForm]="true"></app-properties>
         </div>
