@@ -83,11 +83,18 @@ export class PropertiesComponent {
     this.router.navigate(['/builder/forms/designer/' + componentId]);
   }
 
-  makeItMapped(item: any , element : any) {
+  makeItMapped(item: any, element: any) {
     if (!item) {
-      item = {}; // Initialize mappedData if it's undefined
+      item = {}; // Initialize item if it's undefined
     }
-    item.mappedData[element] = '[isMapped]'; 
+    if (item.mappedData && item.mappedData[element] === '[isMapped]') {
+      delete item.mappedData[element]; // Remove the key if it has the value '[isMapped]'
+    } else {
+      if (!item.mappedData) {
+        item.mappedData = {}; // Initialize mappedData if it's undefined
+      }
+      item.mappedData[element] = '[isMapped]'; // Set the value
+    }
     console.log(item);
   }
 

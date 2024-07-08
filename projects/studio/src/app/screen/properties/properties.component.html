@@ -451,10 +451,6 @@
             </div>
         </div>
     </div>
-    <div class="flex justify-between items-center mt-2 gap-2">
-        <vezo-input label="Font Size" [trailingText]="'px'" [(ngModel)]="props.data.labelFont"></vezo-input>
-        <vezo-input label="Font Weight" [(ngModel)]="props.data.labelWeight"></vezo-input>
-    </div>
     <div class="mt-2">
         <div class="flex gap-2 w-full">
             <div style="position: relative; display: inline-block; " class="w-full"
@@ -1907,13 +1903,16 @@
     <div></div>
 </ng-container>
 <ng-container *ngIf="props?.name === 'grid'">
-    <div class="mt-2">
+    <div class="mt-2"
+        *ngIf="(this.comingFromForm==false || ( props.mappedData !== null && props.mappedData?.gap != null ))">
         <vezo-input label="Gap" [(ngModel)]="props.data.gap"></vezo-input>
     </div>
-    <div class="mt-2">
+    <div class="mt-2"
+        *ngIf="(this.comingFromForm==false || ( props.mappedData !== null && props.mappedData?.columns != null ))">
         <vezo-input label="Number of columns" [(ngModel)]="props.data.columns"></vezo-input>
     </div>
-    <div class="mt-2">
+    <div class="mt-2"
+        *ngIf="(this.comingFromForm==false || ( props.mappedData !== null && props.mappedData?.mr != null ))">
         <label class="">Margin Style</label>
         <div class="flex justify-between  items-center mt-2 ">
             <div class="grid grid-cols-2  w-full justify-between">
@@ -1966,7 +1965,8 @@
             </div>
         </div>
     </div>
-    <div class="mt-2">
+    <div class="mt-2"
+        *ngIf="(this.comingFromForm==false || ( props.mappedData !== null && props.mappedData?.pr != null ))">
         <label class="">Padding Style</label>
         <div class="flex justify-between  items-center mt-2">
             <div class="grid grid-cols-2 w-full justify-between">
@@ -2020,7 +2020,8 @@
         </div>
     </div>
 
-    <div class="flex mt-2 justify-between mb-2">
+    <div class="flex mt-2 justify-between mb-2"
+        *ngIf="(this.comingFromForm==false || ( props.mappedData !== null && props.mappedData?.alignment != null ))">
         <div class="w-6/12">
             <label class="">Alignment</label>
             <div class="flex mt-2 p-1 gap-2 w-fit"
@@ -2051,6 +2052,10 @@
                         src="assets/vertical_align_top.svg" style="width: 16px; height: 16px;"></div>
             </div>
         </div>
+    </div>
+    <!-- For the nested child inside this container -->
+    <div class="mt-2" *ngFor="let key of (props?.children)">
+        <app-properties [props]="key" [comingFromForm]="true"></app-properties>
     </div>
 </ng-container>
 <ng-container *ngIf="props?.name === 'image'">
@@ -2334,7 +2339,6 @@
     </div>
 </ng-container>
 <ng-container *ngIf="props?.name === 'card'">
-
     <div class="mt-2">
         <div class="flex gap-2 w-full">
             <div *ngIf="(this.comingFromForm==false || ( props.mappedData !== null && props.mappedData?.imageUrl != null ))"
@@ -2941,20 +2945,27 @@
             </div>
         </div>
     </div>
-    <div class="mt-2 mb-2">
+    <div class="mt-2 mb-2"
+        *ngIf="(this.comingFromForm==false || ( props.mappedData !== null && props.mappedData?.boxShadow != null ))">
         <vezo-select optionLabel="Select" [items]="boxShawdowOptions" [(ngModel)]="props.data.shadow"
             label="Box Shadow"></vezo-select>
     </div>
+    <!-- For the nested child inside this container -->
+    <div class="mt-2" *ngFor="let key of (props?.children)">
+        <app-properties [props]="key" [comingFromForm]="true"></app-properties>
+    </div>
 </ng-container>
 <ng-container *ngIf="props?.name === 'row'">
-    <div class="mt-2">
+    <div class="mt-2"
+        *ngIf="(this.comingFromForm==false || ( props.mappedData !== null && props.mappedData?.gap != null ))">
         <vezo-input label="Gap" [(ngModel)]="props.data.gap"></vezo-input>
     </div>
     <!-- <div class="flex gap-2 mt-2">
         <vezo-input label="Start Spacing" [trailingText]="'px'" [(ngModel)]="props.data.startSpacing"></vezo-input>
         <vezo-input label="End Spacing" [trailingText]="'px'" [(ngModel)]="props.data.endSpacing"></vezo-input>
     </div> -->
-    <div class="mt-2">
+    <div class="mt-2"
+        *ngIf="(this.comingFromForm==false || ( props.mappedData !== null && props.mappedData?.alignment != null ))">
         <div class="">
             <label class="">Alignment</label>
             <div class="flex mt-2 p-1 gap-2 w-fit"
@@ -2979,7 +2990,8 @@
         </div>
 
     </div>
-    <div class="mt-2">
+    <div class="mt-2"
+        *ngIf="(this.comingFromForm==false || ( props.mappedData !== null && props.mappedData?.vAlignment != null ))">
         <div class="">
             <label class="">Vertical Alignment</label>
             <div class="flex mt-2 p-1 gap-2 w-fit"
@@ -2996,7 +3008,8 @@
             </div>
         </div>
     </div>
-    <div class="mt-2">
+    <div class="mt-2"
+        *ngIf="(this.comingFromForm==false || ( props.mappedData !== null && props.mappedData?.mr != null ))">
         <label class="">Margin Style</label>
         <div class="flex justify-between  items-center mt-2 ">
             <div class="grid grid-cols-2  w-full justify-between">
@@ -3049,7 +3062,8 @@
             </div>
         </div>
     </div>
-    <div class="mt-2  mb-2">
+    <div class="mt-2  mb-2"
+        *ngIf="(this.comingFromForm==false || ( props.mappedData !== null && props.mappedData?.pr != null ))">
         <label class="">Padding Style</label>
         <div class="flex justify-between  items-center mt-2">
             <div class="grid grid-cols-2 w-full justify-between">
@@ -3102,16 +3116,22 @@
             </div>
         </div>
     </div>
+    <!-- For the nested child inside this container -->
+    <div class="mt-2" *ngFor="let key of (props?.children)">
+        <app-properties [props]="key" [comingFromForm]="true"></app-properties>
+    </div>
 </ng-container>
 <ng-container *ngIf="props?.name === 'column'">
-    <div class="mt-2">
+    <div class="mt-2"
+        *ngIf="(this.comingFromForm==false || ( props.mappedData !== null && props.mappedData?.gap != null ))">
         <vezo-input label="Gap" [(ngModel)]="props.data.gap"></vezo-input>
     </div>
     <!-- <div class="flex gap-2 mt-2">
         <vezo-input label="Start Spacing" [trailingText]="'px'" [(ngModel)]="props.data.startSpacing"></vezo-input>
         <vezo-input label="End Spacing" [trailingText]="'px'" [(ngModel)]="props.data.endSpacing"></vezo-input>
     </div> -->
-    <div class="mt-2">
+    <div class="mt-2"
+        *ngIf="(this.comingFromForm==false || ( props.mappedData !== null && props.mappedData?.alignment != null ))">
         <div class="">
             <label class="">Cross Axis Alignment</label>
             <div class="flex mt-2 p-1 gap-2 w-fit"
@@ -3129,7 +3149,8 @@
         </div>
 
     </div>
-    <div class="mt-2">
+    <div class="mt-2"
+        *ngIf="(this.comingFromForm==false || ( props.mappedData !== null && props.mappedData?.vAlignment != null ))">
         <div class="">
             <label class="">Main Axis Alignment</label>
             <div class="flex mt-2 p-1 gap-2 w-fit"
@@ -3152,7 +3173,8 @@
             </div>
         </div>
     </div>
-    <div class="mt-2">
+    <div class="mt-2"
+        *ngIf="(this.comingFromForm==false || ( props.mappedData !== null && props.mappedData?.mr != null ))">
         <label class="">Margin Style</label>
         <div class="flex justify-between  items-center mt-2 ">
             <div class="grid grid-cols-2  w-full justify-between">
@@ -3205,7 +3227,8 @@
             </div>
         </div>
     </div>
-    <div class="mt-2  mb-2">
+    <div class="mt-2  mb-2"
+        *ngIf="(this.comingFromForm==false || ( props.mappedData !== null && props.mappedData?.pr != null ))">
         <label class="">Padding Style</label>
         <div class="flex justify-between  items-center mt-2">
             <div class="grid grid-cols-2 w-full justify-between">
@@ -3258,10 +3281,12 @@
             </div>
         </div>
     </div>
+    <!-- For the nested child inside this container -->
+    <div class="mt-2" *ngFor="let key of (props?.children)">
+        <app-properties [props]="key" [comingFromForm]="true"></app-properties>
+    </div>
 </ng-container>
-<div *ngIf="props?.name" class="text-right">
+<div *ngIf="(this.comingFromForm==false || ( props.name == 'form'))"  class="text-right">
     <vezo-button label="Delete" (click)="deleteProperty()"></vezo-button>
 </div>
-
-
 <vezo-toast></vezo-toast>
