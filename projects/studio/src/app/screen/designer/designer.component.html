@@ -351,8 +351,12 @@
                                             [isParentForm]="true"
                                             (click)="handleClickForm($event, child, item)"></app-nested>
                                     </ng-container>
+                                    <ng-container *ngIf="child.name === 'column'">
+                                        <app-nested [child]="child" [layout]="layout" [nestedElement]="'column'"
+                                            (nodeClicked)="onItemReceived($event)"></app-nested>
+                                    </ng-container>
                                     <ng-container
-                                        *ngIf="child.name !== 'row' && child.name !== 'container' && child.name !== 'grid' ">
+                                        *ngIf="child.name !== 'row' && child.name !== 'container' && child.name !== 'grid' && child.name !== 'column' ">
                                         <app-blocks [block]="child"
                                             (click)="handleClickForm($event, child, item)"></app-blocks>
                                     </ng-container>

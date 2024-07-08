@@ -75,8 +75,9 @@ export class DesignerComponent implements OnInit {
       data: {
         label: 'Input Label', placeholder: 'Placeholder', labelFont: '14', labelWeight: '400', labelColor: '#000000', fieldHeight: '35', fieldRadius: '4', fillColor: '#f1f3f6', borderColor: '#f1f3f6', borderWidth: '1',
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
-      }
-      , icon: 'assets/button.svg'
+      },
+      mappedData : {},
+       icon: 'assets/button.svg'
     },
     {
       name: 'textarea',
@@ -87,8 +88,9 @@ export class DesignerComponent implements OnInit {
       data: {
         label: 'Input Label', placeholder: 'Placeholder', labelFont: '14', labelWeight: '400', labelColor: '#000000', fieldHeight: '50', fillColor: '#f1f3f6', borderColor: '#f1f3f6', borderWidth: '1', borderRadius: '4',
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
-      }
-      , icon: 'assets/textField.svg'
+      },
+      mappedData : {},
+       icon: 'assets/textField.svg'
     },
     {
       name: 'button',
@@ -102,6 +104,7 @@ export class DesignerComponent implements OnInit {
         btnAlignment: 'center', textAlignment: 'center',
         mt: '0', mb: '0', ml: '0', mr: '0'
       },
+      mappedData : {},
       icon: 'assets/button.svg'
     },
     {
@@ -114,6 +117,7 @@ export class DesignerComponent implements OnInit {
         label: 'Input Label', labelFont: '14', labelWeight: '400', labelColor: '#000000',
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0' ,alignment: 'start'
       },
+      mappedData : {},
       icon: 'assets/checkBox.svg'
     },
     {
@@ -126,6 +130,7 @@ export class DesignerComponent implements OnInit {
         label: 'Input Label', labelFont: '14', labelWeight: '400', labelColor: '#000000',alignment: 'start',
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
       },
+      mappedData : {},
       icon: 'assets/Radio-button_N.svg'
 
     },
@@ -139,6 +144,7 @@ export class DesignerComponent implements OnInit {
         label: 'Input Label', labelFont: '14', labelWeight: '400', labelColor: '#000000',
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0',alignment: 'start'
       },
+      mappedData : {},
       icon: 'assets/toggleOn.svg'
     },
     {
@@ -151,6 +157,7 @@ export class DesignerComponent implements OnInit {
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0', alignment: 'start',
         width: '200', height: '100', url: 'https://primefaces.org/cdn/primeng/images/galleria/galleria10.jpg'
       },
+      mappedData : {},
       icon: 'assets/image.svg'
     },
     {
@@ -163,6 +170,7 @@ export class DesignerComponent implements OnInit {
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0', alignment: 'start',
         width: '200', url: 'https://elementor.com/wp-content/uploads/2023/09/02_MainVideo_1066_600_1-1.mp4'
       },
+      mappedData : {},
       icon: 'assets/ph_video-light.svg'
     },
     {
@@ -237,6 +245,7 @@ export class DesignerComponent implements OnInit {
         width: '100', height: '100', bgColor: '#f1f3f6', gap: '0', columns: '2', alignment: 'start', vAlignment: 'center',
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0', bgImage: '', borderWidth: '0', borderColor: '#FFFFFF', borderRadius: '0'
        , shadow:'none'},
+       mappedData : {},
       effectAllowed: 'copy',
       disable: false,
       handle: false,
@@ -250,6 +259,7 @@ export class DesignerComponent implements OnInit {
         columns: 2, gap: '4', mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0',
         alignment: 'start', vAlignment: 'start',
       },
+      mappedData : {},
       effectAllowed: 'copy',
       disable: false,
       handle: false,
@@ -264,6 +274,7 @@ export class DesignerComponent implements OnInit {
         width: 'auto', height: 'auto', gap: '0', alignment: 'start', vAlignment: 'center',
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
       },
+      mappedData : {},
       effectAllowed: 'copy',
       disable: false,
       handle: false,
@@ -277,6 +288,7 @@ export class DesignerComponent implements OnInit {
         width: 'auto', height: 'auto', alignment: 'center', hAlignment: 'center', gap:'0',
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
       },
+      mappedData : {},
       effectAllowed: 'copy',
       disable: false,
       handle: false,
@@ -293,6 +305,7 @@ export class DesignerComponent implements OnInit {
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0', alignment: 'start', width: '1', height: '10',
         dividerColor: '#000000'
       },
+      mappedData : {},
       icon: 'assets/Line 45.svg'
     }
   ];
