@@ -471,6 +471,17 @@ export class FormDesignerComponent implements OnInit {
     console.log('Item received from child:', item);
   }
 
+  copySubList: any[] = []; // Initialize the list as empty
+  onItemReceivedCopy(item: any) {
+    //this.activeItem = item;
+    console.log(item);
+    const newItem = { ...item, id: this.generateUniqueId() };
+   
+    this.copySubList = [];
+    this.copySubList.push(newItem);
+    this.copyThisComponent(this.copySubList);
+  }
+
   searchValue: string = '';
   filteredDraggableListLeftVE: DraggableItem[] = [...this.draggableListLeftVE];
   filteredDraggableListLeftLE: DraggableItem[] = [...this.draggableListLeftLE];
@@ -544,12 +555,11 @@ export class FormDesignerComponent implements OnInit {
   copiedCanvas: DraggableItem[] = [
   ];
 
-  copyThisComponent() {
-    this.copiedCanvas = this.draggableListRight;
+  copyThisComponent( oldList : any ) {
+    this.copiedCanvas = oldList;
     var copiedContent = JSON.stringify(this.copiedCanvas);
     localStorage.setItem('componentCopy', copiedContent);
     this.msgService.add({ severity: 'success', summary: 'Copied', detail: 'Content Copied successfully.' });
-
   }
 
   checkComponentAvailable() {
@@ -579,7 +589,7 @@ export class FormDesignerComponent implements OnInit {
     // console.log('after pasting');
     this.msgService.add({ severity: 'success', summary: 'Paste', detail: 'Content pasted successfully.' });
     localStorage.removeItem('componentCopy'); // Removing this for temporary purpose
-    
+
   }
   // Method to generate a unique ID
   generateUniqueId(): number {

@@ -9,6 +9,8 @@ export class WidgetTreeNodeComponent implements OnInit {
 
   @Input() node: any;
   @Output() nodeClicked = new EventEmitter<any>();
+  @Output() copyClicked = new EventEmitter<any>();
+
   isExpanded: boolean = false;
 
   ngOnInit(): void {
@@ -30,8 +32,18 @@ export class WidgetTreeNodeComponent implements OnInit {
     this.nodeClicked.emit(node);
   }
 
+  copyClick(event: Event, node: any) {
+    event.stopPropagation(); // Stop the event from bubbling up
+    // console.log( node);
+    this.copyClicked.emit(node);
+  }
+
   onChildNodeClicked(node: any) {
     this.nodeClicked.emit(node);
+  }
+
+  onChildCopyClicked(node: any) {
+    this.copyClicked.emit(node);
   }
 
 }

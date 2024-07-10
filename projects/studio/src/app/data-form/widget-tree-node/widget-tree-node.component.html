@@ -1,20 +1,32 @@
 <div>
-  <div (click)="toggle()" style="display: flex;justify-content: start; align-items: center; gap: 4px;">
-    <span *ngIf="hasChildren() && node.name!='form'" class="cursor-pointer">
-      <img *ngIf="this.isExpanded == true" src="assets/Polygon 3.svg" style="width: 18px; height: 18px;" />
-      <img *ngIf="this.isExpanded == false" src="assets/Polygon 5.svg" style="width: 18px; height: 18px;" />
-    </span>
-    <div class="flex justify-start items-center gap-2">
+  <div class="parent-div flex justify-start items-center" (click)="toggle()" style=" gap: 4px;">
+
+    <span *ngIf="hasChildren()" class="cursor-pointer">
+      <img *ngIf="this.isExpanded == true && node.name!='form'" src="assets/Polygon 3.svg"
+        style="width: 18px; height: 18px;" />
+      <img *ngIf="this.isExpanded == false && node.name!='form'" src="assets/Polygon 5.svg"
+        style="width: 18px; height: 18px;" />
       <img *ngIf="node.name=='form'" src="assets/Component _R.svg" style="width: 14px;" />
+    </span>
+
+    <div class="flex justify-start items-center gap-2">
       <span style="font-size: 16px; font-weight: 400; color: #000000;" class="mb-2">{{ node.name=='form'?
         node.data.formName : node.name | capitalize }}</span>
     </div>
-    <span *ngIf="node.name!='form'"><img src="assets/code.svg" style="width: 12px; height: 12px;"
-        class="ml-1 mb-2 cursor-pointer" (click)="handleClick($event, node)" /></span>
+
+    <span *ngIf="node.name!='form'">
+      <img src="assets/code.svg" style="width: 12px; height: 12px;" class="ml-1 mb-2 cursor-pointer"
+        (click)="handleClick($event, node)" />
+    </span>
+
+    <span  *ngIf="node.name!='form'"class="last-child-div w-3/4 justify-end items-start cursor-pointer" >
+      <img src="assets/copy-clipboard.svg" style="width: 15px; height: auto;" class="mb-2" (click)="copyClick($event, node)"/>
+    </span>
+ 
   </div>
   <div *ngIf="isExpanded" style="margin-left: 1rem ; padding-left: 1rem ; border-left: 1px solid #ccc;">
     <ng-container *ngFor="let child of node.children">
-      <app-widget-tree-node [node]="child" (nodeClicked)="onChildNodeClicked($event)"></app-widget-tree-node>
+      <app-widget-tree-node [node]="child" (nodeClicked)="onChildNodeClicked($event)" (copyClicked)="onChildCopyClicked($event)"></app-widget-tree-node>
     </ng-container>
   </div>
 </div>

@@ -496,26 +496,28 @@
                             <!-- Widget Tree Code -->
                             <div *ngIf="showProps" class="p-2 bg-gray-100">
 
+                                <!-- Copy the complete component -->
                                 <div *ngIf="widgetTree.length !== 0" class="flex justify-end">
                                     <!-- <div style="font-size: 14px; font-weight: 500; color:#2e2e2e">Copy Component</div> -->
-                                    <img src="assets/copy-clipboard.svg" (click)="copyThisComponent()"
+                                    <img src="assets/copy-clipboard.svg" (click)="copyThisComponent( this.draggableListRight)"
                                         style="width: 20px; height: 20px; cursor: pointer;" />
                                 </div>
-
+                                <!-- widget Tree Content-->
                                 <div style="display: flex;flex-direction: column;">
                                     <div *ngFor="let item of widgetTree">
                                         <app-widget-tree-node [node]="item"
-                                            (nodeClicked)="onItemReceived($event)"></app-widget-tree-node>
+                                            (nodeClicked)="onItemReceived($event)" (copyClicked)="onItemReceivedCopy($event)" ></app-widget-tree-node>
                                     </div>
                                     <div *ngIf="widgetTree.length == 0 ">
-                                        <div style="font-size: 14px; font-weight: 500; color:#2e2e2e">No Widget Tree Available.</div>
+                                        <div style="font-size: 14px; font-weight: 500; color:#2e2e2e">No Widget Tree
+                                            Available.</div>
                                     </div>
                                 </div>
-
-                                <div class="flex justify-start mt-2" *ngIf="checkComponentAvailable()">
-                                    <div style="font-size: 14px; font-weight: 500; color:#2e2e2e">Paste Component</div>
-                                    <img src="assets/copy-clipboard.svg" (click)="pasteThisComponent()"
-                                        style="width: 20px; height: 20px; cursor: pointer;" />
+                                <!-- Paste content-->
+                                <div class="flex justify-start items-center mt-2 gap-2 cursor-pointer"
+                                    *ngIf="checkComponentAvailable()" (click)="pasteThisComponent()">
+                                    <div style="font-size: 14px; font-weight: 500; color:#2e2e2e">Paste</div>
+                                    <img src="assets/content_paste.svg" style="width: 16px; height: 20px; " />
                                 </div>
 
                             </div>
