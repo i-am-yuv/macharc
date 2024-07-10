@@ -45,7 +45,8 @@ export class DataFormComponent extends GenericComponent {
       id: '',
       formName: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
       formCode: ['', [Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
-      formDescription: [],
+      formDescription: '',
+      formDefinition:'',
       collection: [],
       microService: [],
       application: [],
@@ -100,6 +101,18 @@ export class DataFormComponent extends GenericComponent {
   }
   designDataForm(scr: DataForm) {
     this.router.navigate(['/builder/forms/designer/' + scr.id]);
+  }
+
+  duplicateData(ds: any) 
+  {
+    this.visible = true;
+    // Duplicate component must have different id and form name
+    ds.id = '';
+    ds.formName = '';
+    console.log(ds);
+
+    this.form.patchValue({ ...ds });
+    console.log( this.form);
   }
 
 }
