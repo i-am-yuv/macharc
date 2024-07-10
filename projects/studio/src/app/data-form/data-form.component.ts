@@ -73,7 +73,13 @@ export class DataFormComponent extends GenericComponent {
         this.applicationItems = res.content;
       }
     })
+    this.collectionService.getAllData().then((res: any) => {
+      if (res) {
+        this.collectionItems = res.content;
+      }
+    })
   }
+
   getCollectionItems() {
     this.form.patchValue({ collection: null });
     var filterStr = FilterBuilder.equal('microService.id', this.form.value.microService.id);
@@ -83,6 +89,13 @@ export class DataFormComponent extends GenericComponent {
       }
     })
   }
+
+  findOut()
+{
+   console.log(this.collectionItems);
+   console.log(this.applicationItems);
+   console.log(this.microserviceItems);
+}
   saveFormData() {
     console.log(this.form.value);
   }
@@ -109,10 +122,7 @@ export class DataFormComponent extends GenericComponent {
     // Duplicate component must have different id and form name
     ds.id = '';
     ds.formName = '';
-    console.log(ds);
-
     this.form.patchValue({ ...ds });
-    console.log( this.form);
   }
 
 }

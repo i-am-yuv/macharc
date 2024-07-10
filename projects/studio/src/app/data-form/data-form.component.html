@@ -22,7 +22,7 @@
                 <!-- <th class="w-4"><input type="checkbox" class="w-4 h-4" /></th> -->
                 <th>Microservice</th>
                 <th>Collection</th>
-                <th>DataForm Name</th>
+                <th>Component Name</th>
                 <th [width]="150">Actions</th>
             </tr>
         </ng-template>
@@ -48,7 +48,7 @@
     </vezo-table>
 </div>
 <vezo-modal [(visible)]="visible">
-    <ng-template vTemplate="header">Component Details</ng-template>
+    <ng-template vTemplate="header"><p (click)="findOut()">Component Details</p></ng-template>
     <ng-template vTemplate="content">
         <form [formGroup]="form">
             <vezo-select optionLabel="applicationName" [items]="applicationItems" formControlName="application"
