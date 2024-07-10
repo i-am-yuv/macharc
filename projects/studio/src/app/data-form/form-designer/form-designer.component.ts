@@ -337,9 +337,7 @@ export class FormDesignerComponent implements OnInit {
       this.formData = res;
       if (res.formDefinition)
         this.draggableListRight = JSON.parse(res.formDefinition);
-      console.log(this.draggableListRight);
       this.widgetTree = this.draggableListRight;
-      // console.log(this.draggableListRight);
       if (this.formData) {
         var filterStr = FilterBuilder.equal('collection.id', this.formData?.collection?.id!);
         this.fieldService.getAllData(undefined, filterStr).then((res: any) => {
@@ -384,10 +382,9 @@ export class FormDesignerComponent implements OnInit {
     }
   }
 
-  saveDefinition() 
-  {
+  saveDefinition() {
     // console.log('after Saving');
-    // console.log( this.formData);
+    // console.log( this.draggableListRight);
     this.formData.formDefinition = JSON.stringify(this.draggableListRight);
     this.formService.updateData(this.formData).then((res: any) => {
       this.msgService.add({ severity: 'success', summary: 'Updated', detail: 'Definition updated' });
@@ -427,8 +424,8 @@ export class FormDesignerComponent implements OnInit {
 
   handleClick(event: MouseEvent, item: any) {
     event.stopPropagation();
-    console.log(item);
-    console.log(item.name);
+    // console.log(item);
+    // console.log(item.name);
     this.activeItem = item;
   }
 
@@ -570,13 +567,23 @@ export class FormDesignerComponent implements OnInit {
     this.copiedResult = localStorage.getItem('componentCopy');
 
     this.copiedList = JSON.parse(this.copiedResult);
+
+    this.copiedList = this.copiedList.map((item: any) => {
+      const newItem = { ...item, id: this.generateUniqueId() };
+      return newItem;
+    });
+
     this.draggableListRight = [...this.draggableListRight, ...this.copiedList];
     this.widgetTree = this.draggableListRight;
 
     // console.log('after pasting');
-    console.log( this.draggableListRight) ;
     this.msgService.add({ severity: 'success', summary: 'Paste', detail: 'Content pasted successfully.' });
     localStorage.removeItem('componentCopy'); // Removing this for temporary purpose
+    
+  }
+  // Method to generate a unique ID
+  generateUniqueId(): number {
+    return Math.floor(Math.random() * 100000) + 1;
   }
 
 }
