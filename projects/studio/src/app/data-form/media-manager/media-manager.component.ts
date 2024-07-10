@@ -38,7 +38,7 @@ export class MediaManagerComponent extends GenericComponent {
     super(formService, msgService);
     this.form = this.fb.group({
       id: '',
-      folderName: [''],
+      folderName: ['']
     })
   }
 

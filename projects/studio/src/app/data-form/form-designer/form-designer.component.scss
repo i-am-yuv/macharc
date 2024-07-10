@@ -22,11 +22,11 @@
 }
 
 .parent {
-    // flex-grow: 1;
-    overflow: auto ;
+    flex-grow: 1;
+    overflow: auto;
     position: relative;
-    white-space: nowrap; 
-    background-color: #f5feff;
+     background-color: #f5feff;
+     overflow-x:scroll;
 }
 
 .child {

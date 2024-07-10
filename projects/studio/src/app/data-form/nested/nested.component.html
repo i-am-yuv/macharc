@@ -32,7 +32,8 @@
                     <app-nested [child]="item" [layout]="layout" [nestedElement]="'grid'"
                         [isParentForm]="this.isParentForm" (nodeClicked)="onChildNodeClicked($event)"></app-nested>
                 </ng-container>
-                <ng-container *ngIf="item.name !== 'row' && item.name !== 'container' && item.name !== 'grid' && item.name !== 'column' ">
+                <ng-container
+                    *ngIf="item.name !== 'row' && item.name !== 'container' && item.name !== 'grid' && item.name !== 'column' ">
                     <app-blocks [block]="item" (click)="handleClick($event, item)"></app-blocks>
                 </ng-container>
             </div>
@@ -136,8 +137,7 @@
 
 <div *ngIf="nestedElement == 'column'" style="height: -webkit-fill-available;">
     <div (dndDrop)="onDrop($event, child.children)" style="height: -webkit-fill-available;"
-        class="name justify-center  gap-{{child.data.gap}} flex flex-col items-{{child.data.hAlignment}} "
-        [ngStyle]="{'margin-top': child.data.mt+'px' ,'margin-bottom': child.data.mb+'px' , 'margin-left':child.data.ml+'px', 'margin-right':child.data.mr+'px',
+        class="name justify-center  gap-{{child.data.gap}} flex flex-col items-{{child.data.hAlignment}} " [ngStyle]="{'margin-top': child.data.mt+'px' ,'margin-bottom': child.data.mb+'px' , 'margin-left':child.data.ml+'px', 'margin-right':child.data.mr+'px',
         'padding-top': (child.children && child.children.length > 0 ? child.data?.pt : 32) + 'px',
         'padding-bottom': (child.children && child.children.length > 0 ? child.data?.pb : 32) + 'px',
         'padding-left': (child.children && child.children.length > 0 ? child.data?.pl : 32) + 'px',
@@ -169,7 +169,8 @@
                     <app-nested [child]="item" [layout]="layout" [nestedElement]="'grid'"
                         [isParentForm]="this.isParentForm" (nodeClicked)="onChildNodeClicked($event)"></app-nested>
                 </ng-container>
-                <ng-container *ngIf="item.name !== 'row' && item.name !== 'container' && item.name !== 'grid' && item.name !== 'column' ">
+                <ng-container
+                    *ngIf="item.name !== 'row' && item.name !== 'container' && item.name !== 'grid' && item.name !== 'column' ">
                     <app-blocks [block]="item" (click)="handleClick($event, item)"></app-blocks>
                 </ng-container>
             </div>

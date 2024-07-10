@@ -337,6 +337,7 @@ export class FormDesignerComponent implements OnInit {
       this.formData = res;
       if (res.formDefinition)
         this.draggableListRight = JSON.parse(res.formDefinition);
+      console.log(this.draggableListRight);
       this.widgetTree = this.draggableListRight;
       // console.log(this.draggableListRight);
       if (this.formData) {
@@ -383,7 +384,10 @@ export class FormDesignerComponent implements OnInit {
     }
   }
 
-  saveDefinition() {
+  saveDefinition() 
+  {
+    // console.log('after Saving');
+    // console.log( this.formData);
     this.formData.formDefinition = JSON.stringify(this.draggableListRight);
     this.formService.updateData(this.formData).then((res: any) => {
       this.msgService.add({ severity: 'success', summary: 'Updated', detail: 'Definition updated' });
@@ -537,4 +541,42 @@ export class FormDesignerComponent implements OnInit {
       this.parent.nativeElement.scrollTo(0, 0); // Reset scroll position to top-left
     }
   }
+
+  // Code for copy component ---------------------------------------------------
+  // List that is Visible on the canvas
+  copiedCanvas: DraggableItem[] = [
+  ];
+
+  copyThisComponent() {
+    this.copiedCanvas = this.draggableListRight;
+    var copiedContent = JSON.stringify(this.copiedCanvas);
+    localStorage.setItem('componentCopy', copiedContent);
+    this.msgService.add({ severity: 'success', summary: 'Copied', detail: 'Content Copied successfully.' });
+
+  }
+
+  checkComponentAvailable() {
+    if (localStorage.getItem('componentCopy') != null) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+
+  copiedResult: any;
+  copiedList: any;
+  pasteThisComponent() {
+    this.copiedResult = localStorage.getItem('componentCopy');
+
+    this.copiedList = JSON.parse(this.copiedResult);
+    this.draggableListRight = [...this.draggableListRight, ...this.copiedList];
+    this.widgetTree = this.draggableListRight;
+
+    // console.log('after pasting');
+    console.log( this.draggableListRight) ;
+    this.msgService.add({ severity: 'success', summary: 'Paste', detail: 'Content pasted successfully.' });
+    localStorage.removeItem('componentCopy'); // Removing this for temporary purpose
+  }
+
 }
