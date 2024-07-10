@@ -578,10 +578,7 @@ export class FormDesignerComponent implements OnInit {
 
     this.copiedList = JSON.parse(this.copiedResult);
 
-    this.copiedList = this.copiedList.map((item: any) => {
-      const newItem = { ...item, id: this.generateUniqueId() };
-      return newItem;
-    });
+    this.copiedList = this.assignUniqueIds(this.copiedList);
 
     this.draggableListRight = [...this.draggableListRight, ...this.copiedList];
     this.widgetTree = this.draggableListRight;
@@ -591,6 +588,18 @@ export class FormDesignerComponent implements OnInit {
     localStorage.removeItem('componentCopy'); // Removing this for temporary purpose
 
   }
+
+  // Method to assign unique IDs recursively
+  assignUniqueIds(list: any[]): any[] {
+    return list.map(item => {
+      const newItem = { ...item, id: this.generateUniqueId() };
+      if (newItem.children && newItem.children.length > 0) {
+        newItem.children = this.assignUniqueIds(newItem.children);
+      }
+      return newItem;
+    });
+  }
+
   // Method to generate a unique ID
   generateUniqueId(): number {
     return Math.floor(Math.random() * 100000) + 1;
