@@ -13,6 +13,10 @@ import { DataFormService } from '../../data-form/data-form.service';
 import { DataForm } from '../../data-form/data-form';
 import { GenericComponent } from '../../utils/genericcomponent';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MicroService } from '../../microservice/microservice';
+import { Application } from '../../application/application';
+import { MicroserviceService } from '../../microservice/microservice.service';
+import { ApplicationService } from '../../application/application.service';
 
 interface DropzoneLayout {
   container: string;
@@ -359,18 +363,25 @@ export class DesignerComponent extends GenericComponent implements OnInit {
 
   currentScreenView: string = 'assets/circum_mobile-1.png';// Mobile View
   mutiScreenView: boolean = false;
-  //loading: boolean = false;
+
+  collectionId: string | null | undefined = '';
+  collectionItems: Collection[] = [];
+  collection: Collection = {};
+  microserviceItems: MicroService[] = [];
+  applicationItems: Application[] = [];
 
   constructor(
     private screenService: ScreenService,
     messageService: MessageService,
-    private router : Router,
+    private router: Router,
     private fb: FormBuilder,
     private fieldService: FieldService,
     private collectionService: CollectionService,
     private formsService: DataFormService,
     private route: ActivatedRoute,
-    private msgService: MessageService
+    private msgService: MessageService,
+    private microserviceService: MicroserviceService,
+    private applicationService: ApplicationService
   ) {
     super(screenService, messageService);
     this.form = this.fb.group({
@@ -389,45 +400,90 @@ export class DesignerComponent extends GenericComponent implements OnInit {
     this.getPageData();
   }
 
-  getPageData()
-  {
+  getPageData() {
     this.loading = true;
     this.getAllData();
     this.loading = false;
+
+    this.microserviceService.getAllData().then((res: any) => {
+      if (res) {
+        this.microserviceItems = res.content;
+      }
+    })
+    this.applicationService.getAllData().then((res: any) => {
+      if (res) {
+        this.applicationItems = res.content;
+      }
+    })
+
     this.getPageContent();
   }
 
-  getPageContent()
-  {
-    this.loading = true;
-    this.screenId = this.route.snapshot.paramMap.get('id');
-    this.screenService.getData({ id: this.screenId }).then((res: any) => {
-      console.log(res);
-      this.screenData = res;
-      if (res.screenDefinition)
-        this.draggableListRight = JSON.parse(res.screenDefinition);
-      this.widgetTree = this.draggableListRight;
-      if (this.screenData) {
-        var filterStr = FilterBuilder.equal('collection.id', this.screenData?.collection?.id!);
-        this.fieldService.getAllData(undefined, filterStr).then((res: any) => {
-          this.fields = res.content;
-        });
-        this.collectionService.getAllData().then((res: any) => {
-          this.collections = res.content;
-        });
-        this.formsService.getAllData().then((res: any) => {
-          this.forms = res.content;
-        })
-      }
-      this.loading = false;
-    }).catch(error => {
-      this.loading = false;
-      console.error('Error fetching data:', error);
-    });
+  override editData(ds: any): void {
+    super.editData(ds);
+    this.getCollectionItems();
   }
 
-  openNewPage(scr:any)
+  deleteThisPage(item:any)
   {
+    this.deleteData(item);
+    this.activeItem = null ;
+    this.screenId = null ;
+    this.router.navigate(['/builder/screens/designer/'+null])
+  }
+
+  getCollectionItems() {
+    // this.form.patchValue({ collection: null });
+    var filterStr = FilterBuilder.equal('microService.id', this.form.value.microService.id);
+    this.collectionService.getAllData(undefined, filterStr).then((res: any) => {
+      if (res) {
+        this.collectionItems = res.content;
+      }
+    })
+  }
+
+  getPageContent() {
+    this.loading = true;
+    this.screenId = this.route.snapshot.paramMap.get('id');
+    alert(this.screenId ) ;
+    if (this.screenId !== null) {
+      this.screenService.getData({ id: this.screenId }).then((res: any) => {
+        console.log(res);
+        this.screenData = res;
+        if (res.screenDefinition)
+        {
+          this.draggableListRight = JSON.parse(res.screenDefinition);
+          this.widgetTree = this.draggableListRight;
+        }
+        else{
+          this.draggableListRight =[];
+          this.widgetTree = this.draggableListRight;  
+        }
+        if (this.screenData) {
+          var filterStr = FilterBuilder.equal('collection.id', this.screenData?.collection?.id!);
+          this.fieldService.getAllData(undefined, filterStr).then((res: any) => {
+            this.fields = res.content;
+          });
+          this.collectionService.getAllData().then((res: any) => {
+            this.collections = res.content;
+          });
+          this.formsService.getAllData().then((res: any) => {
+            this.forms = res.content;
+          })
+        }
+        this.loading = false;
+      }).catch(error => {
+        this.loading = false;
+        console.error('Error fetching data:', error);
+      });
+    }
+    else{
+      console.log('no active page found');
+    }
+    this.activeItem = null ;
+  }
+
+  openNewPage(scr: any) {
     this.router.navigate(['/builder/screens/designer/' + scr.id]);
     setTimeout(() => {
       this.getPageContent();
@@ -634,5 +690,4 @@ export class DesignerComponent extends GenericComponent implements OnInit {
       this.parent.nativeElement.scrollTo(0, 0); // Resetting   scroll position to top-left
     }
   }
-
 }
