@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { DndDropEvent, DropEffect, EffectAllowed } from 'ngx-drag-drop';
 import { ScreenService } from '../screen.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Screen } from '../screen';
 import { FieldService } from '../../fields/field.service';
 import { FilterBuilder } from '../../utils/FilterBuilder';
@@ -11,6 +11,8 @@ import { Collection } from '../../collection/collection';
 import { CollectionService } from '../../collection/collection.service';
 import { DataFormService } from '../../data-form/data-form.service';
 import { DataForm } from '../../data-form/data-form';
+import { GenericComponent } from '../../utils/genericcomponent';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 interface DropzoneLayout {
   container: string;
@@ -24,7 +26,7 @@ interface DraggableItem {
   disable: boolean;
   handle: boolean;
   data?: any;
-  mappedData ?: any ;
+  mappedData?: any;
   children?: any[],
   icon?: any;
   id?: any;
@@ -34,7 +36,10 @@ interface DraggableItem {
   templateUrl: './designer.component.html',
   styleUrls: ['./designer.component.scss']
 })
-export class DesignerComponent implements OnInit {
+export class DesignerComponent extends GenericComponent implements OnInit {
+  form!: FormGroup<any>;
+  data: Screen[] = [];
+  componentName: string = 'Screen';
 
   loading: boolean = false;
 
@@ -47,7 +52,7 @@ export class DesignerComponent implements OnInit {
         text: 'Text', fontSize: '14', fontWeight: '400', fontColor: '#000000', alignment: 'start', vAlignment: 'start',
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
       },
-      mappedData : {},
+      mappedData: {},
       effectAllowed: 'copy',
       disable: false,
       handle: false,
@@ -63,7 +68,7 @@ export class DesignerComponent implements OnInit {
         label: 'Input Label', placeholder: 'Placeholder', labelFont: '14', labelWeight: '400', labelColor: '#000000', fieldHeight: '35', fieldRadius: '4', fillColor: '#f1f3f6', borderColor: '#f1f3f6', borderWidth: '1',
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
       },
-      mappedData:{}, // this will consist of the data that is mapped 
+      mappedData: {}, // this will consist of the data that is mapped 
       icon: 'assets/button.svg'
     },
     {
@@ -76,8 +81,8 @@ export class DesignerComponent implements OnInit {
         label: 'Input Label', placeholder: 'Placeholder', labelFont: '14', labelWeight: '400', labelColor: '#000000', fieldHeight: '35', fieldRadius: '4', fillColor: '#f1f3f6', borderColor: '#f1f3f6', borderWidth: '1',
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
       },
-      mappedData : {},
-       icon: 'assets/button.svg'
+      mappedData: {},
+      icon: 'assets/button.svg'
     },
     {
       name: 'textarea',
@@ -89,8 +94,8 @@ export class DesignerComponent implements OnInit {
         label: 'Input Label', placeholder: 'Placeholder', labelFont: '14', labelWeight: '400', labelColor: '#000000', fieldHeight: '50', fillColor: '#f1f3f6', borderColor: '#f1f3f6', borderWidth: '1', borderRadius: '4',
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
       },
-      mappedData : {},
-       icon: 'assets/textField.svg'
+      mappedData: {},
+      icon: 'assets/textField.svg'
     },
     {
       name: 'button',
@@ -104,7 +109,7 @@ export class DesignerComponent implements OnInit {
         btnAlignment: 'center', textAlignment: 'center',
         mt: '0', mb: '0', ml: '0', mr: '0'
       },
-      mappedData : {},
+      mappedData: {},
       icon: 'assets/button.svg'
     },
     {
@@ -115,9 +120,9 @@ export class DesignerComponent implements OnInit {
       handle: false,
       data: {
         label: 'Input Label', labelFont: '14', labelWeight: '400', labelColor: '#000000',
-        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0' ,alignment: 'start'
+        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0', alignment: 'start'
       },
-      mappedData : {},
+      mappedData: {},
       icon: 'assets/checkBox.svg'
     },
     {
@@ -127,10 +132,10 @@ export class DesignerComponent implements OnInit {
       disable: false,
       handle: false,
       data: {
-        label: 'Input Label', labelFont: '14', labelWeight: '400', labelColor: '#000000',alignment: 'start',
+        label: 'Input Label', labelFont: '14', labelWeight: '400', labelColor: '#000000', alignment: 'start',
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
       },
-      mappedData : {},
+      mappedData: {},
       icon: 'assets/Radio-button_N.svg'
 
     },
@@ -142,9 +147,9 @@ export class DesignerComponent implements OnInit {
       handle: false,
       data: {
         label: 'Input Label', labelFont: '14', labelWeight: '400', labelColor: '#000000',
-        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0',alignment: 'start'
+        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0', alignment: 'start'
       },
-      mappedData : {},
+      mappedData: {},
       icon: 'assets/toggleOn.svg'
     },
     {
@@ -157,7 +162,7 @@ export class DesignerComponent implements OnInit {
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0', alignment: 'start',
         width: '200', height: '100', url: 'https://primefaces.org/cdn/primeng/images/galleria/galleria10.jpg'
       },
-      mappedData : {},
+      mappedData: {},
       icon: 'assets/image.svg'
     },
     {
@@ -170,7 +175,7 @@ export class DesignerComponent implements OnInit {
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0', alignment: 'start',
         width: '200', url: 'https://elementor.com/wp-content/uploads/2023/09/02_MainVideo_1066_600_1-1.mp4'
       },
-      mappedData : {},
+      mappedData: {},
       icon: 'assets/ph_video-light.svg'
     },
     {
@@ -187,7 +192,7 @@ export class DesignerComponent implements OnInit {
       name: 'form',
       content: 'Component',
       data: { formName: 'none', formId: '' },
-      mappedData : {},
+      mappedData: {},
       effectAllowed: 'copy',
       disable: false,
       handle: false,
@@ -244,8 +249,9 @@ export class DesignerComponent implements OnInit {
       data: {
         width: '100', height: '100', bgColor: '#f1f3f6', gap: '0', columns: '2', alignment: 'start', vAlignment: 'center',
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0', bgImage: '', borderWidth: '0', borderColor: '#FFFFFF', borderRadius: '0'
-       , shadow:'none'},
-       mappedData : {},
+        , shadow: 'none'
+      },
+      mappedData: {},
       effectAllowed: 'copy',
       disable: false,
       handle: false,
@@ -259,7 +265,7 @@ export class DesignerComponent implements OnInit {
         columns: 2, gap: '4', mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0',
         alignment: 'start', vAlignment: 'start',
       },
-      mappedData : {},
+      mappedData: {},
       effectAllowed: 'copy',
       disable: false,
       handle: false,
@@ -274,7 +280,7 @@ export class DesignerComponent implements OnInit {
         width: 'auto', height: 'auto', gap: '0', alignment: 'start', vAlignment: 'center',
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
       },
-      mappedData : {},
+      mappedData: {},
       effectAllowed: 'copy',
       disable: false,
       handle: false,
@@ -285,10 +291,10 @@ export class DesignerComponent implements OnInit {
       name: 'column',
       content: 'Column',
       data: {
-        width: 'auto', height: 'auto', alignment: 'center', hAlignment: 'center', gap:'0',
+        width: 'auto', height: 'auto', alignment: 'center', hAlignment: 'center', gap: '0',
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
       },
-      mappedData : {},
+      mappedData: {},
       effectAllowed: 'copy',
       disable: false,
       handle: false,
@@ -305,7 +311,7 @@ export class DesignerComponent implements OnInit {
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0', alignment: 'start', width: '1', height: '10',
         dividerColor: '#000000'
       },
-      mappedData : {},
+      mappedData: {},
       icon: 'assets/Line 45.svg'
     }
   ];
@@ -357,18 +363,44 @@ export class DesignerComponent implements OnInit {
 
   constructor(
     private screenService: ScreenService,
+    messageService: MessageService,
+    private router : Router,
+    private fb: FormBuilder,
     private fieldService: FieldService,
     private collectionService: CollectionService,
     private formsService: DataFormService,
     private route: ActivatedRoute,
     private msgService: MessageService
   ) {
-
+    super(screenService, messageService);
+    this.form = this.fb.group({
+      id: '',
+      screenName: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
+      screenCode: ['', [Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
+      screenDescription: [],
+      collection: [],
+      microService: [],
+      application: [],
+      process: [],
+    })
   }
   public ngOnInit() {
-    this.screenId = this.route.snapshot.paramMap.get('id');
     this.updateChildStyles();
+    this.getPageData();
+  }
+
+  getPageData()
+  {
     this.loading = true;
+    this.getAllData();
+    this.loading = false;
+    this.getPageContent();
+  }
+
+  getPageContent()
+  {
+    this.loading = true;
+    this.screenId = this.route.snapshot.paramMap.get('id');
     this.screenService.getData({ id: this.screenId }).then((res: any) => {
       console.log(res);
       this.screenData = res;
@@ -393,6 +425,15 @@ export class DesignerComponent implements OnInit {
       console.error('Error fetching data:', error);
     });
   }
+
+  openNewPage(scr:any)
+  {
+    this.router.navigate(['/builder/screens/designer/' + scr.id]);
+    setTimeout(() => {
+      this.getPageContent();
+    }, 1000);
+  }
+
   onDragged(item: any, list: any[], effect: DropEffect) {
     // this.currentDragEffectMsg = `Drag ended with effect "${effect}"!`;
 
@@ -556,39 +597,42 @@ export class DesignerComponent implements OnInit {
     return this.searchValue.trim() === '' ? originalList : filteredList;
   }
 
-   //---------- Zoom and Screen Resize code from here -------------------//
-   @ViewChild('parent') parent !: ElementRef;
+  //---------- Zoom and Screen Resize code from here -------------------//
+  @ViewChild('parent') parent !: ElementRef;
 
-   //childHeight = 500;
-   childWidth = 700; // giving default width as 700 to our component
-   zoom = 0.3;
- 
-   get childStyles() {
-     return {
-       // height: `${this.childHeight}px`,
-       // height:'auto'+50,
-       width: `${this.childWidth? this.childWidth : 700}px`,
-       transform: `scale(${this.zoom})`,
-       transformOrigin: 'top center'
-     };
-   }
- 
-   zoomIn() {
-     this.zoom = Math.min(this.zoom + 0.1, 3); // Maximum zoom level can be enable by user is given 300%
-   }
- 
-   zoomOut() {
-     this.zoom = Math.max(this.zoom - 0.1, 0.1); // Minimum zoom level can be enable by user is given 10%
-   }
- 
-   resetZoom() {
-     this.zoom = 0.3;
-   }
- 
-   updateChildStyles() {
-     if (this.parent) {
-       this.parent.nativeElement.scrollTo(0, 0); // Resetting   scroll position to top-left
-     }
-   }
+  //childHeight = 500;
+  childWidth = 700; // giving default width as 700 to our component
+  zoom = 0.3;
+
+  get childStyles() {
+    return {
+      // height: `${this.childHeight}px`,
+      // height:'auto'+50,
+      width: `${this.childWidth ? this.childWidth : 700}px`,
+      transform: `scale(${this.zoom})`,
+      transformOrigin: 'top center'
+    };
+  }
+
+  zoomIn() {
+    this.zoom = Math.min(this.zoom + 0.1, 3); // Maximum zoom level can be enable by user is given 300%
+    this.updateChildStyles();
+  }
+
+  zoomOut() {
+    this.zoom = Math.max(this.zoom - 0.1, 0.1); // Minimum zoom level can be enable by user is given 10%
+    this.updateChildStyles();
+  }
+
+  resetZoom() {
+    this.zoom = 0.3;
+    this.updateChildStyles();
+  }
+
+  updateChildStyles() {
+    if (this.parent) {
+      this.parent.nativeElement.scrollTo(0, 0); // Resetting   scroll position to top-left
+    }
+  }
 
 }
