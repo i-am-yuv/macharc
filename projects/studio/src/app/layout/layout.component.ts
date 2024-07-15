@@ -160,13 +160,7 @@ export class LayoutComponent {
           routerLink: [''],
           externalUrl: 'https://www.splenta.com',
           image:'assets/circum_mobile-1.svg'
-        },
-         {
-          label: 'Media Manager',
-          icon: 'clipboard',
-          routerLink: ['/media-manager'],
-          image:'assets/IMAGE ADD.svg'
-        },
+        }
         // {
         //   label: 'Menu Panel',
         //   icon: 'clipboard',
@@ -201,6 +195,12 @@ export class LayoutComponent {
         image:'assets/Releases-L.svg'
         },
         { label: 'Logs', icon: 'clipboard', routerLink: ['/system-logs'] },
+        {
+          label: 'Media Manager',
+          icon: 'clipboard',
+          routerLink: ['/media-manager'],
+          image:'assets/IMAGE ADD.svg'
+        }
         // {
         //   label: 'Integrations',
         //   icon: 'clipboard',

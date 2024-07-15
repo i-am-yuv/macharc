@@ -501,6 +501,7 @@
                                     <!-- <div style="font-size: 14px; font-weight: 500; color:#2e2e2e">Copy Component</div> -->
                                     <img src="assets/copy-clipboard.svg" (click)="copyThisComponent( this.draggableListRight)"
                                         style="width: 20px; height: 20px; cursor: pointer;" />
+                                    <div style="font-size: 12px;" class="ml-1 cursor-pointer" (click)="copyThisComponent( this.draggableListRight)">Copy All</div>
                                 </div>
                                 <!-- widget Tree Content-->
                                 <div style="display: flex;flex-direction: column;">
@@ -514,10 +515,10 @@
                                     </div>
                                 </div>
                                 <!-- Paste content-->
-                                <div class="flex justify-start items-center mt-2 gap-2 cursor-pointer"
+                                <div class="flex justify-start items-center mt-2 gap-1 cursor-pointer"
                                     *ngIf="checkComponentAvailable()" (click)="pasteThisComponent()">
-                                    <div style="font-size: 14px; font-weight: 500; color:#2e2e2e">Paste</div>
-                                    <img src="assets/content_paste.svg" style="width: 16px; height: 20px; " />
+                                    <div style="font-size: 12px;">Paste</div>
+                                    <img src="assets/content_paste.svg" style="width: 16px; height: auto; " />
                                 </div>
 
                             </div>

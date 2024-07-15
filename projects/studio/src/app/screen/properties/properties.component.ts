@@ -14,6 +14,8 @@ export class PropertiesComponent {
   @Input() collections: any[] = [];
   @Input() forms: any[] = [];
   @Input() comingFromForm: boolean = false;
+  @Input() comingFromPage: boolean = false;
+
 
   @Output() getCollectionFields: EventEmitter<string> = new EventEmitter<string>();;
 

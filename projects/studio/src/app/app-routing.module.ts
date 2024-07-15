@@ -201,7 +201,7 @@ const routes: Routes = [
   },
   {
     path: 'builder/screens/designer/:id',
-    component: LayoutComponent,
+    // component: LayoutComponent,
     children: [
       {
         path: '',
