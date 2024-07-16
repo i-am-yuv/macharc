@@ -146,7 +146,7 @@ export class LayoutComponent {
           routerLink: ['/applications'],
           image:'assets/Application.svg'
         },
-        { label: 'Pages', icon: 'clipboard', routerLink: ['/builder/screens'] ,  image:'assets/PAGES.svg'},
+        { label: 'Pages', icon: 'clipboard', routerLink: ['/builder/screens/designer/'+null] ,  image:'assets/PAGES.svg'},
         { label: 'Actions', icon: 'clipboard', routerLink: ['/actions'] , image:'assets/Action_R.svg'},
         {
           label: 'Components',

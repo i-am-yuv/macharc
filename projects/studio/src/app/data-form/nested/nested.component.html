@@ -46,7 +46,7 @@
         class="name gap-{{child.data.gap}} grid grid-cols-{{child.data.columns}}  items-{{child.data.vAlignment}} shadow-{{child.data.shadow}}"
         [ngStyle]="{ 'width' : child.data?.width ? child.data?.width+'px':'auto' ,'height' :child.data?.height? child.data?.height+'px':'auto' ,
         'background-color' : (child.mappedData?.bgColor == null ) ? child.data?.bgColor : child.mappedData?.bgColor,
-        'background-image': 'url(' + (child.mappedData?.bgImage == null ) ? child.data?.bgImage : child.mappedData?.bgImage + ')' ,
+        'background-image': 'url(' + (child.mappedData?.bgImage == null ? child.data?.bgImage : child.mappedData?.bgImage) + ')',
         'background-size': 'cover', 'background-position':'center' ,
         'border-width': child.data.borderWidth+'px' ,
         'border-radius': child.data.borderRadius+'px' ,

@@ -426,6 +426,10 @@ export class DesignerComponent extends GenericComponent implements OnInit {
 
   deleteThisPage(item:any)
   {
+   
+    this.activeItem = null ;
+    this.screenId = null ;
+    this.router.navigate(['/builder/screens/designer/'+null]) ;
     this.deleteData(item);
     this.activeItem = null ;
     this.screenId = null ;
@@ -445,7 +449,7 @@ export class DesignerComponent extends GenericComponent implements OnInit {
   getPageContent() {
     this.loading = true;
     this.screenId = this.route.snapshot.paramMap.get('id');
-    alert(this.screenId ) ;
+    // alert(this.screenId ) ;
     if (this.screenId !== null) {
       this.screenService.getData({ id: this.screenId }).then((res: any) => {
         console.log(res);
@@ -475,9 +479,15 @@ export class DesignerComponent extends GenericComponent implements OnInit {
       }).catch(error => {
         this.loading = false;
         console.error('Error fetching data:', error);
+        this.activeItem = null ;
+        this.screenId = null ;
+        this.router.navigate(['/builder/screens/designer/'+null])
       });
     }
     else{
+      this.activeItem = null ;
+      this.screenId = null ;
+      this.router.navigate(['/builder/screens/designer/'+null])
       console.log('no active page found');
     }
     this.activeItem = null ;
