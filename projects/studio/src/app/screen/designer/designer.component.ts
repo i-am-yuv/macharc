@@ -46,6 +46,8 @@ export class DesignerComponent extends GenericComponent implements OnInit {
   componentName: string = 'Screen';
 
   loading: boolean = false;
+  visibleDeleteConfirmation : boolean = false ;
+  activeData : any ;
 
   // Virtual Elements
   draggableListLeftVE: DraggableItem[] = [
@@ -425,16 +427,17 @@ export class DesignerComponent extends GenericComponent implements OnInit {
     this.getCollectionItems();
   }
 
-  deleteThisPage(item:any)
-  {
-   
-    this.activeItem = null ;
-    this.screenId = null ;
-    this.router.navigate(['/builder/screens/designer/'+null]) ;
+  deleteThisPage(item: any) {
+
+    this.activeItem = null;
+    this.screenId = null;
+    this.router.navigate(['/builder/screens/designer/' + null]);
     this.deleteData(item);
-    this.activeItem = null ;
-    this.screenId = null ;
-    this.router.navigate(['/builder/screens/designer/'+null])
+    this.activeItem = null;
+    this.screenId = null;
+    this.router.navigate(['/builder/screens/designer/' + null]);
+    this.activeData = null ;
+    this.visibleDeleteConfirmation = false;
   }
 
   getCollectionItems() {
@@ -455,14 +458,13 @@ export class DesignerComponent extends GenericComponent implements OnInit {
       this.screenService.getData({ id: this.screenId }).then((res: any) => {
         console.log(res);
         this.screenData = res;
-        if (res.screenDefinition)
-        {
+        if (res.screenDefinition) {
           this.draggableListRight = JSON.parse(res.screenDefinition);
           this.widgetTree = this.draggableListRight;
         }
-        else{
-          this.draggableListRight =[];
-          this.widgetTree = this.draggableListRight;  
+        else {
+          this.draggableListRight = [];
+          this.widgetTree = this.draggableListRight;
         }
         if (this.screenData) {
           var filterStr = FilterBuilder.equal('collection.id', this.screenData?.collection?.id!);
@@ -480,18 +482,18 @@ export class DesignerComponent extends GenericComponent implements OnInit {
       }).catch(error => {
         this.loading = false;
         console.error('Error fetching data:', error);
-        this.activeItem = null ;
-        this.screenId = null ;
-        this.router.navigate(['/builder/screens/designer/'+null])
+        this.activeItem = null;
+        this.screenId = null;
+        this.router.navigate(['/builder/screens/designer/' + null])
       });
     }
-    else{
-      this.activeItem = null ;
-      this.screenId = null ;
-      this.router.navigate(['/builder/screens/designer/'+null])
+    else {
+      this.activeItem = null;
+      this.screenId = null;
+      this.router.navigate(['/builder/screens/designer/' + null])
       console.log('no active page found');
     }
-    this.activeItem = null ;
+    this.activeItem = null;
   }
 
   openNewPage(scr: any) {
@@ -703,12 +705,12 @@ export class DesignerComponent extends GenericComponent implements OnInit {
   }
 
 
-   // Code for copy Page ---------------------------------------------------
+  // Code for copy Page ---------------------------------------------------
   // List that is Visible on the canvas
   copiedCanvas: DraggableItem[] = [
   ];
 
-  copyThisPage( oldList : any ) {
+  copyThisPage(oldList: any) {
     this.copiedCanvas = oldList;
     var copiedContent = JSON.stringify(this.copiedCanvas);
     localStorage.setItem('componentPage', copiedContent);
@@ -762,20 +764,30 @@ export class DesignerComponent extends GenericComponent implements OnInit {
     //this.activeItem = item;
     console.log(item);
     const newItem = { ...item, id: this.generateUniqueId() };
-   
+
     this.copySubList = [];
     this.copySubList.push(newItem);
     this.copyThisPage(this.copySubList);
   }
 
   // Code for duplicating the page with different name
-  duplicateData(ds: any) 
-  {
+  duplicateData(ds: any) {
     this.visible = true;
     // Duplicate component must have different id and form name
     ds.id = '';
     ds.screenName = '';
     this.form.patchValue({ ...ds });
+  }
+
+  confirmToDelete(item : any)
+  {
+      this.activeData = item ;
+      this.visibleDeleteConfirmation = true ;
+  }
+
+  deleteConfirmed()
+  {
+      this.deleteThisPage(this.activeData) ;
   }
 
 }
