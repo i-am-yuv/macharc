@@ -66,8 +66,7 @@
                             <img src="assets/elementsClose.svg" style="width: 12px ;">
                         </div>
                         <div class="flex-1 gap-2 flex justify-center items-center cursor-pointer" routerLink="../../">
-                            <vezo-icon icon="arrowUturnLeft" className="w-4 h-4"
-                                style="color: #2e2e2e;"></vezo-icon>
+                            <vezo-icon icon="arrowUturnLeft" className="w-4 h-4" style="color: #2e2e2e;"></vezo-icon>
                             <div class="mt-1" style="font-size: 14px; font-weight: 400; color: #6D6D6D;">Back</div>
                         </div>
                     </div>
@@ -569,18 +568,36 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- Widget Tree Code -->
                                 <div *ngIf="showProps" class="p-2 bg-gray-100">
+
+                                    <!-- Copy the complete component -->
+                                    <div *ngIf="widgetTree.length !== 0" class="flex justify-end">
+                                        <img src="assets/copy-clipboard.svg"
+                                            (click)="copyThisPage( this.draggableListRight)"
+                                            style="width: 20px; height: 20px; cursor: pointer;" />
+                                        <div style="font-size: 12px;" class="ml-1 cursor-pointer"
+                                            (click)="copyThisPage( this.draggableListRight)">Copy All</div>
+                                    </div>
+
+                                    <!-- Widget Tree Code -->
                                     <div style="display: flex;flex-direction: column;">
                                         <div *ngFor="let item of widgetTree">
                                             <app-widget-tree-node [node]="item"
-                                                (nodeClicked)="onItemReceived($event)"></app-widget-tree-node>
+                                                (nodeClicked)="onItemReceived($event)"  (copyClicked)="onItemReceivedCopy($event)" ></app-widget-tree-node>
                                         </div>
                                         <div *ngIf="widgetTree.length == 0 ">
                                             <div style="font-size: 14px; font-weight: 500; color:#2e2e2e">No Widget Tree
                                                 Available.</div>
                                         </div>
                                     </div>
+
+                                    <!-- Paste content-->
+                                    <div class="flex justify-start items-center mt-2 gap-1 cursor-pointer"
+                                        *ngIf="checkPageAvailable()" (click)="pasteThisPage()">
+                                        <div style="font-size: 12px;">Paste</div>
+                                        <img src="assets/content_paste.svg" style="width: 16px; height: auto; " />
+                                    </div>
+
                                 </div>
                             </div>
                             <!-- Elements's Property -->

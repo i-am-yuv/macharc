@@ -700,4 +700,70 @@ export class DesignerComponent extends GenericComponent implements OnInit {
       this.parent.nativeElement.scrollTo(0, 0); // Resetting   scroll position to top-left
     }
   }
+
+
+   // Code for copy Page ---------------------------------------------------
+  // List that is Visible on the canvas
+  copiedCanvas: DraggableItem[] = [
+  ];
+
+  copyThisPage( oldList : any ) {
+    this.copiedCanvas = oldList;
+    var copiedContent = JSON.stringify(this.copiedCanvas);
+    localStorage.setItem('componentPage', copiedContent);
+    this.msgService.add({ severity: 'success', summary: 'Copied', detail: 'Content Copied successfully.' });
+  }
+
+  checkPageAvailable() {
+    if (localStorage.getItem('componentPage') != null) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+
+  copiedResult: any;
+  copiedList: any;
+  pasteThisPage() {
+    this.copiedResult = localStorage.getItem('componentPage');
+
+    this.copiedList = JSON.parse(this.copiedResult);
+
+    this.copiedList = this.assignUniqueIds(this.copiedList);
+
+    this.draggableListRight = [...this.draggableListRight, ...this.copiedList];
+    this.widgetTree = this.draggableListRight;
+
+    // console.log('after pasting');
+    this.msgService.add({ severity: 'success', summary: 'Paste', detail: 'Content pasted successfully.' });
+    localStorage.removeItem('componentPage'); // Removing this for temporary purpose
+  }
+
+  // Method to assign unique IDs recursively
+  assignUniqueIds(list: any[]): any[] {
+    return list.map(item => {
+      const newItem = { ...item, id: this.generateUniqueId() };
+      if (newItem.children && newItem.children.length > 0) {
+        newItem.children = this.assignUniqueIds(newItem.children);
+      }
+      return newItem;
+    });
+  }
+
+  // Method to generate a unique ID
+  generateUniqueId(): number {
+    return Math.floor(Math.random() * 100000) + 1;
+  }
+
+  copySubList: any[] = []; // Initialize the list as empty
+  onItemReceivedCopy(item: any) {
+    //this.activeItem = item;
+    console.log(item);
+    const newItem = { ...item, id: this.generateUniqueId() };
+   
+    this.copySubList = [];
+    this.copySubList.push(newItem);
+    this.copyThisPage(this.copySubList);
+  }
 }
