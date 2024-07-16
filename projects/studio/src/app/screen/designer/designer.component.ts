@@ -389,6 +389,7 @@ export class DesignerComponent extends GenericComponent implements OnInit {
       screenName: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
       screenCode: ['', [Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
       screenDescription: [],
+      screenDefinition: [],
       collection: [],
       microService: [],
       application: [],
@@ -766,4 +767,15 @@ export class DesignerComponent extends GenericComponent implements OnInit {
     this.copySubList.push(newItem);
     this.copyThisPage(this.copySubList);
   }
+
+  // Code for duplicating the page with different name
+  duplicateData(ds: any) 
+  {
+    this.visible = true;
+    // Duplicate component must have different id and form name
+    ds.id = '';
+    ds.screenName = '';
+    this.form.patchValue({ ...ds });
+  }
+
 }
