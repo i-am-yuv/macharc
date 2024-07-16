@@ -48,7 +48,7 @@
     </vezo-table>
 </div>
 <vezo-modal [(visible)]="visible">
-    <ng-template vTemplate="header"><p (click)="findOut()">Component Details</p></ng-template>
+    <ng-template vTemplate="header">Component Details</ng-template>
     <ng-template vTemplate="content">
         <form [formGroup]="form">
             <vezo-select optionLabel="applicationName" [items]="applicationItems" formControlName="application"

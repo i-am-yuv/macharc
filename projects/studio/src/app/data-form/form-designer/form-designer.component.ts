@@ -1,5 +1,5 @@
 import { Component, ElementRef, HostListener, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from '@splenta/vezo';
 import { DropEffect, DndDropEvent, EffectAllowed } from 'ngx-drag-drop';
 import { Collection } from '../../collection/collection';
@@ -9,6 +9,12 @@ import { FieldService } from '../../fields/field.service';
 import { FilterBuilder } from '../../utils/FilterBuilder';
 import { DataForm } from '../data-form';
 import { DataFormService } from '../data-form.service';
+import { GenericComponent } from '../../utils/genericcomponent';
+import { Form, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MicroserviceService } from '../../microservice/microservice.service';
+import { ApplicationService } from '../../application/application.service';
+import { MicroService } from '../../microservice/microservice';
+import { Application } from '../../application/application';
 
 
 interface DropzoneLayout {
@@ -33,7 +39,14 @@ interface DraggableItem {
   templateUrl: './form-designer.component.html',
   styleUrls: ['./form-designer.component.scss']
 })
-export class FormDesignerComponent implements OnInit {
+export class FormDesignerComponent extends GenericComponent implements OnInit {
+  form!: FormGroup<any>;
+  data: DataForm[] = [];
+  componentName: string = 'Component';
+
+  loading: boolean = false;
+  visibleDeleteConfirmation: boolean = false;
+  activeData: any;
 
   // No use of this
   draggableListLeft: DraggableItem[] = [
@@ -305,6 +318,7 @@ export class FormDesignerComponent implements OnInit {
     list: 'column',
     dndHorizontal: false,
   };
+
   layout: DropzoneLayout = this.verticalLayout;
   showProps: boolean = false;
   activeItem: any;
@@ -317,40 +331,174 @@ export class FormDesignerComponent implements OnInit {
 
   currentScreenView: string = 'assets/circum_mobile-1.png';// Mobile View
   mutiScreenView: boolean = false;
-  loading: boolean = false;
+
+  collectionItems: Collection[] = [];
+  collection: Collection = {};
+  microserviceItems: MicroService[] = [];
+  applicationItems: Application[] = [];
 
   constructor(
+    messageService: MessageService,
+    private fb: FormBuilder,
+    private router : Router ,
     private formService: DataFormService,
     private fieldService: FieldService,
     private collectionService: CollectionService,
     private route: ActivatedRoute,
-    private msgService: MessageService
+    private microserviceService: MicroserviceService,
+    private applicationService: ApplicationService
   ) {
-
-  }
-  public ngOnInit() {
-    this.formId = this.route.snapshot.paramMap.get('id');
-    this.updateChildStyles();
-
-    this.loading = true;
-    this.formService.getData({ id: this.formId }).then((res: any) => {
-      this.formData = res;
-      if (res.formDefinition)
-        this.draggableListRight = JSON.parse(res.formDefinition);
-      this.widgetTree = this.draggableListRight;
-      if (this.formData) {
-        var filterStr = FilterBuilder.equal('collection.id', this.formData?.collection?.id!);
-        this.fieldService.getAllData(undefined, filterStr).then((res: any) => {
-          this.fields = res.content;
-        });
-        this.collectionService.getAllData().then((res: any) => {
-          this.collections = res.content;
-        })
-      }
-      this.loading = false;
+    super(formService, messageService);
+    
+    this.form = this.fb.group({
+      id: '',
+      formName: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
+      formCode: ['', [Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
+      formDescription: '',
+      formDefinition: '',
+      collection: [],
+      microService: [],
+      application: [],
+      process: [],
     })
 
   }
+  public ngOnInit() {
+    //this.formId = this.route.snapshot.paramMap.get('id');
+    this.updateChildStyles();
+    this.getComponentData();
+    // this.loading = true;
+    // this.formService.getData({ id: this.formId }).then((res: any) => {
+    //   this.formData = res;
+    //   if (res.formDefinition)
+    //     this.draggableListRight = JSON.parse(res.formDefinition);
+    //   this.widgetTree = this.draggableListRight;
+    //   if (this.formData) {
+    //     var filterStr = FilterBuilder.equal('collection.id', this.formData?.collection?.id!);
+    //     this.fieldService.getAllData(undefined, filterStr).then((res: any) => {
+    //       this.fields = res.content;
+    //     });
+    //     this.collectionService.getAllData().then((res: any) => {
+    //       this.collections = res.content;
+    //     })
+    //   }
+    //   this.loading = false;
+    // })
+  }
+
+  getComponentData() {
+    this.loading = true;
+    this.getAllData();
+    this.loading = false;
+
+    this.microserviceService.getAllData().then((res: any) => {
+      if (res) {
+        this.microserviceItems = res.content;
+      }
+    })
+
+    this.applicationService.getAllData().then((res: any) => {
+      if (res) {
+        this.applicationItems = res.content;
+      }
+    })
+
+    this.collectionService.getAllData().then((res: any) => {
+      if (res) {
+        this.collectionItems = res.content;
+      }
+    })
+
+    this.getComponentContent();
+  }
+
+  getComponentContent()
+  {
+    // this.formId = this.route.snapshot.paramMap.get('id');
+    // this.loading = true;
+    // this.formService.getData({ id: this.formId }).then((res: any) => {
+    //   this.formData = res;
+    //   if (res.formDefinition)
+    //     this.draggableListRight = JSON.parse(res.formDefinition);
+    //   this.widgetTree = this.draggableListRight;
+    //   if (this.formData) {
+    //     var filterStr = FilterBuilder.equal('collection.id', this.formData?.collection?.id!);
+    //     this.fieldService.getAllData(undefined, filterStr).then((res: any) => {
+    //       this.fields = res.content;
+    //     });
+    //     this.collectionService.getAllData().then((res: any) => {
+    //       this.collections = res.content;
+    //     })
+    //   }
+    //   this.loading = false;
+    // })
+
+    // Old Code 
+    this.loading = true;
+    this.formId = this.route.snapshot.paramMap.get('id');
+    if (this.formId !== null) {
+      this.formService.getData({ id: this.formId }).then((res: any) => {
+        console.log(res);
+        this.formData = res;
+        if (res.formDefinition) {
+          this.draggableListRight = JSON.parse(res.formDefinition);
+          this.widgetTree = this.draggableListRight;
+        }
+        else {
+          this.draggableListRight = [];
+          this.widgetTree = this.draggableListRight;
+        }
+        if (this.formData) {
+          var filterStr = FilterBuilder.equal('collection.id', this.formData?.collection?.id!);
+          this.fieldService.getAllData(undefined, filterStr).then((res: any) => {
+            this.fields = res.content;
+          });
+          this.collectionService.getAllData().then((res: any) => {
+            this.collections = res.content;
+          })
+        }
+        this.loading = false;
+      }).catch(error => {
+        this.loading = false;
+        console.error('Error fetching data:', error);
+        this.activeItem = null;
+        this.formId = null;
+        this.router.navigate(['/builder/forms/designer/' + null])
+      });
+    }
+    else {
+      this.activeItem = null;
+      this.formId = null;
+      this.router.navigate(['/builder/forms/designer/' + null])
+      console.log('no active component found');
+    }
+
+    this.activeItem = null;
+  }
+
+  openNewComponent(scr: any) {
+    this.router.navigate(['/builder/forms/designer/' + scr.id]);
+    setTimeout(() => {
+      this.getComponentContent();
+    }, 1000);
+  }
+
+  
+  override editData(ds: any): void {
+    super.editData(ds);
+    this.getCollectionItems();
+  }
+
+   // Code for duplicating the component with different name
+   duplicateData(ds: any) {
+    this.visible = true;
+    // Duplicate component must have different id and form name
+    ds.id = '';
+    ds.formName = '';
+    this.form.patchValue({ ...ds });
+  }
+
+
   onDragged(item: any, list: any, effect: DropEffect) {
     // this.currentDragEffectMsg = `Drag ended with effect "${effect}"!`;
 
@@ -387,13 +535,13 @@ export class FormDesignerComponent implements OnInit {
     // console.log( this.draggableListRight);
     this.formData.formDefinition = JSON.stringify(this.draggableListRight);
     this.formService.updateData(this.formData).then((res: any) => {
-      this.msgService.add({ severity: 'success', summary: 'Updated', detail: 'Definition updated' });
+      this.messageService.add({ severity: 'success', summary: 'Updated', detail: 'Definition updated' });
     })
   }
 
   generateComponent() {
     this.formService.generateComponent(this.formData).then((res: any) => {
-      this.msgService.add({ severity: 'success', summary: 'Generated', detail: 'Code Generated' });
+      this.messageService.add({ severity: 'success', summary: 'Generated', detail: 'Code Generated' });
     })
   }
 
@@ -476,7 +624,7 @@ export class FormDesignerComponent implements OnInit {
     //this.activeItem = item;
     console.log(item);
     const newItem = { ...item, id: this.generateUniqueId() };
-   
+
     this.copySubList = [];
     this.copySubList.push(newItem);
     this.copyThisComponent(this.copySubList);
@@ -555,11 +703,11 @@ export class FormDesignerComponent implements OnInit {
   copiedCanvas: DraggableItem[] = [
   ];
 
-  copyThisComponent( oldList : any ) {
+  copyThisComponent(oldList: any) {
     this.copiedCanvas = oldList;
     var copiedContent = JSON.stringify(this.copiedCanvas);
     localStorage.setItem('componentCopy', copiedContent);
-    this.msgService.add({ severity: 'success', summary: 'Copied', detail: 'Content Copied successfully.' });
+    this.messageService.add({ severity: 'success', summary: 'Copied', detail: 'Content Copied successfully.' });
   }
 
   checkComponentAvailable() {
@@ -584,7 +732,7 @@ export class FormDesignerComponent implements OnInit {
     this.widgetTree = this.draggableListRight;
 
     // console.log('after pasting');
-    this.msgService.add({ severity: 'success', summary: 'Paste', detail: 'Content pasted successfully.' });
+    this.messageService.add({ severity: 'success', summary: 'Paste', detail: 'Content pasted successfully.' });
     localStorage.removeItem('componentCopy'); // Removing this for temporary purpose
 
   }
@@ -603,6 +751,40 @@ export class FormDesignerComponent implements OnInit {
   // Method to generate a unique ID
   generateUniqueId(): number {
     return Math.floor(Math.random() * 100000) + 1;
+  }
+
+  confirmToDelete(item : any)
+  {
+      this.activeData = item ;
+      this.visibleDeleteConfirmation = true ;
+  }
+
+  deleteConfirmed()
+  {
+      this.deleteThisComponent(this.activeData) ;
+  }
+
+  deleteThisComponent(item: any) {
+
+    this.activeItem = null;
+    this.formId = null;
+    this.router.navigate(['/builder/forms/designer/' + null]);
+    this.deleteData(item);
+    this.activeItem = null;
+    this.formId = null;
+    this.router.navigate(['/builder/forms/designer/' + null]);
+    this.activeData = null ;
+    this.visibleDeleteConfirmation = false;
+  }
+
+  getCollectionItems() {
+    this.form.patchValue({ collection: null });
+    var filterStr = FilterBuilder.equal('microService.id', this.form.value.microService.id);
+    this.collectionService.getAllData(undefined, filterStr).then((res: any) => {
+      if (res) {
+        this.collectionItems = res.content;
+      }
+    })
   }
 
 }

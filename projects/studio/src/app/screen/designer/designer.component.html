@@ -76,13 +76,13 @@
     </div>
 
     <!-- top bar with microservie, screen , Save and Back button -->
-    <div *ngIf="this.screenId != null;" class="flex justify-start">
-        <div class="flex justify-center items-center" style="width: 15%; background-color: #C7D2FE;">
+    <div  class="flex justify-start">
+        <div class="flex justify-center items-center" style="width: 15%; background-color: #C7D2FE; height:38px">
             <div style="font-size:14px; font-weight: 400; color: #000000;">LIST OF PAGES</div>
         </div>
         <div style="width: 85%;">
             <div class="flex justify-center items-center border-b" style="background-color: #EEF2FF;">
-                <div class="w-full flex p-2">
+                <div *ngIf="this.screenId != null;" class="w-full flex p-2">
                     <div class="flex-none w-4/5 flex justify-center items-center">
                         <div class="flex justify-center items-center w-full">
                             <div class="flex w-full">

@@ -151,7 +151,7 @@ export class LayoutComponent {
         {
           label: 'Components',
           icon: 'clipboard',
-          routerLink: ['/builder/forms'],
+          routerLink: ['/builder/forms/designer/'+null],
           image:'assets/Component _R.svg'
         },
         {

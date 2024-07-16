@@ -228,7 +228,7 @@ const routes: Routes = [
   },
   {
     path: 'builder/forms/designer/:id',
-    component: LayoutComponent,
+    // component: LayoutComponent, // Wants to open it in full screen with no left side bar
     children: [
       {
         path: '',
