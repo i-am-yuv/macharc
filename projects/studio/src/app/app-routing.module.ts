@@ -43,7 +43,7 @@ import { TemplatesComponent } from './screen/templates/templates.component';
 import { SettingsComponent } from './settings/settings.component';
 import { MenuPanelComponent } from './data-form/menu-panel/menu-panel.component';
 import { MenuPanelCreateComponent } from './data-form/menu-panel/menu-panel-create/menu-panel-create.component';
-import { MediaManagerComponent } from './data-form/media-manager/media-manager.component';
+import { MediaManagerComponent } from './media-manager/media-manager.component';
 
 const routes: Routes = [
   {
@@ -265,7 +265,8 @@ const routes: Routes = [
         path: '',
         component: DispatcherComponent,
         children: [
-          { path: '', component: MediaManagerComponent }
+          { path: '', component: MediaManagerComponent },
+          { path: 'folder/:id', component: MediaManagerComponent }
         ],
       }
     ]

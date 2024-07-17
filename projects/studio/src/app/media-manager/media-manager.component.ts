@@ -1,10 +1,13 @@
 import { HttpClient, HttpEventType } from '@angular/common/http';
-import { Component } from '@angular/core';
-import { DataForm } from '../data-form';
+import { Component, OnInit } from '@angular/core';
 import { MessageService } from '@splenta/vezo';
-import { DataFormService } from '../data-form.service';
 import { FormBuilder, FormGroup, MinLengthValidator, MinValidator, Validators } from '@angular/forms';
-import { GenericComponent } from '../../utils/genericcomponent';
+import { GenericComponent } from '../utils/genericcomponent';
+import { DataForm } from '../data-form/data-form';
+import { DataFormService } from '../data-form/data-form.service';
+import { MediaService } from './media.service';
+import { ActivatedRoute, Route, Router } from '@angular/router';
+import { Folder } from './folder';
 
 
 @Component({
@@ -12,34 +15,64 @@ import { GenericComponent } from '../../utils/genericcomponent';
   templateUrl: './media-manager.component.html',
   styleUrls: ['./media-manager.component.scss']
 })
-export class MediaManagerComponent extends GenericComponent {
+export class MediaManagerComponent  extends GenericComponent implements OnInit {
   data: DataForm[] = [];
   componentName: string = 'DataForm';
 
-  times: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  folders = [
-    {
-      'id': '0',
-      'folderName': 'Macharc'
-    },
-    {
-      'id': '1',
-      'folderName': 'Neomaxer'
-    }
-  ]
-
-  activeFolder: number = 0;
   formData: DataForm = {};
   form!: FormGroup<any>;
   currentView: string = 'grid';
+  allFolders : Folder[] =  [] ;
+  folderId: string | null = '';
 
 
-  constructor(private http: HttpClient, private msgService: MessageService, private formService: DataFormService, private fb: FormBuilder) {
+  constructor(private http: HttpClient, private msgService: MessageService, private formService: DataFormService, private fb: FormBuilder,
+    private mediaService: MediaService ,  private route: ActivatedRoute, private router : Router
+
+  ) {
     super(formService, msgService);
+  }
+  ngOnInit(): void {
+    this.folderId = this.route.snapshot.paramMap.get('id');
     this.form = this.fb.group({
       id: '',
       folderName: ['']
+    });
+    this.getAllFolders();
+    if( this.folderId)
+    {
+      this.getFolderAssets(this.folderId ) ;
+    }
+  }
+
+  getAllFolders()
+  {
+    this.mediaService.getAllFolders().then(
+      (res: any) => {
+        if (res) {
+          this.allFolders = res.content;
+        }
+        else {
+        }
+      }
+    ).catch((err: any) => {
+      console.log(err);
     })
+  }
+
+  getFolderAssets(folderId : any)
+  {
+    this.mediaService.getAllFolders().then(
+      (res: any) => {
+        if (res) {
+          this.allFolders = res.content;
+        }
+        else {
+        }
+      }
+    ).catch((err: any) => {
+      console.log(err);
+    })  
   }
 
   onFileSelected(event: any) {
@@ -48,6 +81,10 @@ export class MediaManagerComponent extends GenericComponent {
       const formData = new FormData();
       formData.append('file', file);
       console.log(file);
+      console.log(file.name);
+      console.log(file.size);
+      console.log(file.type);
+
       // this.http.post('YOUR_BACKEND_API_URL', formData, {
       //   reportProgress: true,
       //   observe: 'events'
@@ -61,6 +98,7 @@ export class MediaManagerComponent extends GenericComponent {
       // }, error => {
       //   console.error('Error uploading file:', error);
       // });
+      
     }
   }
 
@@ -164,46 +202,64 @@ export class MediaManagerComponent extends GenericComponent {
     }
   }
 
-  // newFolder() {
-  //   this.form.reset();
-  //   this.visible = true;
-  //   //this.folders.push(this.folders.length);
-  // }
-
-  activeFolderSelect(index: any) {
-    this.activeFolder = index;
+  openFolderAssets(folder:any)
+  {
+    this.router.navigate(['/media-manager/folder/'+folder.id]) ;
+    this.folderId = folder.id;
   }
 
   override saveData() {
-    //this.folders.push(this.folders.length);
-
     if (this.form.value.id == null || this.form.value.id == '') {
-      if (this.form.value.folderName == '' || this.form.value.folderName == null) {
-        this.msgService.add({ severity: 'error', summary: 'Error', detail: 'Please enter the folder name' });
-      }
-      else {
-        var folder = {
-          'id': this.folders.length + '',
-          'folderName': this.form.value.folderName + ''
-        };
-        this.folders.push(folder);
-        this.visible = false;
-      }
+      // New Folder will be created
+      this.mediaService.createFolder( this.form.value).then(
+        (res: any) => {
+          if (res) {
+            this.visible =  false;
+            console.log(res);
+            this.getAllFolders();
+          }
+          else {
+          }
+        }
+      ).catch((err: any) => {
+        console.log(err);
+      })
     }
     else {
-      if (this.form.value.folderName == '' || this.form.value.folderName == null) {
-        this.msgService.add({ severity: 'error', summary: 'Error', detail: 'Please enter the folder name' });
-      }
-      else {
-        const index = this.folders.findIndex(a => a.id === this.form.value.id);
-        if (index !== -1) {
-          this.folders[index] = this.form.value;
+       // Update Folder
+      this.mediaService.updateFolder( this.form.value).then(
+        (res: any) => {
+          if (res) {
+            this.visible =  false;
+            this.getAllFolders();
+          }
+          else {
+          }
         }
-        this.visible = false;
-      }
+      ).catch((err: any) => {
+        console.log(err);
+      })
     }
+  }
 
-
+  override deleteData(folder:any)
+  {  
+      if(folder.id)
+      {
+        this.mediaService.deleteFolder(folder).then(
+          (res: any) => {
+            if (res) {
+              console.log(res);
+              this.router.navigate(['/media-manager']);
+              this.getAllFolders();
+            }
+            else {
+            }
+          }
+        ).catch((err: any) => {
+          console.log(err);
+        })
+      }
   }
 
   people = [
