@@ -69,14 +69,7 @@
       (props.mappedData !== null && props.mappedData?.fontColor != null)
     ">
         <div style="position: relative; display: inline-block" class="w-full">
-            <div style="
-          position: absolute;
-          top: 0;
-          right: 0;
-          cursor: pointer;
-          z-index: 1;
-        " class="mb-1" [ngClass]="{
-          'bg-gray-200 p-1 rounded-md':
+            <div style="position: absolute;top: 0;right: 0;cursor: pointer;z-index: 1;" class="mb-1" [ngClass]="{'bg-gray-200 p-1 rounded-md':
             props.mappedData != null && props.mappedData?.fontColor
         }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
                 (click)="makeItMapped(props, 'fontColor')">
@@ -462,7 +455,7 @@
     </div> -->
 
     <div class="flex gap-2 mt-2">
-        <div class="flex gap-2 w-full">
+        <div class="flex gap-2 w-full" style="flex-direction:column">
             <div style="position: relative; display: inline-block" class="w-full" *ngIf="
           this.comingFromForm == false ||
           (props.mappedData !== null && props.mappedData?.borderColor != null)
@@ -820,7 +813,7 @@
         </div>
         <!-- <vezo-input label="Border Radius" [trailingText]="'px'" [(ngModel)]="props.data.fieldRadius"></vezo-input> -->
     </div>
-    <div class="flex gap-2 mt-2">
+    <div class="flex gap-2 mt-2" style="flex-direction: column;">
         <div style="position: relative; display: inline-block" class="w-full" *ngIf="
         this.comingFromForm == false ||
         (props.mappedData !== null && props.mappedData?.fillColor != null)
@@ -1149,11 +1142,9 @@
             </div>
         </div>
     </div>
-    <div class="col-span-6">
-        <vezo-colorpicker [label]="'Border Color'" (colorChange)="props.data.borderColor = $event"
-            [inputVal]="props.data.borderColor"></vezo-colorpicker>
-    </div>
-    <div class="col-span-6">
+    <div class="mt-2" *ngIf="
+    this.comingFromForm == false ||
+    (props.mappedData !== null && props.mappedData?.borderColor != null)">
         <vezo-colorpicker [label]="'Border Color'" (colorChange)="props.data.borderColor = $event"
             [inputVal]="props.data.borderColor"></vezo-colorpicker>
     </div>
@@ -1266,7 +1257,7 @@
         </div>
     </div>
     <div class="mt-2">
-        <div class="flex gap-2 w-full">
+        <div class="flex gap-2 w-full" style="flex-direction:column">
             <div class="w-full" style="position: relative; display: inline-block" *ngIf="
           this.comingFromForm == false ||
           (props.mappedData !== null && props.mappedData?.fillColor != null)
@@ -1714,7 +1705,7 @@
         </div>
     </div>
     <div class="mt-2">
-        <div class="flex gap-2 w-full">
+        <div class="flex gap-2 w-full" style="flex-direction:column">
             <div class="w-full" style="position: relative; display: inline-block" *ngIf="
           this.comingFromForm == false ||
           (props.mappedData !== null && props.mappedData?.fillColor != null)
@@ -2927,9 +2918,10 @@
             </div>
         </div>
         <div class="w-full mt-4" style="height: 2px; background-color: #f1f3f6"></div>
-
-        <div class="mt-2" *ngFor="let key of props?.children">
-            <app-properties [props]="key" [comingFromForm]="true" [comingFromPage]="true"></app-properties>
+        <div class="mt-2">
+            <div *ngFor="let key of props?.children">
+                <app-properties [props]="key" [comingFromForm]="true" [comingFromPage]="true"></app-properties>
+            </div>
         </div>
     </div>
     <div></div>
@@ -3357,15 +3349,21 @@
     </div>
 </ng-container>
 <ng-container *ngIf="props?.name === 'divider'">
-    <div class="flex gap-2 mt-2">
+    <div class="flex gap-2 mt-2" *ngIf="
+    this.comingFromForm == false ||
+    (props.mappedData !== null && props.mappedData?.widthAndHeight != null)">
         <vezo-input label="Width" [trailingText]="'px'" [(ngModel)]="props.data.width"></vezo-input>
         <vezo-input label="Height" [trailingText]="'px'" [(ngModel)]="props.data.height"></vezo-input>
     </div>
-    <div class="mt-2">
+    <div class="mt-2" *ngIf="
+    this.comingFromForm == false ||
+    (props.mappedData !== null && props.mappedData?.DividerColor != null)">
         <vezo-colorpicker [label]="'Divider Color'" (colorChange)="props.data.dividerColor = $event"
             [inputVal]="props.data.dividerColor"></vezo-colorpicker>
     </div>
-    <div class="mt-2">
+    <div class="mt-2" *ngIf="
+    this.comingFromForm == false ||
+    (props.mappedData !== null && props.mappedData?.alignment != null)">
         <label class="">Alignment</label>
         <div class="flex mt-2 p-1 gap-2 w-fit" style="border-color: #dfdfdf; border-width: 1px; border-radius: 4px">
             <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.alignment = 'start'"
@@ -3382,7 +3380,9 @@
             </div>
         </div>
     </div>
-    <div class="mt-2">
+    <div class="mt-2" *ngIf="
+    this.comingFromForm == false ||
+    (props.mappedData !== null && props.mappedData?.mr != null)" >
         <label class="">Margin Style</label>
         <div class="flex justify-between items-center mt-2">
             <div class="grid grid-cols-2 w-full justify-between">
@@ -3453,7 +3453,9 @@
             </div>
         </div>
     </div>
-    <div class="mt-2 mb-2">
+    <div class="mt-2 mb-2" *ngIf="
+    this.comingFromForm == false ||
+    (props.mappedData !== null && props.mappedData?.pr != null)" >
         <label class="">Padding Style</label>
         <div class="flex justify-between items-center mt-2">
             <div class="grid grid-cols-2 w-full justify-between">
@@ -3592,7 +3594,7 @@
     </div>
 
     <div class="mt-2">
-        <div class="flex gap-2 w-full">
+        <div class="flex gap-2 w-full" style="flex-direction:column">
             <div *ngIf="
           this.comingFromForm == false ||
           (props.mappedData !== null && props.mappedData?.imageWidth != null)
@@ -4156,7 +4158,7 @@
         <vezo-input label="Border Radius" [tainlingText]="'px'" [(ngModel)]="props.data.borderRadius"></vezo-input>
     </div>
     <div class="mt-2">
-        <div class="flex gap-2 w-full">
+        <div class="flex gap-2 w-full" style="flex-direction:column">
             <div class="w-full" style="position: relative; display: inline-block" *ngIf="
           this.comingFromForm == false ||
           (props.mappedData !== null && props.mappedData?.bgColor != null)

@@ -15,7 +15,7 @@ export class MediaService {
   }    
  
   async createFolder(payload : any) {
-    var url = this.apiUrl + '/folder' ;
+    var url = this.apiUrl + '/folder';
     const res = await lastValueFrom(this.httpClient.post<any>(url , payload));
     return res;
   }
@@ -33,7 +33,7 @@ export class MediaService {
   }
 
   async getAllFolders() {
-    var url = this.apiUrl + '/folder' ;
+    var url = this.apiUrl + '/folder?pageNo=0&pageSize=100&sortDir=DESC&size=100';
     const allFolders = await lastValueFrom(this.httpClient.get<any>(url));
     return allFolders;
   }

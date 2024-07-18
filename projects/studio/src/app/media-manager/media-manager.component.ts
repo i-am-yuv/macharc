@@ -8,6 +8,7 @@ import { DataFormService } from '../data-form/data-form.service';
 import { MediaService } from './media.service';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { Folder } from './folder';
+import { GcpUploadService } from './gcp-upload.service';
 
 
 @Component({
@@ -15,23 +16,24 @@ import { Folder } from './folder';
   templateUrl: './media-manager.component.html',
   styleUrls: ['./media-manager.component.scss']
 })
-export class MediaManagerComponent  extends GenericComponent implements OnInit {
+export class MediaManagerComponent extends GenericComponent implements OnInit {
   data: DataForm[] = [];
   componentName: string = 'DataForm';
 
   formData: DataForm = {};
   form!: FormGroup<any>;
   currentView: string = 'grid';
-  allFolders : Folder[] =  [] ;
+  allFolders: Folder[] = [];
   folderId: string | null = '';
 
 
   constructor(private http: HttpClient, private msgService: MessageService, private formService: DataFormService, private fb: FormBuilder,
-    private mediaService: MediaService ,  private route: ActivatedRoute, private router : Router
-
+    private mediaService: MediaService, private route: ActivatedRoute, private router: Router,
+    private gcpUploadService: GcpUploadService
   ) {
     super(formService, msgService);
   }
+
   ngOnInit(): void {
     this.folderId = this.route.snapshot.paramMap.get('id');
     this.form = this.fb.group({
@@ -39,18 +41,23 @@ export class MediaManagerComponent  extends GenericComponent implements OnInit {
       folderName: ['']
     });
     this.getAllFolders();
-    if( this.folderId)
-    {
-      this.getFolderAssets(this.folderId ) ;
+    if (this.folderId) {
+      this.getFolderAssets(this.folderId);
     }
   }
 
-  getAllFolders()
-  {
+  getAllFolders() {
     this.mediaService.getAllFolders().then(
       (res: any) => {
         if (res) {
           this.allFolders = res.content;
+          if( this.allFolders.length > 0 )
+          {
+            if( !this.folderId )
+            {
+              this.openFolderAssets(this.allFolders[0]);
+            }
+          }
         }
         else {
         }
@@ -60,19 +67,18 @@ export class MediaManagerComponent  extends GenericComponent implements OnInit {
     })
   }
 
-  getFolderAssets(folderId : any)
-  {
-    this.mediaService.getAllFolders().then(
-      (res: any) => {
-        if (res) {
-          this.allFolders = res.content;
-        }
-        else {
-        }
-      }
-    ).catch((err: any) => {
-      console.log(err);
-    })  
+  getFolderAssets(folderId: any) {
+    // this.mediaService.getAllFolders().then(
+    //   (res: any) => {
+    //     if (res) {
+    //       this.allFolders = res.content;
+    //     }
+    //     else {
+    //     }
+    //   }
+    // ).catch((err: any) => {
+    //   console.log(err);
+    // })  
   }
 
   onFileSelected(event: any) {
@@ -84,6 +90,19 @@ export class MediaManagerComponent  extends GenericComponent implements OnInit {
       console.log(file.name);
       console.log(file.size);
       console.log(file.type);
+
+      if (file) {
+        this.gcpUploadService.uploadFile(file).subscribe(
+          (response) => {
+            console.log('Upload successful', response);
+          },
+          (error) => {
+            console.error('Upload failed', error);
+          }
+        );
+      } else {
+       // alert('Please select a file first');
+      }
 
       // this.http.post('YOUR_BACKEND_API_URL', formData, {
       //   reportProgress: true,
@@ -202,19 +221,18 @@ export class MediaManagerComponent  extends GenericComponent implements OnInit {
     }
   }
 
-  openFolderAssets(folder:any)
-  {
-    this.router.navigate(['/media-manager/folder/'+folder.id]) ;
+  openFolderAssets(folder: any) {
+    this.router.navigate(['/media-manager/folder/' + folder.id]);
     this.folderId = folder.id;
   }
 
   override saveData() {
     if (this.form.value.id == null || this.form.value.id == '') {
       // New Folder will be created
-      this.mediaService.createFolder( this.form.value).then(
+      this.mediaService.createFolder(this.form.value).then(
         (res: any) => {
           if (res) {
-            this.visible =  false;
+            this.visible = false;
             console.log(res);
             this.getAllFolders();
           }
@@ -226,11 +244,11 @@ export class MediaManagerComponent  extends GenericComponent implements OnInit {
       })
     }
     else {
-       // Update Folder
-      this.mediaService.updateFolder( this.form.value).then(
+      // Update Folder
+      this.mediaService.updateFolder(this.form.value).then(
         (res: any) => {
           if (res) {
-            this.visible =  false;
+            this.visible = false;
             this.getAllFolders();
           }
           else {
@@ -242,24 +260,22 @@ export class MediaManagerComponent  extends GenericComponent implements OnInit {
     }
   }
 
-  override deleteData(folder:any)
-  {  
-      if(folder.id)
-      {
-        this.mediaService.deleteFolder(folder).then(
-          (res: any) => {
-            if (res) {
-              console.log(res);
-              this.router.navigate(['/media-manager']);
-              this.getAllFolders();
-            }
-            else {
-            }
+  override deleteData(folder: any) {
+    if (folder.id) {
+      this.mediaService.deleteFolder(folder).then(
+        (res: any) => {
+          if (res) {
+            console.log(res);
+            this.router.navigate(['/media-manager']);
+            this.getAllFolders();
           }
-        ).catch((err: any) => {
-          console.log(err);
-        })
-      }
+          else {
+          }
+        }
+      ).catch((err: any) => {
+        console.log(err);
+      })
+    }
   }
 
   people = [
