@@ -6,7 +6,7 @@ import { Screen } from '../screen';
 import { FieldService } from '../../fields/field.service';
 import { FilterBuilder } from '../../utils/FilterBuilder';
 import { Field } from '../../fields/field';
-import { MessageService } from '@splenta/vezo';
+import { MessageService } from '@splenta/vezo/src/public-api';
 import { Collection } from '../../collection/collection';
 import { CollectionService } from '../../collection/collection.service';
 import { DataFormService } from '../../data-form/data-form.service';

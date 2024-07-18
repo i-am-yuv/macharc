@@ -5,7 +5,7 @@ import { Definition, Designer, GlobalEditorContext, Properties, Step, StepEditor
 import { BusinessLogic } from '../business-logic/business-logic';
 import { BusinessLogicService } from '../business-logic/business-logic.service';
 import { ActivatedRoute } from '@angular/router';
-import { MessageService } from '@splenta/vezo';
+import { MessageService } from '@splenta/vezo/src/public-api';
 
 declare var flowy: any;
 function createDefinition() {

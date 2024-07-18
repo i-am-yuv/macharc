@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { lastValueFrom } from "rxjs";
 import { environment } from "../../environments/environment";
-import { Pagination } from "@splenta/vezo";
+import { Pagination } from "@splenta/vezo/src/public-api";
 
 
 export abstract class GenericService {

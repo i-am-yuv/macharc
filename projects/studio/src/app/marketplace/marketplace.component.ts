@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GenericComponent } from '../utils/genericcomponent';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MessageService } from '@splenta/vezo';
+import { MessageService } from '@splenta/vezo/src/public-api';
 import { Marketplace } from './marketplace';
 import { MarketplaceService } from './marketplace.service';
 

@@ -1,6 +1,6 @@
 import { HttpClient, HttpEventType } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { MessageService } from '@splenta/vezo';
+import { MessageService } from '@splenta/vezo/src/public-api';
 import { FormBuilder, FormGroup, MinLengthValidator, MinValidator, Validators } from '@angular/forms';
 import { GenericComponent } from '../utils/genericcomponent';
 import { DataForm } from '../data-form/data-form';

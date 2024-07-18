@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { MessageService } from '@splenta/vezo';
+import { MessageService } from '@splenta/vezo/src/public-api';
 import { BusinessLogic } from '../../business-logic/business-logic';
 import { BusinessLogicService } from '../../business-logic/business-logic.service';
 import { Datasource } from '../../datasource/datasource';

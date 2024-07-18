@@ -3,7 +3,7 @@ import { GenericComponent } from '../utils/genericcomponent';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ScreenService } from './screen.service';
 import { Screen } from './screen';
-import { MessageService } from '@splenta/vezo';
+import { MessageService } from '@splenta/vezo/src/public-api';
 import { Collection } from '../collection/collection';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CollectionService } from '../collection/collection.service';

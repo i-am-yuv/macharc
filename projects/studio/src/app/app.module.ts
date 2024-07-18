@@ -8,7 +8,7 @@ import { AppComponent } from './app.component';
 import { FrontComponent } from './front/front.component';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MessageService, VezoModule } from '@splenta/vezo';
+import { MessageService, VezoModule } from '@splenta/vezo/src/public-api';
 import { AccordionModule } from '@splenta/vezo/accordion';
 import { ButtonModule } from '@splenta/vezo/button';
 import { CardModule } from '@splenta/vezo/card';

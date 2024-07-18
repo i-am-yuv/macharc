@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService } from '@splenta/vezo';
+import { MessageService } from '@splenta/vezo/src/public-api';
 import { MicroService } from '../microservice/microservice';
 import { MicroserviceService } from '../microservice/microservice.service';
 import { FilterBuilder } from '../utils/FilterBuilder';

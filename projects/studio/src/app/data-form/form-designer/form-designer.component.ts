@@ -1,6 +1,6 @@
 import { Component, ElementRef, HostListener, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService } from '@splenta/vezo';
+import { MessageService } from '@splenta/vezo/src/public-api';
 import { DropEffect, DndDropEvent, EffectAllowed } from 'ngx-drag-drop';
 import { Collection } from '../../collection/collection';
 import { CollectionService } from '../../collection/collection.service';

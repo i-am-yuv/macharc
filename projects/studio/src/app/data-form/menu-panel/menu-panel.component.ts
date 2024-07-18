@@ -5,7 +5,7 @@ import { Collection } from '../../collection/collection';
 import { MicroService } from '../../microservice/microservice';
 import { Application } from '../../application/application';
 import { DataFormService } from '../data-form.service';
-import { MessageService } from '@splenta/vezo';
+import { MessageService } from '@splenta/vezo/src/public-api';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CollectionService } from '../../collection/collection.service';
 import { MicroserviceService } from '../../microservice/microservice.service';

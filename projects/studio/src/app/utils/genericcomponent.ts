@@ -1,5 +1,5 @@
 import { FormGroup } from '@angular/forms';
-import { MessageService, Pagination } from '@splenta/vezo';
+import { MessageService, Pagination } from '@splenta/vezo/src/public-api';
 import { GenericService } from './genericservice';
 import { Router } from '@angular/router';
 
