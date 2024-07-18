@@ -7,8 +7,11 @@ import { DataForm } from '../data-form/data-form';
 import { DataFormService } from '../data-form/data-form.service';
 import { MediaService } from './media.service';
 import { ActivatedRoute, Route, Router } from '@angular/router';
-import { Folder } from './folder';
+import { Asset, Folder } from './folder';
 import { GcpUploadService } from './gcp-upload.service';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { environment } from '../../environments/environment';
+import { initializeApp } from 'firebase/app';
 
 
 @Component({
@@ -25,6 +28,8 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
   currentView: string = 'grid';
   allFolders: Folder[] = [];
   folderId: string | null = '';
+  downloadURL: string | undefined;
+  private storage = getStorage(initializeApp(environment.firebaseConfig));
 
 
   constructor(private http: HttpClient, private msgService: MessageService, private formService: DataFormService, private fb: FormBuilder,
@@ -51,10 +56,8 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
       (res: any) => {
         if (res) {
           this.allFolders = res.content;
-          if( this.allFolders.length > 0 )
-          {
-            if( !this.folderId )
-            {
+          if (this.allFolders.length > 0) {
+            if (!this.folderId) {
               this.openFolderAssets(this.allFolders[0]);
             }
           }
@@ -81,49 +84,56 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
     // })  
   }
 
-  onFileSelected(event: any) {
-    const file: File = event.target.files[0];
-    if (file) {
-      const formData = new FormData();
-      formData.append('file', file);
-      console.log(file);
-      console.log(file.name);
-      console.log(file.size);
-      console.log(file.type);
-
-      if (file) {
-        this.gcpUploadService.uploadFile(file).subscribe(
-          (response) => {
-            console.log('Upload successful', response);
-          },
-          (error) => {
-            console.error('Upload failed', error);
-          }
-        );
-      } else {
-       // alert('Please select a file first');
-      }
-
-      // this.http.post('YOUR_BACKEND_API_URL', formData, {
-      //   reportProgress: true,
-      //   observe: 'events'
-      // }).subscribe(event => {
-      //   if (event.type === HttpEventType.UploadProgress) {
-      //     const progress = Math.round(100 * event.loaded / event.total!);
-      //     console.log(`File is ${progress}% uploaded.`);
-      //   } else if (event.type === HttpEventType.Response) {
-      //     console.log('File uploaded successfully!', event.body);
-      //   }
-      // }, error => {
-      //   console.error('Error uploading file:', error);
-      // });
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      const file = input.files[0];
+      const storageRef = ref(this.storage, 'images/' + file.name);
       
+      uploadBytes(storageRef, file)
+        .then(snapshot => {
+          console.log('Uploaded a blob or file!', snapshot);
+          return getDownloadURL(storageRef);
+        })
+        .then(downloadURL => {
+          console.log('File available at', downloadURL);
+          this.uploadImageToBackend(file ,downloadURL )
+        })
+        .catch(error => {
+          console.error('Error uploading file', error);
+        });
     }
   }
 
-  triggerFileInput() {
-    const fileInput = document.getElementById('fileInput') as HTMLElement;
-    fileInput.click();
+  asset !: Asset;
+
+  uploadImageToBackend( file : any , url : any)
+  {
+      console.log(file); 
+      console.log(url);
+
+      this.asset = {
+        fileType: file.type,
+        folderId: Number(this.folderId),
+        url: url,
+        fileName: file.name,
+        uploadedTime: new Date()
+      };
+
+       console.log('this will be sent');
+       console.log(this.asset);
+
+       this.mediaService.uploadAssets(this.asset).then(
+        (res: any) => {
+          if (res) {
+            console.log(res);
+          }
+          else {
+          }
+        }
+      ).catch((err: any) => {
+        console.log(err);
+      })
   }
 
   // Logic of Drag and drop image
