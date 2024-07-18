@@ -134,34 +134,31 @@
                         <!-- Code for the Grid View Assets -->
                         <div *ngIf="this.currentView== 'grid'" class="flex flex-wrap gap-6 justify-start mx-8 my-6"
                             style="justify-items: center;">
-                            <!-- <div *ngFor="let time of times; let i = index">
-                                <div (mouseenter)="onHoverStart(time)" (mouseleave)="onHoverEnd()"
+                            <div *ngFor="let asset of allAssetByFolderId; let i = index">
+                                <div (mouseenter)="onHoverStart(asset)" (mouseleave)="onHoverEnd()"
                                     [ngClass]="{'currentPick': this.hoveredIndex == i}"
                                     style="background-color: #FFFFFF; width: 232px; height:272px ; border-radius: 8px;  padding: 12px;">
                                     <div class="flex justify-center items-center p-4"
                                         style="width: auto; height:188px ; border-radius: 8px; border-width: 1px; border-color:#000000;">
-                                        <img *ngIf="i%2==0"
-                                            src="https://storage.googleapis.com/flutterflow-enterprise-india.appspot.com/projects/h-i-and-l-i-w33dc0/assets/8nbuda5ca8cl/Rectangle_26479_(1).png" />
-                                        <img *ngIf="i%2!=0"
-                                            src="https://storage.googleapis.com/flutterflow-enterprise-india.appspot.com/projects/h-i-and-l-i-w33dc0/assets/l280cbr2nimh/Rectangle_26480_(2).png" />
+                                        <img 
+                                            src="{{asset.url}}" />
                                     </div>
                                     <div class="flex justify-between items-center mt-4">
                                         <div style="display: flex; flex-direction: column;" class="gap-1">
                                             <div style="font-size: 12px; font-weight: 500; color: #4F46E5;">
-                                                Img123456.jpg
+                                                {{asset.fileName}}
                                             </div>
                                             <div style="font-size: 12px; font-weight: 500; color: #B0B0B0;">Uploaded
-                                                June
-                                                25, 2024
+                                               {{asset.uploadedTime | date}}
                                             </div>
                                         </div>
                                         <div class="flex justify-center gap-2">
-                                            <img *ngIf="this.hoveredIndex == i" src="assets/copy-clipboard.svg"
+                                            <img  src="assets/copy-clipboard.svg"
                                                 style="width: 20px; height: 20px; cursor: pointer;"
-                                                (click)="copyToClipbord(i%2==0?'https://storage.googleapis.com/flutterflow-enterprise-india.appspot.com/projects/h-i-and-l-i-w33dc0/assets/8nbuda5ca8cl/Rectangle_26479_(1).png' : 'https://storage.googleapis.com/flutterflow-enterprise-india.appspot.com/projects/h-i-and-l-i-w33dc0/assets/l280cbr2nimh/Rectangle_26480_(2).png')" />
+                                                (click)="copyToClipbord(asset.url+'')" />
                                             <div class="flex justify-center items-center mr-2 pl-1  pb-1 cursor-pointer"
-                                                *ngIf="this.hoveredIndex == i"
-                                                (click)="openImageInNewTab( i%2==0?'https://storage.googleapis.com/flutterflow-enterprise-india.appspot.com/projects/h-i-and-l-i-w33dc0/assets/8nbuda5ca8cl/Rectangle_26479_(1).png' : 'https://storage.googleapis.com/flutterflow-enterprise-india.appspot.com/projects/h-i-and-l-i-w33dc0/assets/l280cbr2nimh/Rectangle_26480_(2).png')"
+                                               
+                                                (click)="openImageInNewTab(asset.url+'')"
                                                 style="width: 24px; height: 24px; background-color: #4F46E5; border-radius: 4px;">
                                                 <img style="width: 18px; height: 18px;"
                                                     src="assets/Group 1171276934.svg" />
@@ -169,7 +166,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div> -->
+                            </div>
                         </div>
                         <!-- Code for the list View Assets -->
                         <div *ngIf="this.currentView== 'list'" class="mx-8 my-6">

@@ -65,7 +65,7 @@ export class MediaService {
   }
 
   async getAssetsByAssetId(payload:any) {
-    var url = this.apiUrl + '/asset/'+ encodeURIComponent(payload.id!); ;
+    var url = this.apiUrl + '/asset/'+ encodeURIComponent(payload!); ;
     const result = await lastValueFrom(this.httpClient.get<any>(url));
     return result;
   }

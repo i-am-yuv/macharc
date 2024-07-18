@@ -70,18 +70,21 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
     })
   }
 
+  allAssetByFolderId : Asset[] = [] ;
+  currAsset : any ;
   getFolderAssets(folderId: any) {
-    // this.mediaService.getAllFolders().then(
-    //   (res: any) => {
-    //     if (res) {
-    //       this.allFolders = res.content;
-    //     }
-    //     else {
-    //     }
-    //   }
-    // ).catch((err: any) => {
-    //   console.log(err);
-    // })  
+    this.mediaService.getAssetsByAssetId('4170ab29-cb91-44ac-90ef-3fae1ea5a04e').then(
+      (res: any) => {
+        if (res) {
+          this.allAssetByFolderId.push(res);
+         // this.currAsset = res;
+        }
+        else {
+        }
+      }
+    ).catch((err: any) => {
+      console.log(err);
+    })  
   }
 
   onFileSelected(event: Event) {
@@ -288,16 +291,6 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
     }
   }
 
-  people = [
-    { name: 'John Doe', age: 30, city: 'New York' },
-    { name: 'Jane Smith', age: 25, city: 'Los Angeles' },
-    { name: 'Mike Johnson', age: 35, city: 'Chicago' },
-    { name: 'Mike Johnson', age: 35, city: 'Chicago' },
-    { name: 'Mike Johnson', age: 35, city: 'Chicago' },
-    { name: 'Mike Johnson', age: 35, city: 'Chicago' },
-    { name: 'Mike Johnson', age: 35, city: 'Chicago' },
-    { name: 'Mike Johnson', age: 35, city: 'Chicago' }
-  ];
 
   getBg(clickedView: string) {
     if (clickedView === this.currentView) {
@@ -307,15 +300,6 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
       return '#F5F6F9';
     }
   }
-
-  // editFolder(folder: any) {
-  //   //this.form.patchValue(folder);
-  //   //this.form.value.folderName = folder.name;
-  //   this.form.patchValue({ ...folder });
-
-  //   //alert(this.form.value.folderName );
-  //   this.visible = true;
-  // }
 
   override addData(): void {
     this.form.reset();
