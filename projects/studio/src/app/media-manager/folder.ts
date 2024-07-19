@@ -6,7 +6,8 @@ export class Folder {
 export class Asset {
     id ?: string ;
     fileType ?: string ;
-    folderId ?: number;
+    fileSize ?: string;
+    folderId ?: any;
     url ?: string ;
     fileName ?: string ;
     uploadedTime ?: any ;
