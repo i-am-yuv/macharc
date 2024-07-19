@@ -26,10 +26,17 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
   formData: DataForm = {};
   form!: FormGroup<any>;
   currentView: string = 'grid';
+
   allFolders: Folder[] = [];
   allAssetByFolderId: Asset[] = [];
+  filteredAssets: Asset[] = [];
+  
   folderId: any;
   loading: boolean = false;
+  visibleDeleteConfirmation: boolean = false;
+  activeFolder !: Folder ;
+  searchQuery: string = '';
+
   private storage = getStorage(initializeApp(environment.firebaseConfig));
 
 
@@ -57,9 +64,11 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
       (res: any) => {
         if (res) {
           this.allFolders = res.content;
+          this.allFolders.sort((a:any, b:any) => a.folderName.localeCompare(b.folderName));
           if (this.allFolders.length > 0) {
             if (!this.folderId) {
               this.openFolderAssets(this.allFolders[0]);
+              this.activeFolder = this.allFolders[0];
             }
           }
         }
@@ -148,16 +157,16 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
 
   uploadImageToBackend(file: any, url: any) {
     this.folderId = this.route.snapshot.paramMap.get('id');
-    
+
     this.tempFolder = {
-      id : this.folderId 
+      id: this.folderId
     };
 
     this.asset = {
       fileType: file.type,
       fileSize: this.convertFileSizeToKB(file),
       url: url,
-      folder: this.tempFolder ,
+      folder: this.tempFolder,
       fileName: file.name,
       uploadedTime: new Date()
     };
@@ -392,37 +401,8 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
   }
 
   override deleteData(folder: any) {
-    if (folder.id) {
-      this.mediaService.deleteFolder(folder).then(
-        (res: any) => {
-          if (res) {
-            this.router.navigate(['/media-manager']);
-            this.getAllFolders();
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Success',
-              detail: 'Folder deleted.',
-              life: 3000,
-            });
-          }
-          else {
-            this.messageService.add({
-              severity: 'info',
-              summary: 'Info',
-              detail: 'Something went wrong, Please try again!',
-              life: 3000,
-            });
-          }
-        }
-      ).catch((err: any) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Error occur while deleting the folder.',
-          life: 3000,
-        });
-      })
-    }
+    this.activeFolder = folder;
+    this.visibleDeleteConfirmation = !this.visibleDeleteConfirmation ;
   }
 
 
@@ -480,6 +460,62 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
       });
     })
 
+  }
+
+  deleteFolderConfirmed() {
+    if (this.activeFolder.id) {
+      this.mediaService.deleteFolder(this.activeFolder).then(
+        (res: any) => {
+          if (res) {
+            this.router.navigate(['/media-manager']);
+            this.getAllFolders();
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Success',
+              detail: 'Folder deleted.',
+              life: 3000,
+            });
+          }
+          else {
+            this.messageService.add({
+              severity: 'info',
+              summary: 'Info',
+              detail: 'Something went wrong, Please try again!',
+              life: 3000,
+            });
+          }
+        }
+      ).catch((err: any) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Error occur while deleting the folder.',
+          life: 3000,
+        });
+      })
+    }
+  }
+
+  searchAssets()
+  {
+    if (this.searchQuery) {
+      this.filteredAssets = this.allAssetByFolderId.filter(asset =>
+        asset.fileName?.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+    } else {
+      this.filteredAssets = this.allAssetByFolderId;
+    }
+  }
+
+  getAssetList()
+  {
+    if( this.searchQuery)
+    {
+       return this.filteredAssets ;
+    }
+    else{
+         return this.allAssetByFolderId;
+    } 
   }
 
 }

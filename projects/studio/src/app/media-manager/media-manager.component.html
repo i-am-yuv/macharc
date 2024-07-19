@@ -77,7 +77,8 @@
                                             style="background-color: #FFFFFF; border-width: 1px; border-color: #E9E9FB; height: 32px; width: auto; border-radius: 4px;">
                                             <img src="assets/image_search.png" class="ml-1"
                                                 style="width: 24px; height: 24px;" />
-                                            <input type="text" placeholder="Search" class="mr-2"
+                                            <input type="text" placeholder="Search folders..." [(ngModel)]="searchQuery"
+                                                (input)="searchAssets()" class="mr-2"
                                                 style="border: none !important; height: 25px !important; width: auto;" />
                                         </div>
                                     </div>
@@ -133,18 +134,20 @@
                         <!-- Code for the Grid View Assets -->
                         <div *ngIf="this.currentView== 'grid'" class="flex flex-wrap gap-6 justify-start mx-8 my-6"
                             style="justify-items: center;">
-                            <div *ngFor="let asset of allAssetByFolderId; let i = index">
+                            <div *ngFor="let asset of getAssetList(); let i = index">
                                 <div (mouseenter)="onHoverStart(asset)" (mouseleave)="onHoverEnd()"
                                     [ngClass]="{'currentPick': this.currentAssetId == asset.id }"
                                     style="background-color: #FFFFFF; width: 232px;  border-radius: 8px;" class="p-3">
                                     <div class="flex justify-center items-center p-4"
                                         style="width: auto; height:188px ; border-radius: 8px; border-width: 1px; border-color:#000000;">
-                                        <img src="{{asset.url}}" />
+                                        <img [src]="asset.url" />
                                     </div>
-                                    <div class="flex justify-between items-center mt-4" style="flex-wrap: wrap-reverse;">
+                                    <div class="flex justify-between items-center mt-4"
+                                        style="flex-wrap: wrap-reverse;">
                                         <div style="display: flex; flex-direction: column;" class="gap-1">
                                             <div class="flex justify-between items-center gap-2 w-auto">
-                                                <div style="font-size: 12px; font-weight: 500; color: #4F46E5; word-wrap: break-word; word-break: break-all; white-space: normal; ">
+                                                <div
+                                                    style="font-size: 12px; font-weight: 500; color: #4F46E5; word-wrap: break-word; word-break: break-all; white-space: normal; ">
                                                     {{asset.fileName}}
                                                 </div>
                                                 <vezo-icon icon="trash" className="w-3 text-red-700 cursor-pointer"
@@ -156,14 +159,12 @@
                                             </div>
                                         </div>
                                         <div class="flex justify-center gap-2" *ngIf="this.currentAssetId == asset.id">
-                                            <img src="assets/copy-clipboard.svg"
-                                                style="width: 18px; cursor: pointer;"
+                                            <img src="assets/copy-clipboard.svg" style="width: 18px; cursor: pointer;"
                                                 (click)="copyToClipbord(asset.url+'')" />
                                             <div class="flex justify-center items-center pl-1 mr-1 pb-1 cursor-pointer"
                                                 (click)="openImageInNewTab(asset.url+'')"
                                                 style="width: 24px; height: 24px; background-color: #4F46E5; border-radius: 4px;">
-                                                <img style="width: 18px;"
-                                                    src="assets/Group 1171276934.svg" />
+                                                <img style="width: 18px;" src="assets/Group 1171276934.svg" />
                                             </div>
                                         </div>
                                     </div>
@@ -172,7 +173,7 @@
                         </div>
                         <!-- Code for the list View Assets -->
                         <div *ngIf="this.currentView== 'list'" class="flex flex-wrap gap-6 justify-start mx-8 my-6">
-                           
+
                             <table *ngIf="this.allAssetByFolderId.length>0">
                                 <thead>
                                     <tr>
@@ -184,7 +185,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let asset of allAssetByFolderId">
+                                    <tr *ngFor="let asset of getAssetList()">
                                         <td>
                                             <div class="flex justify-between gap-4 items-center ">
                                                 <div class="flex justify-center items-center"
@@ -192,7 +193,8 @@
                                                     <img src="assets/defaultListImage.svg"
                                                         style="width: 16px; height: 16px;" />
                                                 </div>
-                                                <div class="w-3/4 text-left" style="font-size: 14px; font-weight: 600; color: #101828;">
+                                                <div class="w-3/4 text-left"
+                                                    style="font-size: 14px; font-weight: 600; color: #101828;">
                                                     {{asset.fileName}}</div>
                                             </div>
                                         </td>
@@ -200,7 +202,7 @@
                                         <td>{{asset.fileType}}</td>
                                         <td>{{asset.uploadedTime | date}}</td>
                                         <td>
-                                            <div class="flex justify-center gap-2 items-center">
+                                            <div class="flex justify-around gap-2 items-center">
                                                 <img src="assets/copy-clipboard.svg"
                                                     style="width: 20px; height: 20px; cursor: pointer;"
                                                     (click)="copyToClipbord(asset.url+'')" />
@@ -260,6 +262,18 @@
     <ng-template vTemplate="footer">
         <div class="text-right">
             <vezo-button label="Save" [disabled]="!form.valid" (click)="saveData()"></vezo-button>
+        </div>
+    </ng-template>
+</vezo-modal>
+
+<!-- Code for re-confirmation of delete the Component -->
+<vezo-modal [(visible)]="visibleDeleteConfirmation">
+    <ng-template vTemplate="header">Are you sure, you want to delete this Folder?</ng-template>
+    <ng-template vTemplate="footer">
+        <div class="w-full flex justify-end gap-4 items-center">
+            <vezo-button label="No"
+                (click)="this.visibleDeleteConfirmation = !this.visibleDeleteConfirmation "></vezo-button>
+            <vezo-button label="Yes" (click)="deleteFolderConfirmed()"></vezo-button>
         </div>
     </ng-template>
 </vezo-modal>
