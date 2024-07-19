@@ -20,7 +20,7 @@
     <tr>
       <!-- <th class="w-4"><input type="checkbox" class="w-4 h-4" /></th> -->
       <th>Microservice</th>
-      <th>Collection</th>
+      <!-- <th>Collection</th> -->
       <th>Screen Name</th>
       <th [width]="150">Actions</th>
     </tr>
@@ -28,8 +28,8 @@
   <ng-template vTemplate="body">
     <tr *ngFor="let item of data">
       <!-- <td><input type="checkbox" class="w-4 h-4" /></td> -->
-      <td>{{ item.collection?.microService?.microServiceName }}</td>
-      <td>{{ item.collection?.collectionName }}</td>
+      <td>{{ item.microService.microServiceName }}</td>
+      <!-- <td>{{ item.collection?.collectionName }}</td> -->
       <td>{{ item.screenName }}</td>
       <td>
         <vezo-icon icon="queueList" (click)="designScreen(item)"
@@ -50,8 +50,8 @@
         label="Application"></vezo-select>
       <vezo-select optionLabel="microServiceName" [items]="microserviceItems" formControlName="microService"
         label="Microservice" (ngModelChange)="getCollectionItems()"></vezo-select>
-      <vezo-select optionLabel="collectionName" [items]="collectionItems" formControlName="collection"
-        label="Collection"></vezo-select>
+      <!-- <vezo-select optionLabel="collectionName" [items]="collectionItems" formControlName="collection"
+        label="Collection"></vezo-select> -->
       <vezo-input label="Screen Name" formControlName="screenName"></vezo-input>
       <error-message [controlName]="form.controls['screenName']"></error-message>
     </form>
