@@ -52,7 +52,7 @@ export class MediaService {
     return result;
   }
 
-  async deleteAssets(payload :any) {
+  async deleteAsset(payload :any) {
     var url = this.apiUrl + '/asset'+ encodeURIComponent(payload.id!);
     const result = await lastValueFrom(this.httpClient.delete<any>(url, payload));
     return result;

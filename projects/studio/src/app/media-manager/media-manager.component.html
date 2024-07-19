@@ -65,7 +65,8 @@
                                 <div>
                                     <div style="font-size: 14px; font-weight: 500; color:#2e2e2e">Drag And Drop Anywhere
                                         Here To Upload.</div>
-                                    <div style="font-size: 12px; font-weight: 400; color:#888888">(Supports jpg, jpeg, png,
+                                    <div style="font-size: 12px; font-weight: 400; color:#888888">(Supports jpg, jpeg,
+                                        png,
                                         svg)</div>
                                 </div>
                             </div>
@@ -122,8 +123,8 @@
                                         <img src="assets/upload_vector.svg" style="height: 16px; width: 16px;" />
                                         <div style="font-size: 14px; font-weight: 500; color: #FFFFFF;">Upload</div>
                                     </div>
-                                    <input type="file" id="fileInput" style="display: none;"  accept=".png, .jpg, .jpeg, .svg"
-                                        (change)="onFileSelected($event)" />
+                                    <input type="file" id="fileInput" style="display: none;"
+                                        accept=".png, .jpg, .jpeg, .svg" (change)="onFileSelected($event)" />
                                     <!-- <input type="file" id="fileInput" (change)="onFileSelected($event)"> -->
                                 </div>
                             </div>
@@ -134,29 +135,34 @@
                             style="justify-items: center;">
                             <div *ngFor="let asset of allAssetByFolderId; let i = index">
                                 <div (mouseenter)="onHoverStart(asset)" (mouseleave)="onHoverEnd()"
-                                    [ngClass]="{'currentPick': this.hoveredIndex == i}"
-                                    style="background-color: #FFFFFF; width: 232px; height:272px ; border-radius: 8px;  padding: 12px;">
+                                    [ngClass]="{'currentPick': this.currentAssetId == asset.id }"
+                                    style="background-color: #FFFFFF; width: 232px;  border-radius: 8px;" class="p-3">
                                     <div class="flex justify-center items-center p-4"
                                         style="width: auto; height:188px ; border-radius: 8px; border-width: 1px; border-color:#000000;">
                                         <img src="{{asset.url}}" />
                                     </div>
-                                    <div class="flex justify-between items-center mt-4">
+                                    <div class="flex justify-between items-center mt-4" style="flex-wrap: wrap-reverse;">
                                         <div style="display: flex; flex-direction: column;" class="gap-1">
-                                            <div style="font-size: 12px; font-weight: 500; color: #4F46E5;">
-                                                {{asset.fileName}}
+                                            <div class="flex justify-between items-center gap-2 w-auto">
+                                                <div style="font-size: 12px; font-weight: 500; color: #4F46E5; word-wrap: break-word; word-break: break-all; white-space: normal; ">
+                                                    {{asset.fileName}}
+                                                </div>
+                                                <vezo-icon icon="trash" className="w-3 text-red-500 cursor-pointer"
+                                                    (click)="deleteAsset(asset)"></vezo-icon>
                                             </div>
+
                                             <div style="font-size: 12px; font-weight: 500; color: #B0B0B0;">Uploaded
                                                 {{asset.uploadedTime | date}}
                                             </div>
                                         </div>
-                                        <div class="flex justify-center gap-2">
+                                        <div class="flex justify-center gap-2" *ngIf="this.currentAssetId == asset.id">
                                             <img src="assets/copy-clipboard.svg"
-                                                style="width: 20px; height: 20px; cursor: pointer;"
+                                                style="width: 18px; cursor: pointer;"
                                                 (click)="copyToClipbord(asset.url+'')" />
-                                            <div class="flex justify-center items-center mr-2 pl-1  pb-1 cursor-pointer"
+                                            <div class="flex justify-center items-center pl-1 mr-1 pb-1 cursor-pointer"
                                                 (click)="openImageInNewTab(asset.url+'')"
                                                 style="width: 24px; height: 24px; background-color: #4F46E5; border-radius: 4px;">
-                                                <img style="width: 18px; height: 18px;"
+                                                <img style="width: 18px;"
                                                     src="assets/Group 1171276934.svg" />
                                             </div>
                                         </div>
@@ -193,16 +199,18 @@
                                         <td>{{asset.fileType}}</td>
                                         <td>{{asset.uploadedTime | date}}</td>
                                         <td>
-                                            <div class="flex justify-center gap-4">
+                                            <div class="flex justify-center gap-2 items-center">
                                                 <img src="assets/copy-clipboard.svg"
                                                     style="width: 20px; height: 20px; cursor: pointer;"
                                                     (click)="copyToClipbord(asset.url+'')" />
-                                                <div class="flex justify-center items-center mr-2 pl-1  pb-1 cursor-pointer"
+                                                <div class="flex justify-center items-center pl-1  pb-1 cursor-pointer"
                                                     (click)="openImageInNewTab(asset.url+'')"
                                                     style="width: 24px; height: 24px; background-color: #4F46E5; border-radius: 4px;">
                                                     <img style="width: 18px; height: 18px;"
                                                         src="assets/Group 1171276934.svg" />
                                                 </div>
+                                                <vezo-icon icon="trash" className="w-5 text-red-500 cursor-pointer"
+                                                    (click)="deleteAsset(asset)"></vezo-icon>
                                             </div>
                                         </td>
                                     </tr>

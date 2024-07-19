@@ -27,7 +27,7 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
   form!: FormGroup<any>;
   currentView: string = 'grid';
   allFolders: Folder[] = [];
-  folderId:any ;
+  folderId: any;
   loading: boolean = false;
   private storage = getStorage(initializeApp(environment.firebaseConfig));
 
@@ -47,7 +47,7 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
     });
     this.getAllFolders();
     if (this.folderId) {
-       this.getFolderAssets(this.folderId);
+      this.getFolderAssets(this.folderId);
     }
   }
 
@@ -149,7 +149,7 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
 
   uploadImageToBackend(file: any, url: any) {
     this.folderId = this.route.snapshot.paramMap.get('id');
-    console.log(this.folderId) ;
+    console.log(this.folderId);
     this.asset = {
       fileType: file.type,
       fileSize: this.convertFileSizeToKB(file),
@@ -172,7 +172,7 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
             detail: 'Asset uploaded successfully.',
             life: 3000,
           });
-          this.getFolderAssets(this.folderId) ;
+          this.getFolderAssets(this.folderId);
         }
         else {
           this.loading = false;
@@ -201,8 +201,8 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
     return fileSizeInKB.toFixed(2) + 'kb';
   }
 
-   // Simple hash function to convert UUID to a number
-   convertUuidToNumber(uuid: string): number {
+  // Simple hash function to convert UUID to a number
+  convertUuidToNumber(uuid: string): number {
     let hash = 0;
     for (let i = 0; i < uuid.length; i++) {
       const char = uuid.charCodeAt(i);
@@ -261,15 +261,6 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
     return allowedTypes.includes(file.type);
   }
 
-  // onFileSelected1(event: Event): void {
-  //   const file = (event.target as HTMLInputElement).files?.[0];
-  //   if (file && file.type.startsWith('image/')) {
-  //     this.readImage(file);
-  //   }
-  //   console.log('drop file');
-  //   console.log(file);
-  // }
-
   private readImage(file: File): void {
     const reader = new FileReader();
     reader.onload = (e: ProgressEvent<FileReader>) => {
@@ -297,13 +288,13 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
 
 
   isNavigationVisible: boolean = false;
-  hoveredIndex: number = -1;
-  onHoverStart(itemNo: any) {
-    this.hoveredIndex = itemNo - 1;
+  currentAssetId: any;
+  onHoverStart(asset: any) {
+    this.currentAssetId = asset.id;
   }
   onHoverEnd() {
     this.isNavigationVisible = false;
-    this.hoveredIndex = -1;
+    this.currentAssetId = -1;
   }
 
   openImageInNewTab(imageUrl: string): void {
@@ -451,6 +442,43 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
   override editData(ds: any): void {
     this.form.patchValue({ ...ds });
     this.visible = true;
+  }
+
+  deleteAsset(asset: any) {
+    this.mediaService.deleteAsset(this.asset).then(
+      (res: any) => {
+        if (res) {
+          console.log(res);
+          this.loading = false;
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Asset deleted successfully.',
+            life: 3000,
+          });
+          this.getFolderAssets(this.folderId);
+        }
+        else {
+          this.loading = false;
+          this.messageService.add({
+            severity: 'info',
+            summary: 'Info',
+            detail: 'Something went wrong, Please try again!',
+            life: 3000,
+          });
+        }
+      }
+    ).catch((err: any) => {
+      console.log(err);
+      this.loading = false;
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: err.error.message,
+        life: 3000,
+      });
+    })
+
   }
 
 }
