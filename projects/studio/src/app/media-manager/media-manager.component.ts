@@ -93,6 +93,7 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
 
   getFolderAssets(folderId: any) {
     this.allAssetByFolderId = [];
+    this.filteredAssets = [] ;
 
     this.loading = true;
     this.mediaService.getAssetsByFolderId(folderId).then(

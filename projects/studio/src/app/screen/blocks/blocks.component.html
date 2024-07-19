@@ -4,7 +4,7 @@
         'font-weight':(block.mappedData?.fontWeight == null ) ? block.data?.fontWeight: block.mappedData?.fontWeight,
         'color': (block.mappedData?.fontColor == null ) ? block.data?.fontColor: block.mappedData?.fontColor,
         'margin-top':  block.data?.mt+'px', 'margin-bottom':  block.data?.mb+'px',  'margin-left':  block.data?.ml+'px',  'margin-right':  block.data?.mr+'px',
-        'padding-top':  block.data?.pt+'px',  'padding-bottom':  block.data?.pb+'px',  'padding-left':  block.data?.pl+'px',  'padding-right':  block.data?.pr+'px'
+        'padding-top':  block.data?.pt+'px',  'padding-bottom':  block.data?.pb+'px',  'padding-left':  block.data?.pl+'px',  'padding-right':  block.data?.pr+'px', 'word-wrap': 'break-word', 'word-break': 'break-all','white-space': 'normal'
      }">{{ (block.mappedData?.text == null ) ? block.data?.text : block.mappedData?.text }}</div>
 </ng-container>
 <ng-container *ngIf="block.name === 'button'">
