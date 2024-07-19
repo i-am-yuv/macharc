@@ -27,6 +27,7 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
   form!: FormGroup<any>;
   currentView: string = 'grid';
   allFolders: Folder[] = [];
+  allAssetByFolderId: Asset[] = [];
   folderId: any;
   loading: boolean = false;
   private storage = getStorage(initializeApp(environment.firebaseConfig));
@@ -81,17 +82,14 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
     })
   }
 
-  allAssetByFolderId: Asset[] = [];
-  currAsset: any;
   getFolderAssets(folderId: any) {
     this.allAssetByFolderId = [];
 
     this.loading = true;
-    this.mediaService.getAssetsByAssetId('4170ab29-cb91-44ac-90ef-3fae1ea5a04e').then(
+    this.mediaService.getAssetsByFolderId(folderId).then(
       (res: any) => {
         if (res) {
-          this.allAssetByFolderId.push(res);
-          // this.currAsset = res;
+          this.allAssetByFolderId = res;
           this.loading = false;
         }
         else {
@@ -146,20 +144,23 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
   }
 
   asset !: Asset;
+  tempFolder !: Folder;
 
   uploadImageToBackend(file: any, url: any) {
     this.folderId = this.route.snapshot.paramMap.get('id');
-    console.log(this.folderId);
+    
+    this.tempFolder = {
+      id : this.folderId 
+    };
+
     this.asset = {
       fileType: file.type,
       fileSize: this.convertFileSizeToKB(file),
-      folderId: this.folderId,
       url: url,
+      folder: this.tempFolder ,
       fileName: file.name,
       uploadedTime: new Date()
     };
-    console.log('assets here');
-    console.log(this.asset.folderId);
 
     this.mediaService.uploadAssets(this.asset).then(
       (res: any) => {
@@ -445,7 +446,7 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
   }
 
   deleteAsset(asset: any) {
-    this.mediaService.deleteAsset(this.asset).then(
+    this.mediaService.deleteAsset(asset).then(
       (res: any) => {
         if (res) {
           console.log(res);
@@ -474,7 +475,7 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
       this.messageService.add({
         severity: 'error',
         summary: 'Error',
-        detail: err.error.message,
+        detail: 'Something went wrong, Please try again!',
         life: 3000,
       });
     })

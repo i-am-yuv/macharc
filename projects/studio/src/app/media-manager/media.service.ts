@@ -53,13 +53,13 @@ export class MediaService {
   }
 
   async deleteAsset(payload :any) {
-    var url = this.apiUrl + '/asset'+ encodeURIComponent(payload.id!);
+    var url = this.apiUrl + '/asset/'+ encodeURIComponent(payload.id!);
     const result = await lastValueFrom(this.httpClient.delete<any>(url, payload));
     return result;
   }
 
-  async getAssetsByFolderId(folder:any) {
-    var url = this.apiUrl + '/asset/folder/'+ encodeURIComponent(folder.id!); ;
+  async getAssetsByFolderId(folderId:any) {
+    var url = this.apiUrl + '/asset/folder/'+ encodeURIComponent(folderId!); ;
     const result = await lastValueFrom(this.httpClient.get<any>(url));
     return result;
   }

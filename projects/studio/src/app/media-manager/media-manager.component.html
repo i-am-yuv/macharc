@@ -147,7 +147,7 @@
                                                 <div style="font-size: 12px; font-weight: 500; color: #4F46E5; word-wrap: break-word; word-break: break-all; white-space: normal; ">
                                                     {{asset.fileName}}
                                                 </div>
-                                                <vezo-icon icon="trash" className="w-3 text-red-500 cursor-pointer"
+                                                <vezo-icon icon="trash" className="w-3 text-red-700 cursor-pointer"
                                                     (click)="deleteAsset(asset)"></vezo-icon>
                                             </div>
 
@@ -172,7 +172,8 @@
                         </div>
                         <!-- Code for the list View Assets -->
                         <div *ngIf="this.currentView== 'list'" class="flex flex-wrap gap-6 justify-start mx-8 my-6">
-                            <table *ngFor="let asset of allAssetByFolderId">
+                           
+                            <table *ngIf="this.allAssetByFolderId.length>0">
                                 <thead>
                                     <tr>
                                         <th style="border-top-left-radius: 12px !important;">NAME</th>
@@ -185,13 +186,13 @@
                                 <tbody>
                                     <tr *ngFor="let asset of allAssetByFolderId">
                                         <td>
-                                            <div class="flex justify-center gap-4 items-center">
+                                            <div class="flex justify-between gap-4 items-center ">
                                                 <div class="flex justify-center items-center"
                                                     style="width: 40px; height: 40px; background-color: #4F46E5; border-radius: 50%;">
                                                     <img src="assets/defaultListImage.svg"
                                                         style="width: 16px; height: 16px;" />
                                                 </div>
-                                                <div style="font-size: 14px; font-weight: 600; color: #101828;">
+                                                <div class="w-3/4 text-left" style="font-size: 14px; font-weight: 600; color: #101828;">
                                                     {{asset.fileName}}</div>
                                             </div>
                                         </td>
@@ -216,6 +217,7 @@
                                     </tr>
                                 </tbody>
                             </table>
+
                         </div>
 
                         <!-- If No Asset Found then -->

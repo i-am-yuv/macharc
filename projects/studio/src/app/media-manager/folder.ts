@@ -1,13 +1,13 @@
 export class Folder {
-    id ?: string ;
+    id ?: any ;
     folderName ?: string ;
 } 
 
 export class Asset {
-    id ?: string ;
+    id ?: any ;
     fileType ?: string ;
     fileSize ?: string;
-    folderId ?: any;
+    folder?: Folder;
     url ?: string ;
     fileName ?: string ;
     uploadedTime ?: any ;
