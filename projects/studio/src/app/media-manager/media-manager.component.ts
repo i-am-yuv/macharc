@@ -100,6 +100,8 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
       (res: any) => {
         if (res) {
           this.allAssetByFolderId = res;
+          // lasted asset should comes first so sort like that
+          this.allAssetByFolderId.sort((a:any, b:any) => b.updatedAt - a.updatedAt);
           this.loading = false;
         }
         else {

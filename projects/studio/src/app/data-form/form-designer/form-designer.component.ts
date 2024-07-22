@@ -477,6 +477,7 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
   }
 
   openNewComponent(scr: any) {
+    this.loading = true;
     this.router.navigate(['/builder/forms/designer/' + scr.id]);
     setTimeout(() => {
       this.getComponentContent();
