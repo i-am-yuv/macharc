@@ -10,6 +10,8 @@ export class WidgetTreeNodeComponent implements OnInit {
   @Input() node: any;
   @Output() nodeClicked = new EventEmitter<any>();
   @Output() copyClicked = new EventEmitter<any>();
+  @Output() pasteClicked = new EventEmitter<any>();
+
 
   isExpanded: boolean = false;
 
@@ -38,12 +40,31 @@ export class WidgetTreeNodeComponent implements OnInit {
     this.copyClicked.emit(node);
   }
 
+  pasteClick(event: Event, node: any) {
+    event.stopPropagation(); // Stop the event from bubbling up
+    // console.log( node);
+    this.pasteClicked.emit(node);
+  }
+
   onChildNodeClicked(node: any) {
     this.nodeClicked.emit(node);
   }
 
   onChildCopyClicked(node: any) {
     this.copyClicked.emit(node);
+  }
+
+  onChildPasteClicked(node: any) {
+    this.pasteClicked.emit(node);
+  }
+  
+  checkComponentAvailable() {
+    if (localStorage.getItem('componentCopy') != null || localStorage.getItem('componentPage') != null) {
+      return true;
+    }
+    else {
+      return false;
+    }
   }
 
 }

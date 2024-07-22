@@ -68,7 +68,7 @@ export abstract class GenericComponent {
 
   saveData() {
     this.preSave();
-    this.form.value.collection = null ;// No collection for page
+    //this.form.value.collection = null ;// No collection for page
     const formData = this.form.value;
     if (!formData.id) {
       this.dataService.createData(formData).then((res: any) => {

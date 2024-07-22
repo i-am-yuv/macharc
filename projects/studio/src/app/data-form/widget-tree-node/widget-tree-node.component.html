@@ -22,11 +22,14 @@
     <span  *ngIf="node.name!='form'"class="last-child-div w-3/4 justify-end items-start cursor-pointer" >
       <img src="assets/copy-clipboard.svg" style="width: 15px; height: auto;" class="mb-2" (click)="copyClick($event, node)"/>
     </span>
+    <span  *ngIf="node.name!='form' && this.checkComponentAvailable() "class="last-child-div w-3/4 justify-end items-start cursor-pointer" >
+      <img src="assets/content_paste.svg" style="width: 15px; height: auto;" class="mb-2" (click)="pasteClick($event, node)"/>
+    </span>
  
   </div>
   <div *ngIf="isExpanded" style="margin-left: 1rem ; padding-left: 1rem ; border-left: 1px solid #ccc;">
     <ng-container *ngFor="let child of node.children">
-      <app-widget-tree-node [node]="child" (nodeClicked)="onChildNodeClicked($event)" (copyClicked)="onChildCopyClicked($event)"></app-widget-tree-node>
+      <app-widget-tree-node [node]="child" (nodeClicked)="onChildNodeClicked($event)" (copyClicked)="onChildCopyClicked($event)" (pasteClicked)="onChildPasteClicked($event)"></app-widget-tree-node>
     </ng-container>
   </div>
 </div>

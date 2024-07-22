@@ -81,7 +81,7 @@ export class DataFormComponent extends GenericComponent {
   }
 
   getCollectionItems() {
-    this.form.patchValue({ collection: null });
+    // this.form.patchValue({ collection: null });
     var filterStr = FilterBuilder.equal('microService.id', this.form.value.microService.id);
     this.collectionService.getAllData(undefined, filterStr).then((res: any) => {
       if (res) {
@@ -116,13 +116,25 @@ export class DataFormComponent extends GenericComponent {
     this.router.navigate(['/builder/forms/designer/' + scr.id]);
   }
 
+  duplicateObj:any;
   duplicateData(ds: any) 
   {
+    console.log(ds);
     this.visible = true;
-    // Duplicate component must have different id and form name
-    ds.id = '';
-    ds.formName = '';
-    this.form.patchValue({ ...ds });
+    this.duplicateObj = {
+      'id':'',
+      'formName':'',
+      'formCode':ds.formCode,
+      'formDescription':ds.formDescription,
+      'formDefinition':ds.formDefinition,
+      'collection':ds.collection,
+      'microService':ds.microService,
+      'application':ds.application,
+      'process':ds.process
+    }
+   
+    this.form.patchValue({ ...this.duplicateObj });
+    console.log(this.form.value);
   }
 
 }

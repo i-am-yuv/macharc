@@ -497,6 +497,7 @@ export class DesignerComponent extends GenericComponent implements OnInit {
   }
 
   openNewPage(scr: any) {
+    this.loading = true;
     this.router.navigate(['/builder/screens/designer/' + scr.id]);
     setTimeout(() => {
       this.getPageContent();
@@ -743,6 +744,38 @@ export class DesignerComponent extends GenericComponent implements OnInit {
     localStorage.removeItem('componentPage'); // Removing this for temporary purpose
   }
 
+  pasteThisPageInside(afterObjectId: string) {
+    this.copiedResult = localStorage.getItem('componentPage');
+    this.copiedList = JSON.parse(this.copiedResult);
+    this.copiedList = this.assignUniqueIds(this.copiedList);
+
+    const found = this.insertAfterId(this.draggableListRight, afterObjectId, this.copiedList);
+
+    if (!found) {
+      this.draggableListRight = [...this.draggableListRight, ...this.copiedList];
+    }
+
+    this.widgetTree = this.draggableListRight;
+    this.messageService.add({ severity: 'success', summary: 'Paste', detail: 'Content pasted successfully.' });
+    localStorage.removeItem('componentPage');
+  }
+  
+   // Recursive function to find and insert copied list after specific ID
+   insertAfterId(list: any[], afterObjectId: string, copiedList: any[]): boolean {
+    for (let i = 0; i < list.length; i++) {
+      if (list[i].id === afterObjectId) {
+        list.splice(i + 1, 0, ...copiedList);
+        return true;
+      } else if (list[i].children && list[i].children.length > 0) {
+        const found = this.insertAfterId(list[i].children, afterObjectId, copiedList);
+        if (found) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
   // Method to assign unique IDs recursively
   assignUniqueIds(list: any[]): any[] {
     return list.map(item => {
@@ -769,6 +802,11 @@ export class DesignerComponent extends GenericComponent implements OnInit {
     this.copySubList.push(newItem);
     this.copyThisPage(this.copySubList);
   }
+
+  onItemReceivedPaste(item: any) {
+    console.log(item);
+    this.pasteThisPageInside(item.id);
+   }
 
   // Code for duplicating the page with different name
   duplicateData(ds: any) {

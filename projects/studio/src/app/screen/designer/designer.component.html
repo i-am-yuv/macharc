@@ -129,7 +129,7 @@
                 <div class="py-1 pl-2 cursor-pointer" [ngClass]="{'bg-indigo-200': this.screenId == item.id}"
                     >
                     <div class="flex justify-between items-center">
-                        <div (click)="openNewPage(item)" style="font-size:12px; font-weight:500 ; width: 100%;">
+                        <div (click)="openNewPage(item)" style="font-size:12px; font-weight:500 ; width: 100%;  word-wrap: break-word; word-break: break-all; white-space: normal;">
                             {{item.screenName }}
                         </div>
                         <div class="flex gap-2 justify-end px-2">
@@ -585,7 +585,7 @@
                                     <div style="display: flex;flex-direction: column;">
                                         <div *ngFor="let item of widgetTree">
                                             <app-widget-tree-node [node]="item"
-                                                (nodeClicked)="onItemReceived($event)"  (copyClicked)="onItemReceivedCopy($event)" ></app-widget-tree-node>
+                                                (nodeClicked)="onItemReceived($event)"  (copyClicked)="onItemReceivedCopy($event)"  (pasteClicked)="onItemReceivedPaste($event)"></app-widget-tree-node>
                                         </div>
                                         <div *ngIf="widgetTree.length == 0 ">
                                             <div style="font-size: 14px; font-weight: 500; color:#2e2e2e">No Widget Tree

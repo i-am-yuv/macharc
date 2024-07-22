@@ -490,13 +490,22 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
     this.getCollectionItems();
   }
 
+  duplicateObj:any;
    // Code for duplicating the component with different name
    duplicateData(ds: any) {
     this.visible = true;
-    // Duplicate component must have different id and form name
-    ds.id = '';
-    ds.formName = '';
-    this.form.patchValue({ ...ds });
+    this.duplicateObj = {
+      'id':'',
+      'formName':'',
+      'formCode':ds.formCode,
+      'formDescription':ds.formDescription,
+      'formDefinition':ds.formDefinition,
+      'collection':ds.collection,
+      'microService':ds.microService,
+      'application':ds.application,
+      'process':ds.process
+    }
+    this.form.patchValue({ ...this.duplicateObj });
   }
 
 
@@ -631,6 +640,11 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
     this.copyThisComponent(this.copySubList);
   }
 
+  onItemReceivedPaste(item: any) {
+   console.log(item);
+   this.pasteThisComponentInside(item.id);
+  }
+
   searchValue: string = '';
   filteredDraggableListLeftVE: DraggableItem[] = [...this.draggableListLeftVE];
   filteredDraggableListLeftLE: DraggableItem[] = [...this.draggableListLeftLE];
@@ -736,6 +750,38 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
     this.messageService.add({ severity: 'success', summary: 'Paste', detail: 'Content pasted successfully.' });
     localStorage.removeItem('componentCopy'); // Removing this for temporary purpose
 
+  }
+
+  pasteThisComponentInside(afterObjectId: string) {
+    this.copiedResult = localStorage.getItem('componentCopy');
+    this.copiedList = JSON.parse(this.copiedResult);
+    this.copiedList = this.assignUniqueIds(this.copiedList);
+
+    const found = this.insertAfterId(this.draggableListRight, afterObjectId, this.copiedList);
+
+    if (!found) {
+      this.draggableListRight = [...this.draggableListRight, ...this.copiedList];
+    }
+
+    this.widgetTree = this.draggableListRight;
+    this.messageService.add({ severity: 'success', summary: 'Paste', detail: 'Content pasted successfully.' });
+    localStorage.removeItem('componentCopy');
+  }
+
+   // Recursive function to find and insert copied list after specific ID
+   insertAfterId(list: any[], afterObjectId: string, copiedList: any[]): boolean {
+    for (let i = 0; i < list.length; i++) {
+      if (list[i].id === afterObjectId) {
+        list.splice(i + 1, 0, ...copiedList);
+        return true;
+      } else if (list[i].children && list[i].children.length > 0) {
+        const found = this.insertAfterId(list[i].children, afterObjectId, copiedList);
+        if (found) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   // Method to assign unique IDs recursively
