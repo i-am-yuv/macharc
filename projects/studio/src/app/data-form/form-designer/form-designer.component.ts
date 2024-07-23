@@ -436,7 +436,7 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
     // Old Code 
     this.loading = true;
     this.formId = this.route.snapshot.paramMap.get('id');
-    if (this.formId !== null) {
+    if (this.formId !== 'null') {
       this.formService.getData({ id: this.formId }).then((res: any) => {
         console.log(res);
         this.formData = res;
@@ -471,6 +471,7 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
       this.formId = null;
       this.router.navigate(['/builder/forms/designer/' + null])
       console.log('no active component found');
+      this.loading = false;
     }
 
     this.activeItem = null;

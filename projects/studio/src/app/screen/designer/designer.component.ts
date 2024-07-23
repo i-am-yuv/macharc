@@ -454,7 +454,7 @@ export class DesignerComponent extends GenericComponent implements OnInit {
     this.loading = true;
     this.screenId = this.route.snapshot.paramMap.get('id');
     // alert(this.screenId ) ;
-    if (this.screenId !== null) {
+    if (this.screenId !== 'null') {
       this.screenService.getData({ id: this.screenId }).then((res: any) => {
         console.log(res);
         this.screenData = res;
@@ -492,6 +492,7 @@ export class DesignerComponent extends GenericComponent implements OnInit {
       this.screenId = null;
       this.router.navigate(['/builder/screens/designer/' + null])
       console.log('no active page found');
+      this.loading = false;
     }
     this.activeItem = null;
   }
