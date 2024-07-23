@@ -389,6 +389,7 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
   getComponentData() {
     this.loading = true;
     this.getAllData();
+    console.log(this.data);
     this.loading = false;
 
     this.microserviceService.getAllData().then((res: any) => {
@@ -410,6 +411,11 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
     })
 
     this.getComponentContent();
+  }
+
+  getDataSorted()
+  {
+   return this.data.sort((a:any, b:any) => a.formName.localeCompare(b.formName));
   }
 
   getComponentContent()

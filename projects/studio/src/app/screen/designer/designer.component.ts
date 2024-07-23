@@ -422,6 +422,11 @@ export class DesignerComponent extends GenericComponent implements OnInit {
     this.getPageContent();
   }
 
+  getDataSorted()
+  {
+   return this.data.sort((a:any, b:any) => a.screenName.localeCompare(b.screenName));
+  }
+
   override editData(ds: any): void {
     super.editData(ds);
     this.getCollectionItems();

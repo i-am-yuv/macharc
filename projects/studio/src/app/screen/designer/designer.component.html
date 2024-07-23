@@ -125,7 +125,7 @@
         <!-- All Page list Left side bar -->
         <div style="width: 15%; background-color: #E0E7FF; overflow: auto;" class="p-2">
 
-            <div *ngFor="let item of data">
+            <div *ngFor="let item of getDataSorted()">
                 <div class="py-1 pl-2 cursor-pointer" [ngClass]="{'bg-indigo-200': this.screenId == item.id}"
                     >
                     <div class="flex justify-between items-center">
