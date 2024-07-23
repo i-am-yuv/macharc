@@ -64,8 +64,8 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
       (res: any) => {
         if (res) {
           this.allFolders = res.content;
-          this.allFolders.sort((a:any, b:any) => a.folderName.localeCompare(b.folderName));
           if (this.allFolders.length > 0) {
+            this.allFolders.sort((a:any, b:any) => a.folderName.localeCompare(b.folderName));
             if (!this.folderId) {
               this.openFolderAssets(this.allFolders[0]);
               this.activeFolder = this.allFolders[0];

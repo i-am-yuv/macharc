@@ -140,7 +140,7 @@
                                     style="background-color: #FFFFFF; width: 232px;  border-radius: 8px;" class="p-3">
                                     <div class="flex justify-center items-center p-4"
                                         style="width: auto; height:188px ; border-radius: 8px; border-width: 1px; border-color:#000000;">
-                                        <img [src]="asset.url" style="width:150px; height: auto" />
+                                        <img [src]="asset.url" style="width:150px; height: auto" alt="Image" />
                                     </div>
                                     <div class="flex justify-between items-center mt-4"
                                         style="flex-wrap: wrap-reverse;">
@@ -244,9 +244,9 @@
 
     <div *ngIf="this.allFolders.length <= 0" class="flex justify-center items-center"
         style="flex-direction: column; height: 90%;">
-        <div class="text-left">
-            <p style="font-size: 16px; font-weight: 500; color: #888888;">No Asset Folder Found !</p>
-            <!-- <p class="mt-1" style="font-size: 14px; font-weight: 400; color: #888888;">Add One!</p> -->
+        <div class="text-center">
+            <p style="font-size: 16px; font-weight: 500; color: #888888;">No Asset Folder Found...</p>
+            <p class="mt-1" style="font-size: 14px; font-weight: 400; color: #888888;">Add One!</p>
         </div>
     </div>
 </div>
