@@ -835,8 +835,13 @@ export class DesignerComponent extends GenericComponent implements OnInit {
 
   downloadDivHTML() {
     const div = this.el.nativeElement.querySelector('#downloadable-div');
-    const htmlContent = div.innerHTML;
+    if(div == null )
+    {
+      this.msgService.add({ severity: 'info', summary: 'Info', detail: 'No Preview available for an empty page.' });
+      return ;
+    }
     
+    const htmlContent = div.innerHTML;
     // Collect all stylesheets from the current document
     const stylesheets = Array.from(document.styleSheets)
       .map((styleSheet: CSSStyleSheet) => {
@@ -856,12 +861,18 @@ export class DesignerComponent extends GenericComponent implements OnInit {
       })
       .join('');
 
-    // Create a complete HTML document
+    // Creating a HTML document with no user interaction
     const fullHTML = `
       <html>
         <head>
           <title>Div Content</title>
           ${stylesheets}
+          <style>
+            body {
+              user-select: none; /* Prevent text selection */
+              pointer-events: none; /* Disable all mouse events */
+            }
+          </style>
         </head>
         <body>
           ${htmlContent}
@@ -872,6 +883,17 @@ export class DesignerComponent extends GenericComponent implements OnInit {
     const blob = new Blob([fullHTML], { type: 'text/html' });
     const url = window.URL.createObjectURL(blob);
     window.open(url, '_blank');
+
+  // Create a link element and simulate a click to download the file
+  // const link = document.createElement('a');
+  // link.href = url;
+  // link.download = this.screenData.screenName+''; // Filename for the download
+  // document.body.appendChild(link);
+  // link.click();
+  // document.body.removeChild(link);
+
+  // // Release the object URL
+  // window.URL.revokeObjectURL(url);
   }
 
 }
