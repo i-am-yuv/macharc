@@ -413,7 +413,7 @@
                                 [style.background-color]=" this.activeItem?.id === null? '#4038CA' : '#C7D2FE'"
                                 (click)="onClickPickElement()">
                                 <div class="flex justify-between gap-3">
-                                    <div class="w-10/12">
+                                    <div >
                                         <span *ngIf="!showProps"
                                             [style.color]=" this.activeItem?.id === null? '#F6F6F6' : '#454545'"
                                             style="font-size: 12px; font-weight: 500;">PICK AN ELEMENT</span>
@@ -421,14 +421,14 @@
                                             [style.color]=" this.activeItem?.id === null? '#F6F6F6' : '#454545'"
                                             style="font-size: 12px; font-weight: 500;">Widgets</span>
                                     </div>
-                                    <div class="w-2/12 bg-slate-200 rounded-full flex justify-center items-center">
+                                    <div class=" bg-slate-200 rounded-full flex justify-center items-center  w-6 h-6">
                                         <!-- <vezo-icon icon="bars2" *ngIf="!showProps" className="cursor-pointer w-4 h-4"
                                             (click)="showProps=!showProps" style="color:white"></vezo-icon>
                                         <vezo-icon icon="squares2x2" *ngIf="showProps"
                                             className="cursor-pointer w-4 h-4" style="color:white"
                                             (click)="showProps=!showProps"></vezo-icon> -->
-                                            <img *ngIf="!showProps" src="assets/switch_left.svg" style="width: 24px; height: auto;" (click)="showProps=!showProps" />
-                                            <img *ngIf="showProps" src="assets/switch_right.svg" style="width: 24px; height: auto;" (click)="showProps=!showProps" />
+                                            <img *ngIf="!showProps" src="assets/switch_left.svg"  class="w-4 h-4" (click)="showProps=!showProps" />
+                                            <img *ngIf="showProps" src="assets/switch_right.svg"  class="w-4 h-4" (click)="showProps=!showProps" />
                                     </div>
                                 </div>
                             </div>

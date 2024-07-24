@@ -174,7 +174,7 @@
                         <!-- Code for the list View Assets -->
                         <div *ngIf="this.currentView== 'list'" class="flex flex-wrap gap-6 justify-start mx-8 my-6">
 
-                            <table *ngIf="this.allAssetByFolderId.length>0">
+                            <table *ngIf="getAssetList().length > 0">
                                 <thead>
                                     <tr>
                                         <th style="border-top-left-radius: 12px !important;">NAME</th>
@@ -223,7 +223,7 @@
                         </div>
 
                         <!-- If No Asset Found then -->
-                        <div *ngIf="this.allAssetByFolderId.length <= 0"
+                        <div *ngIf="this.allAssetByFolderId.length <= 0 || this.getAssetList().length <= 0"
                             class="w-full flex justify-center items-center">
                             <div>
                                 <div class="" style="font-size: 16px; font-weight: 500; color: #000000;">No Assets

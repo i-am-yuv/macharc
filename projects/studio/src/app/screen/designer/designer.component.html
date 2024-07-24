@@ -3,7 +3,7 @@
     <!-- top bar with the resize screen tab -->
     <div class="flex justify-between items-center">
         <div class="grid grid-cols-12 gap-2 w-full bg-gray-100 border">
-            <div class="col-span-4  gap-4 p-2 ml-4" style="display: flex; justify-content: start; align-items: center;">
+            <div  class="col-span-4  gap-4 p-2 ml-4" style="display: flex; justify-content: start; align-items: center;">
                 <img src="assets/iconamoon_edit-thin.png" style="width: 18px; height: 18px;" />
                 <img src="assets/rotate-ccw.png" style="width: 18px; height: 18px;" />
                 <img src="assets/rotate-cw.png" style="width: 18px; height: 18px;" />
@@ -81,9 +81,9 @@
         <div class="flex justify-center items-center gap-2" style="width: 15%; background-color: #C7D2FE; height:38px">
 
             <div>
-                <vezo-icon *ngIf="currListView == true" [icon]="'chevronLeft'" className="cursor-pointer w-5 h-5"
+                <vezo-icon *ngIf="currListView == true" [icon]="'chevronLeft'" className="cursor-pointer w-4 h-4"
                     style="color:black" (click)="currListView = false"></vezo-icon>
-                <vezo-icon *ngIf="currListView == false" [icon]="'chevronRight'" className="cursor-pointer w-5 h-5"
+                <vezo-icon *ngIf="currListView == false" [icon]="'chevronRight'" className="cursor-pointer w-4 h-4"
                     style="color:black" (click)="currListView = true"></vezo-icon>
             </div>
 
@@ -144,9 +144,9 @@
                         </div>
                         <div class="flex gap-2 justify-end px-2">
                             <!-- <img  src="assets/open_with.svg" style="width: 12px; height:auto" /> -->
-                            <vezo-icon icon="pencil" (click)="editData(item)"
+                            <vezo-icon icon="pencil" (click)="editData(item)" 
                                 className=" w-3 h-3 text-indigo-500 cursor-pointer"></vezo-icon>
-                            <vezo-icon icon="documentDuplicate" (click)="duplicateData(item)"
+                            <vezo-icon icon="documentDuplicate" (click)="duplicateData(item)" 
                                 className="w-3 h-3 text-indigo-500 cursor-pointer"></vezo-icon>
                             <vezo-icon icon="trash" (click)="confirmToDelete(item)"
                                 className="w-3 h-3 text-red-500 cursor-pointer"></vezo-icon>
@@ -449,7 +449,7 @@
                                     [style.background-color]=" this.activeItem?.id === null? '#4038CA' : '#C7D2FE'"
                                     (click)="onClickPickElement()">
                                     <div class="flex justify-between gap-3">
-                                        <div class="w-10/12">
+                                        <div>
                                             <span *ngIf="!showProps"
                                                 [style.color]=" this.activeItem?.id === null? '#F6F6F6' : '#454545'"
                                                 style="font-size: 12px; font-weight: 500;">PICK AN ELEMENT</span>
@@ -457,17 +457,17 @@
                                                 [style.color]=" this.activeItem?.id === null? '#F6F6F6' : '#454545'"
                                                 style="font-size: 12px; font-weight: 500;">Widgets</span>
                                         </div>
-                                        <div class="w-2/12 bg-slate-200 rounded-full flex justify-center items-center">
+                                        <div  class=" bg-slate-200 rounded-full flex justify-center items-center w-6 h-6">
                                             <!-- <vezo-icon icon="bars2" *ngIf="!showProps"
                                                 className="cursor-pointer w-4 h-4" (click)="showProps=!showProps"
                                                 style="color:white"></vezo-icon>
                                             <vezo-icon icon="squares2x2" *ngIf="showProps"
                                                 className="cursor-pointer w-4 h-4" style="color:white"
                                                 (click)="showProps=!showProps"></vezo-icon> -->
-                                            <img *ngIf="!showProps" src="assets/switch_left.svg"
-                                                style="width: 24px; height: auto;" (click)="showProps=!showProps" />
+                                            <img *ngIf="!showProps" src="assets/switch_left.svg" class="w-4 h-4"
+                                                (click)="showProps=!showProps" />
                                             <img *ngIf="showProps" src="assets/switch_right.svg"
-                                                style="width: 24px; height: auto;" (click)="showProps=!showProps" />
+                                                class="w-4 h-4" (click)="showProps=!showProps" />
                                         </div>
                                     </div>
                                 </div>

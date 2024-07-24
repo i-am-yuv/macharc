@@ -815,13 +815,24 @@ export class DesignerComponent extends GenericComponent implements OnInit {
     this.pasteThisPageInside(item.id);
   }
 
-  // Code for duplicating the page with different name
+  duplicateObj: any;
+
   duplicateData(ds: any) {
-    this.visible = true;
     // Duplicate component must have different id and form name
-    ds.id = '';
-    ds.screenName = '';
-    this.form.patchValue({ ...ds });
+    this.visible = true;
+    this.duplicateObj = {
+      'id': '',
+      'screenName': '',
+      'screenCode': ds.screenCode,
+      'screenDescription': ds.screenDescription,
+      'screenDefinition': ds.screenDefinition,
+      'collection': ds.collection,
+      'microService': ds.microService,
+      'application': ds.application,
+      'process': ds.process
+    }
+
+    this.form.patchValue({ ...this.duplicateObj });
   }
 
   confirmToDelete(item: any) {
@@ -835,12 +846,11 @@ export class DesignerComponent extends GenericComponent implements OnInit {
 
   downloadDivHTML() {
     const div = this.el.nativeElement.querySelector('#downloadable-div');
-    if(div == null )
-    {
+    if (div == null) {
       this.msgService.add({ severity: 'info', summary: 'Info', detail: 'No Preview available for an empty page.' });
-      return ;
+      return;
     }
-    
+
     const htmlContent = div.innerHTML;
     // Collect all stylesheets from the current document
     const stylesheets = Array.from(document.styleSheets)
@@ -884,16 +894,16 @@ export class DesignerComponent extends GenericComponent implements OnInit {
     const url = window.URL.createObjectURL(blob);
     window.open(url, '_blank');
 
-  // Create a link element and simulate a click to download the file
-  // const link = document.createElement('a');
-  // link.href = url;
-  // link.download = this.screenData.screenName+''; // Filename for the download
-  // document.body.appendChild(link);
-  // link.click();
-  // document.body.removeChild(link);
+    // Create a link element and simulate a click to download the file
+    // const link = document.createElement('a');
+    // link.href = url;
+    // link.download = this.screenData.screenName+''; // Filename for the download
+    // document.body.appendChild(link);
+    // link.click();
+    // document.body.removeChild(link);
 
-  // // Release the object URL
-  // window.URL.revokeObjectURL(url);
+    // // Release the object URL
+    // window.URL.revokeObjectURL(url);
   }
 
 }
