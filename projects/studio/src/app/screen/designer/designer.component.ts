@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { DndDropEvent, DropEffect, EffectAllowed } from 'ngx-drag-drop';
 import { ScreenService } from '../screen.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -46,9 +46,9 @@ export class DesignerComponent extends GenericComponent implements OnInit {
   componentName: string = 'Screen';
 
   loading: boolean = false;
-  visibleDeleteConfirmation : boolean = false ;
+  visibleDeleteConfirmation: boolean = false;
   currListView: boolean = true;
-  activeData : any ;
+  activeData: any;
 
   // Virtual Elements
   draggableListLeftVE: DraggableItem[] = [
@@ -384,7 +384,8 @@ export class DesignerComponent extends GenericComponent implements OnInit {
     private route: ActivatedRoute,
     private msgService: MessageService,
     private microserviceService: MicroserviceService,
-    private applicationService: ApplicationService
+    private applicationService: ApplicationService,
+    private renderer: Renderer2, private el: ElementRef
   ) {
     super(screenService, messageService);
     this.form = this.fb.group({
@@ -423,9 +424,8 @@ export class DesignerComponent extends GenericComponent implements OnInit {
     this.getPageContent();
   }
 
-  getDataSorted()
-  {
-   return this.data.sort((a:any, b:any) => a.screenName.localeCompare(b.screenName));
+  getDataSorted() {
+    return this.data.sort((a: any, b: any) => a.screenName.localeCompare(b.screenName));
   }
 
   override editData(ds: any): void {
@@ -442,7 +442,7 @@ export class DesignerComponent extends GenericComponent implements OnInit {
     this.activeItem = null;
     this.screenId = null;
     this.router.navigate(['/builder/screens/designer/' + null]);
-    this.activeData = null ;
+    this.activeData = null;
     this.visibleDeleteConfirmation = false;
   }
 
@@ -766,9 +766,9 @@ export class DesignerComponent extends GenericComponent implements OnInit {
     this.messageService.add({ severity: 'success', summary: 'Paste', detail: 'Content pasted successfully.' });
     localStorage.removeItem('componentPage');
   }
-  
-   // Recursive function to find and insert copied list after specific ID
-   insertAfterId(list: any[], afterObjectId: string, copiedList: any[]): boolean {
+
+  // Recursive function to find and insert copied list after specific ID
+  insertAfterId(list: any[], afterObjectId: string, copiedList: any[]): boolean {
     for (let i = 0; i < list.length; i++) {
       if (list[i].id === afterObjectId) {
         list.splice(i + 1, 0, ...copiedList);
@@ -813,7 +813,7 @@ export class DesignerComponent extends GenericComponent implements OnInit {
   onItemReceivedPaste(item: any) {
     console.log(item);
     this.pasteThisPageInside(item.id);
-   }
+  }
 
   // Code for duplicating the page with different name
   duplicateData(ds: any) {
@@ -824,15 +824,54 @@ export class DesignerComponent extends GenericComponent implements OnInit {
     this.form.patchValue({ ...ds });
   }
 
-  confirmToDelete(item : any)
-  {
-      this.activeData = item ;
-      this.visibleDeleteConfirmation = true ;
+  confirmToDelete(item: any) {
+    this.activeData = item;
+    this.visibleDeleteConfirmation = true;
   }
 
-  deleteConfirmed()
-  {
-      this.deleteThisPage(this.activeData) ;
+  deleteConfirmed() {
+    this.deleteThisPage(this.activeData);
+  }
+
+  downloadDivHTML() {
+    const div = this.el.nativeElement.querySelector('#downloadable-div');
+    const htmlContent = div.innerHTML;
+    
+    // Collect all stylesheets from the current document
+    const stylesheets = Array.from(document.styleSheets)
+      .map((styleSheet: CSSStyleSheet) => {
+        if (styleSheet.href) {
+          return `<link rel="stylesheet" type="text/css" href="${styleSheet.href}">`;
+        } else {
+          try {
+            const rules = Array.from(styleSheet.cssRules)
+              .map(rule => rule.cssText)
+              .join('');
+            return `<style>${rules}</style>`;
+          } catch (e) {
+            console.warn('Cannot access stylesheet', styleSheet.href);
+            return '';
+          }
+        }
+      })
+      .join('');
+
+    // Create a complete HTML document
+    const fullHTML = `
+      <html>
+        <head>
+          <title>Div Content</title>
+          ${stylesheets}
+        </head>
+        <body>
+          ${htmlContent}
+        </body>
+      </html>
+    `;
+
+    const blob = new Blob([fullHTML], { type: 'text/html' });
+    const url = window.URL.createObjectURL(blob);
+    window.open(url, '_blank');
   }
 
 }
