@@ -47,6 +47,7 @@ export class DesignerComponent extends GenericComponent implements OnInit {
 
   loading: boolean = false;
   visibleDeleteConfirmation : boolean = false ;
+  currListView: boolean = true;
   activeData : any ;
 
   // Virtual Elements

@@ -46,6 +46,8 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
 
   loading: boolean = false;
   visibleDeleteConfirmation: boolean = false;
+  currListView: boolean = true;
+
   activeData: any;
 
   // No use of this
