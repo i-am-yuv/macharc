@@ -870,8 +870,8 @@ export class DesignerComponent extends GenericComponent implements OnInit {
         }
       })
       .join('');
-
-    // Creating a HTML document with no user interaction
+  
+    // Creating a HTML document with no text selection or pointer events on non-interactive elements
     const fullHTML = `
       <html>
         <head>
@@ -880,30 +880,30 @@ export class DesignerComponent extends GenericComponent implements OnInit {
           <style>
             body {
               user-select: none; /* Prevent text selection */
-              pointer-events: none; /* Disable all mouse events */
+            }
+            input, select, textarea, button, a, video, dropdown, checkbox , label,  .combo-wrapper, .combo-item{
+              pointer-events: auto; /* Enable pointer events for interactive elements */
+              user-select: auto; /* Allow text selection within input fields and other interactive elements */
+            }
+            .non-interactive {
+              pointer-events: none; /* Disable pointer events for non-interactive elements */
             }
           </style>
         </head>
         <body>
-          ${htmlContent}
+          <div class="non-interactive">
+            ${htmlContent}
+          </div>
         </body>
       </html>
     `;
-
+  
     const blob = new Blob([fullHTML], { type: 'text/html' });
     const url = window.URL.createObjectURL(blob);
     window.open(url, '_blank');
-
-    // Create a link element and simulate a click to download the file
-    // const link = document.createElement('a');
-    // link.href = url;
-    // link.download = this.screenData.screenName+''; // Filename for the download
-    // document.body.appendChild(link);
-    // link.click();
-    // document.body.removeChild(link);
-
-    // // Release the object URL
-    // window.URL.revokeObjectURL(url);
+  
+    // Release the object URL if needed
+     window.URL.revokeObjectURL(url);
   }
 
 }
