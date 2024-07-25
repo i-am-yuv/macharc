@@ -673,7 +673,7 @@
 
 <!-- Code for Adding/ Editing a active page -->
 <vezo-modal [(visible)]="visible">
-    <ng-template vTemplate="header">Screen</ng-template>
+    <ng-template vTemplate="header">Page</ng-template>
     <ng-template vTemplate="content">
         <form [formGroup]="form">
             <vezo-select optionLabel="applicationName" [items]="applicationItems" formControlName="application"
@@ -682,7 +682,7 @@
                 label="Microservice" (ngModelChange)="getCollectionItems()"></vezo-select>
             <!-- <vezo-select optionLabel="collectionName" [items]="collectionItems" formControlName="collection"
                 label="Collection"></vezo-select> -->
-            <vezo-input label="Screen Name" formControlName="screenName"></vezo-input>
+            <vezo-input label="Page Name" formControlName="screenName"></vezo-input>
             <error-message [controlName]="form.controls['screenName']"></error-message>
         </form>
     </ng-template>
