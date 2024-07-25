@@ -88,6 +88,7 @@ import { MenuPanelCreateComponent } from './data-form/menu-panel/menu-panel-crea
 import { NgxLoadingModule } from 'ngx-loading';
 import { NestedComponent } from './data-form/nested/nested.component';
 import { MediaManagerComponent } from './media-manager/media-manager.component';
+import { Properties2Component } from './screen/properties2/properties2.component';
 
 
 @NgModule({
@@ -141,7 +142,8 @@ import { MediaManagerComponent } from './media-manager/media-manager.component';
     MenuPanelComponent,
     MenuPanelCreateComponent,
     NestedComponent,
-    MediaManagerComponent 
+    MediaManagerComponent,
+    Properties2Component
   ],
   imports: [
     BrowserModule,
@@ -191,4 +193,4 @@ import { MediaManagerComponent } from './media-manager/media-manager.component';
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

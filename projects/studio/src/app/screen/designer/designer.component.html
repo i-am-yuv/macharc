@@ -3,7 +3,7 @@
     <!-- top bar with the resize screen tab -->
     <div class="flex justify-between items-center">
         <div class="grid grid-cols-12 gap-2 w-full bg-gray-100 border">
-            <div  class="col-span-4  gap-4 p-2 ml-4" style="display: flex; justify-content: start; align-items: center;">
+            <div class="col-span-4  gap-4 p-2 ml-4" style="display: flex; justify-content: start; align-items: center;">
                 <img src="assets/iconamoon_edit-thin.png" style="width: 18px; height: 18px;" />
                 <img src="assets/rotate-ccw.png" style="width: 18px; height: 18px;" />
                 <img src="assets/rotate-cw.png" style="width: 18px; height: 18px;" />
@@ -144,9 +144,9 @@
                         </div>
                         <div class="flex gap-2 justify-end px-2">
                             <!-- <img  src="assets/open_with.svg" style="width: 12px; height:auto" /> -->
-                            <vezo-icon icon="pencil" (click)="editData(item)" 
+                            <vezo-icon icon="pencil" (click)="editData(item)"
                                 className=" w-3 h-3 text-indigo-500 cursor-pointer"></vezo-icon>
-                            <vezo-icon icon="documentDuplicate" (click)="duplicateData(item)" 
+                            <vezo-icon icon="documentDuplicate" (click)="duplicateData(item)"
                                 className="w-3 h-3 text-indigo-500 cursor-pointer"></vezo-icon>
                             <vezo-icon icon="trash" (click)="confirmToDelete(item)"
                                 className="w-3 h-3 text-red-500 cursor-pointer"></vezo-icon>
@@ -175,12 +175,12 @@
                     </div>
                     <div>Zoom: {{ zoom * 100 | number:'1.2-2' }}%</div>
                 </div>
-                <div id="downloadable-div" [class.horizontal]="layout.dndHorizontal" [dndHorizontal]="layout.dndHorizontal"
-                    (dndDrop)="onDrop($event, draggableListRight)" class=" child dndList m-8 name border-2 border-dotted h-full  border-cyan-600  overflow-x: auto;
+                <div id="downloadable-div" [class.horizontal]="layout.dndHorizontal"
+                    [dndHorizontal]="layout.dndHorizontal" (dndDrop)="onDrop($event, draggableListRight)" class=" child dndList m-8 name border-2 border-dotted h-full  border-cyan-600  overflow-x: auto;
                     white-space: nowrap; " dndDropzone dndEffectAllowed="copyMove" [ngStyle]="childStyles">
                     <div class="dndPlaceholder h-16 border bg-blue-400 bg-opacity-25" dndPlaceholderRef></div>
 
-                    <div  *ngFor="let item of draggableListRight" [dndDraggable]="item"
+                    <div *ngFor="let item of draggableListRight" [dndDraggable]="item"
                         (click)="handleClick($event, item)" (dndCanceled)="onDragged(item, draggableListRight, 'none')"
                         (dndCopied)="onDragged(item, draggableListRight, 'move')"
                         (dndLinked)="onDragged(item, draggableListRight, 'link')"
@@ -241,7 +241,7 @@
                             <ng-container *ngIf="item.name === 'container'">
                                 <div (dndDrop)="onDrop($event, item.children)"
                                     class="name gap-{{item.data.gap}} grid grid-cols-{{item.data.columns}}  items-{{item.data.vAlignment}} shadow-{{item.data.shadow}}"
-                                    [ngStyle]="{ 'width' : item.data?.width ? item.data?.width+'px':'auto' ,'height' :item.data?.height? item.data?.height+'px':'auto' , 'background-color' : item.data?.bgColor ,
+                                    [ngStyle]="{ 'width' : item.data?.width ? item.data?.width+'px':'auto' ,'height' :item.data?.height? item.data?.height+'px':'100%' , 'background-color' : item.data?.bgColor ,
                             'background-image': 'url(' + item.data?.bgImage + ')' , 'background-size': 'cover', 'background-position':'center' , 'border-width': item.data.borderWidth+'px' ,'border-radius': item.data.borderRadius+'px' , 'border-color': item.data.borderColor,
                             'justify-items': item.data.alignment,
                             'margin-top': item.data?.mt+'px', 'margin-bottom': item.data?.mb+'px', 'margin-left': item.data?.ml+'px', 'margin-right': item.data?.mr+'px' ,
@@ -457,7 +457,8 @@
                                                 [style.color]=" this.activeItem?.id === null? '#F6F6F6' : '#454545'"
                                                 style="font-size: 12px; font-weight: 500;">Widgets</span>
                                         </div>
-                                        <div  class=" bg-slate-200 rounded-full flex justify-center items-center w-6 h-6">
+                                        <div
+                                            class=" bg-slate-200 rounded-full flex justify-center items-center w-6 h-6">
                                             <!-- <vezo-icon icon="bars2" *ngIf="!showProps"
                                                 className="cursor-pointer w-4 h-4" (click)="showProps=!showProps"
                                                 style="color:white"></vezo-icon>
@@ -466,8 +467,8 @@
                                                 (click)="showProps=!showProps"></vezo-icon> -->
                                             <img *ngIf="!showProps" src="assets/switch_left.svg" class="w-4 h-4"
                                                 (click)="showProps=!showProps" />
-                                            <img *ngIf="showProps" src="assets/switch_right.svg"
-                                                class="w-4 h-4" (click)="showProps=!showProps" />
+                                            <img *ngIf="showProps" src="assets/switch_right.svg" class="w-4 h-4"
+                                                (click)="showProps=!showProps" />
                                         </div>
                                     </div>
                                 </div>
@@ -625,10 +626,19 @@
                                 capitalize}}</div>
                             <div *ngIf="this.activeItem?.id != null" class="p-3">
                                 <div class="min-h-[24rem]">
-                                    <app-properties [fields]="fields" [forms]="forms" [props]="activeItem"
-                                        [collections]="collections" (deleteProp)="deleteActiveItem($event)"
-                                        (getCollectionFields)="getFields($event)"
-                                        [comingFromPage]=true></app-properties>
+                                    <div *ngIf="this.activeItem.name=='heading' || this.activeItem.name=='button' || this.activeItem.name=='input' || this.activeItem.name=='textarea' || this.activeItem.name=='dropdown' || this.activeItem.name=='checkbox' || this.activeItem.name=='radio' || this.activeItem.name=='switch' || this.activeItem.name=='table' || this.activeItem.name=='image' || this.activeItem.name=='divider' || this.activeItem.name=='video' || this.activeItem.name=='card' ">
+                                        <app-properties [fields]="fields" [forms]="forms" [props]="activeItem"
+                                            [collections]="collections" (deleteProp)="deleteActiveItem($event)"
+                                            (getCollectionFields)="getFields($event)"
+                                            [comingFromPage]=true></app-properties>
+                                    </div>
+                                    <div *ngIf="this.activeItem.name=='form' || this.activeItem.name=='grid' || this.activeItem.name=='container' || this.activeItem.name=='row' || this.activeItem.name=='column'">
+                                        <app-properties2 [fields]="fields" [forms]="forms" [props]="activeItem"
+                                            [collections]="collections" (deleteProp)="deleteActiveItem($event)"
+                                            (getCollectionFields)="getFields($event)"
+                                            [comingFromPage]=true></app-properties2>
+                                    </div>
+
                                     <div class="text-center m-8" *ngIf="!activeItem">Drag and drop from blocks to center
                                         panel
                                         to
