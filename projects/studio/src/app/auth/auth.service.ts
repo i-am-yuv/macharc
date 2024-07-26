@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { MessageService } from '@splenta/vezo';
+import { MessageService } from '@splenta/vezo/src/public-api';
 import { environment } from '../../environments/environment';
 
 

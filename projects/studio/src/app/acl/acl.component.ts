@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { GenericComponent } from '../utils/genericcomponent';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { MessageService } from '@splenta/vezo';
+import { MessageService } from '@splenta/vezo/src/public-api';
 import { CollectionService } from '../collection/collection.service';
 import { FieldService } from '../fields/field.service';
 import { FilterBuilder } from '../utils/FilterBuilder';

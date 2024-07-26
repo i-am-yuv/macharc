@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SettingsService } from './settings.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MessageService } from '@splenta/vezo';
+import { MessageService } from '@splenta/vezo/src/public-api';
 import { GenericComponent } from '../utils/genericcomponent';
 import { Setting } from './setting';
 

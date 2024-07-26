@@ -1,0 +1,39 @@
+.left-div {
+    width: -webkit-fill-available;
+    height: 576px;
+}
+
+.right-div {
+    transform: translateX(-25%);
+    /*the percentage for the desired overlap */
+}
+
+.InputText {
+    font-size: 16px;
+    font-weight: 400;
+    color: #101928;
+    border-radius: 2px;
+}
+
+:host::ng-deep {
+    .border-slate-300 {
+        border-radius: 4px !important;
+    }
+
+    .btn{
+        width: 280px;
+        height: 38px;
+        background-color:  #4038CA;
+        color: white;
+        
+        text-align: center !important;
+        border-radius: 2px !important;
+    }
+    .btn1{
+        font-size: 18px;
+        font-weight: 600;
+    }
+    .place-items-center {
+        display: contents !important;
+    }
+}

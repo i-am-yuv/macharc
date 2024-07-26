@@ -1,23 +1,23 @@
 import { Component, OnInit } from '@angular/core';
-import { CollectionService } from '../collection.service';
-import { ActivatedRoute } from '@angular/router';
-import { FilterBuilder } from '../../utils/FilterBuilder';
-import { Collection } from '../collection';
-import { GenericComponent } from '../../utils/genericcomponent';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { EndpointService } from './endpoint.service';
-import { MessageService } from '@splenta/vezo';
-import { Workflow } from '../../workflow/workflow';
-import { WorkflowService } from '../../workflow/workflow.service';
-import { DatasourceService } from '../../datasource/datasource.service';
+import { ActivatedRoute } from '@angular/router';
+import { MessageService } from '@splenta/vezo/src/public-api';
+import { BusinessLogic } from '../../business-logic/business-logic';
+import { BusinessLogicService } from '../../business-logic/business-logic.service';
 import { Datasource } from '../../datasource/datasource';
-import { PathVariableService } from './path-variable.service';
+import { DatasourceService } from '../../datasource/datasource.service';
+import { FilterBuilder } from '../../utils/FilterBuilder';
+import { GenericComponent } from '../../utils/genericcomponent';
+import { Collection } from '../collection';
+import { CollectionService } from '../collection.service';
 import { Endpoint } from './endpoint';
+import { EndpointService } from './endpoint.service';
 import { PathVariable } from './path-variable';
+import { PathVariableService } from './path-variable.service';
 @Component({
   selector: 'app-endpoints',
   templateUrl: './endpoints.component.html',
-  styleUrls: ['./endpoints.component.scss']
+  styleUrls: ['./endpoints.component.scss'],
 })
 export class EndpointsComponent extends GenericComponent implements OnInit {
   editorOptions = { theme: 'vs-dark', language: 'json', formatOnPaste: true };
@@ -33,7 +33,7 @@ export class EndpointsComponent extends GenericComponent implements OnInit {
       { type: 'DELETE', color: 'red' },
     ];
 
-    return colors.find(t => t.type === type)?.color;
+    return colors.find((t) => t.type === type)?.color;
   }
 
   form: FormGroup<any>;
@@ -41,7 +41,7 @@ export class EndpointsComponent extends GenericComponent implements OnInit {
   componentName: string = '';
   collectionId: string | null;
   collection: Collection = {};
-  services: Workflow[] = [];
+  services: BusinessLogic[] = [];
   datasources: Datasource[] = [];
 
   returnTypes: any[] = [
@@ -69,12 +69,13 @@ export class EndpointsComponent extends GenericComponent implements OnInit {
   constructor(
     messageService: MessageService,
     endpointService: EndpointService,
-    private workflowService: WorkflowService,
+    private workflowService: BusinessLogicService,
     private fb: FormBuilder,
     private collectionService: CollectionService,
     private datasourceService: DatasourceService,
     private pathVariableService: PathVariableService,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute
+  ) {
     super(endpointService, messageService);
     this.collectionId = this.route.snapshot.paramMap.get('id');
     this.form = this.fb.group({
@@ -94,37 +95,38 @@ export class EndpointsComponent extends GenericComponent implements OnInit {
       pojo: [''],
       collection: [''],
       requestJson: [''],
-      responseJson: ['']
-    })
+      responseJson: [''],
+    });
   }
   ngOnInit(): void {
     if (this.collectionId) {
       this.collectionService.getData({ id: this.collectionId }).then((res) => {
         this.collection = res;
-      })
+      });
     }
     var filterStr = FilterBuilder.equal('collection.id', this.collectionId!);
     this.search = filterStr;
     this.getAllData();
     // TODO: Filter by microservice
     this.workflowService.getAllData().then((res: any) => {
-      this.services = res.content
-    })
+      this.services = res.content;
+    });
     this.datasourceService.getAllData().then((res: any) => {
       this.datasources = res.content;
-    })
+    });
     this.collectionService.getAllData().then((res: any) => {
       this.collections = res.content;
-    })
+    });
   }
-
 
   getPathVariables(ep: Endpoint) {
     this.activeEp = ep;
     var filterStr = FilterBuilder.equal('endpoint.id', ep.id!);
-    this.pathVariableService.getAllData(undefined, filterStr).then((res: any) => {
-      this.pathVariables = res.content;
-    })
+    this.pathVariableService
+      .getAllData(undefined, filterStr)
+      .then((res: any) => {
+        this.pathVariables = res.content;
+      });
   }
 
   editCustomEndpoint(ep: Endpoint) {
@@ -134,8 +136,12 @@ export class EndpointsComponent extends GenericComponent implements OnInit {
   savePathVariable(pv: PathVariable) {
     pv.endpoint = this.activeEp;
     this.pathVariableService.createData(pv).then((res: any) => {
-      this.messageService.add({ severity: 'success', detail: 'Path variable added', summary: 'Success' });
-    })
+      this.messageService.add({
+        severity: 'success',
+        detail: 'Path variable added',
+        summary: 'Success',
+      });
+    });
   }
 
   override preSave(): void {
@@ -144,6 +150,6 @@ export class EndpointsComponent extends GenericComponent implements OnInit {
     // this.form.patchValue({ pathVariables: JSON.stringify(this.pathVariables) });
   }
   addPathVariable() {
-    this.pathVariables.push({ variableName: '', variableType: '' })
+    this.pathVariables.push({ variableName: '', variableType: '' });
   }
 }

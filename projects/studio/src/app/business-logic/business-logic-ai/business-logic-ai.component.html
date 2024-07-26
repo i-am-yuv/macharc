@@ -1,0 +1,27 @@
+<div class="bg-white m-8 p-8 space-y-6">
+  <div class="heading">AI Service Generator</div>
+  <div class="title text-indigo-400">{{ wf.workflowName }}</div>
+  <div class="heading mb-6">PROMPT</div>
+  <div class="mb-6">
+    <ngx-monaco-editor
+      [options]="editorOptions"
+      [(ngModel)]="prompt"
+      style="height: 200px"
+    ></ngx-monaco-editor>
+  </div>
+  <div class="text-right">
+    <vezo-button label="Generate" (click)="getCode()"></vezo-button>
+  </div>
+  <div class="heading mb-6">Service Code</div>
+  <div>
+    <ngx-monaco-editor
+      [options]="javaEditorOptions"
+      [(ngModel)]="generatedCode"
+      style="height: 650px"
+    ></ngx-monaco-editor>
+  </div>
+  <div class="text-right">
+    <vezo-button label="Save" (click)="saveCode()"></vezo-button>
+  </div>
+</div>
+<vezo-toast></vezo-toast>

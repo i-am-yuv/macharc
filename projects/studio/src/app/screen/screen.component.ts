@@ -3,7 +3,7 @@ import { GenericComponent } from '../utils/genericcomponent';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ScreenService } from './screen.service';
 import { Screen } from './screen';
-import { MessageService } from '@splenta/vezo';
+import { MessageService } from '@splenta/vezo/src/public-api';
 import { Collection } from '../collection/collection';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CollectionService } from '../collection/collection.service';
@@ -31,6 +31,7 @@ export class ScreenComponent extends GenericComponent implements OnInit {
   microserviceItems: MicroService[] = [];
   applicationItems: Application[] = [];
   override pageData = {};
+  loading : boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -59,18 +60,27 @@ export class ScreenComponent extends GenericComponent implements OnInit {
     this.getAllData();
     this.collectionId = this.route.snapshot.paramMap.get('id');
     if (this.collectionId) {
+      this.loading = true;
       this.collectionService.getData({ id: this.collectionId }).then((res: any) => {
         this.collection = res;
         this.form.patchValue({ collection: res });
+        this.loading = false;
       })
     } else {
+      this.loading = true;
       this.microserviceService.getAllData().then((res: any) => {
         if (res) {
           this.microserviceItems = res.content;
         }
       })
-
+      this.loading = false;
     }
+
+    this.applicationService.getAllData().then((res: any) => {
+      if (res) {
+        this.applicationItems = res.content;
+      }
+    })
   }
 
   override editData(ds: any): void {

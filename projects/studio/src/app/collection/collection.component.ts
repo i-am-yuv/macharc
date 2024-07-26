@@ -1,20 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService, Pagination } from '@splenta/vezo';
+import { MessageService, Pagination } from '@splenta/vezo/src/public-api';
+import { MicroserviceService } from '../microservice/microservice.service';
+import { FilterBuilder } from '../utils/FilterBuilder';
 import { GenericComponent } from '../utils/genericcomponent';
 import { Collection } from './collection';
 import { CollectionService } from './collection.service';
-import { MicroserviceService } from '../microservice/microservice.service';
-
 
 @Component({
   selector: 'app-collection',
   templateUrl: './collection.component.html',
-  styleUrls: ['./collection.component.scss']
+  styleUrls: ['./collection.component.scss'],
 })
 export class CollectionComponent extends GenericComponent implements OnInit {
-
   form: FormGroup<any>;
   data: Collection[] = [];
   componentName: string = 'Collection';
@@ -27,7 +26,7 @@ export class CollectionComponent extends GenericComponent implements OnInit {
   collectionTypeItems: any[] = [
     { value: 'CRUD', label: 'CRUD Collection' },
     { value: 'READONLY', label: 'Readonly Collection' },
-    { value: 'POJO', label: 'POJO Collection' }
+    { value: 'POJO', label: 'POJO Collection' },
   ];
   constructor(
     private fb: FormBuilder,
@@ -42,32 +41,41 @@ export class CollectionComponent extends GenericComponent implements OnInit {
     super(collectionService, messageService);
     this.form = this.fb.group({
       id: '',
-      collectionName: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
+      collectionName: [
+        '',
+        [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)],
+      ],
       customTableName: ['', [Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
       collectionKind: [''],
       crud: [],
       readonly: [],
       hasService: [],
       microService: [],
-      dataSource: []
-    })
+      dataSource: [],
+    });
   }
   ngOnInit(): void {
-    this.getAllData();
     this.microserviceId = this.route.snapshot.paramMap.get('id');
     if (this.microserviceId) {
-      this.microserviceService.getData({ id: this.microserviceId }).then((res: any) => {
-        this.microService = res;
-        this.form.patchValue({ microservice: res });
-      })
+      this.microserviceService
+        .getData({ id: this.microserviceId })
+        .then((res: any) => {
+          this.microService = res;
+          this.form.patchValue({ microservice: res });
+        });
+      var filterStr = FilterBuilder.equal(
+        'microService.id',
+        this.microserviceId
+      );
+      this.search = filterStr;
     }
-    var pagination: Pagination = { pageSize: 1000 }
+    this.getAllData();
+    var pagination: Pagination = { pageSize: 1000 };
     this.microserviceService.getAllData(pagination).then((res: any) => {
       if (res) {
         this.microserviceItems = res.content;
       }
-    })
-
+    });
   }
   override preSave(): void {
     if (!this.form.value.microService) {
@@ -75,10 +83,7 @@ export class CollectionComponent extends GenericComponent implements OnInit {
     }
   }
 
-
   editFields(collection: Collection) {
     this.router.navigate(['/builder/fields/' + collection.id]);
   }
-
-
 }

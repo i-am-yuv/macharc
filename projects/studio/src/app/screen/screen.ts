@@ -9,4 +9,5 @@ export interface Screen {
     process?: Process;
     collection?: Collection;
     screenDefinition?: string;
+    microService ?: any;
 }

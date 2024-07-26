@@ -3,7 +3,7 @@ import { ProcessesService } from './processes.service';
 import { Process } from './process';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MessageService } from '@splenta/vezo';
+import { MessageService } from '@splenta/vezo/src/public-api';
 import { GenericComponent } from '../utils/genericcomponent';
 import { MicroserviceService } from '../microservice/microservice.service';
 import { MicroService } from '../microservice/microservice';

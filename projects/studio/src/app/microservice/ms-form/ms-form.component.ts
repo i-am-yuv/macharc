@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { GenericComponent } from '../../utils/genericcomponent';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MessageService } from '@splenta/vezo';
+import { MessageService } from '@splenta/vezo/src/public-api';
 import { MicroserviceService } from '../microservice.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectService } from '../../project/project.service';
 
 @Component({
@@ -25,6 +25,7 @@ export class MsFormComponent extends GenericComponent {
     msService: MicroserviceService,
     messageService: MessageService,
     private projectService: ProjectService,
+    private router : Router ,
     private route: ActivatedRoute) {
     super(msService, messageService);
     this.msId = this.route.snapshot.paramMap.get('id');
@@ -50,6 +51,4 @@ export class MsFormComponent extends GenericComponent {
   loadData(res: any): void {
     this.form.patchValue({ ...res });
   }
-
-
 }

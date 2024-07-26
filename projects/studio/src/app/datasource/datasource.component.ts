@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MessageService } from '@splenta/vezo';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MessageService } from '@splenta/vezo/src/public-api';
 import { GenericComponent } from '../utils/genericcomponent';
 import { Datasource } from './datasource';
 import { DatasourceService } from './datasource.service';
@@ -8,11 +8,9 @@ import { DatasourceService } from './datasource.service';
 @Component({
   selector: 'app-datasource',
   templateUrl: './datasource.component.html',
-  styleUrls: ['./datasource.component.scss']
+  styleUrls: ['./datasource.component.scss'],
 })
 export class DatasourceComponent extends GenericComponent implements OnInit {
-
-
   form: FormGroup<any>;
   data: Datasource[] = [];
   componentName: string = 'Datasource';
@@ -24,18 +22,23 @@ export class DatasourceComponent extends GenericComponent implements OnInit {
     { name: 'Oracle', defaultPort: '1521' },
     { name: 'Mongo', defaultPort: '27017' },
     { name: 'MSSQL', defaultPort: '1433' },
-    { name: 'API', defaultPort: '' }];
+    { name: 'API', defaultPort: '' },
+  ];
 
   constructor(
     private fb: FormBuilder,
     dsService: DatasourceService,
     messageService: MessageService,
-    private dataSourceService: DatasourceService) {
+    private dataSourceService: DatasourceService
+  ) {
     super(dsService, messageService);
     this.form = this.fb.group({
       id: '',
       dbType: [],
-      dataSourceName: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
+      dataSourceName: [
+        '',
+        [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)],
+      ],
       dbUrl: [''],
       dbHost: ['localhost'],
       dbPort: [''],
@@ -44,8 +47,8 @@ export class DatasourceComponent extends GenericComponent implements OnInit {
       password: [''],
       apiUrl: [''],
       authToken: [''],
-      driverClassName: ['']
-    })
+      driverClassName: [''],
+    });
   }
   ngOnInit(): void {
     this.getAllData();
@@ -56,18 +59,25 @@ export class DatasourceComponent extends GenericComponent implements OnInit {
     this.form.patchValue({ dbHost: 'localhost' });
   }
 
-
   savFormData() {
     this.form.patchValue({ dbType: this.form.value.dbType.name });
     if (!this.form.value.id) {
       delete this.form.value.id;
-      this.dataSourceService.createDatasource(this.form.value).then((res: any) => {
-        this.messageService.add({ severity: 'success', summary: 'Generated', detail: 'DataSource Generated' });
-      })
+      this.dataSourceService
+        .createDatasource(this.form.value)
+        .then((res: any) => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Generated',
+            detail: 'DataSource Generated',
+          });
+        });
     }
   }
   setDefaultPort() {
-    var dbType = this.dbTypes.find((t: any) => t.name === this.form.value.dbType);
+    var dbType = this.dbTypes.find(
+      (t: any) => t.name === this.form.value.dbType
+    );
     this.form.patchValue({ dbPort: dbType.defaultPort });
   }
 }

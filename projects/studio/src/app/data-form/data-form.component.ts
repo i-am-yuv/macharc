@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService } from '@splenta/vezo';
+import { MessageService } from '@splenta/vezo/src/public-api';
 import { Collection } from '../collection/collection';
 import { CollectionService } from '../collection/collection.service';
 import { MicroService } from '../microservice/microservice';
@@ -45,7 +45,8 @@ export class DataFormComponent extends GenericComponent {
       id: '',
       formName: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
       formCode: ['', [Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
-      formDescription: [],
+      formDescription: '',
+      formDefinition:'',
       collection: [],
       microService: [],
       application: [],
@@ -72,9 +73,15 @@ export class DataFormComponent extends GenericComponent {
         this.applicationItems = res.content;
       }
     })
+    this.collectionService.getAllData().then((res: any) => {
+      if (res) {
+        this.collectionItems = res.content;
+      }
+    })
   }
+
   getCollectionItems() {
-    this.form.patchValue({ collection: null });
+    // this.form.patchValue({ collection: null });
     var filterStr = FilterBuilder.equal('microService.id', this.form.value.microService.id);
     this.collectionService.getAllData(undefined, filterStr).then((res: any) => {
       if (res) {
@@ -82,6 +89,13 @@ export class DataFormComponent extends GenericComponent {
       }
     })
   }
+
+  findOut()
+{
+   console.log(this.collectionItems);
+   console.log(this.applicationItems);
+   console.log(this.microserviceItems);
+}
   saveFormData() {
     console.log(this.form.value);
   }
@@ -100,6 +114,27 @@ export class DataFormComponent extends GenericComponent {
   }
   designDataForm(scr: DataForm) {
     this.router.navigate(['/builder/forms/designer/' + scr.id]);
+  }
+
+  duplicateObj:any;
+  duplicateData(ds: any) 
+  {
+    console.log(ds);
+    this.visible = true;
+    this.duplicateObj = {
+      'id':'',
+      'formName':'',
+      'formCode':ds.formCode,
+      'formDescription':ds.formDescription,
+      'formDefinition':ds.formDefinition,
+      'collection':ds.collection,
+      'microService':ds.microService,
+      'application':ds.application,
+      'process':ds.process
+    }
+   
+    this.form.patchValue({ ...this.duplicateObj });
+    console.log(this.form.value);
   }
 
 }

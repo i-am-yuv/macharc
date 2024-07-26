@@ -1,0 +1,13 @@
+.parent-div {
+    .last-child-div {
+      display: none; // Initially hide the last child div
+    }
+  
+    &:hover {
+      .last-child-div {
+        display: flex; // Show the last child div on hover
+      }
+      background-color: #ebeef1;
+    }
+  }
+  

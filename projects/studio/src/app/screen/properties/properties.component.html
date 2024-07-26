@@ -1,53 +1,2774 @@
 <ng-container *ngIf="props?.name === 'heading'">
-    <vezo-input label="Heading" [(ngModel)]="props.data.text"></vezo-input>
+    <div *ngIf="this.getDataFieldCount(props) > 0 && this.comingFromForm == true"
+        style="font-size: 16px;font-weight: 600;color: #2e2e2e; text-decoration: underline;" class="mb-2">
+        {{ props.name }}'s parameter:
+    </div>
+    <div *ngIf="this.comingFromForm == false ||(props.mappedData !== null && props.mappedData?.text != null)"
+        style="position: relative; display: inline-block" class="w-full">
+        <div style="position: absolute; top: 0; right: 0; cursor: pointer; z-index: 1" class="mb-1"
+            [ngClass]="{'bg-gray-200 p-1 rounded-md':props.mappedData !== null && props.mappedData?.text}"
+            *ngIf="this.comingFromForm == false && this.comingFromPage == false" (click)="makeItMapped(props, 'text')">
+            <img src="assets/tune.svg" style="width: 14px; height: auto" />
+        </div>
+        <vezo-input label="Text" [ngModel]="getInputValue('text')" (ngModelChange)="handleInputChange($event, 'text')"
+            style="display: block; z-index: 0"></vezo-input>
+    </div>
+    <div class="mt-2">
+        <div class="flex gap-2">
+            <div *ngIf="this.comingFromForm == false ||(props.mappedData !== null && props.mappedData?.fontSize != null)"
+                style="position: relative; display: inline-block" class="w-full">
+                <div style="position: absolute;top: 0;right: 0;cursor: pointer;z-index: 1;" class="mb-1"
+                    [ngClass]="{'bg-gray-200 p-1 rounded-md':props.mappedData != null && props.mappedData?.fontSize}"
+                    *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                    (click)="makeItMapped(props, 'fontSize')">
+                    <img src="assets/tune.svg" style="width: 14px; height: 14px" />
+                </div>
+                <vezo-input [trailingText]="'px'" label="Font Size" [ngModel]="getInputValue('fontSize')"
+                    (ngModelChange)="handleInputChange($event, 'fontSize')"></vezo-input>
+            </div>
+            <div *ngIf="this.comingFromForm == false ||(props.mappedData !== null && props.mappedData?.fontWeight != null)"
+                style="position: relative; display: inline-block" class="w-full">
+                <div style="position: absolute;top: 0;right: 0;cursor: pointer;z-index: 1;" class="mb-1"
+                    [ngClass]="{'bg-gray-200 p-1 rounded-md':props.mappedData != null && props.mappedData?.fontWeight}"
+                    *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                    (click)="makeItMapped(props, 'fontWeight')">
+                    <img src="assets/tune.svg" style="width: 14px; height: 14px" />
+                </div>
+                <vezo-input label="Font Weight" [ngModel]="getInputValue('fontWeight')"
+                    (ngModelChange)="handleInputChange($event, 'fontWeight')"></vezo-input>
+            </div>
+        </div>
+    </div>
+    <div class="mt-2"
+        *ngIf="this.comingFromForm == false ||(props.mappedData !== null && props.mappedData?.fontColor != null)">
+        <div style="position: relative; display: inline-block" class="w-full">
+            <div style="position: absolute;top: 0;right: 0;cursor: pointer;z-index: 1;" class="mb-1"
+                [ngClass]="{'bg-gray-200 p-1 rounded-md':props.mappedData != null && props.mappedData?.fontColor}"
+                *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                (click)="makeItMapped(props, 'fontColor')">
+                <img src="assets/tune.svg" style="width: 14px; height: 14px" />
+            </div>
+            <vezo-colorpicker [label]="'Text Color'" (colorChange)="handleInputChange($event, 'fontColor')"
+                [inputVal]="getInputValue('fontColor')"></vezo-colorpicker>
+            <!-- <vezo-input label="Font Weight" [ngModel]="getInputValue('fontWeight')"
+                (ngModelChange)="handleInputChange($event , 'fontWeight')"></vezo-input> -->
+        </div>
+    </div>
+    <div *ngIf="this.comingFromForm == false ||(props.mappedData !== null && props.mappedData?.alignment != null)"
+        class="flex mt-2 justify-between">
+        <div class="w-6/12">
+            <label class="">Alignment</label>
+            <div class="flex mt-2 p-1 gap-2 w-fit" style="border-color: #dfdfdf; border-width: 1px; border-radius: 4px">
+                <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.alignment = 'start'"
+                    [ngClass]="{ 'bg-slate-100': props.data?.alignment == 'start' }">
+                    <img src="assets/alignLeft.svg" style="width: 16px; height: 16px" />
+                </div>
+                <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.alignment = 'center'"
+                    [ngClass]="{ 'bg-slate-100': props.data?.alignment == 'center' }">
+                    <img src="assets/alignCenter.svg" style="width: 16px; height: 16px" />
+                </div>
+                <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.alignment = 'end'"
+                    [ngClass]="{ 'bg-slate-100': props.data?.alignment == 'end' }">
+                    <img src="assets/alignRight.svg" style="width: 16px; height: 16px" />
+                </div>
+            </div>
+        </div>
+        <div class="w-6/12">
+            <label class="">Alignment</label>
+            <div class="flex mt-2 p-1 gap-2 w-fit" style="border-color: #dfdfdf; border-width: 1px; border-radius: 4px">
+                <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.vAlignment = 'end'"
+                    [ngClass]="{ 'bg-slate-100': props.data?.vAlignment == 'end' }">
+                    <img src="assets/vertical_align_bottom.svg" style="width: 16px; height: 16px" />
+                </div>
+                <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.vAlignment = 'center'"
+                    [ngClass]="{ 'bg-slate-100': props.data?.vAlignment == 'center' }">
+                    <img src="assets/vertical_align_center.svg" style="width: 16px; height: 16px" />
+                </div>
+                <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.vAlignment = 'start'"
+                    [ngClass]="{ 'bg-slate-100': props.data?.vAlignment == 'start' }">
+                    <img src="assets/vertical_align_top.svg" style="width: 16px; height: 16px" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="this.comingFromForm == false ||(props.mappedData !== null && props.mappedData?.mr != null)"
+        class="mt-2">
+        <label class="">Margin Style</label>
+        <div class="flex justify-between items-center mt-2">
+            <div class="grid grid-cols-2 w-full justify-between">
+                <div class="flex justify-start items-center gap-4">
+                    <div>Top</div>
+                    <div class="flex mt-1 gap-1 justify-between p-2 w-20"
+                        style="height: 30px;border-width: 1px;border-color: #dfdfdf;border-radius: 4px;align-items: center;">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.mt" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex justify-end items-center gap-4">
+                    <!-- Content for the second div -->
+                    <div>Bottom</div>
+                    <div class="flex mt-1 gap-1 justify-between p-2 w-20"
+                        style="height: 30px;border-width: 1px;border-color: #dfdfdf;border-radius: 4px;align-items: center;justify-content: end;">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.mb" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex justify-start items-center gap-4">
+                    <!-- Content for the second div -->
+                    <div>Left</div>
+                    <div class="flex mt-1 gap-1 p-2 w-20"
+                        style="height: 30px;border-width: 1px;border-color: #dfdfdf;border-radius: 4px;align-items: center;">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.ml" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 justify-end">
+                    <!-- Content for the second div -->
+                    <div>Right</div>
+                    <div class="flex mt-1 gap-1 p-2 w-20"
+                        style="height: 30px;border-width: 1px;border-color: #dfdfdf;border-radius: 4px; align-items: center;">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.mr" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="this.comingFromForm == false ||(props.mappedData !== null && props.mappedData?.pr != null)"
+        class="mt-2 mb-2">
+        <label class="">Padding Style</label>
+        <div class="flex justify-between items-center mt-2">
+            <div class="grid grid-cols-2 w-full justify-between">
+                <div class="flex justify-start items-center gap-4">
+                    <div>Top</div>
+                    <div class="flex mt-1 gap-1 justify-between p-2 w-20"
+                        style="height: 30px;border-width: 1px;border-color: #dfdfdf;border-radius: 4px;align-items: center;">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.pt" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex justify-end items-center gap-4">
+                    <!-- Content for the second div -->
+                    <div>Bottom</div>
+                    <div class="flex mt-1 gap-1 justify-between p-2 w-20"
+                        style="height: 30px;  border-width: 1px;border-color: #dfdfdf;border-radius: 4px;align-items: center;justify-content: end;">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.pb" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex justify-start items-center gap-4">
+                    <!-- Content for the second div -->
+                    <div>Left</div>
+                    <div class="flex mt-1 gap-1 p-2 w-20"
+                        style="height: 30px;border-width: 1px;border-color: #dfdfdf;border-radius: 4px;align-items: center;">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.pl" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 justify-end">
+                    <!-- Content for the second div -->
+                    <div>Right</div>
+                    <div class="flex mt-1 gap-1 p-2 w-20"
+                        style="height: 30px;border-width: 1px;border-color: #dfdfdf;border-radius: 4px;align-items: center;">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.pr" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </ng-container>
 <ng-container *ngIf="props?.name === 'button'">
-    <vezo-input label="Label" [(ngModel)]="props.data.label"></vezo-input>
-    <div>
+    <div *ngIf="this.getDataFieldCount(props) > 0 && this.comingFromForm == true"
+        style="font-size: 16px;font-weight: 600;color: #2e2e2e;text-decoration: underline;" class="mb-2">
+        {{ props.name }}'s parameter:
+    </div>
+
+    <div class="mt-2 w-full" style="position: relative; display: inline-block" *ngIf="
+      this.comingFromForm == false ||
+      (props.mappedData !== null && props.mappedData?.label != null)
+    ">
+        <div style="position: absolute; top: 0; right: 0; cursor: pointer; z-index: 1" class="mb-1" [ngClass]="{
+        'bg-gray-200 p-1 rounded-md':
+          props.mappedData !== null && props.mappedData?.label
+      }" *ngIf="this.comingFromForm == false && this.comingFromPage == false" (click)="makeItMapped(props, 'label')">
+            <img src="assets/tune.svg" style="width: 14px; height: auto" />
+        </div>
+        <vezo-input label="Label" [ngModel]="getInputValue('label')"
+            (ngModelChange)="handleInputChange($event, 'label')" style="display: block; z-index: 0"></vezo-input>
+    </div>
+    <div class="mt-2 w-full" style="position: relative; display: inline-block" *ngIf="
+      this.comingFromForm == false ||
+      (props.mappedData !== null && props.mappedData?.btnTextColor != null)
+    ">
+        <div style="position: absolute; top: 0; right: 0; cursor: pointer; z-index: 1" class="mb-1" [ngClass]="{
+        'bg-gray-200 p-1 rounded-md':
+          props.mappedData !== null && props.mappedData?.btnTextColor
+      }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+            (click)="makeItMapped(props, 'btnTextColor')">
+            <img src="assets/tune.svg" style="width: 14px; height: auto" />
+        </div>
+        <vezo-colorpicker [label]="'Text Color'" (colorChange)="handleInputChange($event, 'btnTextColor')"
+            [inputVal]="getInputValue('btnTextColor')"></vezo-colorpicker>
+    </div>
+
+    <div class="mt-2">
+        <div class="flex gap-2 w-full">
+            <div style="position: relative; display: inline-block" class="w-full" *ngIf="
+          this.comingFromForm == false ||
+          (props.mappedData !== null && props.mappedData?.width != null)
+        ">
+                <div style="
+            position: absolute;
+            top: 0;
+            right: 0;
+            cursor: pointer;
+            z-index: 1;
+          " class="mb-1" [ngClass]="{
+            'bg-gray-200 p-1 rounded-md':
+              props.mappedData !== null && props.mappedData?.width
+          }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                    (click)="makeItMapped(props, 'width')">
+                    <img src="assets/tune.svg" style="width: 14px; height: auto" />
+                </div>
+                <vezo-input label="Width" [trailingText]="'px'" [ngModel]="getInputValue('width')"
+                    (ngModelChange)="handleInputChange($event, 'width')"
+                    style="display: block; z-index: 0"></vezo-input>
+            </div>
+            <div style="position: relative; display: inline-block" class="w-full" *ngIf="
+          this.comingFromForm == false ||
+          (props.mappedData !== null && props.mappedData?.height != null)
+        ">
+                <div style="
+            position: absolute;
+            top: 0;
+            right: 0;
+            cursor: pointer;
+            z-index: 1;
+          " class="mb-1" [ngClass]="{
+            'bg-gray-200 p-1 rounded-md':
+              props.mappedData !== null && props.mappedData?.height
+          }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                    (click)="makeItMapped(props, 'height')">
+                    <img src="assets/tune.svg" style="width: 14px; height: auto" />
+                </div>
+                <vezo-input label="Height" [trailingText]="'px'" [ngModel]="getInputValue('height')"
+                    (ngModelChange)="handleInputChange($event, 'height')"
+                    style="display: block; z-index: 0"></vezo-input>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex gap-2 mt-2">
+        <div class="flex gap-2 w-full">
+            <div style="position: relative; display: inline-block" class="w-full" *ngIf="
+          this.comingFromForm == false ||
+          (props.mappedData !== null && props.mappedData?.btnTextFont != null)
+        ">
+                <div style="
+            position: absolute;
+            top: 0;
+            right: 0;
+            cursor: pointer;
+            z-index: 1;
+          " class="mb-1" [ngClass]="{
+            'bg-gray-200 p-1 rounded-md':
+              props.mappedData !== null && props.mappedData?.btnTextFont
+          }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                    (click)="makeItMapped(props, 'btnTextFont')">
+                    <img src="assets/tune.svg" style="width: 14px; height: auto" />
+                </div>
+                <vezo-input label="Font Size" [trailingText]="'px'" [ngModel]="getInputValue('btnTextFont')"
+                    (ngModelChange)="handleInputChange($event, 'btnTextFont')"
+                    style="display: block; z-index: 0"></vezo-input>
+            </div>
+            <div style="position: relative; display: inline-block" class="w-full" *ngIf="
+          this.comingFromForm == false ||
+          (props.mappedData !== null && props.mappedData?.btnTextWeight != null)
+        ">
+                <div style="
+            position: absolute;
+            top: 0;
+            right: 0;
+            cursor: pointer;
+            z-index: 1;
+          " class="mb-1" [ngClass]="{
+            'bg-gray-200 p-1 rounded-md':
+              props.mappedData !== null && props.mappedData?.btnTextWeight
+          }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                    (click)="makeItMapped(props, 'btnTextWeight')">
+                    <img src="assets/tune.svg" style="width: 14px; height: auto" />
+                </div>
+                <vezo-input label="Font Weight" [trailingText]="'px'" [ngModel]="getInputValue('btnTextWeight')"
+                    (ngModelChange)="handleInputChange($event, 'btnTextWeight')"
+                    style="display: block; z-index: 0"></vezo-input>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex gap-2 mt-2">
+        <div class="flex gap-2 w-full">
+            <div style="position: relative; display: inline-block" class="w-full" *ngIf="
+          this.comingFromForm == false ||
+          (props.mappedData !== null && props.mappedData?.borderWidth != null)
+        ">
+                <div style="
+            position: absolute;
+            top: 0;
+            right: 0;
+            cursor: pointer;
+            z-index: 1;
+          " class="mb-1" [ngClass]="{
+            'bg-gray-200 p-1 rounded-md':
+              props.mappedData !== null && props.mappedData?.borderWidth
+          }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                    (click)="makeItMapped(props, 'borderWidth')">
+                    <img src="assets/tune.svg" style="width: 14px; height: auto" />
+                </div>
+                <vezo-input label="Border Width" [trailingText]="'px'" [ngModel]="getInputValue('borderWidth')"
+                    (ngModelChange)="handleInputChange($event, 'borderWidth')"
+                    style="display: block; z-index: 0"></vezo-input>
+            </div>
+            <div style="position: relative; display: inline-block" class="w-full" *ngIf="
+          this.comingFromForm == false ||
+          (props.mappedData !== null && props.mappedData?.borderRadius != null)
+        ">
+                <div style="
+            position: absolute;
+            top: 0;
+            right: 0;
+            cursor: pointer;
+            z-index: 1;
+          " class="mb-1" [ngClass]="{
+            'bg-gray-200 p-1 rounded-md':
+              props.mappedData !== null && props.mappedData?.borderRadius
+          }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                    (click)="makeItMapped(props, 'borderRadius')">
+                    <img src="assets/tune.svg" style="width: 14px; height: auto" />
+                </div>
+                <vezo-input label="Border Radius" [trailingText]="'px'" [ngModel]="getInputValue('borderRadius')"
+                    (ngModelChange)="handleInputChange($event, 'borderRadius')"
+                    style="display: block; z-index: 0"></vezo-input>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="col-span-6 ">
+        <vezo-input label="Border Radius" [trailingText]="'px'" [(ngModel)]="props.data.borderRadius"></vezo-input>
+    </div>
+    <div class="col-span-6 ">
+        <vezo-input label="Border Radius" [trailingText]="'px'" [(ngModel)]="props.data.borderRadius"></vezo-input>
+    </div> -->
+
+    <div class="flex gap-2 mt-2">
+        <div class="flex gap-2 w-full" style="flex-direction:column">
+            <div style="position: relative; display: inline-block" class="w-full" *ngIf="
+          this.comingFromForm == false ||
+          (props.mappedData !== null && props.mappedData?.borderColor != null)
+        ">
+                <div style="
+            position: absolute;
+            top: 0;
+            right: 0;
+            cursor: pointer;
+            z-index: 1;
+          " class="mb-1" [ngClass]="{
+            'bg-gray-200 p-1 rounded-md':
+              props.mappedData !== null && props.mappedData?.borderColor
+          }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                    (click)="makeItMapped(props, 'borderColor')">
+                    <img src="assets/tune.svg" style="width: 14px; height: auto" />
+                </div>
+                <vezo-colorpicker [label]="'Border Color'" (colorChange)="handleInputChange($event, 'borderColor')"
+                    [inputVal]="getInputValue('borderColor')"></vezo-colorpicker>
+            </div>
+            <div style="position: relative; display: inline-block" class="w-full" *ngIf="
+          this.comingFromForm == false ||
+          (props.mappedData !== null && props.mappedData?.bgColor != null)
+        ">
+                <div style="
+            position: absolute;
+            top: 0;
+            right: 0;
+            cursor: pointer;
+            z-index: 1;
+          " class="mb-1" [ngClass]="{
+            'bg-gray-200 p-1 rounded-md':
+              props.mappedData !== null && props.mappedData?.bgColor
+          }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                    (click)="makeItMapped(props, 'bgColor')">
+                    <img src="assets/tune.svg" style="width: 14px; height: auto" />
+                </div>
+                <vezo-colorpicker [label]="'Background Color'" (colorChange)="handleInputChange($event, 'bgColor')"
+                    [inputVal]="getInputValue('bgColor')" style="display: block; z-index: 0"></vezo-colorpicker>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex justify-start items-end mt-2 gap-2" *ngIf="
+      this.comingFromForm == false ||
+      (props.mappedData !== null && props.mappedData?.bA != null)
+    ">
+        <div class="w-6/12">
+            <label class="">Button Alignment</label>
+            <div class="flex mt-2 p-1 gap-2 w-fit" style="border-color: #dfdfdf; border-width: 1px; border-radius: 4px">
+                <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.btnAlignment = 'start'"
+                    [ngClass]="{ 'bg-slate-100': props.data?.btnAlignment == 'start' }">
+                    <img src="assets/alignLeft.svg" style="width: 16px; height: 16px" />
+                </div>
+                <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.btnAlignment = 'center'"
+                    [ngClass]="{ 'bg-slate-100': props.data?.btnAlignment == 'center' }">
+                    <img src="assets/alignCenter.svg" style="width: 16px; height: 16px" />
+                </div>
+                <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.btnAlignment = 'end'"
+                    [ngClass]="{ 'bg-slate-100': props.data?.btnAlignment == 'end' }">
+                    <img src="assets/alignRight.svg" style="width: 16px; height: 16px" />
+                </div>
+            </div>
+        </div>
+        <div class="w-6/12">
+            <label class="">Text Alignment</label>
+            <div class="flex mt-2 p-1 gap-2 w-fit" style="border-color: #dfdfdf; border-width: 1px; border-radius: 4px">
+                <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.textAlignment = 'start'"
+                    [ngClass]="{ 'bg-slate-100': props.data?.textAlignment == 'start' }">
+                    <img src="assets/alignLeft.svg" style="width: 16px; height: 16px" />
+                </div>
+                <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.textAlignment = 'center'"
+                    [ngClass]="{ 'bg-slate-100': props.data?.textAlignment == 'center' }">
+                    <img src="assets/alignCenter.svg" style="width: 16px; height: 16px" />
+                </div>
+                <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.textAlignment = 'end'"
+                    [ngClass]="{ 'bg-slate-100': props.data?.textAlignment == 'end' }">
+                    <img src="assets/alignRight.svg" style="width: 16px; height: 16px" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mt-2" *ngIf="
+      this.comingFromForm == false ||
+      (props.mappedData !== null && props.mappedData?.mr != null)
+    ">
+        <label class="">Margin Style</label>
+        <div class="flex justify-between items-center mt-2">
+            <div class="grid grid-cols-2 w-full justify-between">
+                <div class="flex justify-start items-center gap-4">
+                    <div>Top</div>
+                    <div class="flex mt-1 gap-1 justify-between p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.mt" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex justify-end items-center gap-4">
+                    <!-- Content for the second div -->
+                    <div>Bottom</div>
+                    <div class="flex mt-1 gap-1 justify-between p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+              justify-content: end;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.mb" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex justify-start items-center gap-4">
+                    <!-- Content for the second div -->
+                    <div>Left</div>
+                    <div class="flex mt-1 gap-1 p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.ml" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 justify-end">
+                    <!-- Content for the second div -->
+                    <div>Right</div>
+                    <div class="flex mt-1 gap-1 p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.mr" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mt-2 flex gap-4 justify-start items-center" *ngIf="
+      this.comingFromForm == false ||
+      (props.mappedData !== null && props.mappedData?.action != null)
+    ">
         <vezo-radiobutton [(ngModel)]="props.data.action" value="save" label="Save" name="action"
             className="mr-2"></vezo-radiobutton>
         <vezo-radiobutton [(ngModel)]="props.data.action" value="custom_save" label="Custom Save" name="action"
             className="ml-4"></vezo-radiobutton>
     </div>
-    <vezo-input label="Endpoint" [(ngModel)]="props.data.endpoint" *ngIf="props.data.action==='custom_save'"
-        className="mb-4"></vezo-input>
+    <div class="mt-2" *ngIf="
+      this.comingFromForm == false ||
+      (props.mappedData !== null && props.mappedData?.endPoint != null)
+    ">
+        <vezo-input label="Endpoint" [(ngModel)]="props.data.endpoint" *ngIf="props.data.action === 'custom_save'"
+            className="mb-2"></vezo-input>
+    </div>
 </ng-container>
 <ng-container *ngIf="props?.name === 'input'">
-    <vezo-input label="Label" [(ngModel)]="props.data.label"></vezo-input>
-    <vezo-select label="Field" optionLabel="fieldName" [items]="fields" [(ngModel)]="props.data.field"></vezo-select>
-    <vezo-select label="Validation" [items]="validations" [(ngModel)]="props.data.validation"></vezo-select>
+    <div *ngIf="this.getDataFieldCount(props) > 0 && this.comingFromForm == true" style="
+      font-size: 16px;
+      font-weight: 600;
+      color: #2e2e2e;
+      text-decoration: underline;
+    " class="mb-2">
+        {{ props.name }}'s parameter:
+    </div>
+
+    <div class="mt-2">
+        <div class="flex gap-2 w-full">
+            <div style="position: relative; display: inline-block" class="w-full" *ngIf="
+          this.comingFromForm == false ||
+          (props.mappedData !== null && props.mappedData?.label != null)
+        ">
+                <!-- <vezo-input label="Label" [(ngModel)]="props.data.label"></vezo-input> -->
+                <div style="
+            position: absolute;
+            top: 0;
+            right: 0;
+            cursor: pointer;
+            z-index: 1;
+          " class="mb-1" [ngClass]="{
+            'bg-gray-200 p-1 rounded-md':
+              props.mappedData !== null && props.mappedData?.label
+          }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                    (click)="makeItMapped(props, 'label')">
+                    <img src="assets/tune.svg" style="width: 14px; height: auto" />
+                </div>
+                <vezo-input label="Label" [ngModel]="getInputValue('label')"
+                    (ngModelChange)="handleInputChange($event, 'label')"
+                    style="display: block; z-index: 0"></vezo-input>
+            </div>
+            <div style="position: relative; display: inline-block" class="w-full" *ngIf="
+          this.comingFromForm == false ||
+          (props.mappedData !== null && props.mappedData?.placeholder != null)
+        ">
+                <!-- <vezo-input label="Placeholder" [(ngModel)]="props.data.placeholder"></vezo-input> -->
+                <div style="
+            position: absolute;
+            top: 0;
+            right: 0;
+            cursor: pointer;
+            z-index: 1;
+          " class="mb-1" [ngClass]="{
+            'bg-gray-200 p-1 rounded-md':
+              props.mappedData !== null && props.mappedData?.placeholder
+          }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                    (click)="makeItMapped(props, 'placeholder')">
+                    <img src="assets/tune.svg" style="width: 14px; height: auto" />
+                </div>
+                <vezo-input label="Placeholder" [ngModel]="getInputValue('placeholder')"
+                    (ngModelChange)="handleInputChange($event, 'placeholder')"
+                    style="display: block; z-index: 0"></vezo-input>
+            </div>
+        </div>
+    </div>
+    <div class="mt-2">
+        <div class="flex gap-2 w-full">
+            <div style="position: relative; display: inline-block" class="w-full" *ngIf="
+          this.comingFromForm == false ||
+          (props.mappedData !== null && props.mappedData?.labelFont != null)
+        ">
+                <!-- <vezo-input label="Font Size" [trailingText]="'px'" [(ngModel)]="props.data.labelFont"></vezo-input> -->
+                <div style="
+            position: absolute;
+            top: 0;
+            right: 0;
+            cursor: pointer;
+            z-index: 1;
+          " class="mb-1" [ngClass]="{
+            'bg-gray-200 p-1 rounded-md':
+              props.mappedData !== null && props.mappedData?.labelFont
+          }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                    (click)="makeItMapped(props, 'labelFont')">
+                    <img src="assets/tune.svg" style="width: 14px; height: auto" />
+                </div>
+                <vezo-input label="Font Size" [trailingText]="'px'" [ngModel]="getInputValue('labelFont')"
+                    (ngModelChange)="handleInputChange($event, 'labelFont')"
+                    style="display: block; z-index: 0"></vezo-input>
+            </div>
+            <div style="position: relative; display: inline-block" class="w-full" *ngIf="
+          this.comingFromForm == false ||
+          (props.mappedData !== null && props.mappedData?.labelWeight != null)
+        ">
+                <!-- <vezo-input label="Font Weight" [(ngModel)]="props.data.labelWeight"></vezo-input> -->
+                <div style="
+            position: absolute;
+            top: 0;
+            right: 0;
+            cursor: pointer;
+            z-index: 1;
+          " class="mb-1" [ngClass]="{
+            'bg-gray-200 p-1 rounded-md':
+              props.mappedData !== null && props.mappedData?.labelWeight
+          }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                    (click)="makeItMapped(props, 'labelWeight')">
+                    <img src="assets/tune.svg" style="width: 14px; height: auto" />
+                </div>
+                <vezo-input label="Font Weight" [ngModel]="getInputValue('labelWeight')"
+                    (ngModelChange)="handleInputChange($event, 'labelWeight')"
+                    style="display: block; z-index: 0"></vezo-input>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-2 w-full" style="position: relative; display: inline-block" *ngIf="
+      this.comingFromForm == false ||
+      (props.mappedData !== null && props.mappedData?.labelColor != null)
+    ">
+        <div style="position: absolute; top: 0; right: 0; cursor: pointer; z-index: 1" class="mb-1" [ngClass]="{
+        'bg-gray-200 p-1 rounded-md':
+          props.mappedData !== null && props.mappedData?.labelColor
+      }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+            (click)="makeItMapped(props, 'labelColor')">
+            <img src="assets/tune.svg" style="width: 14px; height: auto" />
+        </div>
+        <vezo-colorpicker [label]="'Label Color'" (colorChange)="handleInputChange($event, 'labelColor')"
+            [inputVal]="getInputValue('labelColor')"></vezo-colorpicker>
+    </div>
+    <div class="mt-2 w-full" style="position: relative; display: inline-block" *ngIf="
+      this.comingFromForm == false ||
+      (props.mappedData !== null && props.mappedData?.fieldHeight != null)
+    ">
+        <!-- <vezo-input label="Height" [trailingText]="'px'" [(ngModel)]="props.data.fieldHeight"></vezo-input> -->
+        <div style="position: absolute; top: 0; right: 0; cursor: pointer; z-index: 1" class="mb-1" [ngClass]="{
+        'bg-gray-200 p-1 rounded-md':
+          props.mappedData !== null && props.mappedData?.fieldHeight
+      }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+            (click)="makeItMapped(props, 'fieldHeight')">
+            <img src="assets/tune.svg" style="width: 14px; height: auto" />
+        </div>
+        <vezo-input label="Height" [trailingText]="'px'" [ngModel]="getInputValue('fieldHeight')"
+            (ngModelChange)="handleInputChange($event, 'fieldHeight')" style="display: block; z-index: 0"></vezo-input>
+    </div>
+
+    <div class="mt-2 flex gap-2">
+        <!-- <vezo-input label="Border Width" [trailingText]="'px'" [(ngModel)]="props.data.borderWidth"></vezo-input> -->
+
+        <div style="position: relative; display: inline-block" class="w-full" *ngIf="
+        this.comingFromForm == false ||
+        (props.mappedData !== null && props.mappedData?.borderWidth != null)
+      ">
+            <div style="
+          position: absolute;
+          top: 0;
+          right: 0;
+          cursor: pointer;
+          z-index: 1;
+        " class="mb-1" [ngClass]="{
+          'bg-gray-200 p-1 rounded-md':
+            props.mappedData !== null && props.mappedData?.borderWidth
+        }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                (click)="makeItMapped(props, 'borderWidth')">
+                <img src="assets/tune.svg" style="width: 14px; height: auto" />
+            </div>
+            <vezo-input label="Border Width" [trailingText]="'px'" [ngModel]="getInputValue('borderWidth')"
+                (ngModelChange)="handleInputChange($event, 'borderWidth')"
+                style="display: block; z-index: 0"></vezo-input>
+        </div>
+        <div style="position: relative; display: inline-block" class="w-full" *ngIf="
+        this.comingFromForm == false ||
+        (props.mappedData !== null && props.mappedData?.fieldRadius != null)
+      ">
+            <div style="
+          position: absolute;
+          top: 0;
+          right: 0;
+          cursor: pointer;
+          z-index: 1;
+        " class="mb-1" [ngClass]="{
+          'bg-gray-200 p-1 rounded-md':
+            props.mappedData !== null && props.mappedData?.fieldRadius
+        }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                (click)="makeItMapped(props, 'fieldRadius')">
+                <img src="assets/tune.svg" style="width: 14px; height: auto" />
+            </div>
+            <vezo-input label="Border Radius" [trailingText]="'px'" [ngModel]="getInputValue('fieldRadius')"
+                (ngModelChange)="handleInputChange($event, 'fieldRadius')"
+                style="display: block; z-index: 0"></vezo-input>
+        </div>
+        <!-- <vezo-input label="Border Radius" [trailingText]="'px'" [(ngModel)]="props.data.fieldRadius"></vezo-input> -->
+    </div>
+    <div class="flex gap-2 mt-2" style="flex-direction: column;">
+        <div style="position: relative; display: inline-block" class="w-full" *ngIf="
+        this.comingFromForm == false ||
+        (props.mappedData !== null && props.mappedData?.fillColor != null)
+      ">
+            <div style="
+          position: absolute;
+          top: 0;
+          right: 0;
+          cursor: pointer;
+          z-index: 1;
+        " class="mb-1" [ngClass]="{
+          'bg-gray-200 p-1 rounded-md':
+            props.mappedData !== null && props.mappedData?.fillColor
+        }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                (click)="makeItMapped(props, 'fillColor')">
+                <img src="assets/tune.svg" style="width: 14px; height: auto" />
+            </div>
+            <vezo-colorpicker [label]="'Fill Color'" (colorChange)="handleInputChange($event, 'fillColor')"
+                [inputVal]="getInputValue('fillColor')"></vezo-colorpicker>
+        </div>
+        <div style="position: relative; display: inline-block" class="w-full" *ngIf="
+        this.comingFromForm == false ||
+        (props.mappedData !== null && props.mappedData?.borderColor != null)
+      ">
+            <div style="
+          position: absolute;
+          top: 0;
+          right: 0;
+          cursor: pointer;
+          z-index: 1;
+        " class="mb-1" [ngClass]="{
+          'bg-gray-200 p-1 rounded-md':
+            props.mappedData !== null && props.mappedData?.borderColor
+        }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                (click)="makeItMapped(props, 'borderColor')">
+                <img src="assets/tune.svg" style="width: 14px; height: auto" />
+            </div>
+            <vezo-colorpicker [label]="'Border Color'" (colorChange)="handleInputChange($event, 'borderColor')"
+                [inputVal]="getInputValue('borderColor')"></vezo-colorpicker>
+        </div>
+    </div>
+    <div class="mt-2" *ngIf="
+      this.comingFromForm == false ||
+      (props.mappedData !== null && props.mappedData?.mr != null)
+    ">
+        <label class="">Margin Style</label>
+        <div class="flex justify-between items-center mt-2">
+            <div class="grid grid-cols-2 w-full justify-between">
+                <div class="flex justify-start items-center gap-4">
+                    <div>Top</div>
+                    <div class="flex mt-1 gap-1 justify-between p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.mt" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex justify-end items-center gap-4">
+                    <!-- Content for the second div -->
+                    <div>Bottom</div>
+                    <div class="flex mt-1 gap-1 justify-between p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+              justify-content: end;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.mb" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex justify-start items-center gap-4">
+                    <!-- Content for the second div -->
+                    <div>Left</div>
+                    <div class="flex mt-1 gap-1 p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.ml" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 justify-end">
+                    <!-- Content for the second div -->
+                    <div>Right</div>
+                    <div class="flex mt-1 gap-1 p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.mr" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mt-2 mb-2" *ngIf="
+      this.comingFromForm == false ||
+      (props.mappedData !== null && props.mappedData?.pr != null)
+    ">
+        <label class="">Padding Style</label>
+        <div class="flex justify-between items-center mt-2">
+            <div class="grid grid-cols-2 w-full justify-between">
+                <div class="flex justify-start items-center gap-4">
+                    <div>Top</div>
+                    <div class="flex mt-1 gap-1 justify-between p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.pt" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex justify-end items-center gap-4">
+                    <!-- Content for the second div -->
+                    <div>Bottom</div>
+                    <div class="flex mt-1 gap-1 justify-between p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+              justify-content: end;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.pb" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex justify-start items-center gap-4">
+                    <!-- Content for the second div -->
+                    <div>Left</div>
+                    <div class="flex mt-1 gap-1 p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.pl" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 justify-end">
+                    <!-- Content for the second div -->
+                    <div>Right</div>
+                    <div class="flex mt-1 gap-1 p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.pr" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mt-2" *ngIf="
+      this.comingFromForm == false ||
+      (props.mappedData !== null && props.mappedData?.fieldName != null)
+    ">
+        <vezo-select label="Field" optionLabel="fieldName" [items]="fields"
+            [(ngModel)]="props.data.field"></vezo-select>
+    </div>
+    <div class="mt-2" *ngIf="
+      this.comingFromForm == false ||
+      (props.mappedData !== null && props.mappedData?.validation != null)
+    ">
+        <vezo-select label="Validation" [items]="validations" [(ngModel)]="props.data.validation"></vezo-select>
+    </div>
 </ng-container>
 <ng-container *ngIf="props?.name === 'textarea'">
-    <vezo-input label="Label" [(ngModel)]="props.data.label"></vezo-input>
-    <vezo-select label="Field" optionLabel="fieldName" [items]="fields" [(ngModel)]="props.data.field"></vezo-select>
-    <vezo-select label="Validation" [items]="validations" [(ngModel)]="props.data.validation"></vezo-select>
+    <div *ngIf="this.getDataFieldCount(props) > 0 && this.comingFromForm == true" style="
+      font-size: 16px;
+      font-weight: 600;
+      color: #2e2e2e;
+      text-decoration: underline;
+    " class="mb-2">
+        {{ props.name }}'s parameter:
+    </div>
+    <div class="mt-2">
+        <div class="flex gap-2 w-full">
+            <div *ngIf="
+          this.comingFromForm == false ||
+          (props.mappedData !== null && props.mappedData?.label != null)
+        " style="position: relative; display: inline-block" class="w-full">
+                <!-- <vezo-input label="Label" [(ngModel)]="props.data.label"></vezo-input> -->
+                <div style="position: relative; display: inline-block" class="w-full" *ngIf="
+            this.comingFromForm == false ||
+            (props.mappedData !== null && props.mappedData?.label != null)
+          ">
+                    <div style="
+              position: absolute;
+              top: 0;
+              right: 0;
+              cursor: pointer;
+              z-index: 1;
+            " class="mb-1" [ngClass]="{
+              'bg-gray-200 p-1 rounded-md':
+                props.mappedData !== null && props.mappedData?.label
+            }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                        (click)="makeItMapped(props, 'label')">
+                        <img src="assets/tune.svg" style="width: 14px; height: auto" />
+                    </div>
+                    <vezo-input label="Label" [ngModel]="getInputValue('label')"
+                        (ngModelChange)="handleInputChange($event, 'label')"
+                        style="display: block; z-index: 0"></vezo-input>
+                </div>
+            </div>
+            <div *ngIf="
+          this.comingFromForm == false ||
+          (props.mappedData !== null && props.mappedData?.placeholder != null)
+        " style="position: relative; display: inline-block" class="w-full">
+                <!-- <vezo-input label="Placeholder" [(ngModel)]="props.data.placeholder"></vezo-input> -->
+                <div style="position: relative; display: inline-block" class="w-full" *ngIf="
+            this.comingFromForm == false ||
+            (props.mappedData !== null && props.mappedData?.placeholder != null)
+          ">
+                    <div style="
+              position: absolute;
+              top: 0;
+              right: 0;
+              cursor: pointer;
+              z-index: 1;
+            " class="mb-1" [ngClass]="{
+              'bg-gray-200 p-1 rounded-md':
+                props.mappedData !== null && props.mappedData?.placeholder
+            }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                        (click)="makeItMapped(props, 'placeholder')">
+                        <img src="assets/tune.svg" style="width: 14px; height: auto" />
+                    </div>
+                    <vezo-input label="Placeholder" [ngModel]="getInputValue('placeholder')"
+                        (ngModelChange)="handleInputChange($event, 'placeholder')"
+                        style="display: block; z-index: 0"></vezo-input>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mt-2">
+        <div class="flex gap-2 w-full">
+            <div *ngIf="
+          this.comingFromForm == false ||
+          (props.mappedData !== null && props.mappedData?.labelFont != null)
+        " style="position: relative; display: inline-block" class="w-full">
+                <!-- <vezo-input label="Font Size" [trailingText]="'px'" [(ngModel)]="props.data.labelFont"></vezo-input> -->
+                <div style="position: relative; display: inline-block" class="w-full" *ngIf="
+            this.comingFromForm == false ||
+            (props.mappedData !== null && props.mappedData?.labelFont != null)
+          ">
+                    <div style="
+              position: absolute;
+              top: 0;
+              right: 0;
+              cursor: pointer;
+              z-index: 1;
+            " class="mb-1" [ngClass]="{
+              'bg-gray-200 p-1 rounded-md':
+                props.mappedData !== null && props.mappedData?.labelFont
+            }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                        (click)="makeItMapped(props, 'labelFont')">
+                        <img src="assets/tune.svg" style="width: 14px; height: auto" />
+                    </div>
+                    <vezo-input label="Font Size" [trailingText]="'px'" [ngModel]="getInputValue('labelFont')"
+                        (ngModelChange)="handleInputChange($event, 'labelFont')"
+                        style="display: block; z-index: 0"></vezo-input>
+                </div>
+            </div>
+            <div *ngIf="
+          this.comingFromForm == false ||
+          (props.mappedData !== null && props.mappedData?.labelWeight != null)
+        " style="position: relative; display: inline-block" class="w-full">
+                <!-- <vezo-input label="Font Weight" [(ngModel)]="props.data.labelWeight"></vezo-input> -->
+                <div style="position: relative; display: inline-block" class="w-full" *ngIf="
+            this.comingFromForm == false ||
+            (props.mappedData !== null && props.mappedData?.labelWeight != null)
+          ">
+                    <div style="
+              position: absolute;
+              top: 0;
+              right: 0;
+              cursor: pointer;
+              z-index: 1;
+            " class="mb-1" [ngClass]="{
+              'bg-gray-200 p-1 rounded-md':
+                props.mappedData !== null && props.mappedData?.labelWeight
+            }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                        (click)="makeItMapped(props, 'labelWeight')">
+                        <img src="assets/tune.svg" style="width: 14px; height: auto" />
+                    </div>
+                    <vezo-input label="Font Weight" [ngModel]="getInputValue('labelWeight')"
+                        (ngModelChange)="handleInputChange($event, 'labelWeight')"
+                        style="display: block; z-index: 0"></vezo-input>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mt-2" *ngIf="
+    this.comingFromForm == false ||
+    (props.mappedData !== null && props.mappedData?.borderColor != null)">
+        <vezo-colorpicker [label]="'Border Color'" (colorChange)="props.data.borderColor = $event"
+            [inputVal]="props.data.borderColor"></vezo-colorpicker>
+    </div>
+    <div class="mt-2 w-full" style="position: relative; display: inline-block" *ngIf="
+      this.comingFromForm == false ||
+      (props.mappedData !== null && props.mappedData?.labelColor != null)
+    ">
+        <div style="position: relative; display: inline-block" class="w-full" *ngIf="
+        this.comingFromForm == false ||
+        (props.mappedData !== null && props.mappedData?.labelColor != null)
+      ">
+            <div style="
+          position: absolute;
+          top: 0;
+          right: 0;
+          cursor: pointer;
+          z-index: 1;
+        " class="mb-1" [ngClass]="{
+          'bg-gray-200 p-1 rounded-md':
+            props.mappedData !== null && props.mappedData?.labelColor
+        }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                (click)="makeItMapped(props, 'labelColor')">
+                <img src="assets/tune.svg" style="width: 14px; height: auto" />
+            </div>
+            <vezo-colorpicker [label]="'Label Color'" (colorChange)="handleInputChange($event, 'labelColor')"
+                [inputVal]="getInputValue('labelColor')"></vezo-colorpicker>
+        </div>
+    </div>
+    <div class="mt-2 w-full" style="position: relative; display: inline-block" *ngIf="
+      this.comingFromForm == false ||
+      (props.mappedData !== null && props.mappedData?.fieldHeight != null)
+    ">
+        <div style="position: relative; display: inline-block" class="w-full" *ngIf="
+        this.comingFromForm == false ||
+        (props.mappedData !== null && props.mappedData?.fieldHeight != null)
+      ">
+            <div style="
+          position: absolute;
+          top: 0;
+          right: 0;
+          cursor: pointer;
+          z-index: 1;
+        " class="mb-1" [ngClass]="{
+          'bg-gray-200 p-1 rounded-md':
+            props.mappedData !== null && props.mappedData?.fieldHeight
+        }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                (click)="makeItMapped(props, 'fieldHeight')">
+                <img src="assets/tune.svg" style="width: 14px; height: auto" />
+            </div>
+            <vezo-input label="Height" [trailingText]="'px'" [ngModel]="getInputValue('fieldHeight')"
+                (ngModelChange)="handleInputChange($event, 'fieldHeight')"
+                style="display: block; z-index: 0"></vezo-input>
+        </div>
+    </div>
+    <div class="mt-2">
+        <div class="flex gap-2 w-full">
+            <div class="w-full" style="position: relative; display: inline-block" *ngIf="
+          this.comingFromForm == false ||
+          (props.mappedData !== null && props.mappedData?.borderWidth != null)
+        ">
+                <div style="position: relative; display: inline-block" class="w-full" *ngIf="
+            this.comingFromForm == false ||
+            (props.mappedData !== null && props.mappedData?.borderWidth != null)
+          ">
+                    <div style="
+              position: absolute;
+              top: 0;
+              right: 0;
+              cursor: pointer;
+              z-index: 1;
+            " class="mb-1" [ngClass]="{
+              'bg-gray-200 p-1 rounded-md':
+                props.mappedData !== null && props.mappedData?.borderWidth
+            }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                        (click)="makeItMapped(props, 'borderWidth')">
+                        <img src="assets/tune.svg" style="width: 14px; height: auto" />
+                    </div>
+                    <vezo-input label="Border Width" [trailingText]="'px'" [ngModel]="getInputValue('borderWidth')"
+                        (ngModelChange)="handleInputChange($event, 'borderWidth')"
+                        style="display: block; z-index: 0"></vezo-input>
+                </div>
+            </div>
+            <div class="w-full" style="position: relative; display: inline-block" *ngIf="
+          this.comingFromForm == false ||
+          (props.mappedData !== null && props.mappedData?.borderRadius != null)
+        ">
+                <div style="position: relative; display: inline-block" class="w-full" *ngIf="
+            this.comingFromForm == false ||
+            (props.mappedData !== null &&
+              props.mappedData?.borderRadius != null)
+          ">
+                    <div style="
+              position: absolute;
+              top: 0;
+              right: 0;
+              cursor: pointer;
+              z-index: 1;
+            " class="mb-1" [ngClass]="{
+              'bg-gray-200 p-1 rounded-md':
+                props.mappedData !== null && props.mappedData?.borderRadius
+            }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                        (click)="makeItMapped(props, 'borderRadius')">
+                        <img src="assets/tune.svg" style="width: 14px; height: auto" />
+                    </div>
+                    <vezo-input label="Border Radius" [trailingText]="'px'" [ngModel]="getInputValue('borderRadius')"
+                        (ngModelChange)="handleInputChange($event, 'borderRadius')"
+                        style="display: block; z-index: 0"></vezo-input>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mt-2">
+        <div class="flex gap-2 w-full" style="flex-direction:column">
+            <div class="w-full" style="position: relative; display: inline-block" *ngIf="
+          this.comingFromForm == false ||
+          (props.mappedData !== null && props.mappedData?.fillColor != null)
+        ">
+                <div style="position: relative; display: inline-block" class="w-full" *ngIf="
+            this.comingFromForm == false ||
+            (props.mappedData !== null && props.mappedData?.fillColor != null)
+          ">
+                    <div style="
+              position: absolute;
+              top: 0;
+              right: 0;
+              cursor: pointer;
+              z-index: 1;
+            " class="mb-1" [ngClass]="{
+              'bg-gray-200 p-1 rounded-md':
+                props.mappedData !== null && props.mappedData?.fillColor
+            }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                        (click)="makeItMapped(props, 'fillColor')">
+                        <img src="assets/tune.svg" style="width: 14px; height: auto" />
+                    </div>
+                    <vezo-colorpicker [label]="'Fill Color'" (colorChange)="handleInputChange($event, 'fillColor')"
+                        [inputVal]="getInputValue('fillColor')"></vezo-colorpicker>
+                </div>
+            </div>
+            <div class="w-full" style="position: relative; display: inline-block" *ngIf="
+          this.comingFromForm == false ||
+          (props.mappedData !== null && props.mappedData?.borderColor != null)
+        ">
+                <div style="position: relative; display: inline-block" class="w-full" *ngIf="
+            this.comingFromForm == false ||
+            (props.mappedData !== null && props.mappedData?.borderColor != null)
+          ">
+                    <div style="
+              position: absolute;
+              top: 0;
+              right: 0;
+              cursor: pointer;
+              z-index: 1;
+            " class="mb-1" [ngClass]="{
+              'bg-gray-200 p-1 rounded-md':
+                props.mappedData !== null && props.mappedData?.borderColor
+            }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                        (click)="makeItMapped(props, 'borderColor')">
+                        <img src="assets/tune.svg" style="width: 14px; height: auto" />
+                    </div>
+                    <vezo-colorpicker [label]="'Border Color'" (colorChange)="handleInputChange($event, 'borderColor')"
+                        [inputVal]="getInputValue('borderColor')"></vezo-colorpicker>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mt-2" *ngIf="
+      this.comingFromForm == false ||
+      (props.mappedData !== null && props.mappedData?.mr != null)
+    ">
+        <label class="">Margin Style</label>
+        <div class="flex justify-between items-center mt-2">
+            <div class="grid grid-cols-2 w-full justify-between">
+                <div class="flex justify-start items-center gap-4">
+                    <div>Top</div>
+                    <div class="flex mt-1 gap-1 justify-between p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.mt" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex justify-end items-center gap-4">
+                    <!-- Content for the second div -->
+                    <div>Bottom</div>
+                    <div class="flex mt-1 gap-1 justify-between p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+              justify-content: end;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.mb" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex justify-start items-center gap-4">
+                    <!-- Content for the second div -->
+                    <div>Left</div>
+                    <div class="flex mt-1 gap-1 p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.ml" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 justify-end">
+                    <!-- Content for the second div -->
+                    <div>Right</div>
+                    <div class="flex mt-1 gap-1 p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.mr" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mt-2 mb-2" *ngIf="
+      this.comingFromForm == false ||
+      (props.mappedData !== null && props.mappedData?.pr != null)
+    ">
+        <label class="">Padding Style</label>
+        <div class="flex justify-between items-center mt-2">
+            <div class="grid grid-cols-2 w-full justify-between">
+                <div class="flex justify-start items-center gap-4">
+                    <div>Top</div>
+                    <div class="flex mt-1 gap-1 justify-between p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.pt" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex justify-end items-center gap-4">
+                    <!-- Content for the second div -->
+                    <div>Bottom</div>
+                    <div class="flex mt-1 gap-1 justify-between p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+              justify-content: end;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.pb" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex justify-start items-center gap-4">
+                    <!-- Content for the second div -->
+                    <div>Left</div>
+                    <div class="flex mt-1 gap-1 p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.pl" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 justify-end">
+                    <!-- Content for the second div -->
+                    <div>Right</div>
+                    <div class="flex mt-1 gap-1 p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.pr" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mt-2" *ngIf="
+      this.comingFromForm == false ||
+      (props.mappedData !== null && props.mappedData?.field != null)
+    ">
+        <vezo-select label="Field" optionLabel="fieldName" [items]="fields"
+            [(ngModel)]="props.data.field"></vezo-select>
+    </div>
+    <div class="mt-2" *ngIf="
+      this.comingFromForm == false ||
+      (props.mappedData !== null && props.mappedData?.validation != null)
+    ">
+        <vezo-select label="Validation" [items]="validations" [(ngModel)]="props.data.validation"></vezo-select>
+    </div>
 </ng-container>
 <ng-container *ngIf="props?.name === 'dropdown'">
-    <vezo-input label="Label" [(ngModel)]="props.data.label"></vezo-input>
-    <vezo-select label="Field" optionLabel="fieldName" [items]="fields" [(ngModel)]="props.data.field"></vezo-select>
-    <vezo-select label="Options" optionLabel="collectionName" [items]="collections"
-        [(ngModel)]="props.data.field"></vezo-select>
-    <vezo-select label="Validation" [items]="validations" [(ngModel)]="props.data.validation"></vezo-select>
+    <div *ngIf="this.getDataFieldCount(props) > 0 && this.comingFromForm == true" style="
+      font-size: 16px;
+      font-weight: 600;
+      color: #2e2e2e;
+      text-decoration: underline;
+    " class="mb-2">
+        {{ props.name }}'s parameter:
+    </div>
+    <div class="mt-2">
+        <div class="flex gap-2 w-full">
+            <div *ngIf="
+          this.comingFromForm == false ||
+          (props.mappedData !== null && props.mappedData?.label != null)
+        " style="position: relative; display: inline-block" class="w-full">
+                <!-- <vezo-input label="Label" [(ngModel)]="props.data.label"></vezo-input> -->
+                <div style="position: relative; display: inline-block" class="w-full" *ngIf="
+            this.comingFromForm == false ||
+            (props.mappedData !== null && props.mappedData?.label != null)
+          ">
+                    <div style="
+              position: absolute;
+              top: 0;
+              right: 0;
+              cursor: pointer;
+              z-index: 1;
+            " class="mb-1" [ngClass]="{
+              'bg-gray-200 p-1 rounded-md':
+                props.mappedData !== null && props.mappedData?.label
+            }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                        (click)="makeItMapped(props, 'label')">
+                        <img src="assets/tune.svg" style="width: 14px; height: auto" />
+                    </div>
+                    <vezo-input label="Label" [ngModel]="getInputValue('label')"
+                        (ngModelChange)="handleInputChange($event, 'label')"
+                        style="display: block; z-index: 0"></vezo-input>
+                </div>
+            </div>
+            <div *ngIf="
+          this.comingFromForm == false ||
+          (props.mappedData !== null && props.mappedData?.placeholder != null)
+        " style="position: relative; display: inline-block" class="w-full">
+                <!-- <vezo-input label="Placeholder" [(ngModel)]="props.data.placeholder"></vezo-input> -->
+                <div style="position: relative; display: inline-block" class="w-full" *ngIf="
+            this.comingFromForm == false ||
+            (props.mappedData !== null && props.mappedData?.placeholder != null)
+          ">
+                    <div style="
+              position: absolute;
+              top: 0;
+              right: 0;
+              cursor: pointer;
+              z-index: 1;
+            " class="mb-1" [ngClass]="{
+              'bg-gray-200 p-1 rounded-md':
+                props.mappedData !== null && props.mappedData?.placeholder
+            }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                        (click)="makeItMapped(props, 'placeholder')">
+                        <img src="assets/tune.svg" style="width: 14px; height: auto" />
+                    </div>
+                    <vezo-input label="Placeholder" [ngModel]="getInputValue('placeholder')"
+                        (ngModelChange)="handleInputChange($event, 'placeholder')"
+                        style="display: block; z-index: 0"></vezo-input>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mt-2">
+        <div class="flex gap-2 w-full">
+            <div *ngIf="
+          this.comingFromForm == false ||
+          (props.mappedData !== null && props.mappedData?.labelFont != null)
+        " style="position: relative; display: inline-block" class="w-full">
+                <!-- <vezo-input label="Font Size" [trailingText]="'px'" [(ngModel)]="props.data.labelFont"></vezo-input> -->
+                <div style="position: relative; display: inline-block" class="w-full" *ngIf="
+            this.comingFromForm == false ||
+            (props.mappedData !== null && props.mappedData?.labelFont != null)
+          ">
+                    <div style="
+              position: absolute;
+              top: 0;
+              right: 0;
+              cursor: pointer;
+              z-index: 1;
+            " class="mb-1" [ngClass]="{
+              'bg-gray-200 p-1 rounded-md':
+                props.mappedData !== null && props.mappedData?.labelFont
+            }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                        (click)="makeItMapped(props, 'labelFont')">
+                        <img src="assets/tune.svg" style="width: 14px; height: auto" />
+                    </div>
+                    <vezo-input label="Font Size" [trailingText]="'px'" [ngModel]="getInputValue('labelFont')"
+                        (ngModelChange)="handleInputChange($event, 'labelFont')"
+                        style="display: block; z-index: 0"></vezo-input>
+                </div>
+            </div>
+            <div *ngIf="
+          this.comingFromForm == false ||
+          (props.mappedData !== null && props.mappedData?.labelWeight != null)
+        " style="position: relative; display: inline-block" class="w-full">
+                <!-- <vezo-input label="Font Weight" [(ngModel)]="props.data.labelWeight"></vezo-input> -->
+                <div style="position: relative; display: inline-block" class="w-full" *ngIf="
+            this.comingFromForm == false ||
+            (props.mappedData !== null && props.mappedData?.labelWeight != null)
+          ">
+                    <div style="
+              position: absolute;
+              top: 0;
+              right: 0;
+              cursor: pointer;
+              z-index: 1;
+            " class="mb-1" [ngClass]="{
+              'bg-gray-200 p-1 rounded-md':
+                props.mappedData !== null && props.mappedData?.labelWeight
+            }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                        (click)="makeItMapped(props, 'labelWeight')">
+                        <img src="assets/tune.svg" style="width: 14px; height: auto" />
+                    </div>
+                    <vezo-input label="Font Weight" [ngModel]="getInputValue('labelWeight')"
+                        (ngModelChange)="handleInputChange($event, 'labelWeight')"
+                        style="display: block; z-index: 0"></vezo-input>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mt-2 w-full" style="position: relative; display: inline-block" *ngIf="
+      this.comingFromForm == false ||
+      (props.mappedData !== null && props.mappedData?.labelColor != null)
+    ">
+        <div style="position: relative; display: inline-block" class="w-full" *ngIf="
+        this.comingFromForm == false ||
+        (props.mappedData !== null && props.mappedData?.labelColor != null)
+      ">
+            <div style="
+          position: absolute;
+          top: 0;
+          right: 0;
+          cursor: pointer;
+          z-index: 1;
+        " class="mb-1" [ngClass]="{
+          'bg-gray-200 p-1 rounded-md':
+            props.mappedData !== null && props.mappedData?.labelColor
+        }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                (click)="makeItMapped(props, 'labelColor')">
+                <img src="assets/tune.svg" style="width: 14px; height: auto" />
+            </div>
+            <vezo-colorpicker [label]="'Label Color'" (colorChange)="handleInputChange($event, 'labelColor')"
+                [inputVal]="getInputValue('labelColor')"></vezo-colorpicker>
+        </div>
+    </div>
+    <div class="mt-2 w-full" style="position: relative; display: inline-block" *ngIf="
+      this.comingFromForm == false ||
+      (props.mappedData !== null && props.mappedData?.fieldHeight != null)
+    ">
+        <div style="position: relative; display: inline-block" class="w-full" *ngIf="
+        this.comingFromForm == false ||
+        (props.mappedData !== null && props.mappedData?.fieldHeight != null)
+      ">
+            <div style="
+          position: absolute;
+          top: 0;
+          right: 0;
+          cursor: pointer;
+          z-index: 1;
+        " class="mb-1" [ngClass]="{
+          'bg-gray-200 p-1 rounded-md':
+            props.mappedData !== null && props.mappedData?.fieldHeight
+        }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                (click)="makeItMapped(props, 'fieldHeight')">
+                <img src="assets/tune.svg" style="width: 14px; height: auto" />
+            </div>
+            <vezo-input label="Height" [trailingText]="'px'" [ngModel]="getInputValue('fieldHeight')"
+                (ngModelChange)="handleInputChange($event, 'fieldHeight')"
+                style="display: block; z-index: 0"></vezo-input>
+        </div>
+    </div>
+    <div class="mt-2">
+        <div class="flex gap-2 w-full">
+            <div class="w-full" style="position: relative; display: inline-block" *ngIf="
+          this.comingFromForm == false ||
+          (props.mappedData !== null && props.mappedData?.borderWidth != null)
+        ">
+                <div style="position: relative; display: inline-block" class="w-full" *ngIf="
+            this.comingFromForm == false ||
+            (props.mappedData !== null && props.mappedData?.borderWidth != null)
+          ">
+                    <div style="
+              position: absolute;
+              top: 0;
+              right: 0;
+              cursor: pointer;
+              z-index: 1;
+            " class="mb-1" [ngClass]="{
+              'bg-gray-200 p-1 rounded-md':
+                props.mappedData !== null && props.mappedData?.borderWidth
+            }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                        (click)="makeItMapped(props, 'borderWidth')">
+                        <img src="assets/tune.svg" style="width: 14px; height: auto" />
+                    </div>
+                    <vezo-input label="Border Width" [trailingText]="'px'" [ngModel]="getInputValue('borderWidth')"
+                        (ngModelChange)="handleInputChange($event, 'borderWidth')"
+                        style="display: block; z-index: 0"></vezo-input>
+                </div>
+            </div>
+            <div class="w-full" style="position: relative; display: inline-block" *ngIf="
+          this.comingFromForm == false ||
+          (props.mappedData !== null && props.mappedData?.fieldRadius != null)
+        ">
+                <div style="position: relative; display: inline-block" class="w-full" *ngIf="
+            this.comingFromForm == false ||
+            (props.mappedData !== null && props.mappedData?.fieldRadius != null)
+          ">
+                    <div style="
+              position: absolute;
+              top: 0;
+              right: 0;
+              cursor: pointer;
+              z-index: 1;
+            " class="mb-1" [ngClass]="{
+              'bg-gray-200 p-1 rounded-md':
+                props.mappedData !== null && props.mappedData?.fieldRadius
+            }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                        (click)="makeItMapped(props, 'fieldRadius')">
+                        <img src="assets/tune.svg" style="width: 14px; height: auto" />
+                    </div>
+                    <vezo-input label="Border Radius" [trailingText]="'px'" [ngModel]="getInputValue('fieldRadius')"
+                        (ngModelChange)="handleInputChange($event, 'fieldRadius')"
+                        style="display: block; z-index: 0"></vezo-input>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mt-2">
+        <div class="flex gap-2 w-full" style="flex-direction:column">
+            <div class="w-full" style="position: relative; display: inline-block" *ngIf="
+          this.comingFromForm == false ||
+          (props.mappedData !== null && props.mappedData?.fillColor != null)
+        ">
+                <div style="position: relative; display: inline-block" class="w-full" *ngIf="
+            this.comingFromForm == false ||
+            (props.mappedData !== null && props.mappedData?.fillColor != null)
+          ">
+                    <div style="
+              position: absolute;
+              top: 0;
+              right: 0;
+              cursor: pointer;
+              z-index: 1;
+            " class="mb-1" [ngClass]="{
+              'bg-gray-200 p-1 rounded-md':
+                props.mappedData !== null && props.mappedData?.fillColor
+            }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                        (click)="makeItMapped(props, 'fillColor')">
+                        <img src="assets/tune.svg" style="width: 14px; height: auto" />
+                    </div>
+                    <vezo-colorpicker [label]="'Fill Color'" (colorChange)="handleInputChange($event, 'fillColor')"
+                        [inputVal]="getInputValue('fillColor')"></vezo-colorpicker>
+                </div>
+            </div>
+            <div class="w-full" style="position: relative; display: inline-block" *ngIf="
+          this.comingFromForm == false ||
+          (props.mappedData !== null && props.mappedData?.borderColor != null)
+        ">
+                <div style="position: relative; display: inline-block" class="w-full" *ngIf="
+            this.comingFromForm == false ||
+            (props.mappedData !== null && props.mappedData?.borderColor != null)
+          ">
+                    <div style="
+              position: absolute;
+              top: 0;
+              right: 0;
+              cursor: pointer;
+              z-index: 1;
+            " class="mb-1" [ngClass]="{
+              'bg-gray-200 p-1 rounded-md':
+                props.mappedData !== null && props.mappedData?.borderColor
+            }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                        (click)="makeItMapped(props, 'borderColor')">
+                        <img src="assets/tune.svg" style="width: 14px; height: auto" />
+                    </div>
+                    <vezo-colorpicker [label]="'Border Color'" (colorChange)="handleInputChange($event, 'borderColor')"
+                        [inputVal]="getInputValue('borderColor')"></vezo-colorpicker>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mt-2" *ngIf="
+      this.comingFromForm == false ||
+      (props.mappedData !== null && props.mappedData?.mr != null)
+    ">
+        <label class="">Margin Style</label>
+        <div class="flex justify-between items-center mt-2">
+            <div class="grid grid-cols-2 w-full justify-between">
+                <div class="flex justify-start items-center gap-4">
+                    <div>Top</div>
+                    <div class="flex mt-1 gap-1 justify-between p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.mt" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex justify-end items-center gap-4">
+                    <!-- Content for the second div -->
+                    <div>Bottom</div>
+                    <div class="flex mt-1 gap-1 justify-between p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+              justify-content: end;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.mb" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex justify-start items-center gap-4">
+                    <!-- Content for the second div -->
+                    <div>Left</div>
+                    <div class="flex mt-1 gap-1 p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.ml" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 justify-end">
+                    <!-- Content for the second div -->
+                    <div>Right</div>
+                    <div class="flex mt-1 gap-1 p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.mr" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mt-2 mb-2" *ngIf="
+      this.comingFromForm == false ||
+      (props.mappedData !== null && props.mappedData?.pr != null)
+    ">
+        <label class="">Padding Style</label>
+        <div class="flex justify-between items-center mt-2">
+            <div class="grid grid-cols-2 w-full justify-between">
+                <div class="flex justify-start items-center gap-4">
+                    <div>Top</div>
+                    <div class="flex mt-1 gap-1 justify-between p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.pt" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex justify-end items-center gap-4">
+                    <!-- Content for the second div -->
+                    <div>Bottom</div>
+                    <div class="flex mt-1 gap-1 justify-between p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+              justify-content: end;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.pb" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex justify-start items-center gap-4">
+                    <!-- Content for the second div -->
+                    <div>Left</div>
+                    <div class="flex mt-1 gap-1 p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.pl" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 justify-end">
+                    <!-- Content for the second div -->
+                    <div>Right</div>
+                    <div class="flex mt-1 gap-1 p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.pr" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mt-2" *ngIf="
+      this.comingFromForm == false ||
+      (props.mappedData !== null && props.mappedData?.field != null)
+    ">
+        <vezo-select label="Field" optionLabel="fieldName" [items]="fields"
+            [(ngModel)]="props.data.field"></vezo-select>
+    </div>
+
+    <div class="mt-2" *ngIf="
+      this.comingFromForm == false ||
+      (props.mappedData !== null && props.mappedData?.collectionName != null)
+    ">
+        <vezo-select label="Options" optionLabel="collectionName" [items]="collections"
+            [(ngModel)]="props.data.field"></vezo-select>
+    </div>
+    <div class="mt-2" *ngIf="
+      this.comingFromForm == false ||
+      (props.mappedData !== null && props.mappedData?.validation != null)
+    ">
+        <vezo-select label="Validation" [items]="validations" [(ngModel)]="props.data.validation"></vezo-select>
+    </div>
 </ng-container>
 <ng-container *ngIf="props?.name === 'checkbox'">
-    <vezo-input label="Label" [(ngModel)]="props.data.label"></vezo-input>
-    <vezo-select label="Field" optionLabel="fieldName" [items]="fields" [(ngModel)]="props.data.field"></vezo-select>
-    <vezo-select label="Validation" [items]="validations" [(ngModel)]="props.data.validation"></vezo-select>
+    <div *ngIf="this.getDataFieldCount(props) > 0 && this.comingFromForm == true" style="
+      font-size: 16px;
+      font-weight: 600;
+      color: #2e2e2e;
+      text-decoration: underline;
+    " class="mb-2">
+        {{ props.name }}'s parameter:
+    </div>
+    <div class="mt-2">
+        <div *ngIf="
+        this.comingFromForm == false ||
+        (props.mappedData !== null && props.mappedData?.label != null)
+      " style="position: relative; display: inline-block" class="w-full">
+            <div style="position: relative; display: inline-block" class="w-full" *ngIf="
+          this.comingFromForm == false ||
+          (props.mappedData !== null && props.mappedData?.label != null)
+        ">
+                <div style="
+            position: absolute;
+            top: 0;
+            right: 0;
+            cursor: pointer;
+            z-index: 1;
+          " class="mb-1" [ngClass]="{
+            'bg-gray-200 p-1 rounded-md':
+              props.mappedData !== null && props.mappedData?.label
+          }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                    (click)="makeItMapped(props, 'label')">
+                    <img src="assets/tune.svg" style="width: 14px; height: auto" />
+                </div>
+                <vezo-input label="Label" [ngModel]="getInputValue('label')"
+                    (ngModelChange)="handleInputChange($event, 'label')"
+                    style="display: block; z-index: 0"></vezo-input>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-2">
+        <div class="flex gap-2 w-full">
+            <div *ngIf="
+          this.comingFromForm == false ||
+          (props.mappedData !== null && props.mappedData?.labelFont != null)
+        " style="position: relative; display: inline-block" class="w-full">
+                <!-- <vezo-input label="Font Size" [trailingText]="'px'" [(ngModel)]="props.data.labelFont"></vezo-input> -->
+                <div style="position: relative; display: inline-block" class="w-full" *ngIf="
+            this.comingFromForm == false ||
+            (props.mappedData !== null && props.mappedData?.labelFont != null)
+          ">
+                    <div style="
+              position: absolute;
+              top: 0;
+              right: 0;
+              cursor: pointer;
+              z-index: 1;
+            " class="mb-1" [ngClass]="{
+              'bg-gray-200 p-1 rounded-md':
+                props.mappedData !== null && props.mappedData?.labelFont
+            }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                        (click)="makeItMapped(props, 'labelFont')">
+                        <img src="assets/tune.svg" style="width: 14px; height: auto" />
+                    </div>
+                    <vezo-input label="Font Size" [trailingText]="'px'" [ngModel]="getInputValue('labelFont')"
+                        (ngModelChange)="handleInputChange($event, 'labelFont')"
+                        style="display: block; z-index: 0"></vezo-input>
+                </div>
+            </div>
+            <div *ngIf="
+          this.comingFromForm == false ||
+          (props.mappedData !== null && props.mappedData?.labelWeight != null)
+        " style="position: relative; display: inline-block" class="w-full">
+                <!-- <vezo-input label="Font Weight" [(ngModel)]="props.data.labelWeight"></vezo-input> -->
+                <div style="position: relative; display: inline-block" class="w-full" *ngIf="
+            this.comingFromForm == false ||
+            (props.mappedData !== null && props.mappedData?.labelWeight != null)
+          ">
+                    <div style="
+              position: absolute;
+              top: 0;
+              right: 0;
+              cursor: pointer;
+              z-index: 1;
+            " class="mb-1" [ngClass]="{
+              'bg-gray-200 p-1 rounded-md':
+                props.mappedData !== null && props.mappedData?.labelWeight
+            }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                        (click)="makeItMapped(props, 'labelWeight')">
+                        <img src="assets/tune.svg" style="width: 14px; height: auto" />
+                    </div>
+                    <vezo-input label="Font Weight" [ngModel]="getInputValue('labelWeight')"
+                        (ngModelChange)="handleInputChange($event, 'labelWeight')"
+                        style="display: block; z-index: 0"></vezo-input>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-2 w-full" style="position: relative; display: inline-block" *ngIf="
+      this.comingFromForm == false ||
+      (props.mappedData !== null && props.mappedData?.labelColor != null)
+    ">
+        <div style="position: relative; display: inline-block" class="w-full" *ngIf="
+        this.comingFromForm == false ||
+        (props.mappedData !== null && props.mappedData?.labelColor != null)
+      ">
+            <div style="
+          position: absolute;
+          top: 0;
+          right: 0;
+          cursor: pointer;
+          z-index: 1;
+        " class="mb-1" [ngClass]="{
+          'bg-gray-200 p-1 rounded-md':
+            props.mappedData !== null && props.mappedData?.labelColor
+        }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                (click)="makeItMapped(props, 'labelColor')">
+                <img src="assets/tune.svg" style="width: 14px; height: auto" />
+            </div>
+            <vezo-colorpicker [label]="'Label Color'" (colorChange)="handleInputChange($event, 'labelColor')"
+                [inputVal]="getInputValue('labelColor')"></vezo-colorpicker>
+        </div>
+    </div>
+
+    <div class="mt-2" *ngIf="
+      this.comingFromForm == false ||
+      (props.mappedData !== null && props.mappedData?.mr != null)
+    ">
+        <label class="">Margin Style</label>
+        <div class="flex justify-between items-center mt-2">
+            <div class="grid grid-cols-2 w-full justify-between">
+                <div class="flex justify-start items-center gap-4">
+                    <div>Top</div>
+                    <div class="flex mt-1 gap-1 justify-between p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.mt" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex justify-end items-center gap-4">
+                    <!-- Content for the second div -->
+                    <div>Bottom</div>
+                    <div class="flex mt-1 gap-1 justify-between p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+              justify-content: end;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.mb" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex justify-start items-center gap-4">
+                    <!-- Content for the second div -->
+                    <div>Left</div>
+                    <div class="flex mt-1 gap-1 p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.ml" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 justify-end">
+                    <!-- Content for the second div -->
+                    <div>Right</div>
+                    <div class="flex mt-1 gap-1 p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.mr" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mt-2" *ngIf="
+      this.comingFromForm == false ||
+      (props.mappedData !== null && props.mappedData?.pr != null)
+    ">
+        <label class="">Padding Style</label>
+        <div class="flex justify-between items-center mt-2">
+            <div class="grid grid-cols-2 w-full justify-between">
+                <div class="flex justify-start items-center gap-4">
+                    <div>Top</div>
+                    <div class="flex mt-1 gap-1 justify-between p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.pt" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex justify-end items-center gap-4">
+                    <!-- Content for the second div -->
+                    <div>Bottom</div>
+                    <div class="flex mt-1 gap-1 justify-between p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+              justify-content: end;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.pb" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex justify-start items-center gap-4">
+                    <!-- Content for the second div -->
+                    <div>Left</div>
+                    <div class="flex mt-1 gap-1 p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.pl" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 justify-end">
+                    <!-- Content for the second div -->
+                    <div>Right</div>
+                    <div class="flex mt-1 gap-1 p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.pr" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mt-2 mb-2" *ngIf="
+      this.comingFromForm == false ||
+      (props.mappedData !== null && props.mappedData?.alignment != null)
+    ">
+        <label class="">Alignment</label>
+        <div class="flex mt-2 p-1 gap-2 w-fit" style="border-color: #dfdfdf; border-width: 1px; border-radius: 4px">
+            <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.alignment = 'start'"
+                [ngClass]="{ 'bg-slate-100': props.data?.alignment == 'start' }">
+                <img src="assets/alignLeft.svg" style="width: 16px; height: 16px" />
+            </div>
+            <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.alignment = 'center'"
+                [ngClass]="{ 'bg-slate-100': props.data?.alignment == 'center' }">
+                <img src="assets/alignCenter.svg" style="width: 16px; height: 16px" />
+            </div>
+            <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.alignment = 'end'"
+                [ngClass]="{ 'bg-slate-100': props.data?.alignment == 'end' }">
+                <img src="assets/alignRight.svg" style="width: 16px; height: 16px" />
+            </div>
+        </div>
+    </div>
+    <div class="mt-2" *ngIf="
+      this.comingFromForm == false ||
+      (props.mappedData !== null && props.mappedData?.fieldName != null)
+    ">
+        <vezo-select label="Field" optionLabel="fieldName" [items]="fields"
+            [(ngModel)]="props.data.field"></vezo-select>
+    </div>
+    <div class="mt-2" *ngIf="
+      this.comingFromForm == false ||
+      (props.mappedData !== null && props.mappedData?.validation != null)
+    ">
+        <vezo-select label="Validation" [items]="validations" [(ngModel)]="props.data.validation"></vezo-select>
+    </div>
 </ng-container>
 <ng-container *ngIf="props?.name === 'radio'">
-    <vezo-input label="Label" [(ngModel)]="props.data.label"></vezo-input>
-    <vezo-select label="Field" optionLabel="fieldName" [items]="fields" [(ngModel)]="props.data.field"></vezo-select>
-    <vezo-select label="Validation" [items]="validations" [(ngModel)]="props.data.validation"></vezo-select>
+    <div *ngIf="this.getDataFieldCount(props) > 0 && this.comingFromForm == true" style="
+      font-size: 16px;
+      font-weight: 600;
+      color: #2e2e2e;
+      text-decoration: underline;
+    " class="mb-2">
+        {{ props.name }}'s parameter:
+    </div>
+    <div class="mt-2">
+        <div *ngIf="
+        this.comingFromForm == false ||
+        (props.mappedData !== null && props.mappedData?.label != null)
+      " style="position: relative; display: inline-block" class="w-full">
+            <div style="position: relative; display: inline-block" class="w-full" *ngIf="
+          this.comingFromForm == false ||
+          (props.mappedData !== null && props.mappedData?.label != null)
+        ">
+                <div style="
+            position: absolute;
+            top: 0;
+            right: 0;
+            cursor: pointer;
+            z-index: 1;
+          " class="mb-1" [ngClass]="{
+            'bg-gray-200 p-1 rounded-md':
+              props.mappedData !== null && props.mappedData?.label
+          }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                    (click)="makeItMapped(props, 'label')">
+                    <img src="assets/tune.svg" style="width: 14px; height: auto" />
+                </div>
+                <vezo-input label="Label" [ngModel]="getInputValue('label')"
+                    (ngModelChange)="handleInputChange($event, 'label')"
+                    style="display: block; z-index: 0"></vezo-input>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-2">
+        <div class="flex gap-2 w-full">
+            <div *ngIf="
+          this.comingFromForm == false ||
+          (props.mappedData !== null && props.mappedData?.labelFont != null)
+        " style="position: relative; display: inline-block" class="w-full">
+                <!-- <vezo-input label="Font Size" [trailingText]="'px'" [(ngModel)]="props.data.labelFont"></vezo-input> -->
+                <div style="position: relative; display: inline-block" class="w-full" *ngIf="
+            this.comingFromForm == false ||
+            (props.mappedData !== null && props.mappedData?.labelFont != null)
+          ">
+                    <div style="
+              position: absolute;
+              top: 0;
+              right: 0;
+              cursor: pointer;
+              z-index: 1;
+            " class="mb-1" [ngClass]="{
+              'bg-gray-200 p-1 rounded-md':
+                props.mappedData !== null && props.mappedData?.labelFont
+            }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                        (click)="makeItMapped(props, 'labelFont')">
+                        <img src="assets/tune.svg" style="width: 14px; height: auto" />
+                    </div>
+                    <vezo-input label="Font Size" [trailingText]="'px'" [ngModel]="getInputValue('labelFont')"
+                        (ngModelChange)="handleInputChange($event, 'labelFont')"
+                        style="display: block; z-index: 0"></vezo-input>
+                </div>
+            </div>
+            <div *ngIf="
+          this.comingFromForm == false ||
+          (props.mappedData !== null && props.mappedData?.labelWeight != null)
+        " style="position: relative; display: inline-block" class="w-full">
+                <!-- <vezo-input label="Font Weight" [(ngModel)]="props.data.labelWeight"></vezo-input> -->
+                <div style="position: relative; display: inline-block" class="w-full" *ngIf="
+            this.comingFromForm == false ||
+            (props.mappedData !== null && props.mappedData?.labelWeight != null)
+          ">
+                    <div style="
+              position: absolute;
+              top: 0;
+              right: 0;
+              cursor: pointer;
+              z-index: 1;
+            " class="mb-1" [ngClass]="{
+              'bg-gray-200 p-1 rounded-md':
+                props.mappedData !== null && props.mappedData?.labelWeight
+            }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                        (click)="makeItMapped(props, 'labelWeight')">
+                        <img src="assets/tune.svg" style="width: 14px; height: auto" />
+                    </div>
+                    <vezo-input label="Font Weight" [ngModel]="getInputValue('labelWeight')"
+                        (ngModelChange)="handleInputChange($event, 'labelWeight')"
+                        style="display: block; z-index: 0"></vezo-input>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-2 w-full" style="position: relative; display: inline-block" *ngIf="
+      this.comingFromForm == false ||
+      (props.mappedData !== null && props.mappedData?.labelColor != null)
+    ">
+        <div style="position: relative; display: inline-block" class="w-full" *ngIf="
+        this.comingFromForm == false ||
+        (props.mappedData !== null && props.mappedData?.labelColor != null)
+      ">
+            <div style="
+          position: absolute;
+          top: 0;
+          right: 0;
+          cursor: pointer;
+          z-index: 1;
+        " class="mb-1" [ngClass]="{
+          'bg-gray-200 p-1 rounded-md':
+            props.mappedData !== null && props.mappedData?.labelColor
+        }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                (click)="makeItMapped(props, 'labelColor')">
+                <img src="assets/tune.svg" style="width: 14px; height: auto" />
+            </div>
+            <vezo-colorpicker [label]="'Label Color'" (colorChange)="handleInputChange($event, 'labelColor')"
+                [inputVal]="getInputValue('labelColor')"></vezo-colorpicker>
+        </div>
+    </div>
+
+    <div class="mt-2" *ngIf="
+      this.comingFromForm == false ||
+      (props.mappedData !== null && props.mappedData?.mr != null)
+    ">
+        <label class="">Margin Style</label>
+        <div class="flex justify-between items-center mt-2">
+            <div class="grid grid-cols-2 w-full justify-between">
+                <div class="flex justify-start items-center gap-4">
+                    <div>Top</div>
+                    <div class="flex mt-1 gap-1 justify-between p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.mt" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex justify-end items-center gap-4">
+                    <!-- Content for the second div -->
+                    <div>Bottom</div>
+                    <div class="flex mt-1 gap-1 justify-between p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+              justify-content: end;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.mb" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex justify-start items-center gap-4">
+                    <!-- Content for the second div -->
+                    <div>Left</div>
+                    <div class="flex mt-1 gap-1 p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.ml" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 justify-end">
+                    <!-- Content for the second div -->
+                    <div>Right</div>
+                    <div class="flex mt-1 gap-1 p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.mr" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mt-2" *ngIf="
+      this.comingFromForm == false ||
+      (props.mappedData !== null && props.mappedData?.pr != null)
+    ">
+        <label class="">Padding Style</label>
+        <div class="flex justify-between items-center mt-2">
+            <div class="grid grid-cols-2 w-full justify-between">
+                <div class="flex justify-start items-center gap-4">
+                    <div>Top</div>
+                    <div class="flex mt-1 gap-1 justify-between p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.pt" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex justify-end items-center gap-4">
+                    <!-- Content for the second div -->
+                    <div>Bottom</div>
+                    <div class="flex mt-1 gap-1 justify-between p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+              justify-content: end;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.pb" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex justify-start items-center gap-4">
+                    <!-- Content for the second div -->
+                    <div>Left</div>
+                    <div class="flex mt-1 gap-1 p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.pl" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 justify-end">
+                    <!-- Content for the second div -->
+                    <div>Right</div>
+                    <div class="flex mt-1 gap-1 p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.pr" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mt-2 mb-2" *ngIf="
+      this.comingFromForm == false ||
+      (props.mappedData !== null && props.mappedData?.alignment != null)
+    ">
+        <label class="">Alignment</label>
+        <div class="flex mt-2 p-1 gap-2 w-fit" style="border-color: #dfdfdf; border-width: 1px; border-radius: 4px">
+            <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.alignment = 'start'"
+                [ngClass]="{ 'bg-slate-100': props.data?.alignment == 'start' }">
+                <img src="assets/alignLeft.svg" style="width: 16px; height: 16px" />
+            </div>
+            <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.alignment = 'center'"
+                [ngClass]="{ 'bg-slate-100': props.data?.alignment == 'center' }">
+                <img src="assets/alignCenter.svg" style="width: 16px; height: 16px" />
+            </div>
+            <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.alignment = 'end'"
+                [ngClass]="{ 'bg-slate-100': props.data?.alignment == 'end' }">
+                <img src="assets/alignRight.svg" style="width: 16px; height: 16px" />
+            </div>
+        </div>
+    </div>
+    <div class="mt-2" *ngIf="
+      this.comingFromForm == false ||
+      (props.mappedData !== null && props.mappedData?.fieldName != null)
+    ">
+        <vezo-select label="Field" optionLabel="fieldName" [items]="fields"
+            [(ngModel)]="props.data.field"></vezo-select>
+    </div>
+    <div class="mt-2" *ngIf="
+      this.comingFromForm == false ||
+      (props.mappedData !== null && props.mappedData?.validation != null)
+    ">
+        <vezo-select label="Validation" [items]="validations" [(ngModel)]="props.data.validation"></vezo-select>
+    </div>
 </ng-container>
 <ng-container *ngIf="props?.name === 'switch'">
-    <vezo-input label="Label" [(ngModel)]="props.data.label"></vezo-input>
-    <vezo-select label="Field" optionLabel="fieldName" [items]="fields" [(ngModel)]="props.data.field"></vezo-select>
-    <vezo-select label="Validation" [items]="validations" [(ngModel)]="props.data.validation"></vezo-select>
+    <div *ngIf="this.getDataFieldCount(props) > 0 && this.comingFromForm == true" style="
+      font-size: 16px;
+      font-weight: 600;
+      color: #2e2e2e;
+      text-decoration: underline;
+    " class="mb-2">
+        {{ props.name }}'s parameter:
+    </div>
+    <div class="mt-2">
+        <div *ngIf="
+        this.comingFromForm == false ||
+        (props.mappedData !== null && props.mappedData?.label != null)
+      " style="position: relative; display: inline-block" class="w-full">
+            <div style="position: relative; display: inline-block" class="w-full" *ngIf="
+          this.comingFromForm == false ||
+          (props.mappedData !== null && props.mappedData?.label != null)
+        ">
+                <div style="
+            position: absolute;
+            top: 0;
+            right: 0;
+            cursor: pointer;
+            z-index: 1;
+          " class="mb-1" [ngClass]="{
+            'bg-gray-200 p-1 rounded-md':
+              props.mappedData !== null && props.mappedData?.label
+          }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                    (click)="makeItMapped(props, 'label')">
+                    <img src="assets/tune.svg" style="width: 14px; height: auto" />
+                </div>
+                <vezo-input label="Label" [ngModel]="getInputValue('label')"
+                    (ngModelChange)="handleInputChange($event, 'label')"
+                    style="display: block; z-index: 0"></vezo-input>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-2">
+        <div class="flex gap-2 w-full">
+            <div *ngIf="
+          this.comingFromForm == false ||
+          (props.mappedData !== null && props.mappedData?.labelFont != null)
+        " style="position: relative; display: inline-block" class="w-full">
+                <!-- <vezo-input label="Font Size" [trailingText]="'px'" [(ngModel)]="props.data.labelFont"></vezo-input> -->
+                <div style="position: relative; display: inline-block" class="w-full" *ngIf="
+            this.comingFromForm == false ||
+            (props.mappedData !== null && props.mappedData?.labelFont != null)
+          ">
+                    <div style="
+              position: absolute;
+              top: 0;
+              right: 0;
+              cursor: pointer;
+              z-index: 1;
+            " class="mb-1" [ngClass]="{
+              'bg-gray-200 p-1 rounded-md':
+                props.mappedData !== null && props.mappedData?.labelFont
+            }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                        (click)="makeItMapped(props, 'labelFont')">
+                        <img src="assets/tune.svg" style="width: 14px; height: auto" />
+                    </div>
+                    <vezo-input label="Font Size" [trailingText]="'px'" [ngModel]="getInputValue('labelFont')"
+                        (ngModelChange)="handleInputChange($event, 'labelFont')"
+                        style="display: block; z-index: 0"></vezo-input>
+                </div>
+            </div>
+            <div *ngIf="
+          this.comingFromForm == false ||
+          (props.mappedData !== null && props.mappedData?.labelWeight != null)
+        " style="position: relative; display: inline-block" class="w-full">
+                <!-- <vezo-input label="Font Weight" [(ngModel)]="props.data.labelWeight"></vezo-input> -->
+                <div style="position: relative; display: inline-block" class="w-full" *ngIf="
+            this.comingFromForm == false ||
+            (props.mappedData !== null && props.mappedData?.labelWeight != null)
+          ">
+                    <div style="
+              position: absolute;
+              top: 0;
+              right: 0;
+              cursor: pointer;
+              z-index: 1;
+            " class="mb-1" [ngClass]="{
+              'bg-gray-200 p-1 rounded-md':
+                props.mappedData !== null && props.mappedData?.labelWeight
+            }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                        (click)="makeItMapped(props, 'labelWeight')">
+                        <img src="assets/tune.svg" style="width: 14px; height: auto" />
+                    </div>
+                    <vezo-input label="Font Weight" [ngModel]="getInputValue('labelWeight')"
+                        (ngModelChange)="handleInputChange($event, 'labelWeight')"
+                        style="display: block; z-index: 0"></vezo-input>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-2 w-full" style="position: relative; display: inline-block" *ngIf="
+      this.comingFromForm == false ||
+      (props.mappedData !== null && props.mappedData?.labelColor != null)
+    ">
+        <div style="position: relative; display: inline-block" class="w-full" *ngIf="
+        this.comingFromForm == false ||
+        (props.mappedData !== null && props.mappedData?.labelColor != null)
+      ">
+            <div style="
+          position: absolute;
+          top: 0;
+          right: 0;
+          cursor: pointer;
+          z-index: 1;
+        " class="mb-1" [ngClass]="{
+          'bg-gray-200 p-1 rounded-md':
+            props.mappedData !== null && props.mappedData?.labelColor
+        }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                (click)="makeItMapped(props, 'labelColor')">
+                <img src="assets/tune.svg" style="width: 14px; height: auto" />
+            </div>
+            <vezo-colorpicker [label]="'Label Color'" (colorChange)="handleInputChange($event, 'labelColor')"
+                [inputVal]="getInputValue('labelColor')"></vezo-colorpicker>
+        </div>
+    </div>
+
+    <div class="mt-2" *ngIf="
+      this.comingFromForm == false ||
+      (props.mappedData !== null && props.mappedData?.mr != null)
+    ">
+        <label class="">Margin Style</label>
+        <div class="flex justify-between items-center mt-2">
+            <div class="grid grid-cols-2 w-full justify-between">
+                <div class="flex justify-start items-center gap-4">
+                    <div>Top</div>
+                    <div class="flex mt-1 gap-1 justify-between p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.mt" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex justify-end items-center gap-4">
+                    <!-- Content for the second div -->
+                    <div>Bottom</div>
+                    <div class="flex mt-1 gap-1 justify-between p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+              justify-content: end;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.mb" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex justify-start items-center gap-4">
+                    <!-- Content for the second div -->
+                    <div>Left</div>
+                    <div class="flex mt-1 gap-1 p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.ml" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 justify-end">
+                    <!-- Content for the second div -->
+                    <div>Right</div>
+                    <div class="flex mt-1 gap-1 p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.mr" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mt-2" *ngIf="
+      this.comingFromForm == false ||
+      (props.mappedData !== null && props.mappedData?.pr != null)
+    ">
+        <label class="">Padding Style</label>
+        <div class="flex justify-between items-center mt-2">
+            <div class="grid grid-cols-2 w-full justify-between">
+                <div class="flex justify-start items-center gap-4">
+                    <div>Top</div>
+                    <div class="flex mt-1 gap-1 justify-between p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.pt" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex justify-end items-center gap-4">
+                    <!-- Content for the second div -->
+                    <div>Bottom</div>
+                    <div class="flex mt-1 gap-1 justify-between p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+              justify-content: end;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.pb" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex justify-start items-center gap-4">
+                    <!-- Content for the second div -->
+                    <div>Left</div>
+                    <div class="flex mt-1 gap-1 p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.pl" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 justify-end">
+                    <!-- Content for the second div -->
+                    <div>Right</div>
+                    <div class="flex mt-1 gap-1 p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.pr" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mt-2 mb-2" *ngIf="
+      this.comingFromForm == false ||
+      (props.mappedData !== null && props.mappedData?.alignment != null)
+    ">
+        <label class="">Alignment</label>
+        <div class="flex mt-2 p-1 gap-2 w-fit" style="border-color: #dfdfdf; border-width: 1px; border-radius: 4px">
+            <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.alignment = 'start'"
+                [ngClass]="{ 'bg-slate-100': props.data?.alignment == 'start' }">
+                <img src="assets/alignLeft.svg" style="width: 16px; height: 16px" />
+            </div>
+            <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.alignment = 'center'"
+                [ngClass]="{ 'bg-slate-100': props.data?.alignment == 'center' }">
+                <img src="assets/alignCenter.svg" style="width: 16px; height: 16px" />
+            </div>
+            <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.alignment = 'end'"
+                [ngClass]="{ 'bg-slate-100': props.data?.alignment == 'end' }">
+                <img src="assets/alignRight.svg" style="width: 16px; height: 16px" />
+            </div>
+        </div>
+    </div>
+    <div class="mt-2" *ngIf="
+      this.comingFromForm == false ||
+      (props.mappedData !== null && props.mappedData?.fieldName != null)
+    ">
+        <vezo-select label="Field" optionLabel="fieldName" [items]="fields"
+            [(ngModel)]="props.data.field"></vezo-select>
+    </div>
+    <div class="mt-2" *ngIf="
+      this.comingFromForm == false ||
+      (props.mappedData !== null && props.mappedData?.validation != null)
+    ">
+        <vezo-select label="Validation" [items]="validations" [(ngModel)]="props.data.validation"></vezo-select>
+    </div>
 </ng-container>
 <ng-container *ngIf="props?.name === 'table'">
     <vezo-input label="Caption" [(ngModel)]="props.data.caption"></vezo-input>
     <vezo-select label="Collection" optionLabel="collectionName" [items]="collections"
         [(ngModel)]="props.data.collection" (ngModelChange)="getFields()"></vezo-select>
+
     <table class="border-collapse table-auto w-full text-sm bg-white my-4">
         <tr class="bg-gray-50">
             <td class="border p-2 w-72 font-semibold">Heading</td>
@@ -58,8 +2779,8 @@
         <tr *ngFor="let col of props.data.cols" (click)="setColumn(col)">
             <td class="border p-2">{{ col.heading }}</td>
             <td class="border p-2">{{ col.field }}</td>
-            <td class="border p-2">{{ col.sortable ? 'Y': 'N' }}</td>
-            <td class="border p-2">{{ col.filterable ? 'Y': 'N' }}</td>
+            <td class="border p-2">{{ col.sortable ? "Y" : "N" }}</td>
+            <td class="border p-2">{{ col.filterable ? "Y" : "N" }}</td>
         </tr>
     </table>
     <div class="mt-8">
@@ -69,7 +2790,7 @@
         <div>
             <!-- <vezo-input label="Field" [(ngModel)]="column.field"></vezo-input> -->
             <vezo-select label="Field" [items]="fields" [(ngModel)]="column.field" optionLabel="fieldName"
-                optionValue="fieldName" (ngModelChange)="column.heading=column.field"></vezo-select>
+                optionValue="fieldName" (ngModelChange)="column.heading = column.field"></vezo-select>
         </div>
         <div>
             <vezo-checkbox label="Sortable" [(ngModel)]="column.sortable"></vezo-checkbox>
@@ -98,11 +2819,1001 @@
         </div>
     </div>
 </ng-container>
-<ng-container *ngIf="props?.name === 'form'">
-    <vezo-select label="Form" [(ngModel)]="formData" optionLabel="formName" [items]="forms"
-        (ngModelChange)="setForm()"></vezo-select>
+<ng-container *ngIf="props?.name === 'image'">
+    <div *ngIf="this.getDataFieldCount(props) > 0 && this.comingFromForm == true" style="
+      font-size: 16px;
+      font-weight: 600;
+      color: #2e2e2e;
+      text-decoration: underline;
+    " class="mb-2">
+        {{ props.name }}'s parameter:
+    </div>
+
+    <!-- <div class="mt-2">
+        <vezo-input label="Image URL" [(ngModel)]="props.data.url"></vezo-input>
+    </div> -->
+    <div class="mt-2">
+        <div *ngIf="
+        this.comingFromForm == false ||
+        (props.mappedData !== null && props.mappedData?.url != null)
+      " style="position: relative; display: inline-block" class="w-full">
+            <div style="position: relative; display: inline-block" class="w-full" *ngIf="
+          this.comingFromForm == false ||
+          (props.mappedData !== null && props.mappedData?.url != null)
+        ">
+                <div style="
+            position: absolute;
+            top: 0;
+            right: 0;
+            cursor: pointer;
+            z-index: 1;
+          " class="mb-1" [ngClass]="{
+            'bg-gray-200 rounded-md p-1':
+              props.mappedData !== null && props.mappedData?.url
+          }" *ngIf="this.comingFromForm == false && this.comingFromPage == false" (click)="makeItMapped(props, 'url')">
+                    <img src="assets/tune.svg" style="width: 14px; height: auto" />
+                </div>
+                <vezo-input label="Image URL" [ngModel]="getInputValue('url')"
+                    (ngModelChange)="handleInputChange($event, 'url')" style="display: block; z-index: 0"></vezo-input>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex gap-2 mt-2" *ngIf="
+      this.comingFromForm == false ||
+      (props.mappedData !== null && props.mappedData?.widthHeight != null)
+    ">
+        <vezo-input label="Width" [trailingText]="'px'" [(ngModel)]="props.data.width"></vezo-input>
+        <vezo-input label="Height" [trailingText]="'px'" [(ngModel)]="props.data.height"></vezo-input>
+    </div>
+    <div class="mt-2" *ngIf="
+      this.comingFromForm == false ||
+      (props.mappedData !== null && props.mappedData?.alignment != null)
+    ">
+        <label class="">Alignment</label>
+        <div class="flex mt-2 p-1 gap-2 w-fit" style="border-color: #dfdfdf; border-width: 1px; border-radius: 4px">
+            <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.alignment = 'start'"
+                [ngClass]="{ 'bg-slate-100': props.data?.alignment == 'start' }">
+                <img src="assets/alignLeft.svg" style="width: 16px; height: 16px" />
+            </div>
+            <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.alignment = 'center'"
+                [ngClass]="{ 'bg-slate-100': props.data?.alignment == 'center' }">
+                <img src="assets/alignCenter.svg" style="width: 16px; height: 16px" />
+            </div>
+            <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.alignment = 'end'"
+                [ngClass]="{ 'bg-slate-100': props.data?.alignment == 'end' }">
+                <img src="assets/alignRight.svg" style="width: 16px; height: 16px" />
+            </div>
+        </div>
+    </div>
+    <div class="mt-2" *ngIf="
+      this.comingFromForm == false ||
+      (props.mappedData !== null && props.mappedData?.mr != null)
+    ">
+        <label> Margin Style </label>
+        <div class="flex justify-between items-center mt-2">
+            <div class="grid grid-cols-2 w-full justify-between">
+                <div class="flex justify-start items-center gap-4">
+                    <div>Top</div>
+                    <div class="flex mt-1 gap-1 justify-between p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.mt" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex justify-end items-center gap-4">
+                    <!-- Content for the second div -->
+                    <div>Bottom</div>
+                    <div class="flex mt-1 gap-1 justify-between p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+              justify-content: end;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.mb" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex justify-start items-center gap-4">
+                    <!-- Content for the second div -->
+                    <div>Left</div>
+                    <div class="flex mt-1 gap-1 p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.ml" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 justify-end">
+                    <!-- Content for the second div -->
+                    <div>Right</div>
+                    <div class="flex mt-1 gap-1 p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.mr" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mt-2 mb-2" *ngIf="
+      this.comingFromForm == false ||
+      (props.mappedData !== null && props.mappedData?.pr != null)
+    ">
+        <label class="">Padding Style</label>
+        <div class="flex justify-between items-center mt-2">
+            <div class="grid grid-cols-2 w-full justify-between">
+                <div class="flex justify-start items-center gap-4">
+                    <div>Top</div>
+                    <div class="flex mt-1 gap-1 justify-between p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.pt" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex justify-end items-center gap-4">
+                    <!-- Content for the second div -->
+                    <div>Bottom</div>
+                    <div class="flex mt-1 gap-1 justify-between p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+              justify-content: end;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.pb" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex justify-start items-center gap-4">
+                    <!-- Content for the second div -->
+                    <div>Left</div>
+                    <div class="flex mt-1 gap-1 p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.pl" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 justify-end">
+                    <!-- Content for the second div -->
+                    <div>Right</div>
+                    <div class="flex mt-1 gap-1 p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.pr" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </ng-container>
-<div *ngIf="props?.name" class="text-right" (click)="deleteProperty()">
-    <vezo-button label="Delete"></vezo-button>
+<ng-container *ngIf="props?.name === 'divider'">
+    <div class="flex gap-2 mt-2" *ngIf="
+    this.comingFromForm == false ||
+    (props.mappedData !== null && props.mappedData?.widthAndHeight != null)">
+        <vezo-input label="Width" [trailingText]="'px'" [(ngModel)]="props.data.width"></vezo-input>
+        <vezo-input label="Height" [trailingText]="'px'" [(ngModel)]="props.data.height"></vezo-input>
+    </div>
+    <div class="mt-2" *ngIf="
+    this.comingFromForm == false ||
+    (props.mappedData !== null && props.mappedData?.DividerColor != null)">
+        <vezo-colorpicker [label]="'Divider Color'" (colorChange)="props.data.dividerColor = $event"
+            [inputVal]="props.data.dividerColor"></vezo-colorpicker>
+    </div>
+    <div class="mt-2" *ngIf="
+    this.comingFromForm == false ||
+    (props.mappedData !== null && props.mappedData?.alignment != null)">
+        <label class="">Alignment</label>
+        <div class="flex mt-2 p-1 gap-2 w-fit" style="border-color: #dfdfdf; border-width: 1px; border-radius: 4px">
+            <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.alignment = 'start'"
+                [ngClass]="{ 'bg-slate-100': props.data?.alignment == 'start' }">
+                <img src="assets/alignLeft.svg" style="width: 16px; height: 16px" />
+            </div>
+            <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.alignment = 'center'"
+                [ngClass]="{ 'bg-slate-100': props.data?.alignment == 'center' }">
+                <img src="assets/alignCenter.svg" style="width: 16px; height: 16px" />
+            </div>
+            <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.alignment = 'end'"
+                [ngClass]="{ 'bg-slate-100': props.data?.alignment == 'end' }">
+                <img src="assets/alignRight.svg" style="width: 16px; height: 16px" />
+            </div>
+        </div>
+    </div>
+    <div class="mt-2" *ngIf="
+    this.comingFromForm == false ||
+    (props.mappedData !== null && props.mappedData?.mr != null)">
+        <label class="">Margin Style</label>
+        <div class="flex justify-between items-center mt-2">
+            <div class="grid grid-cols-2 w-full justify-between">
+                <div class="flex justify-start items-center gap-4">
+                    <div>Top</div>
+                    <div class="flex mt-1 gap-1 justify-between p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.mt" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex justify-end items-center gap-4">
+                    <!-- Content for the second div -->
+                    <div>Bottom</div>
+                    <div class="flex mt-1 gap-1 justify-between p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+              justify-content: end;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.mb" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex justify-start items-center gap-4">
+                    <!-- Content for the second div -->
+                    <div>Left</div>
+                    <div class="flex mt-1 gap-1 p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.ml" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 justify-end">
+                    <!-- Content for the second div -->
+                    <div>Right</div>
+                    <div class="flex mt-1 gap-1 p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.mr" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mt-2 mb-2" *ngIf="
+    this.comingFromForm == false ||
+    (props.mappedData !== null && props.mappedData?.pr != null)">
+        <label class="">Padding Style</label>
+        <div class="flex justify-between items-center mt-2">
+            <div class="grid grid-cols-2 w-full justify-between">
+                <div class="flex justify-start items-center gap-4">
+                    <div>Top</div>
+                    <div class="flex mt-1 gap-1 justify-between p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.pt" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex justify-end items-center gap-4">
+                    <!-- Content for the second div -->
+                    <div>Bottom</div>
+                    <div class="flex mt-1 gap-1 justify-between p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+              justify-content: end;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.pb" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex justify-start items-center gap-4">
+                    <!-- Content for the second div -->
+                    <div>Left</div>
+                    <div class="flex mt-1 gap-1 p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.pl" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 justify-end">
+                    <!-- Content for the second div -->
+                    <div>Right</div>
+                    <div class="flex mt-1 gap-1 p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.pr" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-container>
+<ng-container *ngIf="props?.name === 'video'">
+    <div *ngIf="this.getDataFieldCount(props) > 0 && this.comingFromForm == true" style="
+      font-size: 16px;
+      font-weight: 600;
+      color: #2e2e2e;
+      text-decoration: underline;
+    " class="mb-2">
+        {{ props.name }}'s parameter:
+    </div>
+    <div class="mt-2">
+        <div *ngIf="
+        this.comingFromForm == false ||
+        (props.mappedData !== null && props.mappedData?.url != null)
+      " style="position: relative; display: inline-block" class="w-full">
+            <div style="position: relative; display: inline-block" class="w-full" *ngIf="
+          this.comingFromForm == false ||
+          (props.mappedData !== null && props.mappedData?.url != null)
+        ">
+                <div style="
+            position: absolute;
+            top: 0;
+            right: 0;
+            cursor: pointer;
+            z-index: 1;
+          " class="mb-1" [ngClass]="{
+            'bg-gray-200 p-1 rounded-md':
+              props.mappedData !== null && props.mappedData?.url
+          }" *ngIf="this.comingFromForm == false && this.comingFromPage == false" (click)="makeItMapped(props, 'url')">
+                    <img src="assets/tune.svg" style="width: 14px; height: auto" />
+                </div>
+                <vezo-input label="Video URL" [ngModel]="getInputValue('url')"
+                    (ngModelChange)="handleInputChange($event, 'url')" style="display: block; z-index: 0"></vezo-input>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-2" *ngIf="
+      this.comingFromForm == false ||
+      (props.mappedData !== null && props.mappedData?.width != null)
+    ">
+        <vezo-input label="Width" [trailingText]="'px'" [(ngModel)]="props.data.width"></vezo-input>
+    </div>
+    <div class="mt-2" *ngIf="
+      this.comingFromForm == false ||
+      (props.mappedData !== null && props.mappedData?.alignment != null)
+    ">
+        <label class="">Alignment</label>
+        <div class="flex mt-2 p-1 gap-2 w-fit" style="border-color: #dfdfdf; border-width: 1px; border-radius: 4px">
+            <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.alignment = 'start'"
+                [ngClass]="{ 'bg-slate-100': props.data?.alignment == 'start' }">
+                <img src="assets/alignLeft.svg" style="width: 16px; height: 16px" />
+            </div>
+            <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.alignment = 'center'"
+                [ngClass]="{ 'bg-slate-100': props.data?.alignment == 'center' }">
+                <img src="assets/alignCenter.svg" style="width: 16px; height: 16px" />
+            </div>
+            <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.alignment = 'end'"
+                [ngClass]="{ 'bg-slate-100': props.data?.alignment == 'end' }">
+                <img src="assets/alignRight.svg" style="width: 16px; height: 16px" />
+            </div>
+        </div>
+    </div>
+    <div class="mt-2" *ngIf="
+      this.comingFromForm == false ||
+      (props.mappedData !== null && props.mappedData?.mr != null)
+    ">
+        <label class="">Margin Style</label>
+        <div class="flex justify-between items-center mt-2">
+            <div class="grid grid-cols-2 w-full justify-between">
+                <div class="flex justify-start items-center gap-4">
+                    <div>Top</div>
+                    <div class="flex mt-1 gap-1 justify-between p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.mt" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex justify-end items-center gap-4">
+                    <!-- Content for the second div -->
+                    <div>Bottom</div>
+                    <div class="flex mt-1 gap-1 justify-between p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+              justify-content: end;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.mb" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex justify-start items-center gap-4">
+                    <!-- Content for the second div -->
+                    <div>Left</div>
+                    <div class="flex mt-1 gap-1 p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.ml" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 justify-end">
+                    <!-- Content for the second div -->
+                    <div>Right</div>
+                    <div class="flex mt-1 gap-1 p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.mr" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mt-2 mb-2" *ngIf="
+      this.comingFromForm == false ||
+      (props.mappedData !== null && props.mappedData?.pr != null)
+    ">
+        <label class="">Padding Style</label>
+        <div class="flex justify-between items-center mt-2">
+            <div class="grid grid-cols-2 w-full justify-between">
+                <div class="flex justify-start items-center gap-4">
+                    <div>Top</div>
+                    <div class="flex mt-1 gap-1 justify-between p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.pt" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex justify-end items-center gap-4">
+                    <!-- Content for the second div -->
+                    <div>Bottom</div>
+                    <div class="flex mt-1 gap-1 justify-between p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+              justify-content: end;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.pb" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex justify-start items-center gap-4">
+                    <!-- Content for the second div -->
+                    <div>Left</div>
+                    <div class="flex mt-1 gap-1 p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.pl" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 justify-end">
+                    <!-- Content for the second div -->
+                    <div>Right</div>
+                    <div class="flex mt-1 gap-1 p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.pr" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-container>
+<ng-container *ngIf="props?.name === 'card'">
+    <div *ngIf="this.getDataFieldCount(props) > 0 && this.comingFromForm == true" style="
+      font-size: 16px;
+      font-weight: 600;
+      color: #2e2e2e;
+      text-decoration: underline;
+    " class="mb-2">
+        {{ props.name }}'s parameter:
+    </div>
+    <div class="mt-2">
+        <div class="flex gap-2 w-full">
+            <div *ngIf="
+          this.comingFromForm == false ||
+          (props.mappedData !== null && props.mappedData?.imageUrl != null)
+        " style="position: relative; display: inline-block" class="w-full">
+                <div style="position: relative; display: inline-block" class="w-full" *ngIf="
+            this.comingFromForm == false ||
+            (props.mappedData !== null && props.mappedData?.imageUrl != null)
+          ">
+                    <div style="
+              position: absolute;
+              top: 0;
+              right: 0;
+              cursor: pointer;
+              z-index: 1;
+            " class="mb-1" [ngClass]="{
+              'bg-gray-200 p-1 rounded-md':
+                props.mappedData !== null && props.mappedData?.imageUrl
+            }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                        (click)="makeItMapped(props, 'imageUrl')">
+                        <img src="assets/tune.svg" style="width: 14px; height: auto" />
+                    </div>
+                    <vezo-input label="Image URL" [ngModel]="getInputValue('imageUrl')"
+                        (ngModelChange)="handleInputChange($event, 'imageUrl')"
+                        style="display: block; z-index: 0"></vezo-input>
+                </div>
+            </div>
+            <div *ngIf="
+          this.comingFromForm == false ||
+          (props.mappedData !== null && props.mappedData?.width != null)
+        " style="position: relative; display: inline-block" class="w-full">
+                <div style="position: relative; display: inline-block" class="w-full" *ngIf="
+            this.comingFromForm == false ||
+            (props.mappedData !== null && props.mappedData?.width != null)
+          ">
+                    <div style="
+              position: absolute;
+              top: 0;
+              right: 0;
+              cursor: pointer;
+              z-index: 1;
+            " class="mb-1" [ngClass]="{
+              'bg-gray-200 p-1 rounded-md':
+                props.mappedData !== null && props.mappedData?.width
+            }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                        (click)="makeItMapped(props, 'width')">
+                        <img src="assets/tune.svg" style="width: 14px; height: auto" />
+                    </div>
+                    <vezo-input label="Card Width" [ngModel]="getInputValue('width')"
+                        (ngModelChange)="handleInputChange($event, 'width')"
+                        style="display: block; z-index: 0"></vezo-input>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-2">
+        <div class="flex gap-2 w-full" style="flex-direction:column">
+            <div *ngIf="
+          this.comingFromForm == false ||
+          (props.mappedData !== null && props.mappedData?.imageWidth != null)
+        " style="position: relative; display: inline-block" class="w-full">
+                <div style="position: relative; display: inline-block" class="w-full" *ngIf="
+            this.comingFromForm == false ||
+            (props.mappedData !== null && props.mappedData?.imageWidth != null)
+          ">
+                    <div style="
+              position: absolute;
+              top: 0;
+              right: 0;
+              cursor: pointer;
+              z-index: 1;
+            " class="mb-1" [ngClass]="{
+              'bg-gray-200 p-1 rounded-md':
+                props.mappedData !== null && props.mappedData?.imageWidth
+            }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                        (click)="makeItMapped(props, 'imageWidth')">
+                        <img src="assets/tune.svg" style="width: 14px; height: auto" />
+                    </div>
+                    <vezo-input label="Image Width" [trailingText]="'px'" [ngModel]="getInputValue('imageWidth')"
+                        (ngModelChange)="handleInputChange($event, 'imageWidth')"
+                        style="display: block; z-index: 0"></vezo-input>
+                </div>
+            </div>
+            <div *ngIf="
+          this.comingFromForm == false ||
+          (props.mappedData !== null && props.mappedData?.fillColor != null)
+        " style="position: relative; display: inline-block" class="w-full">
+                <div style="position: relative; display: inline-block" class="w-full" *ngIf="
+            this.comingFromForm == false ||
+            (props.mappedData !== null && props.mappedData?.fillColor != null)
+          ">
+                    <div style="
+              position: absolute;
+              top: 0;
+              right: 0;
+              cursor: pointer;
+              z-index: 1;
+            " class="mb-1" [ngClass]="{
+              'bg-gray-200 p-1 rounded-md':
+                props.mappedData !== null && props.mappedData?.fillColor
+            }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                        (click)="makeItMapped(props, 'fillColor')">
+                        <img src="assets/tune.svg" style="width: 14px; height: auto" />
+                    </div>
+                    <vezo-colorpicker [label]="'Background Color'"
+                        (colorChange)="handleInputChange($event, 'fillColor')"
+                        [inputVal]="getInputValue('fillColor')"></vezo-colorpicker>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-2">
+        <div *ngIf="
+        this.comingFromForm == false ||
+        (props.mappedData !== null && props.mappedData?.title != null)
+      " style="position: relative; display: inline-block" class="w-full">
+            <div style="position: relative; display: inline-block" class="w-full" *ngIf="
+          this.comingFromForm == false ||
+          (props.mappedData !== null && props.mappedData?.title != null)
+        ">
+                <div style="
+            position: absolute;
+            top: 0;
+            right: 0;
+            cursor: pointer;
+            z-index: 1;
+          " class="mb-1" [ngClass]="{
+            'bg-gray-200 p-1 rounded-md':
+              props.mappedData !== null && props.mappedData?.title
+          }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                    (click)="makeItMapped(props, 'title')">
+                    <img src="assets/tune.svg" style="width: 14px; height: auto" />
+                </div>
+                <vezo-input label="Title" [ngModel]="getInputValue('title')"
+                    (ngModelChange)="handleInputChange($event, 'title')"
+                    style="display: block; z-index: 0"></vezo-input>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-2">
+        <div *ngIf="
+        this.comingFromForm == false ||
+        (props.mappedData !== null && props.mappedData?.desc != null)
+      " style="position: relative; display: inline-block" class="w-full">
+            <div style="position: relative; display: inline-block" class="w-full" *ngIf="
+          this.comingFromForm == false ||
+          (props.mappedData !== null && props.mappedData?.desc != null)
+        ">
+                <div style="
+            position: absolute;
+            top: 0;
+            right: 0;
+            cursor: pointer;
+            z-index: 1;
+          " class="mb-1" [ngClass]="{
+            'bg-gray-200 p-1 rounded-md':
+              props.mappedData !== null && props.mappedData?.desc
+          }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                    (click)="makeItMapped(props, 'desc')">
+                    <img src="assets/tune.svg" style="width: 14px; height: auto" />
+                </div>
+                <vezo-textarea label="Description" [ngModel]="getInputValue('desc')"
+                    (ngModelChange)="handleInputChange($event, 'desc')"
+                    style="display: block; z-index: 0"></vezo-textarea>
+            </div>
+        </div>
+    </div>
+    <!-- Alignments -->
+    <div class="mt-2 flex gap-2 justify-between" *ngIf="
+      this.comingFromForm == false ||
+      (props.mappedData !== null && props.mappedData?.alignment != null)
+    ">
+        <div class="w-4/12">
+            <label class="">Image</label>
+            <div class="flex mt-2 p-1 gap-2 w-fit" style="border-color: #dfdfdf; border-width: 1px; border-radius: 4px">
+                <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.imageAlignment = 'start'"
+                    [ngClass]="{ 'bg-slate-100': props.data?.imageAlignment == 'start' }">
+                    <img src="assets/alignLeft.svg" style="width: 16px; height: 16px" />
+                </div>
+                <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.imageAlignment = 'center'"
+                    [ngClass]="{ 'bg-slate-100': props.data?.imageAlignment == 'center' }">
+                    <img src="assets/alignCenter.svg" style="width: 16px; height: 16px" />
+                </div>
+                <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.imageAlignment = 'end'"
+                    [ngClass]="{ 'bg-slate-100': props.data?.imageAlignment == 'end' }">
+                    <img src="assets/alignRight.svg" style="width: 16px; height: 16px" />
+                </div>
+            </div>
+        </div>
+        <div class="w-4/12">
+            <label class="">Title</label>
+            <div class="flex mt-2 p-1 gap-2 w-fit" style="border-color: #dfdfdf; border-width: 1px; border-radius: 4px">
+                <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.titleAlignment = 'start'"
+                    [ngClass]="{ 'bg-slate-100': props.data?.titleAlignment == 'start' }">
+                    <img src="assets/alignLeft.svg" style="width: 16px; height: 16px" />
+                </div>
+                <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.titleAlignment = 'center'"
+                    [ngClass]="{ 'bg-slate-100': props.data?.titleAlignment == 'center' }">
+                    <img src="assets/alignCenter.svg" style="width: 16px; height: 16px" />
+                </div>
+                <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.titleAlignment = 'end'"
+                    [ngClass]="{ 'bg-slate-100': props.data?.titleAlignment == 'end' }">
+                    <img src="assets/alignRight.svg" style="width: 16px; height: 16px" />
+                </div>
+            </div>
+        </div>
+        <div class="w-4/12">
+            <label class="">Description</label>
+            <div class="flex mt-2 p-1 gap-2 w-fit" style="border-color: #dfdfdf; border-width: 1px; border-radius: 4px">
+                <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.descAlignment = 'start'"
+                    [ngClass]="{ 'bg-slate-100': props.data?.descAlignment == 'start' }">
+                    <img src="assets/alignLeft.svg" style="width: 16px; height: 16px" />
+                </div>
+                <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.descAlignment = 'center'"
+                    [ngClass]="{ 'bg-slate-100': props.data?.descAlignment == 'center' }">
+                    <img src="assets/alignCenter.svg" style="width: 16px; height: 16px" />
+                </div>
+                <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.descAlignment = 'end'"
+                    [ngClass]="{ 'bg-slate-100': props.data?.descAlignment == 'end' }">
+                    <img src="assets/alignRight.svg" style="width: 16px; height: 16px" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alignments Ends -->
+    <div class="mt-2" *ngIf="
+      this.comingFromForm == false ||
+      (props.mappedData !== null && props.mappedData?.mr != null)
+    ">
+        <label class="">Margin Style</label>
+        <div class="flex justify-between items-center mt-2">
+            <div class="grid grid-cols-2 w-full justify-between">
+                <div class="flex justify-start items-center gap-4">
+                    <div>Top</div>
+                    <div class="flex mt-1 gap-1 justify-between p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.mt" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex justify-end items-center gap-4">
+                    <!-- Content for the second div -->
+                    <div>Bottom</div>
+                    <div class="flex mt-1 gap-1 justify-between p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+              justify-content: end;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.mb" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex justify-start items-center gap-4">
+                    <!-- Content for the second div -->
+                    <div>Left</div>
+                    <div class="flex mt-1 gap-1 p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.ml" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 justify-end">
+                    <!-- Content for the second div -->
+                    <div>Right</div>
+                    <div class="flex mt-1 gap-1 p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.mr" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mt-2 mb-2" *ngIf="
+      this.comingFromForm == false ||
+      (props.mappedData !== null && props.mappedData?.pr != null)
+    ">
+        <label class="">Padding Style</label>
+        <div class="flex justify-between items-center">
+            <div class="grid grid-cols-2 w-full justify-between">
+                <div class="flex justify-start items-center gap-4">
+                    <div>Top</div>
+                    <div class="flex mt-1 gap-1 justify-between p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.pt" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex justify-end items-center gap-4">
+                    <!-- Content for the second div -->
+                    <div>Bottom</div>
+                    <div class="flex mt-1 gap-1 justify-between p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+              justify-content: end;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.pb" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex justify-start items-center gap-4">
+                    <!-- Content for the second div -->
+                    <div>Left</div>
+                    <div class="flex mt-1 gap-1 p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.pl" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 justify-end">
+                    <!-- Content for the second div -->
+                    <div>Right</div>
+                    <div class="flex mt-1 gap-1 p-2 w-20" style="
+              height: 30px;
+              border-width: 1px;
+              border-color: #dfdfdf;
+              border-radius: 4px;
+              align-items: center;
+            ">
+                        <div class="w-10/12">
+                            <input type="number" style="width: 40px" [(ngModel)]="props.data.pr" />
+                        </div>
+                        <div class="w-2/12 mr-2">px</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-container>
+<div *ngIf="this.comingFromForm == false || props.name == 'form'" class="text-right">
+    <vezo-button label="Delete" (click)="deleteProperty()"></vezo-button>
 </div>
 <vezo-toast></vezo-toast>

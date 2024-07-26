@@ -10,8 +10,6 @@ import { LayoutComponent } from './layout/layout.component';
 import { MicroserviceComponent } from './microservice/microservice.component';
 import { DesignerComponent } from './screen/designer/designer.component';
 import { ScreenComponent } from './screen/screen.component';
-import { WorkflowDesignerComponent } from './workflow/workflow-designer/workflow-designer.component';
-import { WorkflowComponent } from './workflow/workflow.component';
 
 import { AclComponent } from './acl/acl.component';
 import { ActionsComponent } from './actions/actions.component';
@@ -19,9 +17,14 @@ import { AppWizardComponent } from './application/app-wizard/app-wizard.componen
 import { ApplicationComponent } from './application/application.component';
 import { AuthGuard } from './auth/auth.guard';
 import { LoginComponent } from './auth/login/login.component';
+import { BusinessLogicAiComponent } from './business-logic/business-logic-ai/business-logic-ai.component';
+import { BusinessLogicDesignerComponent } from './business-logic/business-logic-designer/business-logic-designer.component';
+import { BusinessLogicComponent } from './business-logic/business-logic.component';
 import { EndpointsComponent } from './collection/endpoints/endpoints.component';
 import { DataFormComponent } from './data-form/data-form.component';
 import { FormDesignerComponent } from './data-form/form-designer/form-designer.component';
+import { DatasourceFormComponent } from './datasource/datasource-form/datasource-form.component';
+import { DatasourceListComponent } from './datasource/datasource-list/datasource-list.component';
 import { DiagramComponent } from './diagram/diagram.component';
 import { HomeComponent } from './home/home.component';
 import { MarketplaceComponent } from './marketplace/marketplace.component';
@@ -38,28 +41,50 @@ import { ReportDesignerComponent } from './reports/report-designer/report-design
 import { ReportsComponent } from './reports/reports.component';
 import { TemplatesComponent } from './screen/templates/templates.component';
 import { SettingsComponent } from './settings/settings.component';
+import { MenuPanelComponent } from './data-form/menu-panel/menu-panel.component';
+import { MenuPanelCreateComponent } from './data-form/menu-panel/menu-panel-create/menu-panel-create.component';
+import { MediaManagerComponent } from './media-manager/media-manager.component';
 
 const routes: Routes = [
   {
-    path: '', component: LayoutComponent, canActivate: [AuthGuard], children: [
+    path: '',
+    component: LayoutComponent,
+    canActivate: [AuthGuard],
+    children: [
       { path: '', component: FrontComponent },
       {
-        path: 'projects', component: DispatcherComponent,
+        path: 'projects',
+        component: DispatcherComponent,
         children: [
           { path: '', component: ProjectComponent },
           { path: 'create', component: WizardComponent, data: { step: 0 } },
           { path: 'manage', component: WizardComponent, data: { step: 1 } },
-          { path: 'manage/:id', component: WizardComponent, data: { step: 2 } }
-        ]
+          { path: 'manage/:id', component: WizardComponent, data: { step: 2 } },
+        ],
       },
       {
-        path: 'applications', component: DispatcherComponent,
+        path: 'datasources',
+        component: DispatcherComponent,
+        children: [
+          { path: '', component: DatasourceComponent },
+          { path: 'list', component: DatasourceListComponent },
+          { path: 'create', component: DatasourceFormComponent },
+          { path: 'edit/:id', component: DatasourceFormComponent },
+        ],
+      },
+      {
+        path: 'applications',
+        component: DispatcherComponent,
         children: [
           { path: '', component: ApplicationComponent },
           { path: 'create', component: AppWizardComponent, data: { step: 0 } },
           { path: 'manage', component: AppWizardComponent, data: { step: 1 } },
-          { path: 'manage/:id', component: AppWizardComponent, data: { step: 2 } }
-        ]
+          {
+            path: 'manage/:id',
+            component: AppWizardComponent,
+            data: { step: 2 },
+          },
+        ],
       },
       { path: 'releases', component: ReleasesComponent },
       { path: 'home', component: HomeComponent },
@@ -68,18 +93,20 @@ const routes: Routes = [
       { path: 'marketplace', component: MarketplaceComponent },
       { path: 'microservices/apidoc/:id', component: ApidocComponent },
       {
-        path: 'builder', children: [
+        path: 'builder',
+        children: [
           {
             path: 'microservices',
             component: DispatcherComponent,
             children: [
               { path: '', component: MicroserviceComponent },
               { path: 'create', component: MsFormComponent },
-              { path: 'edit/:id', component: MsFormComponent }
-            ]
+              { path: 'edit/:id', component: MsFormComponent },
+              { path: ':id', component: MicroserviceComponent },
+            ],
           },
           { path: 'diagram', component: DiagramComponent },
-          { path: 'datasources', component: DatasourceComponent },
+
           { path: 'datasources/:id', component: MsDatasourceComponent },
           { path: 'flow', component: FlowComponent },
           { path: 'collections', component: CollectionComponent },
@@ -87,16 +114,28 @@ const routes: Routes = [
           { path: 'collections/:id', component: CollectionComponent },
           { path: 'fields/:id', component: FieldsComponent },
           {
-            path: 'processes', component: DispatcherComponent, children: [
+            path: 'processes',
+            component: DispatcherComponent,
+            children: [
               { path: '', component: ProcessesComponent },
               { path: 'modeler/:id', component: MxflowComponent },
-            ]
+            ],
           },
           {
-            path: 'services', component: DispatcherComponent, children: [
-              { path: '', component: WorkflowComponent },
-              { path: 'designer/:id', component: WorkflowDesignerComponent }
-            ]
+            path: 'services',
+            component: DispatcherComponent,
+            children: [
+              { path: '', component: BusinessLogicComponent },
+              { path: ':id', component: BusinessLogicComponent },
+              {
+                path: 'designer/:id',
+                component: BusinessLogicDesignerComponent,
+              },
+              {
+                path: 'ai/:id',
+                component: BusinessLogicAiComponent,
+              },
+            ],
           },
           {
             path: 'screens',
@@ -104,16 +143,17 @@ const routes: Routes = [
             children: [
               {
                 path: '',
-                component: ScreenComponent
+                component: ScreenComponent,
               },
               {
                 path: 'templates',
-                component: TemplatesComponent
-              }, {
-                path: 'templates/:id',
-                component: TemplatesComponent
+                component: TemplatesComponent,
               },
-            ]
+              {
+                path: 'templates/:id',
+                component: TemplatesComponent,
+              },
+            ],
           },
           {
             path: 'forms',
@@ -121,16 +161,17 @@ const routes: Routes = [
             children: [
               {
                 path: '',
-                component: DataFormComponent
+                component: DataFormComponent,
               },
               {
                 path: 'templates',
-                component: TemplatesComponent
-              }, {
-                path: 'templates/:id',
-                component: TemplatesComponent
+                component: TemplatesComponent,
               },
-            ]
+              {
+                path: 'templates/:id',
+                component: TemplatesComponent,
+              },
+            ],
           },
           {
             path: 'reports',
@@ -138,50 +179,110 @@ const routes: Routes = [
             children: [
               {
                 path: '',
-                component: ReportsComponent
+                component: ReportsComponent,
               },
               {
                 path: 'query-builder',
-                component: QueryBuilderComponent
+                component: QueryBuilderComponent,
               },
               {
                 path: 'templates',
-                component: TemplatesComponent
-              }, {
-                path: 'templates/:id',
-                component: TemplatesComponent
+                component: TemplatesComponent,
               },
-            ]
+              {
+                path: 'templates/:id',
+                component: TemplatesComponent,
+              },
+            ],
           },
-        ]
+        ],
+      },
+    ],
+  },
+  {
+    path: 'builder/screens/designer/:id',
+    // component: LayoutComponent,
+    children: [
+      {
+        path: '',
+        component: DispatcherComponent,
+        children: [
+          { path: '', component: DesignerComponent }
+        ],
+      }
+    ]
+  },
+  // { path: 'actions', component: ActionsComponent },
+  {
+    path: 'actions',
+    component: LayoutComponent,
+    children: [
+      {
+        path: '',
+        component: DispatcherComponent,
+        children: [
+          { path: '', component: ActionsComponent }
+        ],
       }
     ]
   },
   {
-    path: 'builder/screens/designer/:id',
-    component: DesignerComponent
-  },
-  { path: 'actions', component: ActionsComponent },
-  {
     path: 'builder/forms/designer/:id',
-    component: FormDesignerComponent
+    // component: LayoutComponent, // Wants to open it in full screen with no left side bar
+    children: [
+      {
+        path: '',
+        component: DispatcherComponent,
+        children: [
+          { path: '', component: FormDesignerComponent }
+        ],
+      }
+    ]
   },
   {
     path: 'builder/reports/designer/:id',
-    component: ReportDesignerComponent
+    component: ReportDesignerComponent,
+  },
+  {
+    path: 'panelmenu',
+    component: LayoutComponent,
+    children: [
+      {
+        path: '',
+        component: DispatcherComponent,
+        children: [
+          { path: '', component: MenuPanelComponent },
+          { path: 'create', component: MenuPanelCreateComponent }
+        ],
+      }
+    ]
+  },
+  {
+    path: 'media-manager',
+    component: LayoutComponent,
+    children: [
+      {
+        path: '',
+        component: DispatcherComponent,
+        children: [
+          { path: '', component: MediaManagerComponent },
+          { path: 'folder/:id', component: MediaManagerComponent }
+        ],
+      }
+    ]
   },
   {
     path: 'auth/login',
-    component: LoginComponent
+    component: LoginComponent,
   },
   {
     path: 'login',
-    component: LoginComponent
-  }
+    component: LoginComponent,
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AppRoutingModule { }

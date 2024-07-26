@@ -1,67 +1,97 @@
 <div class="grid grid-cols-12 border min-h-full bg-white">
-    <div class="col-span-3 border-r">
-
-        <div class="p-4 border-b">
-            <h2 class="text-lg">Association
-            </h2>
-        </div>
-
-
-        <div class="p-4">
-            <div><label>Microservice</label></div>
-            <div>
-                <span class="text-indigo-400 text-lg"> {{ dataSingle.microServiceName }}</span>
-            </div>
-        </div>
+  <div class="col-span-3 border-r">
+    <div class="p-4 border-b flex">
+      <div class="mr-6">
+        <vezo-icon
+          icon="arrowLeft"
+          [routerLink]="['/builder/microservices/edit/' + dataSingle.id]"
+          className="cursor-pointer"
+        ></vezo-icon>
+      </div>
+      <h2 class="text-lg">Association</h2>
     </div>
-    <div class="col-span-9">
-        <div class="grid grid-cols-2 border-b justify-center items-center">
-            <div class="p-4">
-                <h2 class="text-lg">Datasources linked to Microservice</h2>
-            </div>
-            <div class="text-right p-2">
-                <vezo-button icon="link" label="Link Datasource" className="mr-2" (click)="editData(dataSingle)"
-                    *ngIf="!visible"></vezo-button>
-                <vezo-button icon="link" label="Regenerate Datasource" className="mr-2" (click)="regenerateDataSource()"
-                    *ngIf="!visible"></vezo-button>
-            </div>
-        </div>
-        <vezo-table [data]="dataSingle.datasources" *ngIf="!visible" [pagination]="false">
-            <ng-template vTemplate="header">
-                <tr>
-                    <th>Datasource Name</th>
-                    <th>Datasource URL</th>
-                    <th [width]="150">Actions</th>
-                </tr>
-            </ng-template>
-            <ng-template vTemplate="body">
-                <tr *ngFor="let ds of dataSingle.datasources">
-                    <td>{{ ds.dataSourceName }}</td>
-                    <td>{{ ds.dbUrl }}</td>
-                    <td>
-                        <vezo-icon icon="trash" className="w-4 h-4 text-red-400 cursor-pointer"
-                            (click)="unlinkData(ds)"></vezo-icon>
-                    </td>
-                </tr>
-            </ng-template>
-        </vezo-table>
 
-        <div class="p-4" *ngIf="visible">
-
-            <div class="grid grid-cols-2 gap-4">
-
-                <vezo-select label="Datasource" [(ngModel)]="ds" [items]="datasources"
-                    optionLabel="dataSourceName"></vezo-select>
-            </div>
-
-
-            <div class="text-left">
-                <vezo-button label="Cancel" (click)="visible=false" className="mr-2"></vezo-button>
-                <vezo-button label="Save" [disabled]="!form.valid" (click)="linkData()"></vezo-button>
-            </div>
-
-        </div>
-
+    <div class="p-4">
+      <div><label>Microservice</label></div>
+      <div>
+        <span class="text-indigo-400 text-lg">
+          {{ dataSingle.microServiceName }}</span
+        >
+      </div>
     </div>
+  </div>
+  <div class="col-span-9">
+    <div class="grid grid-cols-2 border-b justify-center items-center">
+      <div class="p-4">
+        <h2 class="text-lg">Datasources linked to Microservice</h2>
+      </div>
+      <div class="text-right p-2">
+        <vezo-button
+          icon="link"
+          label="Link Datasource"
+          className="mr-2"
+          (click)="editData(dataSingle)"
+          *ngIf="!visible"
+        ></vezo-button>
+        <vezo-button
+          icon="link"
+          label="Regenerate Datasource"
+          className="mr-2"
+          (click)="regenerateDataSource()"
+          *ngIf="!visible"
+        ></vezo-button>
+      </div>
+    </div>
+    <vezo-table
+      [data]="dataSingle.datasources"
+      *ngIf="!visible"
+      [pagination]="false"
+    >
+      <ng-template vTemplate="header">
+        <tr>
+          <th>Datasource Name</th>
+          <th>Datasource URL</th>
+          <th [width]="150">Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template vTemplate="body">
+        <tr *ngFor="let ds of dataSingle.datasources">
+          <td>{{ ds.dataSourceName }}</td>
+          <td>{{ ds.dbUrl }}</td>
+          <td>
+            <vezo-icon
+              icon="trash"
+              className="w-4 h-4 text-red-400 cursor-pointer"
+              (click)="unlinkData(ds)"
+            ></vezo-icon>
+          </td>
+        </tr>
+      </ng-template>
+    </vezo-table>
+
+    <div class="p-4" *ngIf="visible">
+      <div class="grid grid-cols-2 gap-4">
+        <vezo-select
+          label="Datasource"
+          [(ngModel)]="ds"
+          [items]="datasources"
+          optionLabel="dataSourceName"
+        ></vezo-select>
+      </div>
+
+      <div class="text-left">
+        <vezo-button
+          label="Cancel"
+          (click)="visible = false"
+          className="mr-2"
+        ></vezo-button>
+        <vezo-button
+          label="Save"
+          [disabled]="!form.valid"
+          (click)="linkData()"
+        ></vezo-button>
+      </div>
+    </div>
+  </div>
 </div>
 <vezo-toast></vezo-toast>

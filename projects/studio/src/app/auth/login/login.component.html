@@ -1,29 +1,63 @@
-<div class="grid place-items-center h-screen w-screen bg-gray-50">
-    <div class="w-1/3 bg-white">
-        <form [formGroup]="loginForm">
-
-            <vezo-card>
-                <ng-template vTemplate="header">
-                    <div class="flex place-items-center p-6 border-b">
-                        <div class="title"><img src="assets/macharc_icon.svg" class="w-12 m-auto" /></div>
-                        <div class="heading text-center flex-grow">Welcome Back to MACHARC</div>
-                    </div>
-                </ng-template>
-                <ng-template vTemplate="body">
-                    <div class="p-6 min-h-[12rem]">
-                        <vezo-input label="Username" formControlName="username"></vezo-input>
-
-                        <vezo-input type="password" label="Password" formControlName="password"></vezo-input>
-                    </div>
-                </ng-template>
-                <ng-template vTemplate="footer">
-                    <div class="text-right px-6 py-3 border-t">
-                        <vezo-button label="Login" (click)="onSubmit()"></vezo-button>
-                    </div>
-                </ng-template>
-            </vezo-card>
-        </form>
-
-    </div>
-</div>
 <vezo-toast></vezo-toast>
+
+<!-- Login Page Starts From Here-->
+
+<div style="height: 100vh;  background: url('assets/loginBg.png'); background-size: cover; background-repeat: repeat; background-position:center;
+     padding-left: 62px; padding-right: 62px; justify-content: center; align-content: center;">
+
+    <div class="flex" style=" height: 90vh; align-items: center; justify-content: center; justify-items: center;">
+
+        <div class="left-div"
+            style="background-color:#818CF8 ;  background: url('assets/leftBg.png'); background-size: cover; background-repeat: repeat; background-position:center; border-radius: 12px;">
+            <div class="mx-12 my-8  xl:mx-36 xl:my-14 flex "
+                style="flex-direction: column; justify-content: center; align-items: center;">
+                <div class="text-base xl:text-4xl text-center" style=" font-weight: 600;  color: #FFFFFF;">Welcome to
+                </div>
+                <div class=" text-base xl:text-4xl text-center" style=" font-weight: 600; color: #4F46E5;"> Low
+                    code No code Platform</div>
+                <img class="mt-4" src="assets/loginDesktop.png" width="500px" alt="">
+            </div>
+        </div>
+
+        <div class="right-div bg-white shadow-xl" style="border-radius: 12px; ">
+            <div class="mx-18 my-14 text-center" style="justify-content: center;">
+
+                <div class="text-center"
+                    style="font-size: 18px; font-weight: 600; line-height: 21.78px; color: #1B1818;">Welcome. Let’s get
+                    started</div>
+                <div class="text-center mt-1"
+                    style="font-size: 12px; font-weight: 400; line-height:14.52px; color: #1B1818;">To Begin, tell us a
+                    bit about yourself</div>
+
+                <!-- Login Form Starts form here -->
+                <form [formGroup]="loginForm" class="mx-14 text-left">
+                    <div class="mt-5">
+                        <vezo-input label="User Name" formControlName="username" required="" placeholder="superadmin"
+                            class="InputText"></vezo-input>
+                        <error-message [controlName]="loginForm.controls['username']"></error-message>
+                    </div>
+
+                    <div class="mt-4">
+                        <vezo-input label="Password" formControlName="password" required="" class="InputText"
+                            placeholder="Enter Password"></vezo-input>
+                        <error-message [controlName]="loginForm.controls['password']"></error-message>
+                    </div>
+
+                    <div claas="text-center flex" style="margin-top: 32px; justify-content: center;">
+                        <vezo-button label="LOGIN" className="btn" labelClass="btn1" (click)="onSubmit()"
+                            [disabled]="!loginForm.valid"></vezo-button>
+                    </div>
+
+                    <div class="flex gap-2" style="justify-content: center; align-items: center; margin-top: 32px;">
+                        <div style="font-size: 14px; font-weight: 400; color: #000000; line-height: 12.1px;">Already
+                            have an account?</div>
+                        <div style="font-size: 14px; font-weight: 600; color: #6366F1; line-height: 12.1px;">Signup</div>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+</div>

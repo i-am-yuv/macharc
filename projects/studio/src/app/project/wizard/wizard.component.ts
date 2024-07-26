@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { GenericComponent } from '../../utils/genericcomponent';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MessageService } from '@splenta/vezo';
+import { MessageService } from '@splenta/vezo/src/public-api';
 import { ProjectService } from '../project.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-wizard',
@@ -33,6 +33,7 @@ export class WizardComponent extends GenericComponent {
     projectService: ProjectService,
     messageService: MessageService,
     private fb: FormBuilder,
+    private router: Router ,
     private route: ActivatedRoute) {
     super(projectService, messageService);
 
@@ -52,4 +53,37 @@ export class WizardComponent extends GenericComponent {
       this.getData({ id: this.id }, (res) => { this.form.patchValue({ ...res }) });
     }
   }
+
+  milestoneItems = [
+    {
+      'name': 'Define Project'
+    },
+    {
+      'name': 'Create  Microservices'
+    },
+    {
+      'name': 'Define Services'
+    },
+    {
+      'name': 'Create Frontend Applications'
+    },
+    {
+      'name': 'Define Prototypes'
+    },
+    {
+      'name': 'Build Deploy'
+    }
+  ]
+
+  labelStyle = {
+    'size':'16px',
+    'weight':'400',
+    'color':'#000000'
+  }
+
+  naviagateListingPage()
+  {
+    this.router.navigate(['projects']) ;
+  }
 }
+

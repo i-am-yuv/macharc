@@ -1,107 +1,168 @@
 <vezo-table [data]="data" [pageData]="pageData" (pageDataChange)="getAllData()">
-    <ng-template vTemplate="caption">
-        <div class="flex place-items-center">
-            <div class="title">DATA SOURCES</div>
-            <div class="flex-grow"></div>
-            <div class="w-72 pr-4">
-                <vezo-input label="" placeholder="Filter" className="bg-white"></vezo-input>
-            </div>
-            <div class="text-right">
-                <vezo-button label="Add New Data" icon="plus" (click)="addData()"></vezo-button>
-                <!-- <vezo-button label="Filter" icon="funnel" className="bg-green-100"></vezo-button> -->
-            </div>
-        </div>
-
-    </ng-template>
-    <ng-template vTemplate="header">
-        <tr>
-            <!-- <th class="w-4"><input type="checkbox" class="w-4 h-4" /></th> -->
-            <th>Data Source Name</th>
-            <th> Datasource Type</th>
-            <th> Datasource URL</th>
-            <th [width]="100">Actions</th>
-        </tr>
-    </ng-template>
-    <ng-template vTemplate="body">
-        <tr *ngFor="let ds of data">
-            <!-- <td><input type="checkbox" class="w-4 h-4" /></td> -->
-            <td>{{ ds.dataSourceName }}</td>
-            <td>{{ ds.dbType }}</td>
-            <td>{{ ds.dbUrl }}</td>
-            <td>
-                <vezo-icon icon="pencil" (click)="editData(ds)"
-                    className="mr-5 w-4 h-4 text-indigo-400 cursor-pointer"></vezo-icon>
-                <vezo-icon icon="trash" (click)="deleteData(ds)"
-                    className="w-4 h-4 text-red-400 cursor-pointer"></vezo-icon>
-            </td>
-        </tr>
-    </ng-template>
+  <ng-template vTemplate="caption">
+    <div class="flex place-items-center">
+      <div class="title">DATA SOURCES</div>
+      <div class="flex-grow"></div>
+      <div class="w-72 pr-4">
+        <vezo-input
+          label=""
+          placeholder="Filter"
+          className="bg-white"
+        ></vezo-input>
+      </div>
+      <div class="text-right">
+        <vezo-button
+          label="Add New"
+          icon="plus"
+          [routerLink]="['/datasources/list']"
+        ></vezo-button>
+        <!-- <vezo-button label="Add New" icon="plus" (click)="addData()"></vezo-button> -->
+        <!-- <vezo-button label="Filter" icon="funnel" className="bg-green-100"></vezo-button> -->
+      </div>
+    </div>
+  </ng-template>
+  <ng-template vTemplate="header">
+    <tr>
+      <!-- <th class="w-4"><input type="checkbox" class="w-4 h-4" /></th> -->
+      <th>Data Source Name</th>
+      <th>Datasource Type</th>
+      <th>Datasource URL</th>
+      <th [width]="100">Actions</th>
+    </tr>
+  </ng-template>
+  <ng-template vTemplate="body">
+    <tr *ngFor="let ds of data">
+      <!-- <td><input type="checkbox" class="w-4 h-4" /></td> -->
+      <td>{{ ds.dataSourceName }}</td>
+      <td>{{ ds.dbType }}</td>
+      <td>{{ ds.dbUrl }}</td>
+      <td>
+        <vezo-icon
+          icon="pencil"
+          [routerLink]="['/datasources/edit/' + ds.id]"
+          className="mr-5 w-4 h-4 text-indigo-400 cursor-pointer"
+        ></vezo-icon>
+        <!-- <vezo-icon icon="pencil" (click)="editData(ds)" className="mr-5 w-4 h-4 text-indigo-400 cursor-pointer"></vezo-icon> -->
+        <vezo-icon
+          icon="trash"
+          (click)="deleteData(ds)"
+          className="w-4 h-4 text-red-400 cursor-pointer"
+        ></vezo-icon>
+      </td>
+    </tr>
+  </ng-template>
 </vezo-table>
 
-
-
-
 <vezo-modal [(visible)]="visible">
-    <ng-template vTemplate="header">Data Source</ng-template>
-    <ng-template vTemplate="content">
-        <form [formGroup]="form">
-            <div class="flex">
-                <div class="mr-4">
-                    <vezo-input label="Data Source Name" formControlName="dataSourceName"></vezo-input>
-                    <error-message [controlName]="form.controls['dataSourceName']"></error-message>
-                </div>
-                <div class="flex-grow">
-                    <vezo-select label="Datasource Type" formControlName="dbType" [items]="dbTypes" optionLabel="name"
-                        optionValue="name" (ngModelChange)="setDefaultPort()"></vezo-select>
-                    <error-message [controlName]="form.controls['dbType']"></error-message>
-                </div>
-            </div>
-            <div class="my-4" *ngIf="form.value.dbUrl">
-                <span class="font-semibold"> DB Url:</span> {{ form.value.dbUrl}}
-            </div>
-            <ng-container *ngIf="form.controls['dbType'].value !='API'">
-                <div class="flex">
-                    <div class="mr-4">
-                        <vezo-input label="Datasource Host" formControlName="dbHost"></vezo-input>
-                        <error-message [controlName]="form.controls['dbHost']"></error-message>
-                    </div>
-                    <div class="mr-4">
-                        <vezo-input label="Datasource Port" formControlName="dbPort"></vezo-input>
-                        <error-message [controlName]="form.controls['dbPort']"></error-message>
-                    </div>
-                    <div class="">
-                        <vezo-input label="Datasource DB Name" formControlName="dbDatabaseName"></vezo-input>
-                        <error-message [controlName]="form.controls['dbDatabaseName']"></error-message>
-                    </div>
-                </div>
-                <div class="my-4" *ngIf="form.value.driverClassName">
-                    <span class="font-semibold"> Driver Class Name:</span> {{ form.value.driverClassName}}
-                </div>
-                <div class="flex">
-                    <div class="mr-4">
-                        <vezo-input label="Username" formControlName="username"></vezo-input>
-                        <error-message [controlName]="form.controls['username']"></error-message>
-                    </div>
-
-                    <div class="mr-4">
-                        <vezo-input label="Password" type="password" formControlName="password"></vezo-input>
-                        <error-message [controlName]="form.controls['password']"></error-message>
-                    </div>
-                </div>
-            </ng-container>
-            <ng-container *ngIf="form.controls['dbType'].value =='API'">
-                <vezo-input label="API Url" formControlName="apiUrl"></vezo-input>
-                <error-message [controlName]="form.controls['apiUrl']"></error-message>
-                <vezo-textarea label="Token" formControlName="authToken"></vezo-textarea>
-                <error-message [controlName]="form.controls['authToken']"></error-message>
-            </ng-container>
-        </form>
-    </ng-template>
-    <ng-template vTemplate="footer">
-        <div class="text-right">
-            <vezo-button label="Save" [disabled]="!form.valid" (click)="saveData()"></vezo-button>
+  <ng-template vTemplate="header">Data Source</ng-template>
+  <ng-template vTemplate="content">
+    <form [formGroup]="form">
+      <div class="flex">
+        <div class="mr-4">
+          <vezo-input
+            label="Data Source Name"
+            formControlName="dataSourceName"
+          ></vezo-input>
+          <error-message
+            [controlName]="form.controls['dataSourceName']"
+          ></error-message>
         </div>
-    </ng-template>
+        <div class="flex-grow">
+          <vezo-select
+            label="Datasource Type"
+            formControlName="dbType"
+            [items]="dbTypes"
+            optionLabel="name"
+            optionValue="name"
+            (ngModelChange)="setDefaultPort()"
+          ></vezo-select>
+          <error-message
+            [controlName]="form.controls['dbType']"
+          ></error-message>
+        </div>
+      </div>
+      <div class="my-4" *ngIf="form.value.dbUrl">
+        <span class="font-semibold"> DB Url:</span> {{ form.value.dbUrl }}
+      </div>
+      <ng-container *ngIf="form.controls['dbType'].value != 'API'">
+        <div class="flex">
+          <div class="mr-4">
+            <vezo-input
+              label="Datasource Host"
+              formControlName="dbHost"
+            ></vezo-input>
+            <error-message
+              [controlName]="form.controls['dbHost']"
+            ></error-message>
+          </div>
+          <div class="mr-4">
+            <vezo-input
+              label="Datasource Port"
+              formControlName="dbPort"
+            ></vezo-input>
+            <error-message
+              [controlName]="form.controls['dbPort']"
+            ></error-message>
+          </div>
+          <div class="">
+            <vezo-input
+              label="Datasource DB Name"
+              formControlName="dbDatabaseName"
+            ></vezo-input>
+            <error-message
+              [controlName]="form.controls['dbDatabaseName']"
+            ></error-message>
+          </div>
+        </div>
+        <div class="my-4" *ngIf="form.value.driverClassName">
+          <span class="font-semibold"> Driver Class Name:</span>
+          {{ form.value.driverClassName }}
+        </div>
+        <div class="flex">
+          <div class="mr-4">
+            <vezo-input
+              label="Username"
+              formControlName="username"
+            ></vezo-input>
+            <error-message
+              [controlName]="form.controls['username']"
+            ></error-message>
+          </div>
+
+          <div class="mr-4">
+            <vezo-input
+              label="Password"
+              type="password"
+              formControlName="password"
+            ></vezo-input>
+            <error-message
+              [controlName]="form.controls['password']"
+            ></error-message>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="form.controls['dbType'].value == 'API'">
+        <vezo-input label="API Url" formControlName="apiUrl"></vezo-input>
+        <error-message [controlName]="form.controls['apiUrl']"></error-message>
+        <vezo-textarea
+          label="Token"
+          formControlName="authToken"
+        ></vezo-textarea>
+        <error-message
+          [controlName]="form.controls['authToken']"
+        ></error-message>
+      </ng-container>
+    </form>
+  </ng-template>
+  <ng-template vTemplate="footer">
+    <div class="text-right">
+      <vezo-button
+        label="Save"
+        [disabled]="!form.valid"
+        (click)="saveData()"
+      ></vezo-button>
+    </div>
+  </ng-template>
 </vezo-modal>
 
 <vezo-toast></vezo-toast>
