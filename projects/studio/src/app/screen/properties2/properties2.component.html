@@ -312,14 +312,12 @@
             </div>
         </div>
     </div>
-    <div class="mt-2 w-full" style="position: relative; display: inline-block" *ngIf="
-      this.comingFromForm == false ||
-      (props.mappedData !== null && props.mappedData?.bgImage != null)
-    ">
-        <div style="position: absolute; top: 0; right: 0; cursor: pointer; z-index: 1" class="mb-1" [ngClass]="{
-        'bg-gray-200 p-1 rounded-md':
-          props.mappedData !== null && props.mappedData?.bgImage
-      }" *ngIf="this.comingFromForm == false && this.comingFromPage == false" (click)="makeItMapped(props, 'bgImage')">
+    <div class="mt-2 w-full" style="position: relative; display: inline-block"
+        *ngIf="this.comingFromForm == false ||(props.mappedData !== null && props.mappedData?.bgImage != null)">
+        <div style="position: absolute; top: 0; right: 0; cursor: pointer; z-index: 1" class="mb-1"
+            [ngClass]="{'bg-gray-200 p-1 rounded-md':props.mappedData !== null && props.mappedData?.bgImage}"
+            *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+            (click)="makeItMapped(props, 'bgImage')">
             <img src="assets/tune.svg" style="width: 14px; height: auto" />
         </div>
         <vezo-input label="Background Image" [ngModel]="getInputValue('bgImage')"

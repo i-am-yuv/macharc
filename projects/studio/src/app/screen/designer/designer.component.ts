@@ -915,4 +915,18 @@ export class DesignerComponent extends GenericComponent implements OnInit {
     window.URL.revokeObjectURL(url);
   }
 
+  currentPage : any ;
+  hoverPage( action : string, page : any )
+  {
+    if( action == 'enter')
+    {
+      this.currentPage = page ;
+    }
+    else
+    {
+      this.currentPage = null ;
+    }
+  }
+
+
 }

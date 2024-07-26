@@ -16,8 +16,15 @@ export class PropertiesComponent {
   @Input() comingFromForm: boolean = false;
   @Input() comingFromPage: boolean = false;
 
+  @Input() ImageURL: any;
+  selectAssetModel: boolean = false;
 
-  @Output() getCollectionFields: EventEmitter<string> = new EventEmitter<string>();;
+  @Output() getCollectionFields: EventEmitter<string> = new EventEmitter<string>();
+
+  @Output() assetModelOpen = new EventEmitter<boolean>();
+
+  isReceivedUrlSameAsInput: boolean = false;
+
 
   column: any = {};
 
@@ -104,28 +111,59 @@ export class PropertiesComponent {
   handleInputChange(value: string, element: any): void {
     if (this.comingFromForm) {
       this.props.mappedData[element] = value;
+      if (element == 'url' && this.ImageURL !== null) {
+        this.props.mappedData[element] = this.ImageURL;
+      }
     } else {
       this.props.data[element] = value;
+      if (element == 'url' && this.ImageURL !== null) {
+        this.props.data[element] = this.ImageURL;
+      }
     }
   }
 
   getInputValue(element: any): string {
-    if( this.comingFromForm ==  true )
-      {
-        return this.props.mappedData[element] ;
-      }
-    else{
-          if(this.props.mappedData != null && this.props.mappedData[element] != null )
-            { 
-              return this.props.mappedData[element] ;
-            }
-            else{
-              return this.props.data[element] ;
-            }
+    if (this.comingFromForm == true) {
+      return this.props.mappedData[element];
     }
+    else {
+      if (this.props.mappedData != null && this.props.mappedData[element] != null) {
+        return this.props.mappedData[element];
+      }
+      else {
+        return this.props.data[element];
+      }
+    }
+  }
+
+  // Function to handle changes to the ngModel of Selected Image from Asset
+  handleInputChangeImage(value: string, element: any): void {
+
+    // if (value !== this.ImageURL) {
+    //   this.ImageURL = null;
+    // }
+    // else {
+    //   if (this.comingFromForm) {
+    //     this.props.mappedData[element] = value;
+    //     if (element == 'url' && this.ImageURL !== null) {
+    //       this.props.mappedData[element] = this.ImageURL;
+    //     }
+    //   } else {
+    //     this.props.data[element] = value;
+    //     if (element == 'url' && this.ImageURL !== null) {
+    //       this.props.data[element] = this.ImageURL;
+    //     }
+    //   }
+    // }
+    this.ImageURL = null ;
   }
 
   getDataFieldCount(props: any): number {
     return props && props.mappedData ? Object.keys(props.mappedData).length : 0;
   }
+
+  chooseAssetClicked() {
+    this.assetModelOpen.emit(true);
+  }
+
 }

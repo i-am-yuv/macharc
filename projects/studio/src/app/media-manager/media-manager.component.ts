@@ -30,12 +30,17 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
   allFolders: Folder[] = [];
   allAssetByFolderId: Asset[] = [];
   filteredAssets: Asset[] = [];
-  
+  filteredAssetsGlobal: Asset[] = [];
+  currFilterListGlobal: Asset[]= [];
+
+
   folderId: any;
   loading: boolean = false;
   visibleDeleteConfirmation: boolean = false;
-  activeFolder !: Folder ;
+  activeFolder !: Folder;
   searchQuery: string = '';
+  searchQueryGlobal: string = '';
+  GlobalSearchLayout: boolean = false;
 
   private storage = getStorage(initializeApp(environment.firebaseConfig));
 
@@ -64,12 +69,14 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
       (res: any) => {
         if (res) {
           this.allFolders = res.content;
+          // this.allFolders = [];
           if (this.allFolders.length > 0) {
-            this.allFolders.sort((a:any, b:any) => a.folderName.localeCompare(b.folderName));
+            this.allFolders.sort((a: any, b: any) => a.folderName.localeCompare(b.folderName));
             if (!this.folderId) {
               this.openFolderAssets(this.allFolders[0]);
               this.activeFolder = this.allFolders[0];
             }
+            this.getAssetsGlobal();
           }
         }
         else {
@@ -93,7 +100,7 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
 
   getFolderAssets(folderId: any) {
     this.allAssetByFolderId = [];
-    this.filteredAssets = [] ;
+    this.filteredAssets = [];
 
     this.loading = true;
     this.mediaService.getAssetsByFolderId(folderId).then(
@@ -101,7 +108,7 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
         if (res) {
           this.allAssetByFolderId = res;
           // lasted asset should comes first so sort like that
-          this.allAssetByFolderId.sort((a:any, b:any) => b.updatedAt - a.updatedAt);
+          this.allAssetByFolderId.sort((a: any, b: any) => b.updatedAt - a.updatedAt);
           this.loading = false;
         }
         else {
@@ -405,7 +412,7 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
 
   override deleteData(folder: any) {
     this.activeFolder = folder;
-    this.visibleDeleteConfirmation = !this.visibleDeleteConfirmation ;
+    this.visibleDeleteConfirmation = !this.visibleDeleteConfirmation;
   }
 
 
@@ -499,8 +506,7 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
     }
   }
 
-  searchAssets()
-  {
+  searchAssets() {
     if (this.searchQuery) {
       this.filteredAssets = this.allAssetByFolderId.filter(asset =>
         asset.fileName?.toLowerCase().includes(this.searchQuery.toLowerCase())
@@ -510,15 +516,55 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
     }
   }
 
-  getAssetList()
-  {
-    if( this.searchQuery)
-    {
-       return this.filteredAssets ;
+  getAssetsGlobal() {
+    let index: number;
+    for (index = 0; index < this.allFolders.length; index++) {
+
+      this.mediaService.getAssetsByFolderId(this.allFolders[index]?.id).then(
+        (res: any) => {
+          if (res) {
+            this.filteredAssetsGlobal = [...this.filteredAssetsGlobal, ...res];
+          }
+          else {
+            this.messageService.add({
+              severity: 'info',
+              summary: 'Info',
+              detail: 'Error while fetching the Assets.',
+              life: 3000,
+            });
+          }
+        }
+      );
     }
-    else{
-         return this.allAssetByFolderId;
-    } 
+  }
+
+  searchAssetsGlobal() {
+    if (this.searchQueryGlobal) {
+     // alert(this.filteredAssetsGlobal.length);
+      this.GlobalSearchLayout = true;
+      this.currFilterListGlobal = this.filteredAssetsGlobal.filter(asset =>
+        asset.fileName?.toLowerCase().includes(this.searchQueryGlobal.toLowerCase())
+      );
+    }
+    else {
+      this.GlobalSearchLayout = false;
+    }
+    // if (this.searchQuery) {
+    //   this.filteredAssets = this.allAssetByFolderId.filter(asset =>
+    //     asset.fileName?.toLowerCase().includes(this.searchQuery.toLowerCase())
+    //   );
+    // } else {
+    //   this.filteredAssets = this.allAssetByFolderId;
+    // }
+  }
+
+  getAssetList() {
+    if (this.searchQuery) {
+      return this.filteredAssets;
+    }
+    else {
+      return this.allAssetByFolderId;
+    }
   }
 
 }
