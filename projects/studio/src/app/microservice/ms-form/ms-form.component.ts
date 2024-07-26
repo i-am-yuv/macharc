@@ -61,7 +61,14 @@ export class MsFormComponent extends GenericComponent {
         //   detail: this.componentName + ' created',
         //   summary: this.componentName + ' created',
         // });
+        console.log(res);
       }
-    });
+    }).catch( (err)=>{
+      this.messageService.add({
+          severity: 'error',
+          detail: 'Error',
+          summary: 'Error while generating the code',
+        });
+    } )
   }
 }
