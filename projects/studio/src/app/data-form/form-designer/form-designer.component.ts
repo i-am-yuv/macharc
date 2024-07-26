@@ -329,6 +329,7 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
   collections: Collection[] = [];
 
   rightPanelExpanded: boolean = true;
+  showOptions : boolean = false;
   widgetTree: any[] = [];
 
   currentScreenView: string = 'assets/circum_mobile-1.png';// Mobile View
@@ -841,6 +842,20 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
         this.collectionItems = res.content;
       }
     })
+  }
+
+  currentComponent : any ;
+  hoverComp( action : string, component : any )
+  {
+    if( action == 'enter')
+    {
+      this.currentComponent = component ;
+    }
+    else
+    {
+      this.showOptions  =  false;
+      this.currentComponent = null ;
+    }
   }
 
 }
