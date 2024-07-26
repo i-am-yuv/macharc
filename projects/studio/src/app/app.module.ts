@@ -89,6 +89,8 @@ import { NgxLoadingModule } from 'ngx-loading';
 import { NestedComponent } from './data-form/nested/nested.component';
 import { MediaManagerComponent } from './media-manager/media-manager.component';
 import { Properties2Component } from './screen/properties2/properties2.component';
+import { NgFlutterComponent } from './ng-flutter/ng-flutter.component';
+import { FlutterEmbedComponent } from './flutter-embed/flutter-embed.component';
 
 
 @NgModule({
@@ -143,7 +145,8 @@ import { Properties2Component } from './screen/properties2/properties2.component
     MenuPanelCreateComponent,
     NestedComponent,
     MediaManagerComponent,
-    Properties2Component
+    Properties2Component,  
+    FlutterEmbedComponent
   ],
   imports: [
     BrowserModule,
@@ -181,8 +184,9 @@ import { Properties2Component } from './screen/properties2/properties2.component
     ChartModule,
     SeachfieldModule,
     ColorpickerModule,
-    NgxLoadingModule.forRoot({})
-  ],
+    NgxLoadingModule.forRoot({}),
+    NgFlutterComponent
+],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [
     HttpClientModule,

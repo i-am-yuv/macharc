@@ -44,6 +44,7 @@ import { SettingsComponent } from './settings/settings.component';
 import { MenuPanelComponent } from './data-form/menu-panel/menu-panel.component';
 import { MenuPanelCreateComponent } from './data-form/menu-panel/menu-panel-create/menu-panel-create.component';
 import { MediaManagerComponent } from './media-manager/media-manager.component';
+import { FlutterEmbedComponent } from './flutter-embed/flutter-embed.component';
 
 const routes: Routes = [
   {
@@ -278,6 +279,10 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
+  },
+  {
+    path: 'flutterEmbed',
+    component: FlutterEmbedComponent,
   },
 ];
 
