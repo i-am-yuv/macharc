@@ -15,7 +15,7 @@
             (dndCanceled)="onDragged(item, child.children!, 'none')"
             (dndCopied)="onDragged(item, child.children!,'move')" (dndLinked)="onDragged(item, child.children!, 'link')"
             (dndMoved)="onDragged(item, child.children!, 'move')">
-            <div [ngClass]="{'border border-dashed border-indigo-300': this.isParentForm == false}"
+            <div [ngClass]="{'borderOutline': this.isParentForm == false}"
                 class="draggable-item  cursor-pointer relative overflow-x: auto;">
                 <ng-container *ngIf="item.name === 'row'">
                     <app-nested [child]="item" [layout]="layout" [nestedElement]="'row'"
@@ -65,7 +65,7 @@
             (dndLinked)="onDragged(subChild, child.children!, 'link'  )"
             (dndMoved)="onDragged(subChild, child.children!, 'move')" [ngClass]="{'expand': subChild.name=='row' }">
 
-            <div [ngClass]="{'border border-dashed border-indigo-300': this.isParentForm == false} ">
+            <div [ngClass]="{'borderOutline': this.isParentForm == false} ">
                 <!-- Because This line was not working in the case of nested grid -->
                 <!-- <app-blocks [block]="child" (click)="handleClick($event, child)"></app-blocks> -->
 
@@ -108,7 +108,7 @@
             (dndCopied)="onDragged(subChild, child.children!, 'move')"
             (dndLinked)="onDragged(subChild, child.children!, 'link')"
             (dndMoved)="onDragged(subChild, child.children!, 'move')" class="name">
-            <div [ngClass]="{'border border-dashed border-indigo-300': this.isParentForm == false}">
+            <div [ngClass]="{'borderOutline': this.isParentForm == false}">
                 <!-- Because This line was not working in the case of nested grid -->
                 <!-- <app-blocks [block]="child" (click)="handleClick($event, child)"></app-blocks> -->
                 <ng-container *ngIf="subChild.name === 'grid'">
@@ -152,7 +152,7 @@
             (dndCanceled)="onDragged(item, child.children!, 'none')"
             (dndCopied)="onDragged(item, child.children!,'move')" (dndLinked)="onDragged(item, child.children!, 'link')"
             (dndMoved)="onDragged(item, child.children!, 'move')" class="">
-            <div [ngClass]="{'border border-dashed border-indigo-300': this.isParentForm== false}"
+            <div [ngClass]="{'borderOutline': this.isParentForm== false}"
                 class="draggable-item  cursor-pointer relative overflow-x: auto;">
                 <ng-container *ngIf="item.name === 'row'">
                     <app-nested [child]="item" [layout]="layout" [nestedElement]="'row'"

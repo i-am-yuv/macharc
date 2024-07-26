@@ -186,7 +186,7 @@
                         (dndLinked)="onDragged(item, draggableListRight, 'link')"
                         (dndMoved)="onDragged(item, draggableListRight, 'move')">
                         <div
-                            class="draggable-item  border border-dashed border-indigo-300 cursor-pointer relative overflow-x: auto;">
+                            class="draggable-item borderOutline cursor-pointer relative overflow-x: auto;">
 
                             <ng-container *ngIf="item.name === 'grid'">
                                 <div (dndDrop)="onDrop($event, item.children)" class="name gap-{{item.data.gap}} grid grid-cols-{{item.data.columns}}
@@ -206,7 +206,7 @@
                                         (dndLinked)="onDragged(child, item.children!, 'link')"
                                         (dndMoved)="onDragged(child, item.children!, 'move')" class="name">
 
-                                        <div class="border border-dashed border-indigo-300">
+                                        <div class="borderOutline">
                                             <!-- This line was not working in the case of nested grid -->
                                             <!-- <app-blocks [block]="child" (click)="handleClick($event, child)"></app-blocks> -->
 
@@ -256,7 +256,7 @@
                                         (dndLinked)="onDragged(child, item.children!, 'link'  )"
                                         (dndMoved)="onDragged(child, item.children!, 'move')">
 
-                                        <div class="border border-dashed border-indigo-300 ">
+                                        <div class="borderOutline">
                                             <!-- Because This line was not working in the case of nested grid -->
                                             <!-- <app-blocks [block]="child" (click)="handleClick($event, child)"></app-blocks> -->
 
@@ -307,7 +307,7 @@
                                         (dndLinked)="onDragged(child, item.children!, 'link')"
                                         (dndMoved)="onDragged(child, item.children!, 'move')" class="name">
 
-                                        <div class="border border-dashed border-indigo-300">
+                                        <div class="borderOutline">
                                             <!-- Solution for nested grid -->
                                             <ng-container *ngIf="child.name === 'container'">
                                                 <app-nested [child]="child" [layout]="layout"
@@ -355,7 +355,7 @@
                                         (dndMoved)="onDragged(child, item.children!, 'move')" class="name"
                                         style="width: -webkit-fill-available;">
 
-                                        <div class="border border-dashed border-indigo-300">
+                                        <div class="borderOutline">
                                             <!-- Solution for nested grid -->
                                             <ng-container *ngIf="child.name === 'column'">
                                                 <app-nested [child]="child" [layout]="layout" [nestedElement]="'column'"

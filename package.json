@@ -35,7 +35,7 @@
     "monaco-editor": "^0.38.0",
     "ng-samurai": "^3.0.0",
     "ng2-charts": "4.1.0",
-    "ngx-color-picker": "^16.0.0",
+    "ngx-color-picker": "^14.0.0",
     "ngx-drag-drop": "^15.1.0",
     "ngx-loading": "^2.0.1",
     "ngx-monaco-editor-v2": "^15.0.1",

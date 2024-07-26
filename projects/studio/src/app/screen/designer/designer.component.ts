@@ -850,8 +850,17 @@ export class DesignerComponent extends GenericComponent implements OnInit {
       this.msgService.add({ severity: 'info', summary: 'Info', detail: 'No Preview available for an empty page.' });
       return;
     }
-
-    const htmlContent = div.innerHTML;
+  
+    // Clone the content to manipulate it without affecting the original
+    const clonedDiv = div.cloneNode(true) as HTMLElement;
+    
+    // Remove the 'giveBorder' class from all elements
+    clonedDiv.querySelectorAll('.borderOutline').forEach(element => {
+      element.classList.remove('borderOutline');
+    });
+  
+    const htmlContent = clonedDiv.innerHTML;
+  
     // Collect all stylesheets from the current document
     const stylesheets = Array.from(document.styleSheets)
       .map((styleSheet: CSSStyleSheet) => {
@@ -875,13 +884,13 @@ export class DesignerComponent extends GenericComponent implements OnInit {
     const fullHTML = `
       <html>
         <head>
-          <title>Div Content</title>
+          <title>Preview</title>
           ${stylesheets}
           <style>
             body {
               user-select: none; /* Prevent text selection */
             }
-            input, select, textarea, button, a, video, dropdown, checkbox , label,  .combo-wrapper, .combo-item{
+            input, select, textarea, button, a, video, dropdown, checkbox, label, .combo-wrapper, .combo-item {
               pointer-events: auto; /* Enable pointer events for interactive elements */
               user-select: auto; /* Allow text selection within input fields and other interactive elements */
             }
@@ -903,7 +912,7 @@ export class DesignerComponent extends GenericComponent implements OnInit {
     window.open(url, '_blank');
   
     // Release the object URL if needed
-     window.URL.revokeObjectURL(url);
+    window.URL.revokeObjectURL(url);
   }
 
 }
