@@ -64,7 +64,7 @@ export abstract class GenericComponent {
   }
   preSave() {}
 
-  postSave() {}
+  postSave(data:any) {}
 
   saveData() {
     this.preSave();
@@ -80,7 +80,7 @@ export abstract class GenericComponent {
             summary: this.componentName + ' created',
           });
           this.getAllData();
-          this.postSave();
+          this.postSave(res);
         }
       });
     } else {
@@ -93,7 +93,7 @@ export abstract class GenericComponent {
             summary: this.componentName + ' updated',
           });
           this.getAllData();
-          this.postSave();
+          this.postSave(res);
         }
       });
     }

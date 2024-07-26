@@ -22,7 +22,7 @@ export class MsFormComponent extends GenericComponent {
 
   constructor(
     private fb: FormBuilder,
-    msService: MicroserviceService,
+    private msService: MicroserviceService,
     messageService: MessageService,
     private projectService: ProjectService,
     private router : Router ,
@@ -50,5 +50,18 @@ export class MsFormComponent extends GenericComponent {
   }
   loadData(res: any): void {
     this.form.patchValue({ ...res });
+  }
+
+  override postSave(data:any)
+  {
+    this.msService.generateCode(data).then((res: any) => {
+      if (res) {
+        // this.messageService.add({
+        //   severity: 'success',
+        //   detail: this.componentName + ' created',
+        //   summary: this.componentName + ' created',
+        // });
+      }
+    });
   }
 }
