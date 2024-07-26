@@ -590,7 +590,7 @@
                                 <div
                                     *ngIf="this.activeItem.name=='heading' || this.activeItem.name=='button' || this.activeItem.name=='input' || this.activeItem.name=='textarea' || this.activeItem.name=='dropdown' || this.activeItem.name=='checkbox' || this.activeItem.name=='radio' || this.activeItem.name=='switch' || this.activeItem.name=='table' || this.activeItem.name=='image' || this.activeItem.name=='divider' || this.activeItem.name=='video' || this.activeItem.name=='card' ">
                                     <app-properties [fields]="fields" [props]="activeItem" [collections]="collections"
-                                        (deleteProp)="deleteActiveItem($event)"
+                                        (deleteProp)="deleteActiveItem($event)" [ImageURL]="this.imageURL"
                                         (assetModelOpen)="checkImageModelClicked($event)"></app-properties>
                                 </div>
                                 <div
@@ -707,7 +707,7 @@
                                     </div>
                                 </div>
                                 <div class="flex justify-center items-center mt-2 cursor-pointer">
-                                    <div class="w-full text-center flex justify-center items-center"
+                                    <div class="w-full text-center flex justify-center items-center" (click)="sendThisAsset(asset)"
                                         style="height: 24px; background-color: #C7222a; border-radius: 6px; color:#FFFFFF; font-size: 12px; font-weight: 500;">
                                         Select
                                     </div>

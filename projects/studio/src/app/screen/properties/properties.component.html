@@ -2828,15 +2828,13 @@
     " class="mb-2">
         {{ props.name }}'s parameter:
     </div>
-
-    <!-- <div class="mt-2">
-        <vezo-input label="Image URL" [(ngModel)]="props.data.url"></vezo-input>
-    </div> -->
+    <!--     
+     <div>Image URL : {{this.ImageURL}}</div> -->
     <div class="mt-2">
         <div *ngIf="this.comingFromForm == false ||(props.mappedData !== null && props.mappedData?.url != null)"
             style="position: relative; display: inline-block" class="w-full">
             <div class="flex justify-start gap-2 items-end">
-                
+
                 <div style="position: relative; display: inline-block" class="w-full"
                     *ngIf="this.comingFromForm == false ||(props.mappedData !== null && props.mappedData?.url != null)">
                     <div style="position: absolute;top: 0;right: 0;cursor: pointer;z-index: 1;" class="mb-1"
@@ -2845,8 +2843,11 @@
                         (click)="makeItMapped(props, 'url')">
                         <img src="assets/tune.svg" style="width: 14px; height: auto" />
                     </div>
-                    <vezo-input label="Image URL" [ngModel]="getInputValue('url')"
+                    <vezo-input *ngIf="this.ImageURL == null" label="Image URL" [ngModel]="getInputValue('url')"
                         (ngModelChange)="handleInputChange($event, 'url')"
+                        style="display: block; z-index: 0"></vezo-input>
+                    <vezo-input *ngIf="this.ImageURL !== null" label="Image URL" [ngModel]="this.ImageURL"
+                        (ngModelChange)="handleInputChangeImage($event, 'url')"
                         style="display: block; z-index: 0"></vezo-input>
                 </div>
                 <div class="mb-2 cursor-pointer" (click)="chooseAssetClicked()">

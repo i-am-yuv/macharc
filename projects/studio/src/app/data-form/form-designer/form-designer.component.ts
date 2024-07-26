@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from '@splenta/vezo/src/public-api';
 import { DropEffect, DndDropEvent, EffectAllowed } from 'ngx-drag-drop';
@@ -50,6 +50,7 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
   visibleDeleteConfirmation: boolean = false;
   currListView: boolean = true;
   selectAssetModel: boolean = false;
+  imageURL!: any ;
 
   activeData: any;
 
@@ -937,5 +938,12 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
   getAssetList()
   {
     return this.searchQuery ? this.filteredAssets : this.allAssets ;
+  }
+
+  sendThisAsset( asset : any)
+  {
+    this.imageURL  = asset.url ;
+    this.selectAssetModel = false;
+    console.log(this.imageURL);
   }
 }
