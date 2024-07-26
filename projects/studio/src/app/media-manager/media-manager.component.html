@@ -1,31 +1,18 @@
 <div class="" style=" height: 100%;">
-    <!-- Header bar Code -->
-    <div class="flex items-center justify-between border-b"
-        style="width:auto; height: 55px; background-color: #FFFFFF;">
 
-        <div class="w-5/12 flex justify-center items-center gap-4">
-            <div style="font-size: 24px; font-weight: 600; line-height: 29.05px ; color: #000000">
-                Media Assets
-            </div>
-            <div style="font-size: 12px; font-weight: 300; line-height: 13.31px; color: #888888">
-                (Upload and manage image to use in Application)
-            </div>
-        </div>
-        <div class="w-3/12 flex justify-end items-center mr-12 gap-2 cursor-pointer" (click)="addData()">
-            <!-- <div class="flex justify-center items-center cursor-pointer" 
-                style="width: 102px; height: 32px; background-color: #6366F1; border-radius: 4px; border-width: 1px;">
-                <div style="font-size: 14px; font-weight: 500; color: #FFFFFF; ">Add Folder</div>
-            </div> -->
-            <img src="assets/icons8_plus.png" style="width: 18px ;">
-            <div style="font-size: 14px; font-weight: 400; color: #6D6D6D;">Add Folder</div>
-        </div>
-    </div>
-
-    <div *ngIf="this.allFolders.length > 0" class="flex" style="height: 90%">
+    <div class="flex " style="height: 100%">
 
         <div class="w-2/12  border-r h-auto">
+            <div style="width:auto; height: 55px; background-color: #FFFFFF;"
+                class=" flex justify-center items-center border-b border-l">
+                <div class="flex justify-center items-center gap-2 cursor-pointer w-full" (click)="addData()">
+                    <img src="assets/icons8_plus.png" style="width: 18px ;">
+                    <div style="font-size: 14px; font-weight: 400; color: #6D6D6D;">Add Folder</div>
+                </div>
+            </div>
+
             <!-- All Folder Visible Here -->
-            <div class="overflow-y-auto h-full">
+            <div *ngIf="this.allFolders.length > 0 && this.GlobalSearchLayout == false" class="overflow-y-auto">
                 <div *ngFor="let oneFolder of allFolders ; let i = index">
                     <div class="m-2 flex justify-start gap-2 p-1 cursor-pointer items-center"
                         [ngClass]="{'bg-indigo-50': this.oneFolder.id == this.folderId}"
@@ -51,9 +38,33 @@
             </div>
         </div>
 
-        <div *ngIf="this.folderId" class="w-10/12  overflow-y-scroll" style="background-color: #EEF2FF;">
+        <div class="w-10/12  overflow-y-scroll" style="height: 100%;">
+
+            <!-- Header bar Code -->
+            <div class="flex items-center justify-between border-b"
+                style="width:auto; height: 55px; background-color: #FFFFFF;">
+
+                <div class="w-5/12 flex justify-center items-center gap-4">
+                    <div style="font-size: 16px; font-weight: 600; line-height: 29.05px ; color: #000000">
+                        Media Assets
+                    </div>
+                    <div style="font-size: 12px; font-weight: 300; line-height: 13.31px; color: #888888">
+                        (Upload and manage image to use in Application)
+                    </div>
+                </div>
+                <!-- Global Search -->
+                <div *ngIf="this.allFolders.length > 0" class="flex-1 flex justify-start items-center gap-2 mx-6"
+                    style="background-color: #FFFFFF; border-width: 1px; border-color: #c4c4c4; height: 32px; width: auto; border-radius: 4px;">
+                    <img src="assets/image_search.png" class="ml-1" style="width: 24px; height: 24px;" />
+                    <input type="text" placeholder="Global Search..." [(ngModel)]="searchQueryGlobal"
+                        (input)="searchAssetsGlobal()" class="mr-2"
+                        style="border: none !important; height: 25px !important; width: auto;" />
+                </div>
+            </div>
+
             <!-- Uploaded Images Showen here -->
-            <div class="overflow-y-auto">
+            <div *ngIf="this.folderId && this.GlobalSearchLayout == false" class="overflow-y-auto h-auto"
+                style="background-color: #EEF2FF; height: 91%;">
                 <div [ngClass]="{'drop-zone backdrop-blur-sm bg-white/30':isDragging}" (dragover)="onDragOver($event)"
                     (dragleave)="onDragLeave($event)" (drop)="onDrop($event)">
                     <input type="file" #fileInput (change)="onFileSelected($event)" hidden
@@ -233,21 +244,69 @@
                             </div>
                         </div>
                     </div>
-                    <!-- <img *ngIf="imageSrc" [src]="imageSrc" alt="Uploaded Image" class="preview"> -->
                 </div>
             </div>
-        </div>
-        <div *ngIf="!this.folderId" class="flex justify-center items-center w-full">
-            <p style="font-size: 16px; font-weight: 500; color: #888888;">Please select the folder...</p>
-        </div>
-    </div>
 
-    <div *ngIf="this.allFolders.length <= 0" class="flex justify-center items-center"
-        style="flex-direction: column; height: 90%;">
-        <div class="text-center">
-            <p style="font-size: 16px; font-weight: 500; color: #888888;">No Asset Folder Found...</p>
-            <p class="mt-1" style="font-size: 14px; font-weight: 400; color: #888888;">Add One!</p>
+            <div *ngIf="this.allFolders.length <= 0 && this.GlobalSearchLayout ==  false"
+                class="flex justify-center items-center" style="flex-direction: column; height: 90%;">
+                <div class="text-center">
+                    <p style="font-size: 16px; font-weight: 500; color: #888888;">No Asset Folder Found...</p>
+                    <p class="mt-1" style="font-size: 14px; font-weight: 400; color: #888888;">Add One!</p>
+                </div>
+            </div>
+
+            <div *ngIf="this.GlobalSearchLayout == true && this.searchQueryGlobal" style="height: 100%;">
+
+                <!-- Code for the Grid View Assets -->
+                <div class="flex flex-wrap gap-6  px-8 py-6"
+                    style="justify-items: start; background-color: #EEF2FF; height: 100%;">
+                    <div *ngFor="let asset of this.currFilterListGlobal; let i = index">
+                        <div (mouseenter)="onHoverStart(asset)" (mouseleave)="onHoverEnd()"
+                            [ngClass]="{'shadow-lg': this.currentAssetId == asset.id }"
+                            style="background-color: #FFFFFF; width: 232px;  border-radius: 8px;" class="p-3">
+                            <div class="flex justify-center items-center p-4"
+                                style="width: auto; height:188px ; border-radius: 8px; border-width: 1px; border-color:#000000;">
+                                <img [src]="asset.url" style="width:150px; height: auto" alt="Image" />
+                            </div>
+                            <div class="flex justify-between items-center mt-4" style="flex-wrap: wrap-reverse;">
+                                <div style="display: flex; flex-direction: column;" class="gap-1">
+                                    <div class="flex justify-between items-center gap-2 w-auto">
+                                        <div
+                                            style="font-size: 12px; font-weight: 500; color: #4F46E5; word-wrap: break-word; word-break: break-all; white-space: normal; ">
+                                            {{asset.fileName}}
+                                        </div>
+                                        <vezo-icon icon="trash" className="w-3 text-red-700 cursor-pointer"
+                                            (click)="deleteAsset(asset)"></vezo-icon>
+                                    </div>
+
+                                    <div style="font-size: 12px; font-weight: 500; color: #B0B0B0;">Uploaded
+                                        {{asset.uploadedTime | date}}
+                                    </div>
+                                </div>
+                                <div class="flex justify-center gap-2" *ngIf="this.currentAssetId == asset.id">
+                                    <img src="assets/copy-clipboard.svg" style="width: 18px; cursor: pointer;"
+                                        (click)="copyToClipbord(asset.url+'')" />
+                                    <div class="flex justify-center items-center pl-1 mr-1 pb-1 cursor-pointer"
+                                        (click)="openImageInNewTab(asset.url+'')"
+                                        style="width: 24px; height: 24px; background-color: #4F46E5; border-radius: 4px;">
+                                        <img style="width: 18px;" src="assets/Group 1171276934.svg" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="this.currFilterListGlobal.length <= 0" class="flex justify-center items-center w-full"
+                        style="flex-direction: column; height: 90%;">
+                        <div class="text-center">
+                            <p style="font-size: 16px; font-weight: 500; color: #888888;">No Asset Folder Found
+                                Globally...</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
+
     </div>
 </div>
 <!-- Adding new Folder PopUp Form -->
