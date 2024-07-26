@@ -16,8 +16,12 @@ export class PropertiesComponent {
   @Input() comingFromForm: boolean = false;
   @Input() comingFromPage: boolean = false;
 
+  selectAssetModel : boolean = false;
 
-  @Output() getCollectionFields: EventEmitter<string> = new EventEmitter<string>();;
+  @Output() getCollectionFields: EventEmitter<string> = new EventEmitter<string>();
+
+  @Output() assetModelOpen = new EventEmitter<boolean>();
+
 
   column: any = {};
 
@@ -128,4 +132,10 @@ export class PropertiesComponent {
   getDataFieldCount(props: any): number {
     return props && props.mappedData ? Object.keys(props.mappedData).length : 0;
   }
+
+  chooseAssetClicked()
+  {
+    this.assetModelOpen.emit(true);
+  }
+
 }

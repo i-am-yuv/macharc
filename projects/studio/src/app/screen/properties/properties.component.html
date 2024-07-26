@@ -2833,29 +2833,27 @@
         <vezo-input label="Image URL" [(ngModel)]="props.data.url"></vezo-input>
     </div> -->
     <div class="mt-2">
-        <div *ngIf="
-        this.comingFromForm == false ||
-        (props.mappedData !== null && props.mappedData?.url != null)
-      " style="position: relative; display: inline-block" class="w-full">
-            <div style="position: relative; display: inline-block" class="w-full" *ngIf="
-          this.comingFromForm == false ||
-          (props.mappedData !== null && props.mappedData?.url != null)
-        ">
-                <div style="
-            position: absolute;
-            top: 0;
-            right: 0;
-            cursor: pointer;
-            z-index: 1;
-          " class="mb-1" [ngClass]="{
-            'bg-gray-200 rounded-md p-1':
-              props.mappedData !== null && props.mappedData?.url
-          }" *ngIf="this.comingFromForm == false && this.comingFromPage == false" (click)="makeItMapped(props, 'url')">
-                    <img src="assets/tune.svg" style="width: 14px; height: auto" />
+        <div *ngIf="this.comingFromForm == false ||(props.mappedData !== null && props.mappedData?.url != null)"
+            style="position: relative; display: inline-block" class="w-full">
+            <div class="flex justify-start gap-2 items-end">
+                
+                <div style="position: relative; display: inline-block" class="w-full"
+                    *ngIf="this.comingFromForm == false ||(props.mappedData !== null && props.mappedData?.url != null)">
+                    <div style="position: absolute;top: 0;right: 0;cursor: pointer;z-index: 1;" class="mb-1"
+                        [ngClass]="{'bg-gray-200 rounded-md p-1':props.mappedData !== null && props.mappedData?.url}"
+                        *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+                        (click)="makeItMapped(props, 'url')">
+                        <img src="assets/tune.svg" style="width: 14px; height: auto" />
+                    </div>
+                    <vezo-input label="Image URL" [ngModel]="getInputValue('url')"
+                        (ngModelChange)="handleInputChange($event, 'url')"
+                        style="display: block; z-index: 0"></vezo-input>
                 </div>
-                <vezo-input label="Image URL" [ngModel]="getInputValue('url')"
-                    (ngModelChange)="handleInputChange($event, 'url')" style="display: block; z-index: 0"></vezo-input>
+                <div class="mb-2 cursor-pointer" (click)="chooseAssetClicked()">
+                    <img src="assets/photo_size_select_actual.svg" style="width:18px ; height:auto" />
+                </div>
             </div>
+
         </div>
     </div>
 
