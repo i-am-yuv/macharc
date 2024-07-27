@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 import { Project } from '../project/project';
 import { ProjectService } from '../project/project.service';
-import { LayoutService } from './layout.service';
 import { FilterBuilder } from '../utils/FilterBuilder';
-import { filter } from 'rxjs';
+import { LayoutService } from './layout.service';
 
 @Component({
   selector: 'app-layout',
@@ -13,7 +13,7 @@ import { filter } from 'rxjs';
   styleUrls: ['./layout.component.scss'],
 })
 export class LayoutComponent {
-  showSideBar: boolean | undefined= false;
+  showSideBar: boolean | undefined = false;
   menuView: string = '';
   activeProject: Project | undefined = {
     id: '',
@@ -67,12 +67,6 @@ export class LayoutComponent {
           icon: 'clipboard',
           routerLink: ['/builder/forms'],
         },
-        {
-          label: 'Mobile Builder',
-          icon: 'clipboard',
-          routerLink: [''],
-          externalUrl: 'https://www.splenta.com',
-        },
       ],
       showSubMenu: true,
     },
@@ -117,24 +111,24 @@ export class LayoutComponent {
           label: 'Microservices',
           icon: 'clipboard',
           routerLink: ['/builder/microservices'],
-          image:'assets/microservice_L.svg'
+          image: 'assets/microservice_L.svg',
         },
         {
           label: 'Models',
           icon: 'clipboard',
           routerLink: ['/builder/collections'],
-          image:'assets/collection_L.svg'
+          image: 'assets/collection_L.svg',
         },
         {
           label: 'Services',
           icon: 'clipboard',
           routerLink: ['/builder/services'],
-          image:'assets/Services_L.svg'
+          image: 'assets/Services_L.svg',
         },
       ],
       showSubMenu: true,
-    }
-  ]
+    },
+  ];
 
   menuItemsFrontend: any[] = [
     {
@@ -144,23 +138,33 @@ export class LayoutComponent {
           label: 'Applications',
           icon: 'clipboard',
           routerLink: ['/applications'],
-          image:'assets/Application.svg'
+          image: 'assets/Application.svg',
         },
-        { label: 'Pages', icon: 'clipboard', routerLink: ['/builder/screens/designer/'+null] ,  image:'assets/PAGES.svg'},
-        { label: 'Actions', icon: 'clipboard', routerLink: ['/actions'] , image:'assets/Action_R.svg'},
+        {
+          label: 'Pages',
+          icon: 'clipboard',
+          routerLink: ['/builder/screens/designer/' + null],
+          image: 'assets/PAGES.svg',
+        },
+        {
+          label: 'Actions',
+          icon: 'clipboard',
+          routerLink: ['/actions'],
+          image: 'assets/Action_R.svg',
+        },
         {
           label: 'Components',
           icon: 'clipboard',
-          routerLink: ['/builder/forms/designer/'+null],
-          image:'assets/Component _R.svg'
+          routerLink: ['/builder/forms/designer/' + null],
+          image: 'assets/Component _R.svg',
         },
-        {
-          label: 'Mobile Builder',
-          icon: 'clipboard',
-          routerLink: [''],
-          externalUrl: 'https://www.splenta.com',
-          image:'assets/circum_mobile-1.svg'
-        }
+        // {
+        //   label: 'Mobile Builder',
+        //   icon: 'clipboard',
+        //   routerLink: [''],
+        //   externalUrl: 'https://www.splenta.com',
+        //   image: 'assets/circum_mobile-1.svg',
+        // },
         // {
         //   label: 'Menu Panel',
         //   icon: 'clipboard',
@@ -169,38 +173,44 @@ export class LayoutComponent {
         // },
       ],
       showSubMenu: true,
-    }
-  ]
+    },
+  ];
 
   menuItemsSettings: any[] = [
     {
       label: 'Utilities',
       items: [
-        { label: 'Settings', icon: 'cog8Tooth', routerLink: ['/settings'],
-        image:'assets/settings_L.svg'
-         },
+        {
+          label: 'Settings',
+          icon: 'cog8Tooth',
+          routerLink: ['/settings'],
+          image: 'assets/settings_L.svg',
+        },
         {
           label: 'Business Process',
           icon: 'clipboard',
           routerLink: ['/builder/processes'],
-          image:'assets/Integration_L.svg'
+          image: 'assets/Integration_L.svg',
         },
         {
           label: 'Reports',
           icon: 'clipboard',
           routerLink: ['/builder/reports'],
-          image:'assets/Reports_L.svg'
+          image: 'assets/Reports_L.svg',
         },
-        { label: 'Releases', icon: 'clipboard', routerLink: ['/releases'] ,
-        image:'assets/Releases-L.svg'
+        {
+          label: 'Releases',
+          icon: 'clipboard',
+          routerLink: ['/releases'],
+          image: 'assets/Releases-L.svg',
         },
         { label: 'Logs', icon: 'clipboard', routerLink: ['/system-logs'] },
         {
           label: 'Media Manager',
           icon: 'clipboard',
           routerLink: ['/media-manager'],
-          image:'assets/IMAGE ADD.svg'
-        }
+          image: 'assets/IMAGE ADD.svg',
+        },
         // {
         //   label: 'Integrations',
         //   icon: 'clipboard',
@@ -208,8 +218,8 @@ export class LayoutComponent {
         // },
       ],
       showSubMenu: true,
-    }
-  ]
+    },
+  ];
 
   roles: any;
   username: string = '';
@@ -225,7 +235,6 @@ export class LayoutComponent {
     this.layoutService.sidebarVisibilityChange.subscribe((value) => {
       this.showSideBar = value;
     });
-
   }
   ngOnInit() {
     this.username = this.authService.getUserName();
@@ -241,18 +250,16 @@ export class LayoutComponent {
     const savedMenuItemName = sessionStorage.getItem('menuItemName');
     if (savedMenuItemName) {
       this.menuView = savedMenuItemName;
-    }
-    else {
+    } else {
       this.menuView = 'menuItemsBackend';
       sessionStorage.setItem('menuItemName', this.menuView);
-
     }
 
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    ).subscribe(() => {
-      this.checkRoute();
-    });
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe(() => {
+        this.checkRoute();
+      });
 
     // Initial check
     this.checkRoute();
@@ -269,17 +276,13 @@ export class LayoutComponent {
   getMenuItems(): any[] {
     if (this.menuView == 'menuItemsBackend') {
       return this.menuItemsBackend;
-    }
-    else if (this.menuView == 'menuItemsFrontendWeb') {
-      return this.menuItemsFrontend
-    }
-    else if (this.menuView == 'menuItemsFrontendMobile') {
-      return this.menuItemsFrontend
-    }
-    else if (this.menuView == 'menuItemsSettings') {
+    } else if (this.menuView == 'menuItemsFrontendWeb') {
+      return this.menuItemsFrontend;
+    } else if (this.menuView == 'menuItemsFrontendMobile') {
+      return this.menuItemsFrontend;
+    } else if (this.menuView == 'menuItemsSettings') {
       return this.menuItemsSettings;
-    }
-    else {
+    } else {
       return this.menuItems;
     }
   }
@@ -296,8 +299,12 @@ export class LayoutComponent {
 
   checkRoute(): void {
     const currentUrl = this.router.url;
-    this.isPageOrComponent = (currentUrl.includes('/builder/screens/designer/') || currentUrl.includes('/builder/forms/designer/') 
-    || currentUrl.includes('/media-manager') || currentUrl.includes('/actions') || currentUrl.includes('/projects/manage')
-    || currentUrl.includes('/applications/manage') ) ; 
+    this.isPageOrComponent =
+      currentUrl.includes('/builder/screens/designer/') ||
+      currentUrl.includes('/builder/forms/designer/') ||
+      currentUrl.includes('/media-manager') ||
+      currentUrl.includes('/actions') ||
+      currentUrl.includes('/projects/manage') ||
+      currentUrl.includes('/applications/manage');
   }
 }
