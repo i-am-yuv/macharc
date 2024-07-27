@@ -33,7 +33,6 @@ import { DatasourceComponent } from './datasource/datasource.component';
 import { DispatcherComponent } from './dispatcher/dispatcher.component';
 import { ErrorMessageComponent } from './error-message/error-message.component';
 import { FieldsComponent } from './fields/fields.component';
-import { FlowComponent } from './flow/flow.component';
 import { LayoutComponent } from './layout/layout.component';
 import { MicroserviceComponent } from './microservice/microservice.component';
 import { BlocksComponent } from './screen/blocks/blocks.component';
@@ -69,7 +68,6 @@ import { NestedComponent } from './data-form/nested/nested.component';
 import { WidgetTreeNodeComponent } from './data-form/widget-tree-node/widget-tree-node.component';
 import { DatasourceFormComponent } from './datasource/datasource-form/datasource-form.component';
 import { DatasourceListComponent } from './datasource/datasource-list/datasource-list.component';
-import { DiagramComponent } from './diagram/diagram.component';
 import { MarketplaceComponent } from './marketplace/marketplace.component';
 import { MediaManagerComponent } from './media-manager/media-manager.component';
 import { ApidocComponent } from './microservice/apidoc/apidoc.component';
@@ -109,7 +107,6 @@ import { ContenteditableValueAccessor } from './utils/constenteditable.directive
     BlocksComponent,
     DesignerComponent,
     BusinessLogicDesignerComponent,
-    FlowComponent,
     MxflowComponent,
     ProcessesComponent,
     MarketplaceComponent,
@@ -125,7 +122,6 @@ import { ContenteditableValueAccessor } from './utils/constenteditable.directive
     LoginComponent,
     DataFormComponent,
     FormDesignerComponent,
-    DiagramComponent,
     ReportsComponent,
     ReportDesignerComponent,
     QueryBuilderComponent,

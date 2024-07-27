@@ -4,7 +4,6 @@ import { CollectionComponent } from './collection/collection.component';
 import { DatasourceComponent } from './datasource/datasource.component';
 import { DispatcherComponent } from './dispatcher/dispatcher.component';
 import { FieldsComponent } from './fields/fields.component';
-import { FlowComponent } from './flow/flow.component';
 import { FrontComponent } from './front/front.component';
 import { LayoutComponent } from './layout/layout.component';
 import { MicroserviceComponent } from './microservice/microservice.component';
@@ -27,7 +26,6 @@ import { MenuPanelCreateComponent } from './data-form/menu-panel/menu-panel-crea
 import { MenuPanelComponent } from './data-form/menu-panel/menu-panel.component';
 import { DatasourceFormComponent } from './datasource/datasource-form/datasource-form.component';
 import { DatasourceListComponent } from './datasource/datasource-list/datasource-list.component';
-import { DiagramComponent } from './diagram/diagram.component';
 import { HomeComponent } from './home/home.component';
 import { MarketplaceComponent } from './marketplace/marketplace.component';
 import { MediaManagerComponent } from './media-manager/media-manager.component';
@@ -106,10 +104,8 @@ const routes: Routes = [
               { path: ':id', component: MicroserviceComponent },
             ],
           },
-          { path: 'diagram', component: DiagramComponent },
           { path: 'mobile-preview', component: MobilePreviewComponent },
           { path: 'datasources/:id', component: MsDatasourceComponent },
-          { path: 'flow', component: FlowComponent },
           { path: 'collections', component: CollectionComponent },
           { path: 'collections/endpoints/:id', component: EndpointsComponent },
           { path: 'collections/:id', component: CollectionComponent },
