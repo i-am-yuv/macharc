@@ -22,8 +22,8 @@ declare var window: {
       <div class="spinner">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="1em"
-          height="1em"
+          width="100px"
+          height="100px"
           viewBox="0 0 24 24"
         >
           <circle cx="4" cy="12" r="3" fill="currentColor">

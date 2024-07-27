@@ -305,6 +305,7 @@ export class LayoutComponent {
       currentUrl.includes('/media-manager') ||
       currentUrl.includes('/actions') ||
       currentUrl.includes('/projects/manage') ||
+      currentUrl.includes('/builder/mobile-preview') ||
       currentUrl.includes('/applications/manage');
   }
 }
