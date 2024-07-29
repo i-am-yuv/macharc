@@ -89,6 +89,7 @@ import { NgxLoadingModule } from 'ngx-loading';
 import { NestedComponent } from './data-form/nested/nested.component';
 import { MediaManagerComponent } from './media-manager/media-manager.component';
 import { Properties2Component } from './screen/properties2/properties2.component';
+import { NgTerminalModule } from 'ng-terminal';
 
 
 @NgModule({
@@ -181,6 +182,7 @@ import { Properties2Component } from './screen/properties2/properties2.component
     ChartModule,
     SeachfieldModule,
     ColorpickerModule,
+    NgTerminalModule,
     NgxLoadingModule.forRoot({})],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [
