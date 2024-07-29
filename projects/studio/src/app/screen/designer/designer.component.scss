@@ -50,3 +50,11 @@
     border-style: dashed;
     border-color: #a3b2e2;
 }
+
+.file-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 80px; /* Adjust the width as per your layout */
+    display: block;
+}
