@@ -4,7 +4,7 @@ stages:
 
 build-frontend:
   stage: build
-  image: node:18.17.1
+  image: node
 
   script:
     - npm install -g @angular/cli@15.0.3
