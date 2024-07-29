@@ -573,7 +573,7 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
   }
 
 
-  deleteActiveItem(val: boolean) {
+  deleteActiveItem(val: any) {
     // Recursive function to find and delete the item
     const findAndDelete = (list: any[]): boolean => {
       for (let i = 0; i < list.length; i++) {
