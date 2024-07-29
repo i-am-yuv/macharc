@@ -13,8 +13,8 @@ build-frontend:
     - npm cache clean --force
     - rm -rf node_modules package-lock.json
     - npm install
-    - npm install -g @angular/cli
-    - npm install -g @angular/compiler-cli
+    - npm install @angular/cli
+    - npm install @angular/compiler-cli
     - npm i sequential-workflow-designer
     # - npm install
     # - git submodule init
