@@ -4,7 +4,7 @@ stages:
 
 build-frontend:
   stage: build
-  image: node:18.17.1
+  image: node:18.19.1
 
   script:
     - npm cache clean --force
