@@ -9,7 +9,8 @@ build-frontend:
   script:
     - npm cache clean --force
     - rm -rf node_modules package-lock.json
-    - npm install -g @angular/cli@15.0.3
+    # - npm install -g @angular/cli@15.0.3
+    - npm install -g @angular/cli
     - npm i sequential-workflow-designer
     # - npm install
     # - git submodule init
