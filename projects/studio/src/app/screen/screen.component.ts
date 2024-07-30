@@ -112,6 +112,40 @@ export class ScreenComponent extends GenericComponent implements OnInit {
       }
     }
   }
+
+  override saveData() {
+    this.preSave();
+    this.form.value.collection = null ;// No collection for page
+    const formData = this.form.value;
+    if (!formData.id) {
+      this.dataService.createData(formData).then((res: any) => {
+        if (res) {
+          this.visible = false;
+          this.messageService.add({
+            severity: 'success',
+            detail: this.componentName + ' created',
+            summary: this.componentName + ' created',
+          });
+          this.getAllData();
+          this.postSave(res);
+        }
+      });
+    } else {
+      this.dataService.updateData(formData).then((res: any) => {
+        if (res) {
+          this.visible = false;
+          this.messageService.add({
+            severity: 'success',
+            detail: this.componentName + ' updated',
+            summary: this.componentName + ' updated',
+          });
+          this.getAllData();
+          this.postSave(res);
+        }
+      });
+    }
+  }
+
   designScreen(scr: Screen) {
 
     if (scr.screenDefinition && JSON.parse(scr.screenDefinition).length !== 0) {
