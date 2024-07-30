@@ -6,6 +6,7 @@ import { BusinessLogic } from '../business-logic/business-logic';
 import { BusinessLogicService } from '../business-logic/business-logic.service';
 import { ActivatedRoute } from '@angular/router';
 import { MessageService } from '@splenta/vezo/src/public-api';
+import { Actions } from './action';
 
 declare var flowy: any;
 function createDefinition() {
@@ -181,6 +182,8 @@ export class ActionsComponent implements OnInit {
 
 
   // New Code Starts from here
+  
+  
   private designer?: Designer;
 
   public definition: Definition = createDefinition();
@@ -189,11 +192,17 @@ export class ActionsComponent implements OnInit {
   wfId: string | null = '';
   wf: BusinessLogic = {};
   dataDef: string | undefined = '';
+
+  allActions : Actions[] = [] ;
+  actionId : any ;
+  currentAction : Actions = {} ; 
+
   constructor(
     private businessLogicService: BusinessLogicService,
     private route: ActivatedRoute,
     private msgService: MessageService
   ) { }
+
   public readonly toolboxConfiguration: ToolboxConfiguration = {
     groups: [
       // {
@@ -216,6 +225,7 @@ export class ActionsComponent implements OnInit {
       this.toolboxGroup('Main'),
     ],
   };
+
   public readonly stepsConfiguration: StepsConfiguration = {
     iconUrlProvider: (componentType, type) => `./assets/${type}.svg`,
     validator: () => true,
@@ -237,7 +247,6 @@ export class ActionsComponent implements OnInit {
       });
     }
     else {
-
     }
 
   }
@@ -349,6 +358,8 @@ export class ActionsComponent implements OnInit {
       });
     });
   }
+
+
 }
 
 

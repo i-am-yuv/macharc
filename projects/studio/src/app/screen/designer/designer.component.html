@@ -275,7 +275,7 @@
     >
       <div *ngFor="let item of getDataSorted()">
         <div
-          class="p-2 cursor-pointer"
+          class="cursor-pointer px-1"
           (mouseenter)="hoverPage('enter' , item)" (mouseleave)="hoverPage('exit' , item)"
           [ngClass]="{ 'bg-indigo-200': this.screenId == item.id }"
         >
