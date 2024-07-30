@@ -16,11 +16,19 @@ export class MicroserviceService extends GenericService {
     super(http);
   }
 
+  // async generateCode(ms: any) {
+  //   var url = this.apiurl + '/' + this.endpoint + '/generate/' + encodeURIComponent(ms.id!);
+  //   const res = await lastValueFrom(this.http.get<any>(url));
+  //   return res;
+  // }
+
   async generateCode(ms: any) {
     var url = this.apiurl + '/' + this.endpoint + '/generate/' + encodeURIComponent(ms.id!);
     const res = await lastValueFrom(this.http.get<any>(url));
     return res;
   }
+
+
   async generateFrontendCode(ms: any) {
     var url = this.apiurl + '/' + this.endpoint + '/generateFrontend/' + encodeURIComponent(ms.id!);
     const res = await lastValueFrom(this.http.get<any>(url));
@@ -35,6 +43,12 @@ export class MicroserviceService extends GenericService {
   async unLinkDs(msId: string, dsId: string) {
     var url = this.apiurl + '/' + this.endpoint + '/removeDataSource/' + encodeURIComponent(msId) + '/' + encodeURIComponent(dsId!);
     const res = await lastValueFrom(this.http.get<any>(url));
+    return res;
+  }
+
+  async createMS(data: any) {
+    var url = this.apiurl + '/' +this.endpoint+'/create';
+    const res = await lastValueFrom(this.http.post<any>(url, data));
     return res;
   }
 }

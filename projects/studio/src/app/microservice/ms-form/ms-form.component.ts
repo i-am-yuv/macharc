@@ -52,16 +52,50 @@ export class MsFormComponent extends GenericComponent {
     this.form.patchValue({ ...res });
   }
 
-  override postSave(data:any)
-  {
-    this.msService.generateCode(data).then((res: any) => {
-      if (res) {
-        // this.messageService.add({
-        //   severity: 'success',
-        //   detail: this.componentName + ' created',
-        //   summary: this.componentName + ' created',
-        // });
-      }
-    });
+  // override postSave(data:any)
+  // {
+  //   this.msService.generateCode(data).then((res: any) => {
+  //     if (res) {
+  //       // this.messageService.add({
+  //       //   severity: 'success',
+  //       //   detail: this.componentName + ' created',
+  //       //   summary: this.componentName + ' created',
+  //       // });
+  //     }
+  //   });
+  // }
+
+  override saveData() {
+    // this.preSave();
+    //this.form.value.collection = null ;// No collection for page
+    const formData = this.form.value;
+    if (!formData.id) {
+      formData.id = null ;
+      this.msService.createMS(formData).then((res: any) => {
+        if (res) {
+          this.visible = false;
+          this.messageService.add({
+            severity: 'success',
+            detail: this.componentName + ' created',
+            summary: this.componentName + ' created',
+          });
+          this.getAllData();
+          // this.postSave(res);
+        }
+      });
+    } else {
+      this.msService.createMS(formData).then((res: any) => {
+        if (res) {
+          this.visible = false;
+          this.messageService.add({
+            severity: 'success',
+            detail: this.componentName + ' updated',
+            summary: this.componentName + ' updated',
+          });
+          this.getAllData();
+         // this.postSave(res);
+        }
+      });
+    }
   }
 }
