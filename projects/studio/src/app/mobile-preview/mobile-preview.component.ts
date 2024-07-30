@@ -1,23 +1,36 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-mobile-preview',
   templateUrl: './mobile-preview.component.html',
   styleUrls: ['./mobile-preview.component.scss'],
 })
-export class MobilePreviewComponent {
+export class MobilePreviewComponent implements OnInit {
   flutterState?: any;
 
-  constructor(private changeDetectorRef: ChangeDetectorRef) {}
+  pageId: any;
+
+  constructor(private changeDetectorRef: ChangeDetectorRef,
+    private route: ActivatedRoute,
+    private authService: AuthService
+  ) { }
+
+  ngOnInit(): void {
+    this.pageId = this.route.snapshot.paramMap.get('pageId');
+  }
 
   onFlutterAppLoaded(state: any) {
     this.flutterState = state;
-    this.flutterState.onClicksChanged(() => {
-      this.onCounterChanged();
-    });
     this.flutterState.onTextChanged(() => {
       this.onTextChanged();
     });
+    console.log(this.pageId);
+
+    this.flutterState?.setScreen("text");
+    this.onTokenSet(this.authService.getAuthToken());
+    this.onTextSet(this.pageId);
   }
 
   onCounterSet(event: Event) {
@@ -25,10 +38,13 @@ export class MobilePreviewComponent {
     this.flutterState.setClicks(clicks);
   }
 
-  onTextSet(event: Event) {
-    this.flutterState.setText((event.target as HTMLInputElement).value || '');
+  onTextSet(event: String | null) {
+    this.flutterState.setText(event || '');
   }
 
+  onTokenSet(event: String | null) {
+    this.flutterState.setToken(event || '');
+  }
   // I need to force a change detection here. When clicking on the "Decrement"
   // button, everything works fine, but clicking on Flutter doesn't trigger a
   // repaint (even though this method is called)

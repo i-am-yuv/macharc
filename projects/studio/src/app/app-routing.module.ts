@@ -104,7 +104,7 @@ const routes: Routes = [
               { path: ':id', component: MicroserviceComponent },
             ],
           },
-          { path: 'mobile-preview', component: MobilePreviewComponent },
+          { path: 'mobile-preview/:pageId', component: MobilePreviewComponent },
           { path: 'datasources/:id', component: MsDatasourceComponent },
           { path: 'collections', component: CollectionComponent },
           { path: 'collections/endpoints/:id', component: EndpointsComponent },
