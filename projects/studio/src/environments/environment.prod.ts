@@ -8,5 +8,6 @@ export const environment = {
         storageBucket: "macharc-dev.appspot.com",
         messagingSenderId: "846154939781",
         appId: "1:846154939781:web:fb45d62680d8fb5f3618ec"
-    }
+    },
+    webTerminal:'ws://localhost:8686/rsocket' 
 };

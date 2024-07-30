@@ -17,6 +17,8 @@ import { MicroService } from '../../microservice/microservice';
 import { Application } from '../../application/application';
 import { MicroserviceService } from '../../microservice/microservice.service';
 import { ApplicationService } from '../../application/application.service';
+import { MediaService } from '../../media-manager/media.service';
+import { Asset, Folder } from '../../media-manager/folder';
 
 interface DropzoneLayout {
   container: string;
@@ -49,6 +51,11 @@ export class DesignerComponent extends GenericComponent implements OnInit {
   visibleDeleteConfirmation: boolean = false;
   currListView: boolean = true;
   activeData: any;
+  selectAssetModel: boolean = false;
+  imageURL!: any ;
+
+  allFolders: Folder[] = [];
+  allAssets : Asset[]= [];
 
   // Virtual Elements
   draggableListLeftVE: DraggableItem[] = [
@@ -368,6 +375,8 @@ export class DesignerComponent extends GenericComponent implements OnInit {
   mutiScreenView: boolean = false;
 
   collectionId: string | null | undefined = '';
+  searchQuery: string = '';
+
   collectionItems: Collection[] = [];
   collection: Collection = {};
   microserviceItems: MicroService[] = [];
@@ -385,7 +394,8 @@ export class DesignerComponent extends GenericComponent implements OnInit {
     private msgService: MessageService,
     private microserviceService: MicroserviceService,
     private applicationService: ApplicationService,
-    private renderer: Renderer2, private el: ElementRef
+    private renderer: Renderer2, private el: ElementRef,
+    private mediaService : MediaService
   ) {
     super(screenService, messageService);
     this.form = this.fb.group({
@@ -913,6 +923,106 @@ export class DesignerComponent extends GenericComponent implements OnInit {
   
     // Release the object URL if needed
     window.URL.revokeObjectURL(url);
+  }
+
+  currentPage : any ;
+  hoverPage( action : string, page : any )
+  {
+    if( action == 'enter')
+    {
+      this.currentPage = page ;
+    }
+    else
+    {
+      this.currentPage = null ;
+    }
+  }
+
+  checkImageModelClicked(isClicked: boolean) {
+    this.selectAssetModel = isClicked;
+    this.getAllFolders();
+  }
+
+  getAllFolders() {
+    this.loading = true ;
+    this.mediaService.getAllFolders().then(
+      (res: any) => {
+        if (res) {
+          this.allFolders = res.content;
+          this.getAssetsGlobal();
+        }
+        else {
+          this.loading = false;
+          this.messageService.add({
+            severity: 'info',
+            summary: 'Info',
+            detail: 'Error while fetching the folders.',
+            life: 3000,
+          });
+        }
+      }
+    ).catch((err: any) => {
+      this.loading =  false;
+      this.messageService.add({
+        severity: 'info',
+        summary: 'Info',
+        detail: err.error.message,
+        life: 3000,
+      });
+    })
+  }
+
+  getAssetsGlobal() {
+    let index: number;
+    for (index = 0; index < this.allFolders.length; index++) {
+
+      this.mediaService.getAssetsByFolderId(this.allFolders[index]?.id).then(
+        (res: any) => {
+          if (res) {
+            this.allAssets = [...this.allAssets, ...res];
+          }
+          else {
+            this.loading = false;
+            this.messageService.add({
+              severity: 'info',
+              summary: 'Info',
+              detail: 'Error while fetching the Assets.',
+              life: 3000,
+            });
+          }
+        }
+      );
+    }
+    // if( index == this.allFolders.length )
+    // {
+    //   alert(this.allAssets.length);
+    // }
+    this.loading = false;
+  }
+
+  filteredAssets : Asset[] = [] ;
+  searchAssets()
+  {
+    if (this.searchQuery) {
+       this.filteredAssets = this.allAssets.filter(asset =>
+         asset.fileName?.toLowerCase().includes(this.searchQuery.toLowerCase())
+       );
+     }
+     else {
+        this.filteredAssets = this.allAssets ;
+     }
+  }
+
+  getAssetList()
+  {
+    return this.searchQuery ? this.filteredAssets : this.allAssets ;
+  }
+
+  sendThisAsset( asset : any)
+  {
+    this.imageURL  = asset.url ;
+    this.selectAssetModel = false;
+    console.log(this.imageURL);
   }
 
 }

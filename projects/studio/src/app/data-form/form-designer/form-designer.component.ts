@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from '@splenta/vezo/src/public-api';
 import { DropEffect, DndDropEvent, EffectAllowed } from 'ngx-drag-drop';
@@ -15,6 +15,8 @@ import { MicroserviceService } from '../../microservice/microservice.service';
 import { ApplicationService } from '../../application/application.service';
 import { MicroService } from '../../microservice/microservice';
 import { Application } from '../../application/application';
+import { MediaService } from '../../media-manager/media.service';
+import { Asset, Folder } from '../../media-manager/folder';
 
 
 interface DropzoneLayout {
@@ -47,6 +49,8 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
   loading: boolean = false;
   visibleDeleteConfirmation: boolean = false;
   currListView: boolean = true;
+  selectAssetModel: boolean = false;
+  imageURL!: any ;
 
   activeData: any;
 
@@ -314,6 +318,8 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
   virtualElementsExpand: boolean = true;
   layoutElementsExpand: boolean = true;
   pageElementsExpand: boolean = true;
+  searchQuery: string = '';
+
 
   private readonly verticalLayout: DropzoneLayout = {
     container: 'row',
@@ -329,6 +335,7 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
   collections: Collection[] = [];
 
   rightPanelExpanded: boolean = true;
+  showOptions: boolean = false;
   widgetTree: any[] = [];
 
   currentScreenView: string = 'assets/circum_mobile-1.png';// Mobile View
@@ -338,20 +345,23 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
   collection: Collection = {};
   microserviceItems: MicroService[] = [];
   applicationItems: Application[] = [];
+  allFolders: Folder[] = [];
+  allAssets : Asset[]= [];
 
   constructor(
     messageService: MessageService,
     private fb: FormBuilder,
-    private router : Router ,
+    private router: Router,
     private formService: DataFormService,
     private fieldService: FieldService,
     private collectionService: CollectionService,
     private route: ActivatedRoute,
     private microserviceService: MicroserviceService,
-    private applicationService: ApplicationService
+    private applicationService: ApplicationService,
+    private mediaService: MediaService
   ) {
     super(formService, messageService);
-    
+
     this.form = this.fb.group({
       id: '',
       formName: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
@@ -415,13 +425,11 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
     this.getComponentContent();
   }
 
-  getDataSorted()
-  {
-   return this.data.sort((a:any, b:any) => a.formName.localeCompare(b.formName));
+  getDataSorted() {
+    return this.data.sort((a: any, b: any) => a.formName.localeCompare(b.formName));
   }
 
-  getComponentContent()
-  {
+  getComponentContent() {
     // this.formId = this.route.snapshot.paramMap.get('id');
     // this.loading = true;
     // this.formService.getData({ id: this.formId }).then((res: any) => {
@@ -493,26 +501,26 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
     }, 1000);
   }
 
-  
+
   override editData(ds: any): void {
     super.editData(ds);
     this.getCollectionItems();
   }
 
-  duplicateObj:any;
-   // Code for duplicating the component with different name
-   duplicateData(ds: any) {
+  duplicateObj: any;
+  // Code for duplicating the component with different name
+  duplicateData(ds: any) {
     this.visible = true;
     this.duplicateObj = {
-      'id':'',
-      'formName':'',
-      'formCode':ds.formCode,
-      'formDescription':ds.formDescription,
-      'formDefinition':ds.formDefinition,
-      'collection':ds.collection,
-      'microService':ds.microService,
-      'application':ds.application,
-      'process':ds.process
+      'id': '',
+      'formName': '',
+      'formCode': ds.formCode,
+      'formDescription': ds.formDescription,
+      'formDefinition': ds.formDefinition,
+      'collection': ds.collection,
+      'microService': ds.microService,
+      'application': ds.application,
+      'process': ds.process
     }
     this.form.patchValue({ ...this.duplicateObj });
   }
@@ -565,7 +573,7 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
   }
 
 
-  deleteActiveItem(val: boolean) {
+  deleteActiveItem(val: any) {
     // Recursive function to find and delete the item
     const findAndDelete = (list: any[]): boolean => {
       for (let i = 0; i < list.length; i++) {
@@ -587,6 +595,68 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
     if (!findAndDelete(this.draggableListRight)) {
       console.warn("Active item not found for deletion");
     }
+  }
+
+  checkImageModelClicked(isClicked: boolean) {
+    this.selectAssetModel = isClicked;
+    this.getAllFolders();
+  }
+
+  getAllFolders() {
+    this.loading = true ;
+    this.mediaService.getAllFolders().then(
+      (res: any) => {
+        if (res) {
+          this.allFolders = res.content;
+          this.getAssetsGlobal();
+        }
+        else {
+          this.loading = false;
+          this.messageService.add({
+            severity: 'info',
+            summary: 'Info',
+            detail: 'Error while fetching the folders.',
+            life: 3000,
+          });
+        }
+      }
+    ).catch((err: any) => {
+      this.loading =  false;
+      this.messageService.add({
+        severity: 'info',
+        summary: 'Info',
+        detail: err.error.message,
+        life: 3000,
+      });
+    })
+  }
+
+  getAssetsGlobal() {
+    let index: number;
+    for (index = 0; index < this.allFolders.length; index++) {
+
+      this.mediaService.getAssetsByFolderId(this.allFolders[index]?.id).then(
+        (res: any) => {
+          if (res) {
+            this.allAssets = [...this.allAssets, ...res];
+          }
+          else {
+            this.loading = false;
+            this.messageService.add({
+              severity: 'info',
+              summary: 'Info',
+              detail: 'Error while fetching the Assets.',
+              life: 3000,
+            });
+          }
+        }
+      );
+    }
+    // if( index == this.allFolders.length )
+    // {
+    //   alert(this.allAssets.length);
+    // }
+    this.loading = false;
   }
 
   handleClick(event: MouseEvent, item: any) {
@@ -650,8 +720,8 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
   }
 
   onItemReceivedPaste(item: any) {
-   console.log(item);
-   this.pasteThisComponentInside(item.id);
+    console.log(item);
+    this.pasteThisComponentInside(item.id);
   }
 
   searchValue: string = '';
@@ -777,8 +847,8 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
     localStorage.removeItem('componentCopy');
   }
 
-   // Recursive function to find and insert copied list after specific ID
-   insertAfterId(list: any[], afterObjectId: string, copiedList: any[]): boolean {
+  // Recursive function to find and insert copied list after specific ID
+  insertAfterId(list: any[], afterObjectId: string, copiedList: any[]): boolean {
     for (let i = 0; i < list.length; i++) {
       if (list[i].id === afterObjectId) {
         list.splice(i + 1, 0, ...copiedList);
@@ -809,15 +879,13 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
     return Math.floor(Math.random() * 100000) + 1;
   }
 
-  confirmToDelete(item : any)
-  {
-      this.activeData = item ;
-      this.visibleDeleteConfirmation = true ;
+  confirmToDelete(item: any) {
+    this.activeData = item;
+    this.visibleDeleteConfirmation = true;
   }
 
-  deleteConfirmed()
-  {
-      this.deleteThisComponent(this.activeData) ;
+  deleteConfirmed() {
+    this.deleteThisComponent(this.activeData);
   }
 
   deleteThisComponent(item: any) {
@@ -829,7 +897,7 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
     this.activeItem = null;
     this.formId = null;
     this.router.navigate(['/builder/forms/designer/' + null]);
-    this.activeData = null ;
+    this.activeData = null;
     this.visibleDeleteConfirmation = false;
   }
 
@@ -843,4 +911,39 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
     })
   }
 
+  currentComponent: any;
+  hoverComp(action: string, component: any) {
+    if (action == 'enter') {
+      this.currentComponent = component;
+    }
+    else {
+      this.showOptions = false;
+      this.currentComponent = null;
+    }
+  }
+
+  filteredAssets : Asset[] = [] ;
+  searchAssets()
+  {
+    if (this.searchQuery) {
+       this.filteredAssets = this.allAssets.filter(asset =>
+         asset.fileName?.toLowerCase().includes(this.searchQuery.toLowerCase())
+       );
+     }
+     else {
+        this.filteredAssets = this.allAssets ;
+     }
+  }
+
+  getAssetList()
+  {
+    return this.searchQuery ? this.filteredAssets : this.allAssets ;
+  }
+
+  sendThisAsset( asset : any)
+  {
+    this.imageURL  = asset.url ;
+    this.selectAssetModel = false;
+    console.log(this.imageURL);
+  }
 }

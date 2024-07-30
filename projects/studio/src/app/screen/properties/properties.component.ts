@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { MessageService } from '@splenta/vezo/src/public-api';
 import { iif } from 'rxjs';
@@ -7,7 +7,7 @@ import { iif } from 'rxjs';
   selector: 'app-properties',
   templateUrl: './properties.component.html'
 })
-export class PropertiesComponent {
+export class PropertiesComponent implements OnChanges {
 
   @Input() props: any = {};
   @Input() fields: any[] = [];
@@ -16,8 +16,18 @@ export class PropertiesComponent {
   @Input() comingFromForm: boolean = false;
   @Input() comingFromPage: boolean = false;
 
+  @Input() ImageURL = null;
 
-  @Output() getCollectionFields: EventEmitter<string> = new EventEmitter<string>();;
+  actualImageReceived: any;
+
+  selectAssetModel: boolean = false;
+
+  @Output() getCollectionFields: EventEmitter<string> = new EventEmitter<string>();
+
+  @Output() assetModelOpen = new EventEmitter<boolean>();
+
+  isReceivedUrlSameAsInput: boolean = false;
+
 
   column: any = {};
 
@@ -25,9 +35,24 @@ export class PropertiesComponent {
 
   constructor(
     private messageService: MessageService,
-    private router: Router
+    private router: Router,
+    private cdRef: ChangeDetectorRef
   ) {
+    this.ImageURL = null;
+    this.actualImageReceived = null;
+  }
 
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['ImageURL'] && changes['ImageURL'].currentValue !== changes['ImageURL'].previousValue) {
+      this.actualImageReceived = changes['ImageURL'].currentValue;
+      this.handleInputChange(this.actualImageReceived, 'url');
+      this.cdRef.detectChanges(); // Manually trigger change detection
+    } else {
+      this.actualImageReceived = null;
+      this.ImageURL = null;
+    }
+    
   }
 
   @Output() deleteProp = new EventEmitter<boolean>();
@@ -104,28 +129,64 @@ export class PropertiesComponent {
   handleInputChange(value: string, element: any): void {
     if (this.comingFromForm) {
       this.props.mappedData[element] = value;
+      if (element == 'url' && this.actualImageReceived !== null) {
+        this.props.mappedData[element] = this.actualImageReceived;
+      }
     } else {
       this.props.data[element] = value;
+      if (element == 'url' && this.actualImageReceived !== null) {
+        this.props.data[element] = this.actualImageReceived;
+      }
     }
   }
 
   getInputValue(element: any): string {
-    if( this.comingFromForm ==  true )
-      {
-        return this.props.mappedData[element] ;
-      }
-    else{
-          if(this.props.mappedData != null && this.props.mappedData[element] != null )
-            { 
-              return this.props.mappedData[element] ;
-            }
-            else{
-              return this.props.data[element] ;
-            }
+    if (this.comingFromForm == true) {
+      return this.props.mappedData[element];
     }
+    else {
+      if (this.props.mappedData != null && this.props.mappedData[element] != null) {
+        return this.props.mappedData[element];
+      }
+      else {
+        return this.props.data[element];
+      }
+    }
+  }
+
+  removeDirectImage() {
+    this.actualImageReceived = null;
+    this.handleInputChange('https://primefaces.org/cdn/primeng/images/galleria/galleria10.jpg', 'url');
+  }
+
+  // Function to handle changes to the ngModel of Selected Image from Asset
+  handleInputChangeImage(event: any, element: any): void {
+
+    // if (value !== this.ImageURL) {
+    //   this.ImageURL = null;
+    // }
+    // else {
+    //   if (this.comingFromForm) {
+    //     this.props.mappedData[element] = value;
+    //     if (element == 'url' && this.ImageURL !== null) {
+    //       this.props.mappedData[element] = this.ImageURL;
+    //     }
+    //   } else {
+    //     this.props.data[element] = value;
+    //     if (element == 'url' && this.ImageURL !== null) {
+    //       this.props.data[element] = this.ImageURL;
+    //     }
+    //   }
+    // }
+    //this.ImageURL = null ;
   }
 
   getDataFieldCount(props: any): number {
     return props && props.mappedData ? Object.keys(props.mappedData).length : 0;
   }
+
+  chooseAssetClicked() {
+    this.assetModelOpen.emit(true);
+  }
+
 }
