@@ -201,27 +201,22 @@
         {{ props.name }}'s parameter:
     </div>
 
-    <div class="mt-2 w-full" style="position: relative; display: inline-block" *ngIf="
-      this.comingFromForm == false ||
-      (props.mappedData !== null && props.mappedData?.text != null)
-    ">
-        <div style="position: absolute; top: 0; right: 0; cursor: pointer; z-index: 1" class="mb-1" [ngClass]="{
-        'bg-gray-200 p-1 rounded-md':
-          props.mappedData !== null && props.mappedData?.text
-      }" *ngIf="this.comingFromForm == false && this.comingFromPage == false" (click)="makeItMapped(props, 'text')">
+    <div class="mt-2 w-full" style="position: relative; display: inline-block"
+        *ngIf=" this.comingFromForm == false || (props.mappedData !== null && props.mappedData?.text != null)">
+        <div style="position: absolute; top: 0; right: 0; cursor: pointer; z-index: 1" class="mb-1"
+            [ngClass]="{'bg-gray-200 p-1 rounded-md':props.mappedData !== null && props.mappedData?.text}"
+            *ngIf="this.comingFromForm == false && this.comingFromPage == false" (click)="makeItMapped(props, 'text')">
             <img src="assets/tune.svg" style="width: 14px; height: auto" />
         </div>
-        <vezo-input label="Text" [ngModel]="getInputValue('text')"
-            (ngModelChange)="handleInputChange($event, 'text')" style="display: block; z-index: 0"></vezo-input>
+        <vezo-input label="Text" [ngModel]="getInputValue('text')" (ngModelChange)="handleInputChange($event, 'text')"
+            style="display: block; z-index: 0"></vezo-input>
     </div>
-    <div class="mt-2 w-full" style="position: relative; display: inline-block" *ngIf="
-      this.comingFromForm == false ||
-      (props.mappedData !== null && props.mappedData?.fontColor != null)
-    ">
-        <div style="position: absolute; top: 0; right: 0; cursor: pointer; z-index: 1" class="mb-1" [ngClass]="{
-        'bg-gray-200 p-1 rounded-md':
-          props.mappedData !== null && props.mappedData?.fontColor
-      }" *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+
+    <div class="mt-2 w-full" style="position: relative; display: inline-block"
+        *ngIf="this.comingFromForm == false ||(props.mappedData !== null && props.mappedData?.fontColor != null)">
+        <div style="position: absolute; top: 0; right: 0; cursor: pointer; z-index: 1" class="mb-1"
+            [ngClass]="{'bg-gray-200 p-1 rounded-md':props.mappedData !== null && props.mappedData?.fontColor}"
+            *ngIf="this.comingFromForm == false && this.comingFromPage == false"
             (click)="makeItMapped(props, 'fontColor')">
             <img src="assets/tune.svg" style="width: 14px; height: auto" />
         </div>
@@ -3544,8 +3539,7 @@
                         (click)="makeItMapped(props, 'bgColor')">
                         <img src="assets/tune.svg" style="width: 14px; height: auto" />
                     </div>
-                    <vezo-colorpicker [label]="'Background Color'"
-                        (colorChange)="handleInputChange($event, 'bgColor')"
+                    <vezo-colorpicker [label]="'Background Color'" (colorChange)="handleInputChange($event, 'bgColor')"
                         [inputVal]="getInputValue('bgColor')"></vezo-colorpicker>
                 </div>
             </div>
