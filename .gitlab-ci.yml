@@ -18,6 +18,8 @@ build-frontend:
     - npm install
     # - ng build @splenta/vezo
     - ng build studio
+  variables:
+    GIT_SUBMODULE_STRATEGY: normal
   artifacts:
     name: "dist-output"
     paths:
