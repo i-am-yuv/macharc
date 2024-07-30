@@ -43,6 +43,7 @@ import { ReportDesignerComponent } from './reports/report-designer/report-design
 import { ReportsComponent } from './reports/reports.component';
 import { TemplatesComponent } from './screen/templates/templates.component';
 import { SettingsComponent } from './settings/settings.component';
+import { ThemeComponent } from './theme/theme.component';
 
 const routes: Routes = [
   {
@@ -190,6 +191,16 @@ const routes: Routes = [
                 path: 'templates/:id',
                 component: TemplatesComponent,
               },
+            ],
+          },
+          {
+            path: 'theme',
+            component: DispatcherComponent,
+            children: [
+              {
+                path: '',
+                component: ThemeComponent,
+              }, 
             ],
           },
         ],

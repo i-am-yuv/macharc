@@ -89,6 +89,7 @@ import { Properties2Component } from './screen/properties2/properties2.component
 import { TemplatesComponent } from './screen/templates/templates.component';
 import { SettingsComponent } from './settings/settings.component';
 import { ContenteditableValueAccessor } from './utils/constenteditable.directive';
+import { ThemeComponent } from './theme/theme.component';
 
 @NgModule({
   declarations: [
@@ -142,6 +143,7 @@ import { ContenteditableValueAccessor } from './utils/constenteditable.directive
     MediaManagerComponent,
     Properties2Component,
     MobilePreviewComponent,
+    ThemeComponent,
   ],
   imports: [
     BrowserModule,

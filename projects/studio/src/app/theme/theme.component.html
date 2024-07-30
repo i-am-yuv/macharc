@@ -1,0 +1,26 @@
+<div class="p-3">
+    <div class="flex place-items-center">
+        <div class="title">Theme</div>
+        <div class="flex-grow"></div>
+        <div class="text-right">
+            <vezo-button label="Save" icon="plus" (click)="saveThemeData()"
+                className="bg-primary text-white hover:text-gray-700"></vezo-button>
+        </div>
+    </div>
+    <!-- TODO: Convert this into form array -->
+    <form [formGroup]="form">
+    <div class="grid grid-cols-3 gap-2">
+        <div class="col-12 sm:col-6 md:col-4 xl:col-6 p-2" *ngFor="let product of themeList">
+            <div class="border-1 surface-border surface-card border-round flex flex-column">
+                <div class="flex flex-row justify-content-between align-items-start gap-2">
+                    <vezo-colorpicker [label]='product.colorName'
+                     (colorChange)="handleInputChange($event, product.colorName)"
+                        [inputVal]="product.colorCode"></vezo-colorpicker>
+                </div>
+            </div>
+        </div>
+    </div>
+    </form>
+</div>
+<vezo-toast></vezo-toast>
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px' }"></ngx-loading>
