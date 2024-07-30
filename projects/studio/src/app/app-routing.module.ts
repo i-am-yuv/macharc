@@ -4,7 +4,6 @@ import { CollectionComponent } from './collection/collection.component';
 import { DatasourceComponent } from './datasource/datasource.component';
 import { DispatcherComponent } from './dispatcher/dispatcher.component';
 import { FieldsComponent } from './fields/fields.component';
-import { FlowComponent } from './flow/flow.component';
 import { FrontComponent } from './front/front.component';
 import { LayoutComponent } from './layout/layout.component';
 import { MicroserviceComponent } from './microservice/microservice.component';
@@ -23,14 +22,17 @@ import { BusinessLogicComponent } from './business-logic/business-logic.componen
 import { EndpointsComponent } from './collection/endpoints/endpoints.component';
 import { DataFormComponent } from './data-form/data-form.component';
 import { FormDesignerComponent } from './data-form/form-designer/form-designer.component';
+import { MenuPanelCreateComponent } from './data-form/menu-panel/menu-panel-create/menu-panel-create.component';
+import { MenuPanelComponent } from './data-form/menu-panel/menu-panel.component';
 import { DatasourceFormComponent } from './datasource/datasource-form/datasource-form.component';
 import { DatasourceListComponent } from './datasource/datasource-list/datasource-list.component';
-import { DiagramComponent } from './diagram/diagram.component';
 import { HomeComponent } from './home/home.component';
 import { MarketplaceComponent } from './marketplace/marketplace.component';
+import { MediaManagerComponent } from './media-manager/media-manager.component';
 import { ApidocComponent } from './microservice/apidoc/apidoc.component';
 import { MsDatasourceComponent } from './microservice/ms-datasource/ms-datasource.component';
 import { MsFormComponent } from './microservice/ms-form/ms-form.component';
+import { MobilePreviewComponent } from './mobile-preview/mobile-preview.component';
 import { MxflowComponent } from './processes/mxflow/mxflow.component';
 import { ProcessesComponent } from './processes/processes.component';
 import { ProjectComponent } from './project/project.component';
@@ -41,9 +43,6 @@ import { ReportDesignerComponent } from './reports/report-designer/report-design
 import { ReportsComponent } from './reports/reports.component';
 import { TemplatesComponent } from './screen/templates/templates.component';
 import { SettingsComponent } from './settings/settings.component';
-import { MenuPanelComponent } from './data-form/menu-panel/menu-panel.component';
-import { MenuPanelCreateComponent } from './data-form/menu-panel/menu-panel-create/menu-panel-create.component';
-import { MediaManagerComponent } from './media-manager/media-manager.component';
 
 const routes: Routes = [
   {
@@ -105,10 +104,8 @@ const routes: Routes = [
               { path: ':id', component: MicroserviceComponent },
             ],
           },
-          { path: 'diagram', component: DiagramComponent },
-
+          { path: 'mobile-preview', component: MobilePreviewComponent },
           { path: 'datasources/:id', component: MsDatasourceComponent },
-          { path: 'flow', component: FlowComponent },
           { path: 'collections', component: CollectionComponent },
           { path: 'collections/endpoints/:id', component: EndpointsComponent },
           { path: 'collections/:id', component: CollectionComponent },
@@ -206,11 +203,9 @@ const routes: Routes = [
       {
         path: '',
         component: DispatcherComponent,
-        children: [
-          { path: '', component: DesignerComponent }
-        ],
-      }
-    ]
+        children: [{ path: '', component: DesignerComponent }],
+      },
+    ],
   },
   // { path: 'actions', component: ActionsComponent },
   {
@@ -220,11 +215,9 @@ const routes: Routes = [
       {
         path: '',
         component: DispatcherComponent,
-        children: [
-          { path: '', component: ActionsComponent }
-        ],
-      }
-    ]
+        children: [{ path: '', component: ActionsComponent }],
+      },
+    ],
   },
   {
     path: 'builder/forms/designer/:id',
@@ -233,11 +226,9 @@ const routes: Routes = [
       {
         path: '',
         component: DispatcherComponent,
-        children: [
-          { path: '', component: FormDesignerComponent }
-        ],
-      }
-    ]
+        children: [{ path: '', component: FormDesignerComponent }],
+      },
+    ],
   },
   {
     path: 'builder/reports/designer/:id',
@@ -252,10 +243,10 @@ const routes: Routes = [
         component: DispatcherComponent,
         children: [
           { path: '', component: MenuPanelComponent },
-          { path: 'create', component: MenuPanelCreateComponent }
+          { path: 'create', component: MenuPanelCreateComponent },
         ],
-      }
-    ]
+      },
+    ],
   },
   {
     path: 'media-manager',
@@ -266,10 +257,10 @@ const routes: Routes = [
         component: DispatcherComponent,
         children: [
           { path: '', component: MediaManagerComponent },
-          { path: 'folder/:id', component: MediaManagerComponent }
+          { path: 'folder/:id', component: MediaManagerComponent },
         ],
-      }
-    ]
+      },
+    ],
   },
   {
     path: 'auth/login',
@@ -285,4 +276,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

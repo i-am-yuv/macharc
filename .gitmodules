@@ -2,3 +2,7 @@
 	path = projects/splenta
 	url = https://repo.splenta.com/Splenta/splenta.git
 	branch = main
+[submodule "flutter"]
+	path = flutter
+	url = https://repo.splenta.com/macharc/flutterbuilder.git
+	branch = dev

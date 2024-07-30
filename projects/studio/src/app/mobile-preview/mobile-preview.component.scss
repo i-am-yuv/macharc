@@ -1,0 +1,44 @@
+:host {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+}
+
+.toolbar-spacer {
+    flex: 1 1 auto;
+}
+
+.sidenav-container {
+    flex: 1;
+}
+
+.sidenav {
+    width: 300px;
+    padding: 10px;
+}
+
+.button-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-bottom: 20px;
+}
+
+.button-list button {
+    min-width: 130px;
+}
+
+.sidenav-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.flutter-app {
+    border: 1px solid #eee;
+    border-radius: 5px;
+    height: 100%;
+    width: 100%;
+    transition: all 150ms ease-in-out;
+    overflow: hidden;
+}

@@ -10,9 +10,6 @@
         "dist/splenta/vezo"
       ]
     },
-    "types": [
-      "draw2d-types"
-    ],
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
