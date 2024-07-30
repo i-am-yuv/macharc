@@ -276,11 +276,13 @@
       <div *ngFor="let item of getDataSorted()">
         <div
           class="p-2 cursor-pointer"
+          (mouseenter)="hoverPage('enter' , item)" (mouseleave)="hoverPage('exit' , item)"
           [ngClass]="{ 'bg-indigo-200': this.screenId == item.id }"
         >
-          <div class="flex justify-between items-center">
+          <div  class="flex justify-between items-center">
             <div
               (click)="openNewPage(item)"
+              class="my-2"
               style="
                 font-size: 12px;
                 font-weight: 500;
@@ -292,7 +294,7 @@
             >
               {{ item.screenName }}
             </div>
-            <div class="flex gap-2 justify-end px-2">
+            <div *ngIf="this.currentPage?.id == item.id" class="flex gap-2 justify-end px-2">
               <!-- <img  src="assets/open_with.svg" style="width: 12px; height:auto" /> -->
               <vezo-icon
                 icon="pencil"
