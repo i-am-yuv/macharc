@@ -7,17 +7,20 @@ build-frontend:
   image: node:18.19.1
 
   script:
-    # - npm cache clean --force
-    - rm -rf node_modules package-lock.json
-    # - npm install -g @angular/cli@15.0.3
+    - apt-get update && apt-get install -y git
     - git submodule init
     - git submodule update
+    - npm install
+    - npm run build studio 
+    # - npm cache clean --force
+    # - rm -rf node_modules package-lock.json
+    # - npm install -g @angular/cli@15.0.3
     # - npm install @angular/cli
     # - npm install @angular/compiler-cli
     # - npm i sequential-workflow-designer
-    - npm install
+
     # - ng build @splenta/vezo
-    - ng build studio
+    # - ng build studio
   variables:
     GIT_SUBMODULE_STRATEGY: normal
   artifacts:
