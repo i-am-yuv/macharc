@@ -8,12 +8,12 @@ build-frontend:
 
   script:
     # - npm cache clean --force
-    # - rm -rf node_modules package-lock.json
+    - rm -rf node_modules package-lock.json
     # - npm install -g @angular/cli@15.0.3
-    - npm install @angular/cli
-    - npm install @angular/compiler-cli
     - git submodule init
     - git submodule update
+    - npm install @angular/cli
+    - npm install @angular/compiler-cli
     - npm i sequential-workflow-designer
     - npm install
     # - ng build @splenta/vezo
