@@ -102,7 +102,7 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
       disable: false,
       handle: false,
       data: {
-        label: 'Input Label', placeholder: 'Placeholder', labelFont: '14', labelWeight: '400', labelColor: '#000000', fieldHeight: '35', fieldRadius: '4', fillColor: '#f1f3f6', borderColor: '#f1f3f6', borderWidth: '1',
+        label: 'Input Label', placeholder: 'Placeholder', labelFont: '14', labelWeight: '400', labelColor: '#000000', fieldHeight: '35', fieldRadius: '4', bgColor: '#f1f3f6', borderColor: '#f1f3f6', borderWidth: '1',
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
       },
       mappedData: {}, // this will consist of the data that is mapped 
@@ -115,7 +115,7 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
       disable: false,
       handle: false,
       data: {
-        label: 'Input Label', placeholder: 'Placeholder', labelFont: '14', labelWeight: '400', labelColor: '#000000', fieldHeight: '35', fieldRadius: '4', fillColor: '#f1f3f6', borderColor: '#f1f3f6', borderWidth: '1',
+        label: 'Input Label', placeholder: 'Placeholder', labelFont: '14', labelWeight: '400', labelColor: '#000000', fieldHeight: '35', fieldRadius: '4', bgColor: '#f1f3f6', borderColor: '#f1f3f6', borderWidth: '1',
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
       },
       mappedData: {}, // this will consist of the data that is mapped 
@@ -128,7 +128,7 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
       disable: false,
       handle: false,
       data: {
-        label: 'Input Label', placeholder: 'Placeholder', labelFont: '14', labelWeight: '400', labelColor: '#000000', fieldHeight: '50', fillColor: '#f1f3f6', borderColor: '#f1f3f6', borderWidth: '1', borderRadius: '4',
+        label: 'Input Label', placeholder: 'Placeholder', labelFont: '14', labelWeight: '400', labelColor: '#000000', fieldHeight: '50', bgColor: '#f1f3f6', borderColor: '#f1f3f6', borderWidth: '1', borderRadius: '4',
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
       },
       mappedData: {} // this will consist of the data that is mapped 
@@ -141,7 +141,7 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
       disable: false,
       handle: true,
       data: {
-        label: 'Input Label', btnTextFont: '12', btnTextWeight: '600', btnTextColor: '#4338ca',
+        text: 'Input Label', fontSize: '12', fontWeight: '600', fontColor: '#4338ca',
         bgColor: '#e0e7ff', borderColor: '#c7d2fe', borderWidth: '1', borderRadius: '4', width: '100', height: '35',
         btnAlignment: 'center', textAlignment: 'center',
         mt: '0', mb: '0', ml: '0', mr: '0'
@@ -267,7 +267,7 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
       name: 'column',
       content: 'Column',
       data: {
-        width: 'auto', height: 'auto', alignment: 'center', hAlignment: 'center', gap: '0',
+        width: 'auto', height: 'auto', alignment: 'center', vAlignment: 'center', gap: '0',
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
       },
       mappedData: {}, // this will consist of the data that is mapped 
@@ -285,7 +285,7 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
       handle: false,
       data: {
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0', alignment: 'start', width: '1', height: '10',
-        dividerColor: '#000000'
+        bgcolor: '#000000'
       },
       icon: 'assets/Line 45.svg'
     }
@@ -302,7 +302,7 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
       data: {
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '20', pb: '20', pl: '20', pr: '20', imageAlignment: 'start', titleAlignment: 'start', descAlignment: 'start',
         width: '200', imageUrl: 'https://primefaces.org/cdn/primeng/images/card-ng.jpg', imageWidth: '100', title: ' Card title', desc: 'Card Description',
-        fillColor: '#f1f3f6'
+        bgColor: '#f1f3f6'
       },
       mappedData: {}, // this will consist of the data that is mapped 
       icon: 'assets/solar_card-2-outline.svg'
