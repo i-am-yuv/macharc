@@ -2843,15 +2843,16 @@
                         (click)="makeItMapped(props, 'url')">
                         <img src="assets/tune.svg" style="width: 14px; height: auto" />
                     </div>
-                    <vezo-input *ngIf="this.ImageURL == null" label="Image URL" [ngModel]="getInputValue('url')"
-                        (ngModelChange)="handleInputChange($event, 'url')"
+                    <vezo-input  label="Image URL" [ngModel]="getInputValue('url')"
+                        (ngModelChange)="handleInputChange($event, 'url')" [disabled]="this.actualImageReceived"
                         style="display: block; z-index: 0"></vezo-input>
-                    <vezo-input *ngIf="this.ImageURL !== null" label="Image URL" [ngModel]="this.ImageURL"
+                    <!-- <vezo-input *ngIf="this.ImageURL !== null" label="Image URL" [ngModel]="this.ImageURL"
                         (ngModelChange)="handleInputChangeImage($event, 'url')"
-                        style="display: block; z-index: 0"></vezo-input>
+                        style="display: block; z-index: 0"></vezo-input> -->
                 </div>
-                <div class="mb-2 cursor-pointer" (click)="chooseAssetClicked()">
-                    <img src="assets/photo_size_select_actual.svg" style="width:18px ; height:auto" />
+                <div class="mb-2 cursor-pointer">
+                    <img *ngIf="!this.actualImageReceived" src="assets/photo_size_select_actual.svg" style="width:18px ; height:auto" (click)="chooseAssetClicked()"/>
+                    <img *ngIf="this.actualImageReceived" src="assets/delete_outline_new.svg" style="width:18px ; height:auto" (click)="removeDirectImage()" />
                 </div>
             </div>
 
