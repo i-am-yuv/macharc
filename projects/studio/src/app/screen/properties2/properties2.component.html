@@ -312,14 +312,12 @@
             </div>
         </div>
     </div>
-    <div class="mt-2 w-full" style="position: relative; display: inline-block" *ngIf="
-      this.comingFromForm == false ||
-      (props.mappedData !== null && props.mappedData?.bgImage != null)
-    ">
-        <div style="position: absolute; top: 0; right: 0; cursor: pointer; z-index: 1" class="mb-1" [ngClass]="{
-        'bg-gray-200 p-1 rounded-md':
-          props.mappedData !== null && props.mappedData?.bgImage
-      }" *ngIf="this.comingFromForm == false && this.comingFromPage == false" (click)="makeItMapped(props, 'bgImage')">
+    <div class="mt-2 w-full" style="position: relative; display: inline-block"
+        *ngIf="this.comingFromForm == false ||(props.mappedData !== null && props.mappedData?.bgImage != null)">
+        <div style="position: absolute; top: 0; right: 0; cursor: pointer; z-index: 1" class="mb-1"
+            [ngClass]="{'bg-gray-200 p-1 rounded-md':props.mappedData !== null && props.mappedData?.bgImage}"
+            *ngIf="this.comingFromForm == false && this.comingFromPage == false"
+            (click)="makeItMapped(props, 'bgImage')">
             <img src="assets/tune.svg" style="width: 14px; height: auto" />
         </div>
         <vezo-input label="Background Image" [ngModel]="getInputValue('bgImage')"
@@ -765,21 +763,21 @@
     </div> -->
     <div class="mt-2" *ngIf="
       this.comingFromForm == false ||
-      (props.mappedData !== null && props.mappedData?.alignment != null)
+      (props.mappedData !== null && props.mappedData?.vAlignment != null)
     ">
         <div class="">
             <label class="">Cross Axis Alignment</label>
             <div class="flex mt-2 p-1 gap-2 w-fit" style="border-color: #dfdfdf; border-width: 1px; border-radius: 4px">
-                <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.hAlignment = 'start'"
-                    [ngClass]="{ 'bg-slate-100': props.data?.hAlignment == 'start' }">
+                <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.vAlignment = 'start'"
+                    [ngClass]="{ 'bg-slate-100': props.data?.vAlignment == 'start' }">
                     <img src="assets/alignLeft.svg" style="width: 16px; height: 16px" />
                 </div>
-                <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.hAlignment = 'center'"
-                    [ngClass]="{ 'bg-slate-100': props.data?.hAlignment == 'center' }">
+                <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.vAlignment = 'center'"
+                    [ngClass]="{ 'bg-slate-100': props.data?.vAlignment == 'center' }">
                     <img src="assets/alignCenter.svg" style="width: 16px; height: 16px" />
                 </div>
-                <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.hAlignment = 'end'"
-                    [ngClass]="{ 'bg-slate-100': props.data?.hAlignment == 'end' }">
+                <div class="p-1 flex justify-center cursor-pointer" (click)="props.data.vAlignment = 'end'"
+                    [ngClass]="{ 'bg-slate-100': props.data?.vAlignment == 'end' }">
                     <img src="assets/alignRight.svg" style="width: 16px; height: 16px" />
                 </div>
             </div>
@@ -787,7 +785,7 @@
     </div>
     <div class="mt-2" *ngIf="
       this.comingFromForm == false ||
-      (props.mappedData !== null && props.mappedData?.vAlignment != null)
+      (props.mappedData !== null && props.mappedData?.alignment != null)
     ">
         <div class="">
             <label class="">Main Axis Alignment</label>

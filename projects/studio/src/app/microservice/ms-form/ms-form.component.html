@@ -79,10 +79,24 @@
         <vezo-button
           label="Save"
           [disabled]="!form.valid"
-          (click)="saveMicroService()"
+          (click)="saveData()"
         ></vezo-button>
       </div>
     </div>
   </form>
   <vezo-toast></vezo-toast>
+</div>
+
+<!-- Web Terminal Code -->
+<div>
+  <ng-terminal #term [minHeight]="200"></ng-terminal>
+  <div style="text-align: right; margin-top: 20px">
+    <button style="margin-right: 10px" (click)="stopMessages()">
+      Disconnect
+    </button>
+    <button style="margin-right: 10px" (click)="stopServer()">
+      Stop Server
+    </button>
+    <button (click)="startServer()">Start Server</button>
+  </div>
 </div>

@@ -17,6 +17,8 @@ import { MicroService } from '../../microservice/microservice';
 import { Application } from '../../application/application';
 import { MicroserviceService } from '../../microservice/microservice.service';
 import { ApplicationService } from '../../application/application.service';
+import { MediaService } from '../../media-manager/media.service';
+import { Asset, Folder } from '../../media-manager/folder';
 
 interface DropzoneLayout {
   container: string;
@@ -49,6 +51,11 @@ export class DesignerComponent extends GenericComponent implements OnInit {
   visibleDeleteConfirmation: boolean = false;
   currListView: boolean = true;
   activeData: any;
+  selectAssetModel: boolean = false;
+  imageURL!: any ;
+
+  allFolders: Folder[] = [];
+  allAssets : Asset[]= [];
 
   // Virtual Elements
   draggableListLeftVE: DraggableItem[] = [
@@ -72,7 +79,7 @@ export class DesignerComponent extends GenericComponent implements OnInit {
       disable: false,
       handle: false,
       data: {
-        label: 'Input Label', placeholder: 'Placeholder', labelFont: '14', labelWeight: '400', labelColor: '#000000', fieldHeight: '35', fieldRadius: '4', fillColor: '#f1f3f6', borderColor: '#f1f3f6', borderWidth: '1',
+        label: 'Input Label', placeholder: 'Placeholder', labelFont: '14', labelWeight: '400', labelColor: '#000000', fieldHeight: '35', fieldRadius: '4', bgColor: '#f1f3f6', borderColor: '#f1f3f6', borderWidth: '1',
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
       },
       mappedData: {}, // this will consist of the data that is mapped 
@@ -85,7 +92,7 @@ export class DesignerComponent extends GenericComponent implements OnInit {
       disable: false,
       handle: false,
       data: {
-        label: 'Input Label', placeholder: 'Placeholder', labelFont: '14', labelWeight: '400', labelColor: '#000000', fieldHeight: '35', fieldRadius: '4', fillColor: '#f1f3f6', borderColor: '#f1f3f6', borderWidth: '1',
+        label: 'Input Label', placeholder: 'Placeholder', labelFont: '14', labelWeight: '400', labelColor: '#000000', fieldHeight: '35', fieldRadius: '4', bgColor: '#f1f3f6', borderColor: '#f1f3f6', borderWidth: '1',
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
       },
       mappedData: {},
@@ -98,7 +105,7 @@ export class DesignerComponent extends GenericComponent implements OnInit {
       disable: false,
       handle: false,
       data: {
-        label: 'Input Label', placeholder: 'Placeholder', labelFont: '14', labelWeight: '400', labelColor: '#000000', fieldHeight: '50', fillColor: '#f1f3f6', borderColor: '#f1f3f6', borderWidth: '1', borderRadius: '4',
+        label: 'Input Label', placeholder: 'Placeholder', labelFont: '14', labelWeight: '400', labelColor: '#000000', fieldHeight: '50', bgColor: '#f1f3f6', borderColor: '#f1f3f6', borderWidth: '1', borderRadius: '4',
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
       },
       mappedData: {},
@@ -111,7 +118,7 @@ export class DesignerComponent extends GenericComponent implements OnInit {
       disable: false,
       handle: true,
       data: {
-        label: 'Input Label', btnTextFont: '12', btnTextWeight: '600', btnTextColor: '#4338ca',
+        text: 'Input Label', fontSize: '12', fontWeight: '600', fontColor: '#4338ca',
         bgColor: '#e0e7ff', borderColor: '#c7d2fe', borderWidth: '1', borderRadius: '4', width: '100', height: '35',
         btnAlignment: 'center', textAlignment: 'center',
         mt: '0', mb: '0', ml: '0', mr: '0'
@@ -298,7 +305,7 @@ export class DesignerComponent extends GenericComponent implements OnInit {
       name: 'column',
       content: 'Column',
       data: {
-        width: 'auto', height: 'auto', alignment: 'center', hAlignment: 'center', gap: '0',
+        width: 'auto', height: 'auto', alignment: 'center', vAlignment: 'center', gap: '0',
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
       },
       mappedData: {},
@@ -316,7 +323,7 @@ export class DesignerComponent extends GenericComponent implements OnInit {
       handle: false,
       data: {
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0', alignment: 'start', width: '1', height: '10',
-        dividerColor: '#000000'
+        bgcolor: '#000000'
       },
       mappedData: {},
       icon: 'assets/Line 45.svg'
@@ -334,7 +341,7 @@ export class DesignerComponent extends GenericComponent implements OnInit {
       data: {
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '20', pb: '20', pl: '20', pr: '20', imageAlignment: 'start', titleAlignment: 'start', descAlignment: 'start',
         width: '200', imageUrl: 'https://primefaces.org/cdn/primeng/images/card-ng.jpg', imageWidth: '100', title: ' Card title', desc: 'Card Description',
-        fillColor: '#f1f3f6'
+        bgColor: '#f1f3f6'
       },
       icon: 'assets/solar_card-2-outline.svg'
     }
@@ -368,6 +375,8 @@ export class DesignerComponent extends GenericComponent implements OnInit {
   mutiScreenView: boolean = false;
 
   collectionId: string | null | undefined = '';
+  searchQuery: string = '';
+
   collectionItems: Collection[] = [];
   collection: Collection = {};
   microserviceItems: MicroService[] = [];
@@ -385,7 +394,8 @@ export class DesignerComponent extends GenericComponent implements OnInit {
     private msgService: MessageService,
     private microserviceService: MicroserviceService,
     private applicationService: ApplicationService,
-    private renderer: Renderer2, private el: ElementRef
+    private renderer: Renderer2, private el: ElementRef,
+    private mediaService : MediaService
   ) {
     super(screenService, messageService);
     this.form = this.fb.group({
@@ -850,8 +860,17 @@ export class DesignerComponent extends GenericComponent implements OnInit {
       this.msgService.add({ severity: 'info', summary: 'Info', detail: 'No Preview available for an empty page.' });
       return;
     }
-
-    const htmlContent = div.innerHTML;
+  
+    // Clone the content to manipulate it without affecting the original
+    const clonedDiv = div.cloneNode(true) as HTMLElement;
+    
+    // Remove the 'giveBorder' class from all elements
+    clonedDiv.querySelectorAll('.borderOutline').forEach(element => {
+      element.classList.remove('borderOutline');
+    });
+  
+    const htmlContent = clonedDiv.innerHTML;
+  
     // Collect all stylesheets from the current document
     const stylesheets = Array.from(document.styleSheets)
       .map((styleSheet: CSSStyleSheet) => {
@@ -875,13 +894,13 @@ export class DesignerComponent extends GenericComponent implements OnInit {
     const fullHTML = `
       <html>
         <head>
-          <title>Div Content</title>
+          <title>Preview</title>
           ${stylesheets}
           <style>
             body {
               user-select: none; /* Prevent text selection */
             }
-            input, select, textarea, button, a, video, dropdown, checkbox , label,  .combo-wrapper, .combo-item{
+            input, select, textarea, button, a, video, dropdown, checkbox, label, .combo-wrapper, .combo-item {
               pointer-events: auto; /* Enable pointer events for interactive elements */
               user-select: auto; /* Allow text selection within input fields and other interactive elements */
             }
@@ -903,7 +922,107 @@ export class DesignerComponent extends GenericComponent implements OnInit {
     window.open(url, '_blank');
   
     // Release the object URL if needed
-     window.URL.revokeObjectURL(url);
+    window.URL.revokeObjectURL(url);
+  }
+
+  currentPage : any ;
+  hoverPage( action : string, page : any )
+  {
+    if( action == 'enter')
+    {
+      this.currentPage = page ;
+    }
+    else
+    {
+      this.currentPage = null ;
+    }
+  }
+
+  checkImageModelClicked(isClicked: boolean) {
+    this.selectAssetModel = isClicked;
+    this.getAllFolders();
+  }
+
+  getAllFolders() {
+    this.loading = true ;
+    this.mediaService.getAllFolders().then(
+      (res: any) => {
+        if (res) {
+          this.allFolders = res.content;
+          this.getAssetsGlobal();
+        }
+        else {
+          this.loading = false;
+          this.messageService.add({
+            severity: 'info',
+            summary: 'Info',
+            detail: 'Error while fetching the folders.',
+            life: 3000,
+          });
+        }
+      }
+    ).catch((err: any) => {
+      this.loading =  false;
+      this.messageService.add({
+        severity: 'info',
+        summary: 'Info',
+        detail: err.error.message,
+        life: 3000,
+      });
+    })
+  }
+
+  getAssetsGlobal() {
+    let index: number;
+    for (index = 0; index < this.allFolders.length; index++) {
+
+      this.mediaService.getAssetsByFolderId(this.allFolders[index]?.id).then(
+        (res: any) => {
+          if (res) {
+            this.allAssets = [...this.allAssets, ...res];
+          }
+          else {
+            this.loading = false;
+            this.messageService.add({
+              severity: 'info',
+              summary: 'Info',
+              detail: 'Error while fetching the Assets.',
+              life: 3000,
+            });
+          }
+        }
+      );
+    }
+    // if( index == this.allFolders.length )
+    // {
+    //   alert(this.allAssets.length);
+    // }
+    this.loading = false;
+  }
+
+  filteredAssets : Asset[] = [] ;
+  searchAssets()
+  {
+    if (this.searchQuery) {
+       this.filteredAssets = this.allAssets.filter(asset =>
+         asset.fileName?.toLowerCase().includes(this.searchQuery.toLowerCase())
+       );
+     }
+     else {
+        this.filteredAssets = this.allAssets ;
+     }
+  }
+
+  getAssetList()
+  {
+    return this.searchQuery ? this.filteredAssets : this.allAssets ;
+  }
+
+  sendThisAsset( asset : any)
+  {
+    this.imageURL  = asset.url ;
+    this.selectAssetModel = false;
+    console.log(this.imageURL);
   }
 
 }

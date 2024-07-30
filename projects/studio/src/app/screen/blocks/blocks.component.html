@@ -10,11 +10,11 @@
 <ng-container *ngIf="block.name === 'button'">
     <div class="text-{{ block.data?.align ? block.data.align : block.data?.btnAlignment }}">
         <vezo-button 
-        [label]="(block.mappedData?.label == null ) ? block.data?.label : block.mappedData?.label"
+        [label]="(block.mappedData?.text == null ) ? block.data?.text : block.mappedData?.text"
         [btnInfo]="{ 
-            btnTextSize: (block.mappedData?.btnTextFont == null ) ? block.data?.btnTextFont+'px' : block.mappedData?.btnTextFont+'px', 
-            btnTextWeight:(block.mappedData?.btnTextWeight == null ) ? block.data?.btnTextWeight : block.mappedData?.btnTextWeight, 
-            btnTextColor:(block.mappedData?.btnTextColor == null ) ? block.data?.btnTextColor : block.mappedData?.btnTextColor, 
+            fontSize: (block.mappedData?.fontSize == null ) ? block.data?.fontSize+'px' : block.mappedData?.fontSize+'px', 
+            fontWeight:(block.mappedData?.fontWeight == null ) ? block.data?.fontWeight : block.mappedData?.fontWeight, 
+            fontColor:(block.mappedData?.fontColor == null ) ? block.data?.fontColor : block.mappedData?.fontColor, 
             borderWidth: (block.mappedData?.borderWidth == null ) ? block.data?.borderWidth+'px' : block.mappedData?.borderWidth+'px', 
             borderColor: (block.mappedData?.borderColor == null ) ? block.data?.borderColor : block.mappedData?.borderColor, 
             borderRadius: (block.mappedData?.borderRadius == null ) ? block.data?.borderRadius+'px' : block.mappedData?.borderRadius+'px',   
@@ -48,7 +48,7 @@
      color:(block.mappedData?.labelColor == null ) ? block.data?.labelColor : block.mappedData?.labelColor, 
     height: (block.mappedData?.fieldHeight == null ) ? block.data?.fieldHeight+'px' : block.mappedData?.fieldHeight+'px' ,
      radius:(block.mappedData?.fieldRadius == null ) ? block.data?.fieldRadius+'px' : block.mappedData?.fieldRadius+'px' , 
-     fillColor: (block.mappedData?.fillColor == null ) ? block.data?.fillColor : block.mappedData?.fillColor,
+     bgColor: (block.mappedData?.bgColor == null ) ? block.data?.bgColor : block.mappedData?.bgColor,
     borderColor:(block.mappedData?.borderColor == null ) ? block.data?.borderColor : block.mappedData?.borderColor, 
     borderWidth: (block.mappedData?.borderWidth == null ) ? block.data?.borderWidth+'px' : block.mappedData?.borderWidth+'px'  ,
     mt: block.data?.mt+'px',mb: block.data?.mb+'px',ml: block.data?.ml+'px',mr: block.data?.mr+'px' ,
@@ -61,7 +61,7 @@
         size: (block.mappedData?.labelFont == null ) ? block.data?.labelFont+'px' : block.mappedData?.labelFont+'px',
          weight: (block.mappedData?.labelWeight == null ) ? block.data?.labelWeight : block.mappedData?.labelWeight, 
          color: (block.mappedData?.labelColor == null ) ? block.data?.labelColor : block.mappedData?.labelColor, 
-         fillColor:  (block.mappedData?.fillColor == null ) ? block.data?.fillColor : block.mappedData?.fillColor,
+         bgColor:  (block.mappedData?.bgColor == null ) ? block.data?.bgColor : block.mappedData?.bgColor,
     borderColor: (block.mappedData?.borderColor == null ) ? block.data?.borderColor : block.mappedData?.borderColor,
     borderWidth: (block.mappedData?.borderWidth == null ) ? block.data?.borderWidth+'px' : block.mappedData?.borderWidth+'px'  ,
     height:(block.mappedData?.fieldHeight == null ) ? block.data?.fieldHeight+'px' : block.mappedData?.fieldHeight+'px' ,
@@ -78,7 +78,7 @@
         color:(block.mappedData?.labelColor == null ) ? block.data?.labelColor : block.mappedData?.labelColor, 
         height:(block.mappedData?.fieldHeight == null ) ? block.data?.fieldHeight+'px' : block.mappedData?.fieldHeight+'px' ,
        radius: (block.mappedData?.fieldRadius == null ) ? block.data?.fieldRadius+'px' : block.mappedData?.fieldRadius+'px' , 
-       fillColor: (block.mappedData?.fillColor == null ) ? block.data?.fillColor : block.mappedData?.fillColor,
+       bgColor: (block.mappedData?.bgColor == null ) ? block.data?.bgColor : block.mappedData?.bgColor,
        borderColor: (block.mappedData?.borderColor == null ) ? block.data?.borderColor : block.mappedData?.borderColor,
        borderWidth: (block.mappedData?.borderWidth == null ) ? block.data?.borderWidth+'px' : block.mappedData?.borderWidth+'px'  ,
     mt: block.data?.mt+'px',mb: block.data?.mb+'px',ml: block.data?.ml+'px',mr: block.data?.mr+'px' ,
@@ -167,7 +167,7 @@
     <div class="flex w-auto" [ngStyle]="{ 'justify-content':block.data?.alignment ,'width':'auto' }">
         <div
             [ngStyle]="{ 'justify-content':block.data?.alignment ,'margin-top':  block.data?.mt+'px', 'margin-bottom':  block.data?.mb+'px',  'margin-left':  block.data?.ml+'px',  'margin-right':  block.data?.mr+'px','padding-top':  block.data?.pt+'px',  'padding-bottom':  block.data?.pb+'px',  'padding-left':  block.data?.pl+'px',  'padding-right':  block.data?.pr+'px' ,
-              'width':block.data?.width ? block.data?.width+'px':'-webkit-fill-available' ,  'height':block.data?.height+'px', 'background-color':block.data?.dividerColor }">
+              'width':block.data?.width ? block.data?.width+'px':'-webkit-fill-available' ,  'height':block.data?.height+'px', 'background-color':block.data?.bgcolor }">
         </div>
     </div>
 </ng-container>
@@ -175,7 +175,7 @@
     <div class="shadow-md p-8 w-auto" style="border-radius: 8px;" [ngStyle]="{ 
         'justify-content':block.data?.alignment ,
         'margin-top':  block.data?.mt+'px', 'margin-bottom':  block.data?.mb+'px',  'margin-left':  block.data?.ml+'px',  'margin-right':  block.data?.mr+'px','padding-top':  block.data?.pt+'px',  'padding-bottom':  block.data?.pb+'px',  'padding-left':  block.data?.pl+'px',  'padding-right':  block.data?.pr+'px' ,
-        'background-color':(block.mappedData?.fillColor == null ) ? block.data?.fillColor : block.mappedData?.fillColor  , 
+        'background-color':(block.mappedData?.bgColor == null ) ? block.data?.bgColor : block.mappedData?.bgColor  , 
         'width':(block.mappedData?.width == null ) ? block.data?.width+'px' : block.mappedData?.width+'px'
     }">
         <!-- Image of the Card -->

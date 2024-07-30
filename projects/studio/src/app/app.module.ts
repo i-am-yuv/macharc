@@ -89,6 +89,9 @@ import { Properties2Component } from './screen/properties2/properties2.component
 import { TemplatesComponent } from './screen/templates/templates.component';
 import { SettingsComponent } from './settings/settings.component';
 import { ContenteditableValueAccessor } from './utils/constenteditable.directive';
+import { NgTerminalModule } from 'ng-terminal';
+
+
 
 @NgModule({
   declarations: [
@@ -179,9 +182,11 @@ import { ContenteditableValueAccessor } from './utils/constenteditable.directive
     ChartModule,
     SeachfieldModule,
     ColorpickerModule,
+    NgTerminalModule,
+    NgxLoadingModule.forRoot({}),
     NgFlutterComponent,
     NgxLoadingModule.forRoot({}),
-  ],
+],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [
     HttpClientModule,

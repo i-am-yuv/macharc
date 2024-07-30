@@ -45,3 +45,11 @@
 .expand {
     width: -webkit-fill-available;
 }
+
+.file-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 80px; /* Adjust the width as per your layout */
+    display: block;
+}
