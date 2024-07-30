@@ -12,9 +12,9 @@ build-frontend:
     # - npm install -g @angular/cli@15.0.3
     - git submodule init
     - git submodule update
-    - npm install @angular/cli
-    - npm install @angular/compiler-cli
-    - npm i sequential-workflow-designer
+    # - npm install @angular/cli
+    # - npm install @angular/compiler-cli
+    # - npm i sequential-workflow-designer
     - npm install
     # - ng build @splenta/vezo
     - ng build studio
