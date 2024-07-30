@@ -4,9 +4,7 @@ stages:
 
 build-frontend:
   stage: build
-  image: node:18-alpine
-    # node:18.19.1
-
+  image: node:18.19.1
   script:
     - apt-get update && apt-get install -y git
     - git submodule init
@@ -22,8 +20,6 @@ build-frontend:
 
     # - ng build @splenta/vezo
     # - ng build studio
-  variables:
-    GIT_SUBMODULE_STRATEGY: normal
   artifacts:
     name: "dist-output"
     paths:
