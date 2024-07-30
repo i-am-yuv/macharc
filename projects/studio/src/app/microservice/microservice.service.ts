@@ -8,8 +8,6 @@ import { lastValueFrom } from 'rxjs';
 })
 export class MicroserviceService extends GenericService {
 
-
-
   endpoint: string = 'micro-services';
 
   constructor(http: HttpClient) {
