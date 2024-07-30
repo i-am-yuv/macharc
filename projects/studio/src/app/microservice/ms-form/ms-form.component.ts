@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { GenericComponent } from '../../utils/genericcomponent';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { MessageService } from '@splenta/vezo/src/public-api';
 import { MicroserviceService } from '../microservice.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -32,14 +32,14 @@ export class MsFormComponent extends GenericComponent implements OnInit, OnDestr
   packaging: any[] = ['Jar', 'War'];
   projects: any[] = [];
 
-  webSocketUrl = environment.webTerminal ;
+  webSocketUrl = environment.webTerminal;
 
   constructor(
     private fb: FormBuilder,
     private msService: MicroserviceService,
     messageService: MessageService,
     private projectService: ProjectService,
-    private router : Router ,
+    private router: Router,
     private route: ActivatedRoute) {
     super(msService, messageService);
     this.msId = this.route.snapshot.paramMap.get('id');
@@ -47,7 +47,7 @@ export class MsFormComponent extends GenericComponent implements OnInit, OnDestr
       id: '',
       microServiceCode: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
       microServiceName: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
-      packageName: [''],
+      packageName: ['', [Validators.required, this.packageNameValidator]],
       packaging: ['Jar'],
       portNumber: ['', [Validators.required]],
       project: ['']
@@ -136,8 +136,20 @@ export class MsFormComponent extends GenericComponent implements OnInit, OnDestr
     });
 
   }
+
+
   loadData(res: any): void {
     this.form.patchValue({ ...res });
+  }
+
+  packageNameValidator(control: AbstractControl): ValidationErrors | null {
+    const value = control.value;
+    const isValid = /^[a-zA-Z0-9]+(\.[a-zA-Z0-9]+){2}$/.test(value);
+    return isValid ? null : { invalidFormat: true };
+  }
+
+  checkPackageName() {
+    this.form.get('packageName')?.updateValueAndValidity();
   }
 
   // override postSave(data:any)
@@ -158,7 +170,7 @@ export class MsFormComponent extends GenericComponent implements OnInit, OnDestr
     //this.form.value.collection = null ;// No collection for page
     const formData = this.form.value;
     if (!formData.id) {
-      formData.id = null ;
+      formData.id = null;
       this.msService.createMS(formData).then((res: any) => {
         if (res) {
           this.visible = false;
@@ -181,13 +193,12 @@ export class MsFormComponent extends GenericComponent implements OnInit, OnDestr
             summary: this.componentName + ' updated',
           });
           this.getAllData();
-         // this.postSave(res);
+          // this.postSave(res);
         }
       });
     }
   }
-  override postSave(data:any)
-  {
+  override postSave(data: any) {
     this.msService.generateCode(data).then((res: any) => {
       if (res) {
         // this.messageService.add({
@@ -197,13 +208,13 @@ export class MsFormComponent extends GenericComponent implements OnInit, OnDestr
         // });
         console.log(res);
       }
-    }).catch( (err)=>{
+    }).catch((err) => {
       this.messageService.add({
-          severity: 'error',
-          detail: 'Error',
-          summary: 'Error while generating the code',
-        });
-    } )
+        severity: 'error',
+        detail: 'Error',
+        summary: 'Error while generating the code',
+      });
+    })
   }
 
   // Code added for web Terminal
