@@ -52,10 +52,10 @@ export class DesignerComponent extends GenericComponent implements OnInit {
   currListView: boolean = true;
   activeData: any;
   selectAssetModel: boolean = false;
-  imageURL!: any ;
+  imageURL!: any;
 
   allFolders: Folder[] = [];
-  allAssets : Asset[]= [];
+  allAssets: Asset[] = [];
 
   // Virtual Elements
   draggableListLeftVE: DraggableItem[] = [
@@ -395,7 +395,7 @@ export class DesignerComponent extends GenericComponent implements OnInit {
     private microserviceService: MicroserviceService,
     private applicationService: ApplicationService,
     private renderer: Renderer2, private el: ElementRef,
-    private mediaService : MediaService
+    private mediaService: MediaService
   ) {
     super(screenService, messageService);
     this.form = this.fb.group({
@@ -855,22 +855,27 @@ export class DesignerComponent extends GenericComponent implements OnInit {
   }
 
   downloadDivHTML() {
+    if (!this.screenId) {
+      this.msgService.add({ severity: 'info', summary: 'Info', detail: 'No Page Found.' });
+      return;
+    }
+
     const div = this.el.nativeElement.querySelector('#downloadable-div');
     if (div == null) {
       this.msgService.add({ severity: 'info', summary: 'Info', detail: 'No Preview available for an empty page.' });
       return;
     }
-  
+
     // Clone the content to manipulate it without affecting the original
     const clonedDiv = div.cloneNode(true) as HTMLElement;
-    
+
     // Remove the 'giveBorder' class from all elements
     clonedDiv.querySelectorAll('.borderOutline').forEach(element => {
       element.classList.remove('borderOutline');
     });
-  
+
     const htmlContent = clonedDiv.innerHTML;
-  
+
     // Collect all stylesheets from the current document
     const stylesheets = Array.from(document.styleSheets)
       .map((styleSheet: CSSStyleSheet) => {
@@ -889,7 +894,7 @@ export class DesignerComponent extends GenericComponent implements OnInit {
         }
       })
       .join('');
-  
+
     // Creating a HTML document with no text selection or pointer events on non-interactive elements
     const fullHTML = `
       <html>
@@ -916,25 +921,35 @@ export class DesignerComponent extends GenericComponent implements OnInit {
         </body>
       </html>
     `;
-  
+
     const blob = new Blob([fullHTML], { type: 'text/html' });
     const url = window.URL.createObjectURL(blob);
     window.open(url, '_blank');
-  
+
     // Release the object URL if needed
     window.URL.revokeObjectURL(url);
   }
 
-  currentPage : any ;
-  hoverPage( action : string, page : any )
-  {
-    if( action == 'enter')
-    {
-      this.currentPage = page ;
+  openMobilePreview() {
+    if (!this.screenId) {
+      this.msgService.add({ severity: 'info', summary: 'Info', detail: 'No Page Found.' });
+      return;
     }
-    else
-    {
-      this.currentPage = null ;
+    const div = this.el.nativeElement.querySelector('#downloadable-div');
+    if (div == null) {
+      this.msgService.add({ severity: 'info', summary: 'Info', detail: 'No Preview available for an empty page.' });
+      return;
+    }
+    this.router.navigate(['/builder/mobile-preview']);
+  }
+
+  currentPage: any;
+  hoverPage(action: string, page: any) {
+    if (action == 'enter') {
+      this.currentPage = page;
+    }
+    else {
+      this.currentPage = null;
     }
   }
 
@@ -944,7 +959,7 @@ export class DesignerComponent extends GenericComponent implements OnInit {
   }
 
   getAllFolders() {
-    this.loading = true ;
+    this.loading = true;
     this.mediaService.getAllFolders().then(
       (res: any) => {
         if (res) {
@@ -962,7 +977,7 @@ export class DesignerComponent extends GenericComponent implements OnInit {
         }
       }
     ).catch((err: any) => {
-      this.loading =  false;
+      this.loading = false;
       this.messageService.add({
         severity: 'info',
         summary: 'Info',
@@ -1000,27 +1015,24 @@ export class DesignerComponent extends GenericComponent implements OnInit {
     this.loading = false;
   }
 
-  filteredAssets : Asset[] = [] ;
-  searchAssets()
-  {
+  filteredAssets: Asset[] = [];
+  searchAssets() {
     if (this.searchQuery) {
-       this.filteredAssets = this.allAssets.filter(asset =>
-         asset.fileName?.toLowerCase().includes(this.searchQuery.toLowerCase())
-       );
-     }
-     else {
-        this.filteredAssets = this.allAssets ;
-     }
+      this.filteredAssets = this.allAssets.filter(asset =>
+        asset.fileName?.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+    }
+    else {
+      this.filteredAssets = this.allAssets;
+    }
   }
 
-  getAssetList()
-  {
-    return this.searchQuery ? this.filteredAssets : this.allAssets ;
+  getAssetList() {
+    return this.searchQuery ? this.filteredAssets : this.allAssets;
   }
 
-  sendThisAsset( asset : any)
-  {
-    this.imageURL  = asset.url ;
+  sendThisAsset(asset: any) {
+    this.imageURL = asset.url;
     this.selectAssetModel = false;
     console.log(this.imageURL);
   }
