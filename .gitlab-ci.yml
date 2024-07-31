@@ -1,44 +1,14 @@
 stages:
   - build
-  - deploy
 
 build-frontend:
   stage: build
-  image: node:22
+  image: ghcr.io/cirruslabs/flutter:3.19.5
   script:
-    - apt-get update && apt-get install -y git
+    - curl -fsSL https://fnm.vercel.app/install | bash
+    - source ~/.bashrc
+    - fnm use --install-if-missing 20
     - git submodule init
     - git submodule update
     - npm install
     - npm run build studio 
-    # --configuration production
-
-    # - npm cache clean --force
-    # - rm -rf node_modules package-lock.json
-    # - npm install -g @angular/cli@15.0.3
-    # - npm install @angular/cli
-    # - npm install @angular/compiler-cli
-    # - npm i sequential-workflow-designer
-
-    # - ng build @splenta/vezo
-    # - ng build studio
-  artifacts:
-    name: "dist-output"
-    paths:
-      - dist/studio
-
-deploy-frontend:
-  stage: deploy
-  image: alpine
-  dependencies:
-    - "build-frontend"
-  before_script:
-    - apk add openssh-client
-    - eval $(ssh-agent -s)
-    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-  script:
-    - mv dist/studio studio
-    - scp -r -o StrictHostKeyChecking=no studio $SERVER_USER@$SERVER_IP:/home/staginguser/public_html/
-    - ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "echo $PASSWORD | sudo -S nginx -s reload"
