@@ -13,7 +13,6 @@ build-frontend:
     - export PATH="$FNM_PATH:$PATH"
     - eval "$(fnm env)"
     - fnm use --install-if-missing 20
-    - cat .gitmodules
     - git submodule init
     - git submodule update
     - npm install

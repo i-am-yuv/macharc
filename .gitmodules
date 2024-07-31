@@ -1,5 +1,5 @@
-[submodule "flutterf"]
-	path = flutterf
+[submodule "flutter"]
+	path = flutter
 	url = https://kirpal:glpat-x4L1MKt22q13spAVaD6q@repo.splenta.com/macharc/flutterbuilder.git
 	branch = dev
 [submodule "projects/splenta"]
