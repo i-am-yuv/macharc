@@ -12,6 +12,16 @@ build-frontend:
     - npm install
     - npm run build studio 
     # --configuration production
+
+    # - npm cache clean --force
+    # - rm -rf node_modules package-lock.json
+    # - npm install -g @angular/cli@15.0.3
+    # - npm install @angular/cli
+    # - npm install @angular/compiler-cli
+    # - npm i sequential-workflow-designer
+
+    # - ng build @splenta/vezo
+    # - ng build studio
   artifacts:
     name: "dist-output"
     paths:

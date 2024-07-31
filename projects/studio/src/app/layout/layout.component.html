@@ -1,4 +1,7 @@
-<div [ngClass]="{ 'grid grid-cols-12': showSideBar, flex: !showSideBar }" class="h-[100vh]">
+<div
+  [ngClass]="{ 'grid grid-cols-12': showSideBar, flex: !showSideBar }"
+  class="h-[100vh]"
+>
   <div class="col-span-2 relative shadow-md" *ngIf="showSideBar">
     <div class="p-5 grid grid-cols-12 border-b cursor-pointer" routerLink="/">
       <div class="col-span-3">
@@ -33,29 +36,54 @@
     <div class="">
       <div class="flex">
         <div class="py-6 space-y-3 shadow-sm">
-          <div class="cursor-pointer  px-3 py-2"
-            [ngClass]="{'bg-indigo-50 rounded-r-lg' : this.menuView =='menuItemsBackend' }"
-            (click)="selectMenuItem('menuItemsBackend')" [routerLink]="['/builder/microservices/' + activeProject?.id]">
+          <div
+            class="cursor-pointer px-3 py-2"
+            [ngClass]="{
+              'bg-indigo-50 rounded-r-lg': this.menuView == 'menuItemsBackend'
+            }"
+            (click)="selectMenuItem('menuItemsBackend')"
+            [routerLink]="['/builder/microservices']"
+          >
             <!-- <vezo-icon icon="rectangleStack"></vezo-icon> -->
-            <img src="assets/microservice_L.svg" style="width: 24px; height: 24px;" />
+            <img
+              src="assets/microservice_L.svg"
+              style="width: 24px; height: 24px"
+            />
           </div>
-          <div class="cursor-pointer px-3 py-2"
-            [ngClass]="{'bg-indigo-50 rounded-r-lg' : this.menuView =='menuItemsFrontendWeb' }"
-            routerLink="/applications" (click)="selectMenuItem('menuItemsFrontendWeb')">
+          <div
+            class="cursor-pointer px-3 py-2"
+            [ngClass]="{
+              'bg-indigo-50 rounded-r-lg':
+                this.menuView == 'menuItemsFrontendWeb'
+            }"
+            routerLink="/applications"
+            (click)="selectMenuItem('menuItemsFrontendWeb')"
+          >
             <!-- <vezo-icon icon="cubeTransparent"></vezo-icon> -->
-            <img src="assets/front-end web_L.svg" style="width: 24px; height: 24px;" />
+            <img
+              src="assets/front-end web_L.svg"
+              style="width: 24px; height: 24px"
+            />
           </div>
-          <div class="cursor-pointer  px-3 py-2"
+          <!-- <div class="cursor-pointer  px-3 py-2"
             [ngClass]="{'bg-indigo-50 rounded-r-lg' : this.menuView =='menuItemsFrontendMobile' }" routerLink="/"
             (click)="selectMenuItem('menuItemsFrontendMobile')">
-            <!-- <vezo-icon icon="devicePhoneMobile"></vezo-icon> -->
+            <vezo-icon icon="devicePhoneMobile"></vezo-icon>
             <img src="assets/circum_mobile-1.svg" style="width: 24px; height: 24px;" />
-          </div>
-          <div class="cursor-pointer px-3 py-2"
-            [ngClass]="{'bg-indigo-50 rounded-r-lg' : this.menuView =='menuItemsSettings' }" routerLink="/settings"
-            (click)="selectMenuItem('menuItemsSettings')">
+          </div> -->
+          <div
+            class="cursor-pointer px-3 py-2"
+            [ngClass]="{
+              'bg-indigo-50 rounded-r-lg': this.menuView == 'menuItemsSettings'
+            }"
+            routerLink="/settings"
+            (click)="selectMenuItem('menuItemsSettings')"
+          >
             <!-- <vezo-icon icon="cog8Tooth"></vezo-icon> -->
-            <img src="assets/settings_L.svg" style="width: 24px; height: 24px;" />
+            <img
+              src="assets/settings_L.svg"
+              style="width: 24px; height: 24px"
+            />
           </div>
         </div>
         <div class="overflow-y-scroll h-[67vh]">
@@ -65,22 +93,54 @@
     </div>
     <div class="absolute bottom-0 w-full bg-white">
       <div class="flex place-items-center border-t">
-        <div class="py-4 px-2 text-right bg-gray-100 cursor-pointer flex-none" (click)="toggleSideBar()">
+        <div
+          class="py-4 px-2 text-right bg-gray-100 cursor-pointer flex-none"
+          (click)="toggleSideBar()"
+        >
           <vezo-icon icon="chevronLeft"></vezo-icon>
         </div>
         <div class="flex-none px-2">
-          <div class="w-8 h-8 bg-indigo-700 rounded-full text-white flex items-center justify-center">
+          <div
+            class="w-8 h-8 bg-indigo-700 rounded-full text-white flex items-center justify-center"
+          >
             PY
           </div>
         </div>
         <div class="px-2 bg-white flex-grow">
-          <div class="uppercase" style="font-size: 12px; font-weight: 500; color:#2e2e2e">{{ username }}</div>
-          <div class="uppercase"  style="font-size: 10px; font-weight: 400; color:#2e2e2e">
+          <div
+            class="uppercase"
+            style="font-size: 12px; font-weight: 500; color: #2e2e2e"
+          >
+            {{ username }}
+          </div>
+          <div
+            class="uppercase"
+            style="font-size: 10px; font-weight: 400; color: #2e2e2e"
+          >
             {{ roles }}
           </div>
         </div>
-        <div class="pr-2 flex-none cursor-pointer" (click)="logout()">
-          <vezo-icon icon="arrowRightOnRectangle"></vezo-icon>
+        <div
+          class="pr-2 flex-none text-red-400 cursor-pointer"
+          (click)="logout()"
+        >
+          <!-- <vezo-icon icon="arrowRightOnRectangle"></vezo-icon> -->
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="lucide lucide-circle-arrow-out-up-right"
+          >
+            <path d="M22 12A10 10 0 1 1 12 2" />
+            <path d="M22 2 12 12" />
+            <path d="M16 2h6v6" />
+          </svg>
         </div>
       </div>
     </div>
@@ -90,38 +150,126 @@
     *ngIf="!showSideBar"
   >
     <div class="py-6 space-y-6">
-      <div class="cursor-pointer" routerLink="/" >
+      <div class="cursor-pointer" routerLink="/">
         <img src="assets/macharc_icon.svg" class="w-6" />
       </div>
-      <div class="cursor-pointer" routerLink="/projects" >
-        <vezo-icon icon="arrowsRightLeft" [isTooltip]="true" [tooltipText]="'Projects'"></vezo-icon>
+      <div class="cursor-pointer" routerLink="/projects">
+        <vezo-icon
+          icon="rectangleStack"
+          [isTooltip]="true"
+          [tooltipText]="'Projects'"
+        ></vezo-icon>
       </div>
-      <div class="cursor-pointer" routerLink="/datasources" (click)="selectMenuItem('menuItemsBackend')">
-        <vezo-icon icon="circleStack" [isTooltip]="true" [tooltipText]="'Data sources'"></vezo-icon>
+      <div
+        class="cursor-pointer"
+        routerLink="/datasources"
+        (click)="selectMenuItem('menuItemsBackend')"
+      >
+        <vezo-icon
+          icon="circleStack"
+          [isTooltip]="true"
+          [tooltipText]="'Data sources'"
+        ></vezo-icon>
       </div>
-      <div class="cursor-pointer" [routerLink]="['/builder/microservices/' + activeProject?.id]"
-        (click)="selectMenuItem('menuItemsBackend')">
-        <vezo-icon icon="rectangleStack" [isTooltip]="true" [tooltipText]="'Microservices'"></vezo-icon>
+      <div
+        class="cursor-pointer"
+        [routerLink]="['/builder/microservices']"
+        (click)="selectMenuItem('menuItemsBackend')"
+      >
+        <!-- <vezo-icon
+          icon="rectangleStack"
+          [isTooltip]="true"
+          [tooltipText]="'Microservices'"
+        ></vezo-icon> -->
+        <img
+          src="assets/microservice_L.svg"
+          style="width: 24px; height: 24px"
+        />
       </div>
-      <div class="cursor-pointer" routerLink="/applications" (click)="selectMenuItem('menuItemsFrontendWeb')">
-        <vezo-icon icon="cubeTransparent" [isTooltip]="true" [tooltipText]="'Applications'"></vezo-icon>
+      <div
+        class="cursor-pointer"
+        routerLink="/applications"
+        (click)="selectMenuItem('menuItemsFrontendWeb')"
+      >
+        <!-- <vezo-icon
+          icon="cubeTransparent"
+          [isTooltip]="true"
+          [tooltipText]="'Applications'"
+        ></vezo-icon> -->
+        <img
+          src="assets/front-end web_L.svg"
+          style="width: 24px; height: 24px"
+        />
       </div>
-      <div class="cursor-pointer" routerLink="/builder/mobile" (click)="selectMenuItem('menuItemsFrontendMobile')">
-        <vezo-icon icon="devicePhoneMobile" [isTooltip]="true" [tooltipText]="'Mobile Builder'"></vezo-icon>
+      <!-- <div
+        class="cursor-pointer"
+        routerLink="/builder/mobile"
+        (click)="selectMenuItem('menuItemsFrontendMobile')"
+      >
+        <vezo-icon
+          icon="devicePhoneMobile"
+          [isTooltip]="true"
+          [tooltipText]="'Mobile Builder'"
+        ></vezo-icon>
+      </div> -->
+      <div
+        class="cursor-pointer"
+        routerLink="/settings"
+        (click)="selectMenuItem('menuItemsSettings')"
+      >
+        <vezo-icon
+          icon="cog8Tooth"
+          [isTooltip]="true"
+          [tooltipText]="'Settings'"
+        ></vezo-icon>
       </div>
-      <div class="cursor-pointer" routerLink="/settings" (click)="selectMenuItem('menuItemsSettings')">
-        <vezo-icon icon="cog8Tooth" [isTooltip]="true" [tooltipText]="'Settings'"></vezo-icon>
-      </div>
-      <div (click)="toggleSideBar()">
-        <vezo-icon icon="chevronRight"></vezo-icon>
-      </div>
-      <div (click)="logout()" style="position: fixed; bottom: 0; padding-bottom: 16px; padding-top: 16px;">
-        <vezo-icon icon="arrowRightOnRectangle" [isTooltip]="true" [tooltipText]="'Log out'"></vezo-icon>
+      <div
+        style="
+          position: fixed;
+          bottom: 0;
+          padding-bottom: 16px;
+          padding-top: 16px;
+        "
+      >
+        <div (click)="logout()" class="mb-4 text-red-400">
+          <!-- <vezo-icon
+            icon="arrowRightOnRectangle"
+            [isTooltip]="true"
+            [tooltipText]="'Log out'"
+          ></vezo-icon> -->
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="lucide lucide-circle-arrow-out-up-right"
+          >
+            <path d="M22 12A10 10 0 1 1 12 2" />
+            <path d="M22 2 12 12" />
+            <path d="M16 2h6v6" />
+          </svg>
+        </div>
+        <div (click)="toggleSideBar()" class="bg-gray-100">
+          <vezo-icon icon="chevronRight"></vezo-icon>
+        </div>
       </div>
     </div>
   </div>
-  <div class="w-full" [ngClass]="{ 'col-span-10': showSideBar, 'flex-grow': !showSideBar }">
-    <div [ngClass]="{'p-5': !isPageOrComponent, 'bg-white h-screen overflow-x-scroll': true}">
+  <div
+    class="w-full"
+    [ngClass]="{ 'col-span-10': showSideBar, 'flex-grow': !showSideBar }"
+  >
+    <div
+      [ngClass]="{
+        'p-5': !isPageOrComponent,
+        'bg-white h-screen overflow-x-scroll': true
+      }"
+    >
       <router-outlet></router-outlet>
     </div>
   </div>

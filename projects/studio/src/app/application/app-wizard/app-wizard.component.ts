@@ -32,22 +32,24 @@ export class AppWizardComponent extends GenericComponent {
 
   milestoneItems = [
     {
-      'name': 'Define Application'
+      'name': 'Applications',
+      'routes':'/applications'
     },
     {
-      'name': 'Create Forms'
+      'name': 'Pages',
+      'routes':'/builder/screens/designer/null'
     },
     {
-      'name': 'Create Screens'
+      'name': 'Components',
+      'routes':'/builder/forms/designer/null'
     },
     {
-      'name': 'Create Reports'
+      'name': 'Actions',
+      'routes':'/actions'
     },
     {
-      'name': 'Define Processes'
-    },
-    {
-      'name': 'Build and Deploy'
+      'name': 'Build and Deploy',
+      'routes':'/releases'
     }
   ]
 

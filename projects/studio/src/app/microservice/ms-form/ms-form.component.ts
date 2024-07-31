@@ -1,12 +1,11 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { GenericComponent } from '../../utils/genericcomponent';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MessageService } from '@splenta/vezo/src/public-api';
-import { MicroserviceService } from '../microservice.service';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ProjectService } from '../../project/project.service';
+import { MessageService } from '@splenta/vezo/src/public-api';
+import { FunctionsUsingCSI, NgTerminal } from 'ng-terminal';
 import RSocketWebSocketClient from 'rsocket-websocket-client';
-import { FunctionsUsingCSI, NgTerminal, NgTerminalModule } from 'ng-terminal';
+import { ProjectService } from '../../project/project.service';
+import { GenericComponent } from '../../utils/genericcomponent';
 
 import {
   IdentitySerializer,
@@ -14,32 +13,36 @@ import {
   RSocketClient,
 } from 'rsocket-core';
 
-import { Subject } from 'rxjs';
-import { Payload, ReactiveSocket } from 'rsocket-types';
 import { environment } from 'projects/studio/src/environments/environment';
+import { Payload, ReactiveSocket } from 'rsocket-types';
+import { Subject } from 'rxjs';
+import { MicroserviceService } from '../microservice.service';
 
 @Component({
   selector: 'app-ms-form',
   templateUrl: './ms-form.component.html',
-  styleUrls: ['./ms-form.component.scss']
+  styleUrls: ['./ms-form.component.scss'],
 })
-export class MsFormComponent extends GenericComponent implements OnInit, OnDestroy {
-
+export class MsFormComponent
+  extends GenericComponent
+  implements OnInit, OnDestroy
+{
   override form!: FormGroup<any>;
   override data: any[] = [];
   override componentName: string = 'Microservice Form';
   msId: string | null;
   packaging: any[] = ['Jar', 'War'];
   projects: any[] = [];
+  loading: boolean = false;
 
-  webSocketUrl = environment.webTerminal ;
+  webSocketUrl = environment.webTerminal;
 
   constructor(
     private fb: FormBuilder,
     private msService: MicroserviceService,
     messageService: MessageService,
     private projectService: ProjectService,
-    private router : Router ,
+    private router: Router,
     private route: ActivatedRoute) {
     super(msService, messageService);
     this.msId = this.route.snapshot.paramMap.get('id');
@@ -47,11 +50,11 @@ export class MsFormComponent extends GenericComponent implements OnInit, OnDestr
       id: '',
       microServiceCode: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
       microServiceName: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
-      packageName: [''],
+      packageName: ['', [Validators.required, this.packageNameValidator]],
       packaging: ['Jar'],
       portNumber: ['', [Validators.required]],
-      project: ['']
-    })
+      project: [''],
+    });
   }
 
   ngOnInit(): void {
@@ -60,7 +63,7 @@ export class MsFormComponent extends GenericComponent implements OnInit, OnDestr
     }
     this.projectService.getAllData().then((res: any) => {
       this.projects = res.content;
-    })
+    });
     // Code for web-terminal
 
     this.messages = [];
@@ -134,10 +137,21 @@ export class MsFormComponent extends GenericComponent implements OnInit, OnDestr
         /* call cancel() to abort */
       },
     });
-
   }
+
+
   loadData(res: any): void {
     this.form.patchValue({ ...res });
+  }
+
+  packageNameValidator(control: AbstractControl): ValidationErrors | null {
+    const value = control.value;
+    const isValid = /^[a-zA-Z0-9]+(\.[a-zA-Z0-9]+){2}$/.test(value);
+    return isValid ? null : { invalidFormat: true };
+  }
+
+  checkPackageName() {
+    this.form.get('packageName')?.updateValueAndValidity();
   }
 
   // override postSave(data:any)
@@ -158,7 +172,7 @@ export class MsFormComponent extends GenericComponent implements OnInit, OnDestr
     //this.form.value.collection = null ;// No collection for page
     const formData = this.form.value;
     if (!formData.id) {
-      formData.id = null ;
+      formData.id = null;
       this.msService.createMS(formData).then((res: any) => {
         if (res) {
           this.visible = false;
@@ -181,13 +195,12 @@ export class MsFormComponent extends GenericComponent implements OnInit, OnDestr
             summary: this.componentName + ' updated',
           });
           this.getAllData();
-         // this.postSave(res);
+          // this.postSave(res);
         }
       });
     }
   }
-  override postSave(data:any)
-  {
+  override postSave(data: any) {
     this.msService.generateCode(data).then((res: any) => {
       if (res) {
         // this.messageService.add({
@@ -197,13 +210,13 @@ export class MsFormComponent extends GenericComponent implements OnInit, OnDestr
         // });
         console.log(res);
       }
-    }).catch( (err)=>{
+    }).catch((err) => {
       this.messageService.add({
-          severity: 'error',
-          detail: 'Error',
-          summary: 'Error while generating the code',
-        });
-    } )
+        severity: 'error',
+        detail: 'Error',
+        summary: 'Error while generating the code',
+      });
+    })
   }
 
   // Code added for web Terminal
@@ -218,7 +231,6 @@ export class MsFormComponent extends GenericComponent implements OnInit, OnDestr
   readonly prompt = FunctionsUsingCSI.cursorColumn(1) + '$ ';
 
   @ViewChild('term', { static: false }) child!: NgTerminal;
-
 
   requestStream(data: any) {
     // return new Observable((observer) => {
@@ -266,10 +278,18 @@ export class MsFormComponent extends GenericComponent implements OnInit, OnDestr
   }
   startServer() {
     console.log(this.socket);
-    this.requestStream({ message: 'start' });
+    this.requestStream({
+      message: 'start',
+      serviceId: this.msId,
+      serviceType: 'backend',
+    });
   }
   stopServer() {
-    this.requestStream({ message: 'stop' });
+    this.requestStream({
+      message: 'stop',
+      serviceId: this.msId,
+      serviceType: 'backend',
+    });
   }
 
   stopMessages() {
@@ -298,5 +318,4 @@ export class MsFormComponent extends GenericComponent implements OnInit, OnDestr
       } else this.child.write(input);
     });
   }
-
 }

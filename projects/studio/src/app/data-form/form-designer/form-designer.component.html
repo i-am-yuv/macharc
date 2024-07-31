@@ -65,7 +65,7 @@
                             <div style="font-size: 14px; font-weight: 400; color: #6D6D6D;">Deploy</div>
                             <img src="assets/elementsClose.svg" style="width: 12px ;">
                         </div>
-                        <div class="flex-1 gap-2 flex justify-center items-center cursor-pointer" routerLink="../../">
+                        <div class="flex-1 gap-2 flex justify-center items-center cursor-pointer" [routerLink]="'/applications'">
                             <vezo-icon icon="arrowUturnLeft" className="w-4 h-4" style="color: #2e2e2e;"></vezo-icon>
                             <div class="mt-1" style="font-size: 14px; font-weight: 400; color: #6D6D6D;">Back</div>
                         </div>
@@ -341,7 +341,7 @@
 
                         <ng-container *ngIf="item.name === 'column'">
                             <div (dndDrop)="onDrop($event, item.children)"
-                                class="name  gap-{{item.data.gap}} flex flex-col justify-{{item.data.alignment}} items-{{item.data.hAlignment}}"
+                                class="name  gap-{{item.data.gap}} flex flex-col justify-{{item.data.alignment}} items-{{item.data.vAlignment}}"
                                 [ngClass]="{'p-8':  (!this.item.children || this.item.children.length === 0) }"
                                 [ngStyle]="{'margin-top': item.data.mt+'px' ,'margin-bottom': item.data.mb+'px' , 'margin-left':item.data.ml+'px', 'margin-right':item.data.mr+'px',
                                 'padding-top': (item.children && item.children.length > 0 ? item.data?.pt : 32) + 'px',

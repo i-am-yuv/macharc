@@ -52,10 +52,10 @@ export class DesignerComponent extends GenericComponent implements OnInit {
   currListView: boolean = true;
   activeData: any;
   selectAssetModel: boolean = false;
-  imageURL!: any ;
+  imageURL!: any;
 
   allFolders: Folder[] = [];
-  allAssets : Asset[]= [];
+  allAssets: Asset[] = [];
 
   // Virtual Elements
   draggableListLeftVE: DraggableItem[] = [
@@ -79,7 +79,7 @@ export class DesignerComponent extends GenericComponent implements OnInit {
       disable: false,
       handle: false,
       data: {
-        label: 'Input Label', placeholder: 'Placeholder', labelFont: '14', labelWeight: '400', labelColor: '#000000', fieldHeight: '35', fieldRadius: '4', fillColor: '#f1f3f6', borderColor: '#f1f3f6', borderWidth: '1',
+        label: 'Input Label', placeholder: 'Placeholder', labelFont: '14', labelWeight: '400', labelColor: '#000000', fieldHeight: '35', fieldRadius: '4', bgColor: '#f1f3f6', borderColor: '#f1f3f6', borderWidth: '1',
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
       },
       mappedData: {}, // this will consist of the data that is mapped 
@@ -92,7 +92,7 @@ export class DesignerComponent extends GenericComponent implements OnInit {
       disable: false,
       handle: false,
       data: {
-        label: 'Input Label', placeholder: 'Placeholder', labelFont: '14', labelWeight: '400', labelColor: '#000000', fieldHeight: '35', fieldRadius: '4', fillColor: '#f1f3f6', borderColor: '#f1f3f6', borderWidth: '1',
+        label: 'Input Label', placeholder: 'Placeholder', labelFont: '14', labelWeight: '400', labelColor: '#000000', fieldHeight: '35', fieldRadius: '4', bgColor: '#f1f3f6', borderColor: '#f1f3f6', borderWidth: '1',
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
       },
       mappedData: {},
@@ -105,7 +105,7 @@ export class DesignerComponent extends GenericComponent implements OnInit {
       disable: false,
       handle: false,
       data: {
-        label: 'Input Label', placeholder: 'Placeholder', labelFont: '14', labelWeight: '400', labelColor: '#000000', fieldHeight: '50', fillColor: '#f1f3f6', borderColor: '#f1f3f6', borderWidth: '1', borderRadius: '4',
+        label: 'Input Label', placeholder: 'Placeholder', labelFont: '14', labelWeight: '400', labelColor: '#000000', fieldHeight: '50', bgColor: '#f1f3f6', borderColor: '#f1f3f6', borderWidth: '1', borderRadius: '4',
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
       },
       mappedData: {},
@@ -118,7 +118,7 @@ export class DesignerComponent extends GenericComponent implements OnInit {
       disable: false,
       handle: true,
       data: {
-        label: 'Input Label', btnTextFont: '12', btnTextWeight: '600', btnTextColor: '#4338ca',
+        text: 'Input Label', fontSize: '12', fontWeight: '600', fontColor: '#4338ca',
         bgColor: '#e0e7ff', borderColor: '#c7d2fe', borderWidth: '1', borderRadius: '4', width: '100', height: '35',
         btnAlignment: 'center', textAlignment: 'center',
         mt: '0', mb: '0', ml: '0', mr: '0'
@@ -305,7 +305,7 @@ export class DesignerComponent extends GenericComponent implements OnInit {
       name: 'column',
       content: 'Column',
       data: {
-        width: 'auto', height: 'auto', alignment: 'center', hAlignment: 'center', gap: '0',
+        width: 'auto', height: 'auto', alignment: 'center', vAlignment: 'center', gap: '0',
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
       },
       mappedData: {},
@@ -323,7 +323,7 @@ export class DesignerComponent extends GenericComponent implements OnInit {
       handle: false,
       data: {
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0', alignment: 'start', width: '1', height: '10',
-        dividerColor: '#000000'
+        bgcolor: '#000000'
       },
       mappedData: {},
       icon: 'assets/Line 45.svg'
@@ -341,7 +341,7 @@ export class DesignerComponent extends GenericComponent implements OnInit {
       data: {
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '20', pb: '20', pl: '20', pr: '20', imageAlignment: 'start', titleAlignment: 'start', descAlignment: 'start',
         width: '200', imageUrl: 'https://primefaces.org/cdn/primeng/images/card-ng.jpg', imageWidth: '100', title: ' Card title', desc: 'Card Description',
-        fillColor: '#f1f3f6'
+        bgColor: '#f1f3f6'
       },
       icon: 'assets/solar_card-2-outline.svg'
     }
@@ -395,7 +395,7 @@ export class DesignerComponent extends GenericComponent implements OnInit {
     private microserviceService: MicroserviceService,
     private applicationService: ApplicationService,
     private renderer: Renderer2, private el: ElementRef,
-    private mediaService : MediaService
+    private mediaService: MediaService
   ) {
     super(screenService, messageService);
     this.form = this.fb.group({
@@ -855,22 +855,27 @@ export class DesignerComponent extends GenericComponent implements OnInit {
   }
 
   downloadDivHTML() {
+    if (!this.screenId) {
+      this.msgService.add({ severity: 'info', summary: 'Info', detail: 'No Page Found.' });
+      return;
+    }
+
     const div = this.el.nativeElement.querySelector('#downloadable-div');
     if (div == null) {
       this.msgService.add({ severity: 'info', summary: 'Info', detail: 'No Preview available for an empty page.' });
       return;
     }
-  
+
     // Clone the content to manipulate it without affecting the original
     const clonedDiv = div.cloneNode(true) as HTMLElement;
-    
+
     // Remove the 'giveBorder' class from all elements
     clonedDiv.querySelectorAll('.borderOutline').forEach(element => {
       element.classList.remove('borderOutline');
     });
-  
+
     const htmlContent = clonedDiv.innerHTML;
-  
+
     // Collect all stylesheets from the current document
     const stylesheets = Array.from(document.styleSheets)
       .map((styleSheet: CSSStyleSheet) => {
@@ -889,7 +894,7 @@ export class DesignerComponent extends GenericComponent implements OnInit {
         }
       })
       .join('');
-  
+
     // Creating a HTML document with no text selection or pointer events on non-interactive elements
     const fullHTML = `
       <html>
@@ -916,25 +921,35 @@ export class DesignerComponent extends GenericComponent implements OnInit {
         </body>
       </html>
     `;
-  
+
     const blob = new Blob([fullHTML], { type: 'text/html' });
     const url = window.URL.createObjectURL(blob);
     window.open(url, '_blank');
-  
+
     // Release the object URL if needed
     window.URL.revokeObjectURL(url);
   }
 
-  currentPage : any ;
-  hoverPage( action : string, page : any )
-  {
-    if( action == 'enter')
-    {
-      this.currentPage = page ;
+  openMobilePreview() {
+    if (!this.screenId) {
+      this.msgService.add({ severity: 'info', summary: 'Info', detail: 'No Page Found.' });
+      return;
     }
-    else
-    {
-      this.currentPage = null ;
+    const div = this.el.nativeElement.querySelector('#downloadable-div');
+    if (div == null) {
+      this.msgService.add({ severity: 'info', summary: 'Info', detail: 'No Preview available for an empty page.' });
+      return;
+    }
+    this.router.navigate(['/builder/mobile-preview']);
+  }
+
+  currentPage: any;
+  hoverPage(action: string, page: any) {
+    if (action == 'enter') {
+      this.currentPage = page;
+    }
+    else {
+      this.currentPage = null;
     }
   }
 
@@ -944,7 +959,7 @@ export class DesignerComponent extends GenericComponent implements OnInit {
   }
 
   getAllFolders() {
-    this.loading = true ;
+    this.loading = true;
     this.mediaService.getAllFolders().then(
       (res: any) => {
         if (res) {
@@ -962,7 +977,7 @@ export class DesignerComponent extends GenericComponent implements OnInit {
         }
       }
     ).catch((err: any) => {
-      this.loading =  false;
+      this.loading = false;
       this.messageService.add({
         severity: 'info',
         summary: 'Info',
@@ -1000,27 +1015,24 @@ export class DesignerComponent extends GenericComponent implements OnInit {
     this.loading = false;
   }
 
-  filteredAssets : Asset[] = [] ;
-  searchAssets()
-  {
+  filteredAssets: Asset[] = [];
+  searchAssets() {
     if (this.searchQuery) {
-       this.filteredAssets = this.allAssets.filter(asset =>
-         asset.fileName?.toLowerCase().includes(this.searchQuery.toLowerCase())
-       );
-     }
-     else {
-        this.filteredAssets = this.allAssets ;
-     }
+      this.filteredAssets = this.allAssets.filter(asset =>
+        asset.fileName?.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+    }
+    else {
+      this.filteredAssets = this.allAssets;
+    }
   }
 
-  getAssetList()
-  {
-    return this.searchQuery ? this.filteredAssets : this.allAssets ;
+  getAssetList() {
+    return this.searchQuery ? this.filteredAssets : this.allAssets;
   }
 
-  sendThisAsset( asset : any)
-  {
-    this.imageURL  = asset.url ;
+  sendThisAsset(asset: any) {
+    this.imageURL = asset.url;
     this.selectAssetModel = false;
     console.log(this.imageURL);
   }
