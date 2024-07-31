@@ -1351,7 +1351,7 @@
       class="flex justify-center items-center"
     >
       <div
-        *ngIf="this.data.length > 1"
+        *ngIf="this.data.length > 0"
         style="font-size: 16px; font-weight: 500"
       >
         Please Select the Page
@@ -1397,7 +1397,7 @@
       <vezo-button
         label="Save"
         [disabled]="!form.valid"
-        (click)="saveData()"
+        (click)="saveDataByApplication(this.currentApplication.id)"
       ></vezo-button>
     </div>
   </ng-template>

@@ -385,6 +385,7 @@ export class DesignerComponent extends GenericComponent implements OnInit {
   collection: Collection = {};
   microserviceItems: MicroService[] = [];
   applicationItems: Application[] = [];
+  currentApplication : Application = {}  ;
 
   constructor(
     private screenService: ScreenService,
@@ -417,13 +418,18 @@ export class DesignerComponent extends GenericComponent implements OnInit {
   }
   public ngOnInit() {
     this.layoutService.checkPadding(false);
+
+    this.applicationService.getActiveApplication().subscribe((val:any) => {
+      this.currentApplication = val ;
+    });
+
     this.updateChildStyles();
     this.getPageData();
   }
 
   getPageData() {
     this.loading = true;
-    this.getAllData();
+    this.getAllDataById(this.currentApplication.id);
     this.loading = false;
 
     this.microserviceService.getAllData().then((res: any) => {
@@ -436,7 +442,6 @@ export class DesignerComponent extends GenericComponent implements OnInit {
         this.applicationItems = res.content;
       }
     })
-
     this.getPageContent();
   }
 
@@ -454,7 +459,7 @@ export class DesignerComponent extends GenericComponent implements OnInit {
     this.activeItem = null;
     this.screenId = null;
     this.router.navigate(['/builder/screens/designer/' + null]);
-    this.deleteData(item);
+    this.deleteDataByApplication(item , this.currentApplication.id);
     this.activeItem = null;
     this.screenId = null;
     this.router.navigate(['/builder/screens/designer/' + null]);
@@ -478,7 +483,7 @@ export class DesignerComponent extends GenericComponent implements OnInit {
     // alert(this.screenId ) ;
     if (this.screenId !== 'null') {
       this.screenService.getData({ id: this.screenId }).then((res: any) => {
-        console.log(res);
+        // console.log(res);
         this.screenData = res;
         if (res.screenDefinition) {
           this.draggableListRight = JSON.parse(res.screenDefinition);

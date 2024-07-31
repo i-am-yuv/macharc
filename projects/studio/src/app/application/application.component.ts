@@ -16,6 +16,7 @@ export class ApplicationComponent extends GenericComponent {
   override componentName: string = 'Application';
 
   constructor(dataService: ApplicationService, messageService: MessageService, private fb: FormBuilder,
+    private applicationService : ApplicationService,
     private router: Router
   ) {
     super(dataService, messageService);
@@ -24,6 +25,7 @@ export class ApplicationComponent extends GenericComponent {
   ngOnInit() {
     this.getAllData();
   }
+
   setDefault(application: any) {
     application.isdefault = true;
     this.dataService.updateData(application).then((res: any) => {
@@ -34,15 +36,24 @@ export class ApplicationComponent extends GenericComponent {
 
   goToApplicationPages(application: any) {
     // [routerLink] = "['/builder/screens']"
-    
+    this.applicationService.setActiveApplication(application);
+    this.router.navigate(['/builder/screens/designer/null']) ;
   }
 
-  goToApplicationComponents() {
-
+  goToApplicationComponents(application: any) {
+    this.applicationService.setActiveApplication(application);
+    this.router.navigate(['/builder/forms/designer/null']) ;
   }
 
   goToApplicationActions() {
 
+  }
+
+  manageApplication(application : any )
+  {
+    this.applicationService.setActiveApplication(application);
+    // [routerLink]="['/applications/manage/' + application.id]"
+    this.router.navigate(['/applications/manage/'+application.id]) ;
   }
 
 
