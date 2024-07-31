@@ -13,30 +13,21 @@
 
 <div class="bg-white px-16">
   <form [formGroup]="form">
-    <vezo-select
-      [items]="projects"
-      optionLabel="projectName"
-      label="Project"
-      formControlName="project"
-    ></vezo-select>
-    <vezo-input
-      label="Service Code"
-      formControlName="microServiceCode"
-    ></vezo-input>
-    <error-message
-      [controlName]="form.controls['microServiceCode']"
-    ></error-message>
-    <vezo-input label="Package Name" formControlName="packageName"></vezo-input>
-    <error-message [controlName]="form.controls['packageName']"></error-message>
+    <vezo-select [items]="projects" optionLabel="projectName" label="Project" formControlName="project"></vezo-select>
+    <vezo-input label="Service Code" formControlName="microServiceCode"></vezo-input>
+    <error-message [controlName]="form.controls['microServiceCode']"></error-message>
+    <div class="mt-2">
+      <vezo-input label="Package Name" formControlName="packageName" (input)="checkPackageName()"></vezo-input>
+      <!-- <error-message [controlName]="form.controls['packageName']"></error-message> -->
+      <div *ngIf="form.get('packageName')?.invalid">
+        <small>Use format: text.text.text.</small>
+      </div>
+    </div>
+
     <div>
-      <div class="inline-block w-1/2 pr-4">
-        <vezo-inputnumber
-          label="Port Number"
-          formControlName="portNumber"
-        ></vezo-inputnumber>
-        <error-message
-          [controlName]="form.controls['portNumber']"
-        ></error-message>
+      <div class="inline-block w-1/2 pr-4 mt-2">
+        <vezo-inputnumber label="Port Number" formControlName="portNumber"></vezo-inputnumber>
+        <error-message [controlName]="form.controls['portNumber']"></error-message>
       </div>
       <div class="inline-block w-1/2">
         <vezo-select

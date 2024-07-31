@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from '@splenta/vezo/src/public-api';
 import { FunctionsUsingCSI, NgTerminal } from 'ng-terminal';
@@ -43,22 +43,14 @@ export class MsFormComponent
     messageService: MessageService,
     private projectService: ProjectService,
     private router: Router,
-    private route: ActivatedRoute,
-    private micrService: MicroserviceService
-  ) {
+    private route: ActivatedRoute) {
     super(msService, messageService);
     this.msId = this.route.snapshot.paramMap.get('id');
     this.form = this.fb.group({
       id: '',
-      microServiceCode: [
-        '',
-        [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)],
-      ],
-      microServiceName: [
-        '',
-        [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)],
-      ],
-      packageName: [''],
+      microServiceCode: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
+      microServiceName: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
+      packageName: ['', [Validators.required, this.packageNameValidator]],
       packaging: ['Jar'],
       portNumber: ['', [Validators.required]],
       project: [''],
@@ -146,8 +138,20 @@ export class MsFormComponent
       },
     });
   }
+
+
   loadData(res: any): void {
     this.form.patchValue({ ...res });
+  }
+
+  packageNameValidator(control: AbstractControl): ValidationErrors | null {
+    const value = control.value;
+    const isValid = /^[a-zA-Z0-9]+(\.[a-zA-Z0-9]+){2}$/.test(value);
+    return isValid ? null : { invalidFormat: true };
+  }
+
+  checkPackageName() {
+    this.form.get('packageName')?.updateValueAndValidity();
   }
 
   // override postSave(data:any)
@@ -197,25 +201,22 @@ export class MsFormComponent
     }
   }
   override postSave(data: any) {
-    this.msService
-      .generateCode(data)
-      .then((res: any) => {
-        if (res) {
-          // this.messageService.add({
-          //   severity: 'success',
-          //   detail: this.componentName + ' created',
-          //   summary: this.componentName + ' created',
-          // });
-          console.log(res);
-        }
-      })
-      .catch((err) => {
-        this.messageService.add({
-          severity: 'error',
-          detail: 'Error',
-          summary: 'Error while generating the code',
-        });
+    this.msService.generateCode(data).then((res: any) => {
+      if (res) {
+        // this.messageService.add({
+        //   severity: 'success',
+        //   detail: this.componentName + ' created',
+        //   summary: this.componentName + ' created',
+        // });
+        console.log(res);
+      }
+    }).catch((err) => {
+      this.messageService.add({
+        severity: 'error',
+        detail: 'Error',
+        summary: 'Error while generating the code',
       });
+    })
   }
 
   // Code added for web Terminal

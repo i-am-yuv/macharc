@@ -91,8 +91,6 @@ import { SettingsComponent } from './settings/settings.component';
 import { ContenteditableValueAccessor } from './utils/constenteditable.directive';
 import { NgTerminalModule } from 'ng-terminal';
 
-
-
 @NgModule({
   declarations: [
     AppComponent,

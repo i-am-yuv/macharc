@@ -426,7 +426,8 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
   }
 
   getDataSorted() {
-    return this.data.sort((a: any, b: any) => a.formName.localeCompare(b.formName));
+    // return this.data;
+    return this.data.sort((a: any, b: any) => a?.formName.localeCompare(b?.formName));
   }
 
   getComponentContent() {

@@ -140,24 +140,30 @@ export class LayoutComponent {
           routerLink: ['/applications'],
           image: 'assets/Application.svg',
         },
+        // {
+        //   label: 'Pages',
+        //   icon: 'clipboard',
+        //   routerLink: ['/builder/screens/designer/' + null],
+        //   image: 'assets/PAGES.svg',
+        // },
+        // {
+        //   label: 'Actions',
+        //   icon: 'clipboard',
+        //   routerLink: ['/actions'],
+        //   image: 'assets/Action_R.svg',
+        // },
+        // {
+        //   label: 'Components',
+        //   icon: 'clipboard',
+        //   routerLink: ['/builder/forms/designer/' + null],
+        //   image: 'assets/Component _R.svg',
+        // },
         {
-          label: 'Pages',
+          label: 'Reports',
           icon: 'clipboard',
-          routerLink: ['/builder/screens/designer/' + null],
-          image: 'assets/PAGES.svg',
-        },
-        {
-          label: 'Actions',
-          icon: 'clipboard',
-          routerLink: ['/actions'],
-          image: 'assets/Action_R.svg',
-        },
-        {
-          label: 'Components',
-          icon: 'clipboard',
-          routerLink: ['/builder/forms/designer/' + null],
-          image: 'assets/Component _R.svg',
-        },
+          routerLink: ['/builder/reports'],
+          image: 'assets/Reports_L.svg',
+        }
         // {
         //   label: 'Mobile Builder',
         //   icon: 'clipboard',
@@ -191,12 +197,6 @@ export class LayoutComponent {
           icon: 'clipboard',
           routerLink: ['/builder/processes'],
           image: 'assets/Integration_L.svg',
-        },
-        {
-          label: 'Reports',
-          icon: 'clipboard',
-          routerLink: ['/builder/reports'],
-          image: 'assets/Reports_L.svg',
         },
         {
           label: 'Releases',
