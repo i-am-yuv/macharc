@@ -10,7 +10,8 @@ build-frontend:
     - git submodule init
     - git submodule update
     - npm install
-    - npm run build studio --configuration production
+    - npm run build studio 
+    # --configuration production
   artifacts:
     name: "dist-output"
     paths:
