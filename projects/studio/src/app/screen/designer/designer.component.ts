@@ -19,6 +19,7 @@ import { MicroserviceService } from '../../microservice/microservice.service';
 import { ApplicationService } from '../../application/application.service';
 import { MediaService } from '../../media-manager/media.service';
 import { Asset, Folder } from '../../media-manager/folder';
+import { LayoutService } from '../../layout/layout.service';
 
 interface DropzoneLayout {
   container: string;
@@ -43,6 +44,9 @@ interface DraggableItem {
   styleUrls: ['./designer.component.scss']
 })
 export class DesignerComponent extends GenericComponent implements OnInit {
+
+  @ViewChild('PagePreviewComponent', { static: false }) PagePreviewComponent !: ElementRef;
+
   form!: FormGroup<any>;
   data: Screen[] = [];
   componentName: string = 'Screen';
@@ -395,7 +399,8 @@ export class DesignerComponent extends GenericComponent implements OnInit {
     private microserviceService: MicroserviceService,
     private applicationService: ApplicationService,
     private renderer: Renderer2, private el: ElementRef,
-    private mediaService: MediaService
+    private mediaService: MediaService,
+    private layoutService : LayoutService
   ) {
     super(screenService, messageService);
     this.form = this.fb.group({
@@ -411,6 +416,7 @@ export class DesignerComponent extends GenericComponent implements OnInit {
     })
   }
   public ngOnInit() {
+    this.layoutService.checkPadding(false);
     this.updateChildStyles();
     this.getPageData();
   }
@@ -854,80 +860,114 @@ export class DesignerComponent extends GenericComponent implements OnInit {
     this.deleteThisPage(this.activeData);
   }
 
-  downloadDivHTML() {
-    if (!this.screenId) {
-      this.msgService.add({ severity: 'info', summary: 'Info', detail: 'No Page Found.' });
-      return;
-    }
+  // Old blob preview code
+  // downloadDivHTML() {
+  //   if (!this.screenId) {
+  //     this.msgService.add({ severity: 'info', summary: 'Info', detail: 'No Page Found.' });
+  //     return;
+  //   }
 
-    const div = this.el.nativeElement.querySelector('#downloadable-div');
-    if (div == null) {
-      this.msgService.add({ severity: 'info', summary: 'Info', detail: 'No Preview available for an empty page.' });
-      return;
-    }
+  //   const div = this.el.nativeElement.querySelector('#downloadable-div');
+  //   if (div == null) {
+  //     this.msgService.add({ severity: 'info', summary: 'Info', detail: 'No Preview available for an empty page.' });
+  //     return;
+  //   }
 
-    // Clone the content to manipulate it without affecting the original
-    const clonedDiv = div.cloneNode(true) as HTMLElement;
+  //   // Clone the content to manipulate it without affecting the original
+  //   const clonedDiv = div.cloneNode(true) as HTMLElement;
 
-    // Remove the 'giveBorder' class from all elements
-    clonedDiv.querySelectorAll('.borderOutline').forEach(element => {
-      element.classList.remove('borderOutline');
-    });
+  //   // Remove the 'giveBorder' class from all elements
+  //   clonedDiv.querySelectorAll('.borderOutline').forEach(element => {
+  //     element.classList.remove('borderOutline');
+  //   });
 
-    const htmlContent = clonedDiv.innerHTML;
+  //   const htmlContent = clonedDiv.innerHTML;
 
-    // Collect all stylesheets from the current document
-    const stylesheets = Array.from(document.styleSheets)
-      .map((styleSheet: CSSStyleSheet) => {
-        if (styleSheet.href) {
-          return `<link rel="stylesheet" type="text/css" href="${styleSheet.href}">`;
-        } else {
-          try {
-            const rules = Array.from(styleSheet.cssRules)
-              .map(rule => rule.cssText)
-              .join('');
-            return `<style>${rules}</style>`;
-          } catch (e) {
-            console.warn('Cannot access stylesheet', styleSheet.href);
-            return '';
-          }
+  //   // Collect all stylesheets from the current document
+  //   const stylesheets = Array.from(document.styleSheets)
+  //     .map((styleSheet: CSSStyleSheet) => {
+  //       if (styleSheet.href) {
+  //         return `<link rel="stylesheet" type="text/css" href="${styleSheet.href}">`;
+  //       } else {
+  //         try {
+  //           const rules = Array.from(styleSheet.cssRules)
+  //             .map(rule => rule.cssText)
+  //             .join('');
+  //           return `<style>${rules}</style>`;
+  //         } catch (e) {
+  //           console.warn('Cannot access stylesheet', styleSheet.href);
+  //           return '';
+  //         }
+  //       }
+  //     })
+  //     .join('');
+
+  //   // Creating a HTML document with no text selection or pointer events on non-interactive elements
+  //   const fullHTML = `
+  //     <html>
+  //       <head>
+  //         <title>Preview</title>
+  //         ${stylesheets}
+  //         <style>
+  //           body {
+  //             user-select: none; /* Prevent text selection */
+  //           }
+  //           input, select, textarea, button, a, video, dropdown, checkbox, label, .combo-wrapper, .combo-item {
+  //             pointer-events: auto; /* Enable pointer events for interactive elements */
+  //             user-select: auto; /* Allow text selection within input fields and other interactive elements */
+  //           }
+  //           .non-interactive {
+  //             pointer-events: none; /* Disable pointer events for non-interactive elements */
+  //           }
+  //         </style>
+  //       </head>
+  //       <body>
+  //         <div class="non-interactive">
+  //           ${htmlContent}
+  //         </div>
+  //       </body>
+  //     </html>
+  //   `;
+
+  //   const blob = new Blob([fullHTML], { type: 'text/html' });
+  //   const url = window.URL.createObjectURL(blob);
+  //   window.open(url, '_blank');
+
+  //   // Release the object URL if needed
+  //   window.URL.revokeObjectURL(url);
+  // }
+
+  // New Preview Code
+  previewInWeb() 
+  {
+    const manContent = document.querySelector('app-page-preview')?.innerHTML;
+    const manStyles = Array.from(document.styleSheets)
+      .map((sheet) => {
+        try {
+          return Array.from(sheet.cssRules || [])
+            .map((rule) => rule.cssText)
+            .join('');
+        } catch (e) {
+          console.warn('Could not read stylesheet:', sheet, e);
+          return '';
         }
       })
       .join('');
 
-    // Creating a HTML document with no text selection or pointer events on non-interactive elements
-    const fullHTML = `
-      <html>
-        <head>
-          <title>Preview</title>
-          ${stylesheets}
-          <style>
-            body {
-              user-select: none; /* Prevent text selection */
-            }
-            input, select, textarea, button, a, video, dropdown, checkbox, label, .combo-wrapper, .combo-item {
-              pointer-events: auto; /* Enable pointer events for interactive elements */
-              user-select: auto; /* Allow text selection within input fields and other interactive elements */
-            }
-            .non-interactive {
-              pointer-events: none; /* Disable pointer events for non-interactive elements */
-            }
-          </style>
-        </head>
-        <body>
-          <div class="non-interactive">
-            ${htmlContent}
-          </div>
-        </body>
-      </html>
-    `;
-
-    const blob = new Blob([fullHTML], { type: 'text/html' });
-    const url = window.URL.createObjectURL(blob);
-    window.open(url, '_blank');
-
-    // Release the object URL if needed
-    window.URL.revokeObjectURL(url);
+    const newTab = window.open('', 'preview');
+    if (newTab) {
+      newTab.document.write(`
+        <html>
+          <head>
+            <style>${manStyles}</style>
+          </head>
+          <body>${manContent}</body>
+        </html>
+      `);
+      newTab.document.close();
+    } else {
+      console.error('Failed to open new tab');
+    }
   }
 
   openMobilePreview() {
@@ -1008,10 +1048,6 @@ export class DesignerComponent extends GenericComponent implements OnInit {
         }
       );
     }
-    // if( index == this.allFolders.length )
-    // {
-    //   alert(this.allAssets.length);
-    // }
     this.loading = false;
   }
 

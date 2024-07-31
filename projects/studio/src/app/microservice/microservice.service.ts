@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { lastValueFrom } from 'rxjs';
+import { BehaviorSubject, lastValueFrom } from 'rxjs';
 import { GenericService } from '../utils/genericservice';
+import { Application } from '../application/application';
+import { FilterBuilder } from '../utils/FilterBuilder';
 
 @Injectable({
   providedIn: 'root',
@@ -9,8 +11,16 @@ import { GenericService } from '../utils/genericservice';
 export class MicroserviceService extends GenericService {
   endpoint: string = 'micro-services';
 
+  activeApplication: Application | undefined;
+
+  private activeApplicationChange: BehaviorSubject<Application | undefined> = new BehaviorSubject<Application | undefined>(undefined); //GIve value immediately upon subscription, because it retains the last emitted value.
+
+
   constructor(http: HttpClient) {
     super(http);
+    this.activeApplicationChange.subscribe((value) => {
+      this.activeApplication = value;
+    });
   }
 
   // async generateCode(ms: any) {
@@ -71,4 +81,16 @@ export class MicroserviceService extends GenericService {
     const res = await lastValueFrom(this.http.post<any>(url, data));
     return res;
   }
+
+  setActiveApplication() {
+    var search = FilterBuilder.boolEqual('isdefault', true);
+    this.getAllData(undefined, search).then((res: any) => {
+      this.activeApplicationChange.next(res.content[0]);
+    });
+  }
+
+  getActiveProject() {
+    return this.activeApplicationChange.asObservable();
+  }
+  
 }

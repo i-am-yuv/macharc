@@ -14,6 +14,8 @@ import { LayoutService } from './layout.service';
 })
 export class LayoutComponent {
   showSideBar: boolean | undefined = false;
+  giveDefaultPadding: boolean = true;
+
   menuView: string = '';
   activeProject: Project | undefined = {
     id: '',
@@ -223,8 +225,6 @@ export class LayoutComponent {
 
   roles: any;
   username: string = '';
-  isPageOrComponent = false;
-
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -255,14 +255,14 @@ export class LayoutComponent {
       sessionStorage.setItem('menuItemName', this.menuView);
     }
 
-    this.router.events
-      .pipe(filter((event) => event instanceof NavigationEnd))
-      .subscribe(() => {
-        this.checkRoute();
-      });
-
-    // Initial check
-    this.checkRoute();
+    this.layoutService.checkForPadding.subscribe(
+      (res) => {
+        this.giveDefaultPadding = res;
+      },
+      (err) => {
+        this.giveDefaultPadding = true;
+      }
+    )
   }
 
   logout() {
@@ -297,15 +297,15 @@ export class LayoutComponent {
     sessionStorage.removeItem('menuItemName');
   }
 
-  checkRoute(): void {
-    const currentUrl = this.router.url;
-    this.isPageOrComponent =
-      currentUrl.includes('/builder/screens/designer/') ||
-      currentUrl.includes('/builder/forms/designer/') ||
-      currentUrl.includes('/media-manager') ||
-      currentUrl.includes('/actions') ||
-      currentUrl.includes('/projects/manage') ||
-      currentUrl.includes('/builder/mobile-preview') ||
-      currentUrl.includes('/applications/manage');
-  }
+  // checkRoute(): void {
+  //   const currentUrl = this.router.url;
+  //   this.isPageOrComponent =
+  //     currentUrl.includes('/builder/screens/designer/') ||
+  //     currentUrl.includes('/builder/forms/designer/') ||
+  //     currentUrl.includes('/media-manager') ||
+  //     currentUrl.includes('/actions') ||
+  //     currentUrl.includes('/projects/manage') ||
+  //     currentUrl.includes('/builder/mobile-preview') ||
+  //     currentUrl.includes('/applications/manage');
+  // }
 }

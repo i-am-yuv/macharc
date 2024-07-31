@@ -90,6 +90,8 @@ import { TemplatesComponent } from './screen/templates/templates.component';
 import { SettingsComponent } from './settings/settings.component';
 import { ContenteditableValueAccessor } from './utils/constenteditable.directive';
 import { NgTerminalModule } from 'ng-terminal';
+import { PagePreviewComponent } from './screen/page-preview/page-preview.component';
+import { NestedPreviewComponent } from './data-form/nested-preview/nested-preview.component';
 
 @NgModule({
   declarations: [
@@ -143,6 +145,8 @@ import { NgTerminalModule } from 'ng-terminal';
     MediaManagerComponent,
     Properties2Component,
     MobilePreviewComponent,
+    PagePreviewComponent,
+    NestedPreviewComponent,
   ],
   imports: [
     BrowserModule,

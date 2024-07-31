@@ -3,6 +3,7 @@ import { GenericComponent } from '../utils/genericcomponent';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { MessageService } from '@splenta/vezo/src/public-api';
 import { ApplicationService } from '../application/application.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-application',
@@ -14,7 +15,9 @@ export class ApplicationComponent extends GenericComponent {
   override data: any[] = [];
   override componentName: string = 'Application';
 
-  constructor(dataService: ApplicationService, messageService: MessageService, private fb: FormBuilder) {
+  constructor(dataService: ApplicationService, messageService: MessageService, private fb: FormBuilder,
+    private router: Router
+  ) {
     super(dataService, messageService);
   }
 
@@ -28,4 +31,19 @@ export class ApplicationComponent extends GenericComponent {
       this.messageService.add({ severity: 'success', detail: 'Default Set', summary: 'Success' })
     });
   }
+
+  goToApplicationPages(application: any) {
+    // [routerLink] = "['/builder/screens']"
+    
+  }
+
+  goToApplicationComponents() {
+
+  }
+
+  goToApplicationActions() {
+
+  }
+
+
 }

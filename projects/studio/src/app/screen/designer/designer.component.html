@@ -112,8 +112,8 @@
                 Preview
               </div>
               <div
-                class="border border-gray-400 rounded p-2"
-                (click)="downloadDivHTML()"
+                class="border border-gray-400 rounded p-2 cursor-pointer"
+                (click)="previewInWeb()"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -1478,6 +1478,11 @@
         </div>
     </ng-template> -->
 </vezo-modal>
+
+ <!-- We are sending our complete page to this preview compoenent so that this compoent can render in new tab -->
+<div [hidden]="true">
+  <app-page-preview [draggableListRight]="this.draggableListRight"></app-page-preview>
+</div>
 
 <!-- Toast Message and Loading Code -->
 <vezo-toast></vezo-toast>

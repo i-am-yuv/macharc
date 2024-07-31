@@ -16,7 +16,7 @@
           <ul class="mx-6 space-y-2">
             <li
               class="flex place-items-center cursor-pointer"
-              [routerLink]="['/builder/screens']"
+              (click)="goToApplicationPages(application)"
             >
               <vezo-icon icon="cog6Tooth" className="w-4"></vezo-icon>
               <div class="ml-2 flex-grow">Pages</div>
