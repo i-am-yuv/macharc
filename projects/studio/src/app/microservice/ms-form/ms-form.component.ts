@@ -277,10 +277,18 @@ export class MsFormComponent
   }
   startServer() {
     console.log(this.socket);
-    this.requestStream({ message: 'start' });
+    this.requestStream({
+      message: 'start',
+      serviceId: this.msId,
+      serviceType: 'backend',
+    });
   }
   stopServer() {
-    this.requestStream({ message: 'stop' });
+    this.requestStream({
+      message: 'stop',
+      serviceId: this.msId,
+      serviceType: 'backend',
+    });
   }
 
   stopMessages() {
