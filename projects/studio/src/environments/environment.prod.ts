@@ -1,6 +1,6 @@
 export const environment = {
     production: true,
-    apiurl: 'http://localhost:8222/api',
+    apiurl: 'https://api.macharc.com/api',
     firebaseConfig : {
         apiKey: "AIzaSyAP2rqd6wemU197DAVT6eFCFcuEzTm0dX0",
         authDomain: "macharc-dev.firebaseapp.com",
