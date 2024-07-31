@@ -4,5 +4,5 @@
 	branch = main
 [submodule "flutter"]
 	path = flutter
-	url = https://repo.splenta.com/macharc/flutterbuilder.git
+	url = https://glpat-x4L1MKt22q13spAVaD6q@repo.splenta.com/macharc/flutterbuilder.git
 	branch = dev
