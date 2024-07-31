@@ -11,6 +11,7 @@ import { GenericComponent } from '../utils/genericcomponent';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActionService } from './action.service';
 import { DataFormService } from '../data-form/data-form.service';
+import { LayoutService } from '../layout/layout.service';
 
 declare var flowy: any;
 function createDefinition() {
@@ -211,6 +212,7 @@ export class ActionsComponent extends GenericComponent implements OnInit {
     private actionService: ActionService,
     private formService: DataFormService,
     private msgService: MessageService,
+    private layoutService : LayoutService,
     private fb: FormBuilder,
     private router : Router
   ) {
@@ -254,6 +256,7 @@ export class ActionsComponent extends GenericComponent implements OnInit {
   public ngOnInit() {
 
     this.actionId = this.route.snapshot.paramMap.get('id');
+    this.layoutService.checkPadding(false);
     this.getAllData();
     if( this.actionId )
     {

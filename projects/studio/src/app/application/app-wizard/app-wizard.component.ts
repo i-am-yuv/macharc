@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from '@splenta/vezo/src/public-api';
 import { ApplicationService } from '../../application/application.service';
 import { GenericComponent } from '../../utils/genericcomponent';
+import { LayoutService } from '../../layout/layout.service';
 
 @Component({
   selector: 'app-app-wizard',
@@ -58,6 +59,7 @@ export class AppWizardComponent extends GenericComponent {
     messageService: MessageService,
     private fb: FormBuilder,
     private router: Router ,
+    private layoutService : LayoutService ,
     private route: ActivatedRoute) {
     super(applicationService, messageService);
 
@@ -76,6 +78,7 @@ export class AppWizardComponent extends GenericComponent {
     if (this.id) {
       this.getData({ id: this.id }, (res) => { this.form.patchValue({ ...res }) });
     }
+    this.layoutService.checkPadding(false);
   }
 
   labelStyle = {

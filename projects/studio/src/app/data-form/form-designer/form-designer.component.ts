@@ -17,6 +17,7 @@ import { MicroService } from '../../microservice/microservice';
 import { Application } from '../../application/application';
 import { MediaService } from '../../media-manager/media.service';
 import { Asset, Folder } from '../../media-manager/folder';
+import { LayoutService } from '../../layout/layout.service';
 
 
 interface DropzoneLayout {
@@ -358,7 +359,8 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
     private route: ActivatedRoute,
     private microserviceService: MicroserviceService,
     private applicationService: ApplicationService,
-    private mediaService: MediaService
+    private mediaService: MediaService,
+    private layoutService : LayoutService
   ) {
     super(formService, messageService);
 
@@ -377,6 +379,7 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
   }
   public ngOnInit() {
     //this.formId = this.route.snapshot.paramMap.get('id');
+    this.layoutService.checkPadding(false);
     this.updateChildStyles();
     this.getComponentData();
     // this.loading = true;

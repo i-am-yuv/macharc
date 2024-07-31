@@ -19,6 +19,7 @@ import { MicroserviceService } from '../../microservice/microservice.service';
 import { ApplicationService } from '../../application/application.service';
 import { MediaService } from '../../media-manager/media.service';
 import { Asset, Folder } from '../../media-manager/folder';
+import { LayoutService } from '../../layout/layout.service';
 
 interface DropzoneLayout {
   container: string;
@@ -398,7 +399,8 @@ export class DesignerComponent extends GenericComponent implements OnInit {
     private microserviceService: MicroserviceService,
     private applicationService: ApplicationService,
     private renderer: Renderer2, private el: ElementRef,
-    private mediaService: MediaService
+    private mediaService: MediaService,
+    private layoutService : LayoutService
   ) {
     super(screenService, messageService);
     this.form = this.fb.group({
@@ -414,6 +416,7 @@ export class DesignerComponent extends GenericComponent implements OnInit {
     })
   }
   public ngOnInit() {
+    this.layoutService.checkPadding(false);
     this.updateChildStyles();
     this.getPageData();
   }

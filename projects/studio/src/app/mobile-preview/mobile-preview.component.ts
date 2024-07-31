@@ -1,14 +1,18 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { LayoutService } from '../layout/layout.service';
 
 @Component({
   selector: 'app-mobile-preview',
   templateUrl: './mobile-preview.component.html',
   styleUrls: ['./mobile-preview.component.scss'],
 })
-export class MobilePreviewComponent {
+export class MobilePreviewComponent implements OnInit {
   flutterState?: any;
 
-  constructor(private changeDetectorRef: ChangeDetectorRef) {}
+  constructor(private changeDetectorRef: ChangeDetectorRef , private layoutService : LayoutService) {}
+  ngOnInit(): void {
+    this.layoutService.checkPadding(false);
+  }
 
   onFlutterAppLoaded(state: any) {
     this.flutterState = state;

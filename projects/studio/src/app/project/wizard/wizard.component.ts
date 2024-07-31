@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from '@splenta/vezo/src/public-api';
 import { ProjectService } from '../project.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { LayoutService } from '../../layout/layout.service';
 
 @Component({
   selector: 'app-wizard',
@@ -32,6 +33,7 @@ export class WizardComponent extends GenericComponent {
   constructor(
     projectService: ProjectService,
     messageService: MessageService,
+    private layoutService : LayoutService,
     private fb: FormBuilder,
     private router: Router ,
     private route: ActivatedRoute) {
@@ -52,6 +54,8 @@ export class WizardComponent extends GenericComponent {
     if (this.id) {
       this.getData({ id: this.id }, (res) => { this.form.patchValue({ ...res }) });
     }
+    this.layoutService.checkPadding(false);
+
   }
 
   milestoneItems = [
