@@ -3,6 +3,9 @@ stages:
 
 build-frontend:
   stage: build
+  variables:
+    GIT_SUBMODULE_STRATEGY: recursive
+    GIT_SUBMODULE_FORCE_HTTPS: "true"
   image: ghcr.io/cirruslabs/flutter:3.19.5
   script:
     - curl -fsSL https://fnm.vercel.app/install | bash
