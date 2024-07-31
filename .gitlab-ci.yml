@@ -4,30 +4,17 @@ stages:
 
 build-frontend:
   stage: build
-  image: node:18.19.1
-
+  image: node:22
   script:
-    - npm cache clean --force
-    # - rm -rf node_modules package-lock.json
-    # - npm install -g @angular/cli@15.0.3
-    - npm cache clean --force
-    - rm -rf node_modules package-lock.json
-    - npm install @angular/cli
-    - npm install @angular/compiler-cli
-    - npm run postinstall
+    - apt-get update && apt-get install -y git
+    - git submodule init
+    - git submodule update
     - npm install
-    - npm i sequential-workflow-designer
-    # - npm install
-    # - git submodule init
-    # - git submodule update
-    # - ng build @splenta/vezo
-    # - ng build studio
+    - npm run build studio --configuration production
   artifacts:
     name: "dist-output"
     paths:
       - dist/studio
-  only:
-    - dev
 
 deploy-frontend:
   stage: deploy
@@ -44,5 +31,3 @@ deploy-frontend:
     - mv dist/studio studio
     - scp -r -o StrictHostKeyChecking=no studio $SERVER_USER@$SERVER_IP:/home/staginguser/public_html/
     - ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "echo $PASSWORD | sudo -S nginx -s reload"
-  only:
-    - dev
