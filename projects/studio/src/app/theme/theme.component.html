@@ -9,17 +9,16 @@
     </div>
     <!-- TODO: Convert this into form array -->
     <form [formGroup]="form">
-    <div class="grid grid-cols-3 gap-2">
-        <div class="col-12 sm:col-6 md:col-4 xl:col-6 p-2" *ngFor="let product of themeList">
-            <div class="border-1 surface-border surface-card border-round flex flex-column">
-                <div class="flex flex-row justify-content-between align-items-start gap-2">
-                    <vezo-colorpicker [label]='product.colorName'
-                     (colorChange)="handleInputChange($event, product.colorName)"
-                        [inputVal]="product.colorCode"></vezo-colorpicker>
+        <div class="grid sm:grid-cols-3 md:grid-cols-6 gap-2">
+            <div class="p-2" *ngFor="let product of themeList">
+                <div class="border-1 surface-border surface-card border-round flex flex-column">
+                    <div class="flex flex-row justify-content-between align-items-start gap-2">
+                        <vezo-colorpicker [label]='product.name' (colorChange)="handleInputChange($event, product.key)"
+                            [inputVal]="product.code"></vezo-colorpicker>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
     </form>
 </div>
 <vezo-toast></vezo-toast>

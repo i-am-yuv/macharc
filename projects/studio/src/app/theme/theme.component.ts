@@ -23,69 +23,81 @@ export class ThemeComponent extends GenericComponent implements OnInit {
   data: any[] = [];
   componentName: string = "themecomponent";
 
-//   "primary": "#4C662B",
-// "onPrimary": "#FFFFFF",
-// "secondary": "#586249",
-// "onSecondary": "#FFFFFF",
-// "tertiary": "#386663",
-// "onTertiary": "#FFFFFF",
-// "tertiaryContainer": "#BCECE7",
-// "onTertiaryContainer": "#00201E",
-// "error": "#BA1A1A",
-// "onError": "#FFFFFF",
-// "background": "#F9FAEF",
-// "onBackground": "#1A1C16",
-// "surface": "#F9FAEF",
-// "onSurface": "#1A1C16",
+  //   "primary": "#4C662B",
+  // "onPrimary": "#FFFFFF",
+  // "secondary": "#586249",
+  // "onSecondary": "#FFFFFF",
+  // "tertiary": "#386663",
+  // "onTertiary": "#FFFFFF",
+  // "tertiaryContainer": "#BCECE7",
+  // "onTertiaryContainer": "#00201E",
+  // "error": "#BA1A1A",
+  // "onError": "#FFFFFF",
+  // "background": "#F9FAEF",
+  // "onBackground": "#1A1C16",
+  // "surface": "#F9FAEF",
+  // "onSurface": "#1A1C16",
 
   themeList: Theme[] = [
     {
-      colorName: "primary",
-      colorCode: "#488aff"
+      key: "primary",
+      name: "Primary",
+      code: "#488aff"
     },
     {
-      colorName: "onPrimary",
-      colorCode: "#e6f4ff"
+      key: "onPrimary",
+      name: "On Primary",
+      code: "#e6f4ff"
     },
     {
-      colorName: "secondary",
-      colorCode: "#e6f4f7"
+      name: "Secondary",
+      key: "secondary",
+      code: "#e6f4f7"
     },
     {
-      colorName: "onSecondary",
-      colorCode: "#1b1f48"
+      name: "On Secondary",
+      key: "onSecondary",
+      code: "#1b1f48"
     },
     {
-      colorName: "background",
-      colorCode: "#ffffff"
+      name: "Background",
+      key: "background",
+      code: "#ffffff"
     },
     {
-      colorName: "onBackground",
-      colorCode: "#0a0e85"
+      name: "On Background",
+      key: "onBackground",
+      code: "#0a0e85"
     },
     {
-      colorName: "muted",
-      colorCode: "#e6f4f7"
+      name: "Muted",
+      key: "muted",
+      code: "#e6f4f7"
     },
     {
-      colorName: "on-muted",
-      colorCode: "#596678"
+      name: "On Muted",
+      key: "on-muted",
+      code: "#596678"
     },
     {
-      colorName: "accent",
-      colorCode: "#e6f4f7"
+      name: "Accent",
+      key: "accent",
+      code: "#e6f4f7"
     },
     {
-      colorName: "accent-foreground",
-      colorCode: "#1b1f48"
+      name: "On Accent",
+      key: "on-accent",
+      code: "#1b1f48"
     },
     {
-      colorName: "error",
-      colorCode: "#ff3d1c"
+      name: "Error",
+      key: "error",
+      code: "#ff3d1c"
     },
     {
-      colorName: "on-error",
-      colorCode: "#e6f4ff"
+      name: "On Error",
+      key: "on-error",
+      code: "#e6f4ff"
     }
   ]
   constructor(
@@ -110,8 +122,9 @@ export class ThemeComponent extends GenericComponent implements OnInit {
 
   addLesson(theme: Theme) {
     const lessonForm = this.fb.group({
-      colorName: [theme.colorName, Validators.required],
-      colorCode: [theme.colorCode, Validators.required]
+      key: [theme.key, Validators.required],
+      name: [theme.name, Validators.required],
+      code: [theme.code, Validators.required]
     });
     this.themes.push(lessonForm);
   }
@@ -125,13 +138,13 @@ export class ThemeComponent extends GenericComponent implements OnInit {
   }
 
   // Function to handle changes to the ngModel
-  handleInputChange(colorCode: string, element: any): void { 
-    console.log(colorCode);
+  handleInputChange(code: string, element: any): void {
+    console.log(code);
     console.log(element);
 
     this.themeList.forEach((value, index) => {
-      if(value.colorName === element) {
-        this.themeList[index].colorCode = colorCode;
+      if (value.key === element) {
+        this.themeList[index].code = code;
       }
     });
   }
