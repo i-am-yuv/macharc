@@ -17,8 +17,8 @@ function createDefinition() {
   return {
     properties: {
       collections: '',
-      velocity: 0,
-      declarations: '',
+      schedule: '24/08/2024',
+      // declarations: '',
       returnType: 'void',
     },
     sequence: [],
@@ -38,6 +38,21 @@ export class BusinessLogicDesignerComponent implements OnInit {
   wfId: string | null = '';
   wf: BusinessLogic = {};
   dataDef: string | undefined = '';
+  returnType = [
+    { name: 'void', label: 'Nothing' },
+    { name: 'Order', label: 'Order' },
+  ];
+
+  operators = [
+    { name: '<', label: 'Less Than' },
+    { name: '>', label: 'Greater Than' },
+    { name: '=', label: 'Equal To' },
+    { name: '~', label: 'Contains' },
+  ];
+  activeConditions: any[] = [];
+
+  showConditionEditor: boolean = false;
+  conditionEditor: any;
   constructor(
     private businessLogicService: BusinessLogicService,
     private route: ActivatedRoute,
@@ -130,7 +145,22 @@ export class BusinessLogicDesignerComponent implements OnInit {
       componentType: 'task',
       type,
       name,
-      properties: properties || { velocity: 0, expression: '' },
+      properties: properties || { velocity: 0, stepName: name, expression: '' },
+    };
+  }
+
+  createImportStep(
+    id: null,
+    type: string,
+    name: string,
+    properties: any | undefined
+  ) {
+    return {
+      id,
+      componentType: 'task',
+      type,
+      name,
+      properties: properties || { velocity: 0, name: name, models: [] },
     };
   }
   createIfStep(id: null, _true: never[], _false: never[]) {
@@ -161,11 +191,14 @@ export class BusinessLogicDesignerComponent implements OnInit {
     return {
       name,
       steps: [
-        this.createTaskStep(null, 'task', 'Task', null),
+        // this.createImportStep(null, 'import', 'Import Models', null),
+        this.createTaskStep(null, 'getDsData', 'Fetch Data', null),
         this.createIfStep(null, [], []),
         this.createContainerStep(null, []),
-        this.createTaskStep(null, 'text', 'Send email', null),
-        this.createTaskStep(null, 'save', 'Save data', null),
+        this.createTaskStep(null, 'email', 'Send email', null),
+        this.createTaskStep(null, 'callWebclient', 'Call APIS', null),
+        this.createTaskStep(null, 'saveDsData', 'Save data', null),
+        // this.createTaskStep(null, 'responseOutput', 'Response Output', null),
       ],
     };
   }
@@ -191,5 +224,14 @@ export class BusinessLogicDesignerComponent implements OnInit {
         detail: 'Code generated',
       });
     });
+  }
+
+  openConditionEditor(editor: any) {
+    this.showConditionEditor = !this.showConditionEditor;
+    this.conditionEditor = editor;
+  }
+
+  updateConditions() {
+    // to handle this by partha
   }
 }
