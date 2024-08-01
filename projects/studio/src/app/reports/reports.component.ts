@@ -41,11 +41,11 @@ export class ReportsComponent extends GenericComponent {
     super(reportService, messageService);
     this.form = this.fb.group({
       id: '',
-      reportName: ['', [Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
+      reportName: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
       reportCode: [''],
       reportDescription: [],
       collection: [],
-      microService: [],
+      microService: ['' , Validators.required],
       process: [],
     })
   }

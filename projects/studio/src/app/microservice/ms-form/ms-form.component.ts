@@ -51,9 +51,9 @@ export class MsFormComponent
       microServiceCode: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
       microServiceName: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
       packageName: ['', [Validators.required, this.packageNameValidator]],
-      packaging: ['Jar'],
-      portNumber: ['', [Validators.required]],
-      project: [''],
+      packaging: ['Jar' , Validators.required ],
+      portNumber: ['', [Validators.required, Validators.maxLength(5)]],
+      project: ['', [Validators.required]],
     });
   }
 
@@ -317,5 +317,11 @@ export class MsFormComponent
         this.child.write(this.prompt);
       } else this.child.write(input);
     });
+  }
+
+  generateDTO()
+  {
+    // Code for generating the DTO Here
+    console.log(this.form.value);
   }
 }
