@@ -632,7 +632,7 @@
     </div>
 
     <div *ngIf="this.formId == null;" style="height:100vh ; width: 85%;" class="flex justify-center items-center ">
-        <div *ngIf="this.data.length > 1" style="font-size: 16px; font-weight: 500;">Please Select the Component
+        <div *ngIf="this.data.length > 0" style="font-size: 16px; font-weight: 500;">Please Select the Component
         </div>
         <div *ngIf="this.data.length <= 0" style="font-size: 16px; font-weight: 500;">No Component Found, Add One!
         </div>
@@ -658,7 +658,7 @@
     </ng-template>
     <ng-template vTemplate="footer">
         <div class="text-right">
-            <vezo-button label="Save" [disabled]="!form.valid" (click)="saveData()"></vezo-button>
+            <vezo-button label="Save" [disabled]="!form.valid" (click)="saveDataByApplication(this.currentApplication.id)"></vezo-button>
         </div>
     </ng-template>
 </vezo-modal>

@@ -348,6 +348,7 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
   applicationItems: Application[] = [];
   allFolders: Folder[] = [];
   allAssets : Asset[]= [];
+  currentApplication : Application = {} ;
 
   constructor(
     messageService: MessageService,
@@ -380,6 +381,12 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
   public ngOnInit() {
     //this.formId = this.route.snapshot.paramMap.get('id');
     this.layoutService.checkPadding(false);
+
+    this.applicationService.getActiveApplication().subscribe((val:any) => {
+      this.currentApplication = val ;
+    });
+
+
     this.updateChildStyles();
     this.getComponentData();
     // this.loading = true;
@@ -403,7 +410,7 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
 
   getComponentData() {
     this.loading = true;
-    this.getAllData();
+    this.getAllDataById(this.currentApplication.id);
     console.log(this.data);
     this.loading = false;
 
@@ -897,7 +904,7 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
     this.activeItem = null;
     this.formId = null;
     this.router.navigate(['/builder/forms/designer/' + null]);
-    this.deleteData(item);
+    this.deleteDataByApplication(item , this.currentApplication.id);
     this.activeItem = null;
     this.formId = null;
     this.router.navigate(['/builder/forms/designer/' + null]);

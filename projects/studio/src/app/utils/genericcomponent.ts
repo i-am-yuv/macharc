@@ -56,6 +56,21 @@ export abstract class GenericComponent {
     });
   }
 
+  getAllDataById(applicationId: any, callBack?: (resData: any) => void) {
+    this.dataService.getAllDataByApplicationId(applicationId, this.pageData, this.search).then((res: any) => {
+      this.data = res;
+      // this.pageData!.totalElements = res.totalElements;
+      // this.pageData!.pageNo = res.pageable.pageNumber;
+      // this.pageData!.pageSize = res.pageable.pageSize;
+      // this.pageData!.offset = res.pageable.offset;
+      // this.pageData!.sortField = '';
+      // this.pageData!.sortDir = '';
+      if (callBack) {
+        callBack(res);
+      }
+    });
+  }
+
   getData(ds: any, callBack?: (resData: any) => void) {
     this.dataService.getData(ds).then((res: any) => {
       this.dataSingle = res;
@@ -63,8 +78,13 @@ export abstract class GenericComponent {
     });
   }
   preSave() {}
+  preSaveByApplication() {}
+
 
   postSave(data:any) {}
+
+  postSaveByApplication(data:any) {}
+
 
   saveData() {
     this.preSave();
@@ -98,6 +118,40 @@ export abstract class GenericComponent {
       });
     }
   }
+
+  saveDataByApplication( applicationId : any) {
+    this.preSaveByApplication();
+    //this.form.value.collection = null ;// No collection for page
+    const formData = this.form.value;
+    if (!formData.id) {
+      this.dataService.createData(formData).then((res: any) => {
+        if (res) {
+          this.visible = false;
+          this.messageService.add({
+            severity: 'success',
+            detail: this.componentName + ' created',
+            summary: this.componentName + ' created',
+          });
+          this.getAllDataById(applicationId);
+          this.postSaveByApplication(res);
+        }
+      });
+    } else {
+      this.dataService.updateData(formData).then((res: any) => {
+        if (res) {
+          this.visible = false;
+          this.messageService.add({
+            severity: 'success',
+            detail: this.componentName + ' updated',
+            summary: this.componentName + ' updated',
+          });
+          this.getAllDataById(applicationId);
+          this.postSaveByApplication(res);
+        }
+      });
+    }
+  }
+
   addData() {
     this.visible = true;
     this.form.reset();
@@ -106,6 +160,7 @@ export abstract class GenericComponent {
     this.visible = true;
     this.form.patchValue({ ...ds });
   }
+
   deleteData(ds: any) {
     this.dataService.deleteData(ds).then((res: any) => {
       if (res) {
@@ -115,6 +170,19 @@ export abstract class GenericComponent {
           summary: this.componentName + ' deleted',
         });
         this.getAllData();
+      }
+    });
+  }
+
+  deleteDataByApplication(ds: any ,applicationId:any) {
+    this.dataService.deleteData(ds).then((res: any) => {
+      if (res) {
+        this.messageService.add({
+          severity: 'success',
+          detail: this.componentName + ' deleted',
+          summary: this.componentName + ' deleted',
+        });
+        this.getAllDataById(applicationId);
       }
     });
   }
