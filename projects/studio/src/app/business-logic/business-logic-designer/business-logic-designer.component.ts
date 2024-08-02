@@ -13,6 +13,7 @@ import {
 } from 'sequential-workflow-designer';
 import { BusinessLogic } from '../business-logic';
 import { BusinessLogicService } from '../business-logic.service';
+
 function createDefinition() {
   return {
     properties: {
@@ -24,6 +25,7 @@ function createDefinition() {
     sequence: [],
   };
 }
+
 @Component({
   selector: 'app-businessLogic-designer',
   templateUrl: './business-logic-designer.component.html',

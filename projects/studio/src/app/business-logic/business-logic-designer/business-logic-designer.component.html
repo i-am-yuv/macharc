@@ -137,6 +137,8 @@
     </div>
 </div>
 </div> -->
+
+
 <div class="h-screen">
   <h2 class="text-lg mb-4">{{ wf.workflowName }}</h2>
   <sqd-designer
@@ -176,6 +178,7 @@
         )
       "
     />
+    
     <p class="my-2 text-slate-400">Enter comma separated collection names</p>
 
     <h3 class="my-4 font-semibold">Response Output</h3>
@@ -318,12 +321,12 @@
   className="my-4"
 ></vezo-button>
 <br />
-<vezo-select
+<!-- <vezo-select
   [(ngModel)]="returnType"
   [items]="returnType"
   optionLabel="label"
   optionValue="name"
-></vezo-select>
+></vezo-select> -->
 
 <vezo-modal [(visible)]="showConditionEditor">
   <ng-template vTemplate="header">Conditions</ng-template>
