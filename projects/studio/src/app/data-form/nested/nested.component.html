@@ -18,20 +18,20 @@
             <div [ngClass]="{'borderOutline': this.isParentForm == false}"
                 class="draggable-item  cursor-pointer relative overflow-x: auto;">
                 <ng-container *ngIf="item.name === 'row'">
-                    <app-nested [child]="item"  [nestedElement]="'row'"
-                         ></app-nested>
+                    <app-nested [child]="item" [layout]="layout" [nestedElement]="'row'"
+                        [isParentForm]="this.isParentForm" (nodeClicked)="onChildNodeClicked($event)"></app-nested>
                 </ng-container>
                 <ng-container *ngIf="item.name === 'column'">
-                    <app-nested [child]="item"  [nestedElement]="'column'"
-                         ></app-nested>
+                    <app-nested [child]="item" [layout]="layout" [nestedElement]="'column'"
+                        [isParentForm]="this.isParentForm" (nodeClicked)="onChildNodeClicked($event)"></app-nested>
                 </ng-container>
                 <ng-container *ngIf="item.name === 'container'">
-                    <app-nested [child]="item"  [nestedElement]="'container'"
-                         ></app-nested>
+                    <app-nested [child]="item" [layout]="layout" [nestedElement]="'container'"
+                        [isParentForm]="this.isParentForm" (nodeClicked)="onChildNodeClicked($event)"></app-nested>
                 </ng-container>
                 <ng-container *ngIf="item.name === 'grid'">
-                    <app-nested [child]="item"  [nestedElement]="'grid'"
-                         ></app-nested>
+                    <app-nested [child]="item" [layout]="layout" [nestedElement]="'grid'"
+                        [isParentForm]="this.isParentForm" (nodeClicked)="onChildNodeClicked($event)"></app-nested>
                 </ng-container>
                 <ng-container
                     *ngIf="item.name !== 'row' && item.name !== 'container' && item.name !== 'grid' && item.name !== 'column' ">
@@ -70,20 +70,20 @@
                 <!-- <app-blocks [block]="child" (click)="handleClick($event, child)"></app-blocks> -->
 
                 <ng-container *ngIf="subChild.name === 'container'">
-                    <app-nested [child]="subChild"  [nestedElement]="'container'"
-                         ></app-nested>
+                    <app-nested [child]="subChild" [layout]="layout" [nestedElement]="'container'"
+                        [isParentForm]="this.isParentForm" (nodeClicked)="onChildNodeClicked($event)"></app-nested>
                 </ng-container>
                 <ng-container *ngIf="subChild.name === 'row'">
-                    <app-nested [child]="subChild"  [nestedElement]="'row'"
-                         ></app-nested>
+                    <app-nested [child]="subChild" [layout]="layout" [nestedElement]="'row'"
+                        [isParentForm]="this.isParentForm" (nodeClicked)="onChildNodeClicked($event)"></app-nested>
                 </ng-container>
                 <ng-container *ngIf="subChild.name === 'column'">
-                    <app-nested [child]="subChild"  [nestedElement]="'column'"
-                         ></app-nested>
+                    <app-nested [child]="subChild" [layout]="layout" [nestedElement]="'column'"
+                        [isParentForm]="this.isParentForm" (nodeClicked)="onChildNodeClicked($event)"></app-nested>
                 </ng-container>
                 <ng-container *ngIf="subChild.name === 'grid'">
-                    <app-nested [child]="subChild"  [nestedElement]="'grid'"
-                         ></app-nested>
+                    <app-nested [child]="subChild" [layout]="layout" [nestedElement]="'grid'"
+                        [isParentForm]="this.isParentForm" (nodeClicked)="onChildNodeClicked($event)"></app-nested>
                 </ng-container>
                 <ng-container
                     *ngIf="subChild.name !== 'row' && subChild.name !== 'container' && subChild.name !== 'grid' && subChild.name !== 'column' ">
@@ -112,20 +112,20 @@
                 <!-- Because This line was not working in the case of nested grid -->
                 <!-- <app-blocks [block]="child" (click)="handleClick($event, child)"></app-blocks> -->
                 <ng-container *ngIf="subChild.name === 'grid'">
-                    <app-nested [child]="subChild"  [nestedElement]="'grid'"
-                         ></app-nested>
+                    <app-nested [child]="subChild" [layout]="layout" [nestedElement]="'grid'"
+                        [isParentForm]="this.isParentForm" (nodeClicked)="onChildNodeClicked($event)"></app-nested>
                 </ng-container>
                 <ng-container *ngIf="subChild.name === 'container'">
-                    <app-nested [child]="subChild"  [nestedElement]="'container'"
-                         ></app-nested>
+                    <app-nested [child]="subChild" [layout]="layout" [nestedElement]="'container'"
+                        [isParentForm]="this.isParentForm" (nodeClicked)="onChildNodeClicked($event)"></app-nested>
                 </ng-container>
                 <ng-container *ngIf="subChild.name === 'row'">
-                    <app-nested [child]="subChild"  [nestedElement]="'row'"
-                         ></app-nested>
+                    <app-nested [child]="subChild" [layout]="layout" [nestedElement]="'row'"
+                        [isParentForm]="this.isParentForm" (nodeClicked)="onChildNodeClicked($event)"></app-nested>
                 </ng-container>
                 <ng-container *ngIf="subChild.name === 'column'">
-                    <app-nested [child]="subChild"  [nestedElement]="'column'"
-                         ></app-nested>
+                    <app-nested [child]="subChild" [layout]="layout" [nestedElement]="'column'"
+                        [isParentForm]="this.isParentForm" (nodeClicked)="onChildNodeClicked($event)"></app-nested>
                 </ng-container>
                 <ng-container
                     *ngIf="subChild.name !== 'row' && subChild.name !== 'container' && subChild.name !== 'grid' && subChild.name !== 'column' ">
@@ -155,20 +155,20 @@
             <div [ngClass]="{'borderOutline': this.isParentForm== false}"
                 class="draggable-item  cursor-pointer relative overflow-x: auto;">
                 <ng-container *ngIf="item.name === 'row'">
-                    <app-nested [child]="item"  [nestedElement]="'row'"
-                         ></app-nested>
+                    <app-nested [child]="item" [layout]="layout" [nestedElement]="'row'"
+                        [isParentForm]="this.isParentForm" (nodeClicked)="onChildNodeClicked($event)"></app-nested>
                 </ng-container>
                 <ng-container *ngIf="item.name === 'column'">
-                    <app-nested [child]="item"  [nestedElement]="'column'"
-                         ></app-nested>
+                    <app-nested [child]="item" [layout]="layout" [nestedElement]="'column'"
+                        [isParentForm]="this.isParentForm" (nodeClicked)="onChildNodeClicked($event)"></app-nested>
                 </ng-container>
                 <ng-container *ngIf="item.name === 'container'">
-                    <app-nested [child]="item"  [nestedElement]="'container'"
-                         ></app-nested>
+                    <app-nested [child]="item" [layout]="layout" [nestedElement]="'container'"
+                        [isParentForm]="this.isParentForm" (nodeClicked)="onChildNodeClicked($event)"></app-nested>
                 </ng-container>
                 <ng-container *ngIf="item.name === 'grid'">
-                    <app-nested [child]="item"  [nestedElement]="'grid'"
-                         ></app-nested>
+                    <app-nested [child]="item" [layout]="layout" [nestedElement]="'grid'"
+                        [isParentForm]="this.isParentForm" (nodeClicked)="onChildNodeClicked($event)"></app-nested>
                 </ng-container>
                 <ng-container
                     *ngIf="item.name !== 'row' && item.name !== 'container' && item.name !== 'grid' && item.name !== 'column' ">
