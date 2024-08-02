@@ -58,7 +58,7 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
     this.layoutService.checkPadding(false);
     this.form = this.fb.group({
       id: '',
-      folderName: ['']
+      folderName: ['', Validators.required]
     });
     this.getAllFolders();
     if (this.folderId) {

@@ -2,91 +2,52 @@
   <!-- top bar with the resize screen tab -->
   <div class="flex justify-between items-center">
     <div class="grid grid-cols-12 gap-2 w-full bg-gray-100 border items-center">
-      <div
-        class="col-span-4 gap-4 p-2 ml-4"
-        style="display: flex; justify-content: start; align-items: center"
-      >
-        <img
-          src="assets/iconamoon_edit-thin.png"
-          style="width: 18px; height: 18px"
-        />
+      <div class="col-span-4 gap-4 p-2 ml-4" style="display: flex; justify-content: start; align-items: center">
+        <img src="assets/iconamoon_edit-thin.png" style="width: 18px; height: 18px" />
         <img src="assets/rotate-ccw.png" style="width: 18px; height: 18px" />
         <img src="assets/rotate-cw.png" style="width: 18px; height: 18px" />
       </div>
       <div class="col-span-3">
-        <div
-          class="flex gap-4"
-          style="justify-content: center; align-items: center"
-        >
-          <img
-            src="assets/refresh-ccw.png"
-            class=""
-            style="width: 18px; height: 18px"
-            class="cursor-pointer"
-            (click)="resetZoom()"
-          />
+        <div class="flex gap-4" style="justify-content: center; align-items: center">
+          <img src="assets/refresh-ccw.png" class="" style="width: 18px; height: 18px" class="cursor-pointer"
+            (click)="resetZoom()" />
 
-          <div
-            class="px-2 py-2 flex justify-center items-center gap-1"
-            [ngStyle]="{ 'background-color': getBackgroundColor() }"
-          >
+          <div class="px-2 py-2 flex justify-center items-center gap-1"
+            [ngStyle]="{ 'background-color': getBackgroundColor() }">
             <div>
               <!-- Choosed Screen -->
               <div *ngIf="this.mutiScreenView == false">
-                <img
-                  src="{{ this.currentScreenView }}"
-                  style="width: 25px; cursor: pointer"
-                  (click)="mutiScreenView = !mutiScreenView"
-                />
+                <img src="{{ this.currentScreenView }}" style="width: 25px; cursor: pointer"
+                  (click)="mutiScreenView = !mutiScreenView" />
               </div>
 
               <!-- Screen to Choose from -->
               <div *ngIf="this.mutiScreenView == true" class="flex gap-3 px-2">
-                <div
-                  (click)="changeScreen('assets/circum_mobile-1.png', 'mobile')"
-                  class="cursor-pointer"
-                >
+                <div (click)="changeScreen('assets/circum_mobile-1.png', 'mobile')" class="cursor-pointer">
                   <img src="assets/circum_mobile-1.png" style="width: 25px" />
                 </div>
-                <div
-                  (click)="
+                <div (click)="
                     changeScreen(
                       'assets/material-symbols-light_tablet-android-outline.svg',
                       'tablet'
                     )
-                  "
-                  class="cursor-pointer"
-                >
-                  <img
-                    src="assets/material-symbols-light_tablet-android-outline.svg"
-                    style="width: 25px"
-                  />
+                  " class="cursor-pointer">
+                  <img src="assets/material-symbols-light_tablet-android-outline.svg" style="width: 25px" />
                 </div>
-                <div
-                  (click)="
+                <div (click)="
                     changeScreen('assets/monitor-smartphone.svg', 'desktop')
-                  "
-                  class="cursor-pointer"
-                >
-                  <img
-                    src="assets/monitor-smartphone.svg"
-                    style="width: 25px"
-                  />
+                  " class="cursor-pointer">
+                  <img src="assets/monitor-smartphone.svg" style="width: 25px" />
                 </div>
               </div>
             </div>
-            <div
-              (click)="mutiScreenView = !mutiScreenView"
-              class="cursor-pointer"
-            >
+            <div (click)="mutiScreenView = !mutiScreenView" class="cursor-pointer">
               <img src="assets/elementsClose.svg" style="width: 12px" />
             </div>
           </div>
           <!-- <div>{{this.childWidth}}px</div> -->
-          <div
-            class="flex justify-start gap-1 px-2"
-            style="border-width: 1px; border-color: #ffffff; border-radius: 4px"
-          >
+          <div class="flex justify-start gap-1 px-2"
+            style="border-width: 1px; border-color: #ffffff; border-radius: 4px">
             <input [(ngModel)]="this.childWidth" style="width: 45px" />
             <span> px</span>
           </div>
@@ -96,56 +57,28 @@
       <div class="col-span-5 p-2">
         <div class="flex justify-center items-center">
           <div class="flex w-full">
-            <div
-              class="flex-1 gap-2 flex justify-center items-center cursor-pointer"
-              (click)="addData()"
-            >
+            <div class="flex-1 gap-2 flex justify-center items-center cursor-pointer" (click)="addData()">
               <img src="assets/icons8_plus.png" style="width: 18px" />
               <div style="font-size: 14px; font-weight: 400; color: #6d6d6d">
                 Add Page
               </div>
             </div>
-            <div
-              class="flex-1 gap-2 flex justify-center items-center"
-            >
+            <div class="flex-1 gap-2 flex justify-center items-center">
               <div style="font-size: 14px; font-weight: 400; color: #6d6d6d">
                 Preview
               </div>
-              <div
-                class="border border-gray-400 rounded p-2 cursor-pointer"
-                (click)="previewInWeb()"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1"
-                  stroke="currentColor"
-                  class="w-5"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-1.605.42-3.113 1.157-4.418"
-                  />
+              <div class="border border-gray-400 rounded p-2 cursor-pointer" (click)="previewInWeb()">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1"
+                  stroke="currentColor" class="w-5">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-1.605.42-3.113 1.157-4.418" />
                 </svg>
               </div>
-              <div (click)="openMobilePreview()"
-                class="border border-gray-400 rounded p-2"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1"
-                  stroke="currentColor"
-                  class="w-5"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M10.5 1.5H8.25A2.25 2.25 0 0 0 6 3.75v16.5a2.25 2.25 0 0 0 2.25 2.25h7.5A2.25 2.25 0 0 0 18 20.25V3.75a2.25 2.25 0 0 0-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3"
-                  />
+              <div (click)="openMobilePreview()" class="border border-gray-400 rounded p-2">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1"
+                  stroke="currentColor" class="w-5">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M10.5 1.5H8.25A2.25 2.25 0 0 0 6 3.75v16.5a2.25 2.25 0 0 0 2.25 2.25h7.5A2.25 2.25 0 0 0 18 20.25V3.75a2.25 2.25 0 0 0-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" />
                 </svg>
               </div>
 
@@ -157,19 +90,9 @@
               </div>
               <img src="assets/elementsClose.svg" style="width: 12px" />
             </div>
-            <div
-              class="flex-1 gap-2 flex justify-center items-center cursor-pointer"
-              [routerLink]="'/applications'"
-            >
-              <vezo-icon
-                icon="arrowUturnLeft"
-                className="w-4 h-4"
-                style="color: #2e2e2e"
-              ></vezo-icon>
-              <div
-                class="mt-1"
-                style="font-size: 14px; font-weight: 400; color: #6d6d6d"
-              >
+            <div class="flex-1 gap-2 flex justify-center items-center cursor-pointer" [routerLink]="'/applications'">
+              <vezo-icon icon="arrowUturnLeft" className="w-4 h-4" style="color: #2e2e2e"></vezo-icon>
+              <div class="mt-1" style="font-size: 14px; font-weight: 400; color: #6d6d6d">
                 Back
               </div>
             </div>
@@ -181,25 +104,12 @@
 
   <!-- top bar with microservie, screen , Save and Back button -->
   <div class="flex justify-start">
-    <div
-      class="flex place-items-center gap-2"
-      style="width: 15%; background-color: #c7d2fe; height: 38px"
-    >
+    <div class="flex place-items-center gap-2" style="width: 15%; background-color: #c7d2fe; height: 38px">
       <div class="ml-2">
-        <vezo-icon
-          *ngIf="currListView == true"
-          [icon]="'chevronLeft'"
-          className="cursor-pointer w-4 h-4"
-          style="color: black"
-          (click)="currListView = false"
-        ></vezo-icon>
-        <vezo-icon
-          *ngIf="currListView == false"
-          [icon]="'chevronRight'"
-          className="cursor-pointer w-4 h-4"
-          style="color: black"
-          (click)="currListView = true"
-        ></vezo-icon>
+        <vezo-icon *ngIf="currListView == true" [icon]="'chevronLeft'" className="cursor-pointer w-4 h-4"
+          style="color: black" (click)="currListView = false"></vezo-icon>
+        <vezo-icon *ngIf="currListView == false" [icon]="'chevronRight'" className="cursor-pointer w-4 h-4"
+          style="color: black" (click)="currListView = true"></vezo-icon>
       </div>
 
       <div style="font-size: 14px; font-weight: 400; color: #000000">
@@ -207,40 +117,28 @@
       </div>
     </div>
     <div style="width: 85%">
-      <div
-        class="flex justify-center items-center border-b"
-        style="background-color: #eef2ff"
-      >
+      <div class="flex justify-center items-center border-b" style="background-color: #eef2ff">
         <div *ngIf="this.screenId != null" class="w-full flex p-2">
           <div class="flex-none w-4/5 flex justify-center items-center">
             <div class="flex justify-center items-center w-full">
               <div class="flex w-full">
                 <div class="flex-none w-2/6 flex justify-center items-center">
-                  <div
-                    class="text-center"
-                    style="color: #4038ca; font-size: 13px; font-weight: 400"
-                  >
+                  <div class="text-center" style="color: #4038ca; font-size: 13px; font-weight: 400">
                     MICROSERVICES:
                     <span>{{
                       screenData.microService?.microServiceName | uppercase
-                    }}</span>
+                      }}</span>
                   </div>
                 </div>
                 <div class="flex-none w-2/6 flex justify-center items-center">
-                  <div
-                    class="text-center"
-                    style="color: #4038ca; font-size: 13px; font-weight: 400"
-                  >
+                  <div class="text-center" style="color: #4038ca; font-size: 13px; font-weight: 400">
                     PAGE:
                     <span>{{ screenData.screenName | uppercase }}</span>
                   </div>
                 </div>
                 <div class="flex-none w-2/6 flex justify-center items-center">
                   <div class="cursor-pointer" (click)="generateComponent()">
-                    <vezo-icon
-                      icon="cursorArrowRays"
-                      className="w-3 h-3 mr-2 text-orange-400"
-                    ></vezo-icon>
+                    <vezo-icon icon="cursorArrowRays" className="w-3 h-3 mr-2 text-orange-400"></vezo-icon>
                     <span class="text-orange-400">Generate Code</span>
                   </div>
                 </div>
@@ -249,16 +147,8 @@
           </div>
           <div class="flex-none w-1/5 flex justify-end items-center pr-4 gap-8">
             <div class="flex cursor-pointer" (click)="saveDefinition()">
-              <vezo-icon
-                icon="inbox"
-                className="w-3 h-3 mr-2"
-                style="color: #4038ca"
-              ></vezo-icon>
-              <span
-                class=""
-                style="color: #4038ca; font-size: 13px; font-weight: 400"
-                >Save</span
-              >
+              <vezo-icon icon="inbox" className="w-3 h-3 mr-2" style="color: #4038ca"></vezo-icon>
+              <span class="" style="color: #4038ca; font-size: 13px; font-weight: 400">Save</span>
             </div>
           </div>
         </div>
@@ -268,49 +158,30 @@
 
   <div class="flex justify-start">
     <!-- All Page list Left side bar -->
-    <div
-      *ngIf="this.currListView == true"
-      style="width: 15%; background-color: #ffffff; overflow: auto"
-      class="p-2 divide-y border-r border-indigo-100"
-    >
+    <div *ngIf="this.currListView == true" style="width: 15%; background-color: #ffffff; overflow: auto"
+      class="p-2 divide-y border-r border-indigo-100">
       <div *ngFor="let item of getDataSorted()">
-        <div
-          class="cursor-pointer px-1"
-          (mouseenter)="hoverPage('enter' , item)" (mouseleave)="hoverPage('exit' , item)"
-          [ngClass]="{ 'bg-indigo-200': this.screenId == item.id }"
-        >
-          <div  class="flex justify-between items-center">
-            <div
-              (click)="openNewPage(item)"
-              class="my-2"
-              style="
+        <div class="cursor-pointer px-1" (mouseenter)="hoverPage('enter' , item)"
+          (mouseleave)="hoverPage('exit' , item)" [ngClass]="{ 'bg-indigo-200': this.screenId == item.id }">
+          <div class="flex justify-between items-center">
+            <div (click)="openNewPage(item)" class="my-2" style="
                 font-size: 12px;
                 font-weight: 500;
                 width: 100%;
                 word-wrap: break-word;
                 word-break: break-all;
                 white-space: normal;
-              "
-            >
+              ">
               {{ item.screenName }}
             </div>
             <div *ngIf="this.currentPage?.id == item.id" class="flex gap-2 justify-end px-2">
               <!-- <img  src="assets/open_with.svg" style="width: 12px; height:auto" /> -->
-              <vezo-icon
-                icon="pencil"
-                (click)="editData(item)"
-                className=" w-3 h-3 text-indigo-500 cursor-pointer"
-              ></vezo-icon>
-              <vezo-icon
-                icon="documentDuplicate"
-                (click)="duplicateData(item)"
-                className="w-3 h-3 text-indigo-500 cursor-pointer"
-              ></vezo-icon>
-              <vezo-icon
-                icon="trash"
-                (click)="confirmToDelete(item)"
-                className="w-3 h-3 text-red-500 cursor-pointer"
-              ></vezo-icon>
+              <vezo-icon icon="pencil" (click)="editData(item)"
+                className=" w-3 h-3 text-indigo-500 cursor-pointer"></vezo-icon>
+              <vezo-icon icon="documentDuplicate" (click)="duplicateData(item)"
+                className="w-3 h-3 text-indigo-500 cursor-pointer"></vezo-icon>
+              <vezo-icon icon="trash" (click)="confirmToDelete(item)"
+                className="w-3 h-3 text-red-500 cursor-pointer"></vezo-icon>
             </div>
           </div>
         </div>
@@ -318,82 +189,46 @@
     </div>
 
     <!-- Page Display content and style part -->
-    <div
-      *ngIf="this.screenId != null"
-      [ngStyle]="{ width: this.currListView ? '85%' : '100%' }"
-      class="flex justify-start w-full"
-    >
-      <div
-        [ngClass]="{
+    <div *ngIf="this.screenId != null" [ngStyle]="{ width: this.currListView ? '85%' : '100%' }"
+      class="flex justify-start w-full">
+      <div [ngClass]="{
           'w-8/12 ': this.rightPanelExpanded == true,
           'w-11/12': this.rightPanelExpanded == false
-        }"
-        class="parent"
-        #parent
-        style="display: flex; flex-direction: column; align-items: center"
-      >
+        }" class="parent" #parent style="display: flex; flex-direction: column; align-items: center">
         <!-- Zoom in and out Code -->
-        <div
-          class="flex justify-start items-center gap-4 m-3 w-full"
-          style="position: sticky; z-index: 100; top: 0; left: 0; padding: 10px"
-        >
+        <div class="flex justify-start items-center gap-4 m-3 w-full"
+          style="position: sticky; z-index: 100; top: 0; left: 0; padding: 10px">
           <div class="flex gap-2 justify-center items-center">
             <button (click)="zoomIn()">
-              <img
-                src="assets/add_circle_outline.svg"
-                style="height: 24px; width: 24px"
-              />
+              <img src="assets/add_circle_outline.svg" style="height: 24px; width: 24px" />
             </button>
             <button (click)="zoomOut()">
-              <img
-                src="assets/remove_circle_outline.svg"
-                style="height: 24px; width: 24px"
-              />
+              <img src="assets/remove_circle_outline.svg" style="height: 24px; width: 24px" />
             </button>
           </div>
           <div>Zoom: {{ zoom * 100 | number : "1.2-2" }}%</div>
         </div>
-        <div
-          id="downloadable-div"
-          [class.horizontal]="layout.dndHorizontal"
-          [dndHorizontal]="layout.dndHorizontal"
+        <div id="downloadable-div" [class.horizontal]="layout.dndHorizontal" [dndHorizontal]="layout.dndHorizontal"
           (dndDrop)="onDrop($event, draggableListRight)"
           class="child dndList m-8 name border-2 border-dotted h-full border-cyan-600 overflow-x: auto; white-space: nowrap;"
-          dndDropzone
-          dndEffectAllowed="copyMove"
-          [ngStyle]="childStyles"
-        >
-          <div
-            class="dndPlaceholder h-16 border bg-blue-400 bg-opacity-25"
-            dndPlaceholderRef
-          ></div>
+          dndDropzone dndEffectAllowed="copyMove" [ngStyle]="childStyles">
+          <div class="dndPlaceholder h-16 border bg-blue-400 bg-opacity-25" dndPlaceholderRef></div>
 
-          <div
-            *ngFor="let item of draggableListRight"
-            [dndDraggable]="item"
-            (click)="handleClick($event, item)"
+          <div *ngFor="let item of draggableListRight" [dndDraggable]="item" (click)="handleClick($event, item)"
             (dndCanceled)="onDragged(item, draggableListRight, 'none')"
             (dndCopied)="onDragged(item, draggableListRight, 'move')"
             (dndLinked)="onDragged(item, draggableListRight, 'link')"
-            (dndMoved)="onDragged(item, draggableListRight, 'move')"
-          >
+            (dndMoved)="onDragged(item, draggableListRight, 'move')">
             <div
-              class="draggable-item border border-dashed border-indigo-300 cursor-pointer relative overflow-x: auto;"
-            >
+              class="draggable-item border border-dashed border-indigo-300 cursor-pointer relative overflow-x: auto;">
               <ng-container *ngIf="item.name === 'grid'">
-                <div
-                  (dndDrop)="onDrop($event, item.children)"
-                  class="name gap-{{ item.data.gap }} grid grid-cols-{{
-                    item.data.columns
-                  }}
+                <div (dndDrop)="onDrop($event, item.children)" class="name gap-{{ item.data.gap }} grid grid-cols-{{item.data.columns}}
                             justify-{{ item.data.alignment }} items-{{
                     item.data.vAlignment
-                  }}"
-                  [ngClass]="{
+                  }}" [ngClass]="{
                     'p-8':
                       !this.item.children || this.item.children.length === 0
-                  }"
-                  [ngStyle]="{
+                  }" [ngStyle]="{
                     'margin-top': item.data?.mt + 'px',
                     'margin-bottom': item.data?.mb + 'px',
                     'margin-left': item.data?.ml + 'px',
@@ -414,72 +249,41 @@
                       (item.children && item.children.length > 0
                         ? item.data?.pr
                         : 32) + 'px'
-                  }"
-                  dndDropzone
-                  dndEffectAllowed="copyMove"
-                >
-                  <div
-                    class="dndPlaceholder h-16 border bg-blue-400 bg-opacity-25"
-                    dndPlaceholderRef
-                  ></div>
-                  <div
-                    *ngFor="let child of item.children"
-                    [dndDraggable]="child"
+                  }" dndDropzone dndEffectAllowed="copyMove">
+                  <div class="dndPlaceholder h-16 border bg-blue-400 bg-opacity-25" dndPlaceholderRef></div>
+                  <div *ngFor="let child of item.children" [dndDraggable]="child"
                     (dndCanceled)="onDragged(child, item.children!, 'none')"
                     (dndCopied)="onDragged(child, item.children!, 'move')"
                     (dndLinked)="onDragged(child, item.children!, 'link')"
-                    (dndMoved)="onDragged(child, item.children!, 'move')"
-                    class="name"
-                  >
+                    (dndMoved)="onDragged(child, item.children!, 'move')" class="name">
                     <div class="border border-dashed border-indigo-300">
                       <!-- This line was not working in the case of nested grid -->
                       <!-- <app-blocks [block]="child" (click)="handleClick($event, child)"></app-blocks> -->
 
                       <!-- Solution for nested grid -->
                       <ng-container *ngIf="child.name === 'container'">
-                        <app-nested
-                          [child]="child"
-                          [layout]="layout"
-                          [nestedElement]="'container'"
-                          (nodeClicked)="onItemReceived($event)"
-                        ></app-nested>
+                        <app-nested [child]="child" [layout]="layout" [nestedElement]="'container'"
+                          (nodeClicked)="onItemReceived($event)"></app-nested>
                       </ng-container>
                       <ng-container *ngIf="child.name === 'row'">
-                        <app-nested
-                          [child]="child"
-                          [layout]="layout"
-                          [nestedElement]="'row'"
-                          (nodeClicked)="onItemReceived($event)"
-                        ></app-nested>
+                        <app-nested [child]="child" [layout]="layout" [nestedElement]="'row'"
+                          (nodeClicked)="onItemReceived($event)"></app-nested>
                       </ng-container>
                       <ng-container *ngIf="child.name === 'grid'">
-                        <app-nested
-                          [child]="child"
-                          [layout]="layout"
-                          [nestedElement]="'grid'"
-                          (nodeClicked)="onItemReceived($event)"
-                        ></app-nested>
+                        <app-nested [child]="child" [layout]="layout" [nestedElement]="'grid'"
+                          (nodeClicked)="onItemReceived($event)"></app-nested>
                       </ng-container>
                       <ng-container *ngIf="child.name === 'column'">
-                        <app-nested
-                          [child]="child"
-                          [layout]="layout"
-                          [nestedElement]="'column'"
-                          (nodeClicked)="onItemReceived($event)"
-                        ></app-nested>
+                        <app-nested [child]="child" [layout]="layout" [nestedElement]="'column'"
+                          (nodeClicked)="onItemReceived($event)"></app-nested>
                       </ng-container>
-                      <ng-container
-                        *ngIf="
+                      <ng-container *ngIf="
                           child.name !== 'row' &&
                           child.name !== 'container' &&
                           child.name !== 'grid' &&
                           child.name !== 'column'
-                        "
-                      >
-                        <app-blocks
-                          [block]="child"
-                          (click)="handleClick($event, child)"
-                        ></app-blocks>
+                        ">
+                        <app-blocks [block]="child" (click)="handleClick($event, child)"></app-blocks>
                       </ng-container>
                     </div>
                   </div>
@@ -487,14 +291,11 @@
               </ng-container>
 
               <ng-container *ngIf="item.name === 'container'">
-                <div
-                  (dndDrop)="onDrop($event, item.children)"
-                  class="name gap-{{ item.data.gap }} grid grid-cols-{{
+                <div (dndDrop)="onDrop($event, item.children)" class="name gap-{{ item.data.gap }} grid grid-cols-{{
                     item.data.columns
                   }}  items-{{ item.data.vAlignment }} shadow-{{
                     item.data.shadow
-                  }}"
-                  [ngStyle]="{
+                  }}" [ngStyle]="{
                     width: item.data?.width ? item.data?.width + 'px' : 'auto',
                     height: item.data?.height
                       ? item.data?.height + 'px'
@@ -515,75 +316,44 @@
                     'padding-bottom': item.data?.pb + 'px',
                     'padding-left': item.data?.pl + 'px',
                     'padding-right': item.data?.pr + 'px'
-                  }"
-                  [ngClass]="{
+                  }" [ngClass]="{
                     'p-8':
                       !this.item.children || this.item.children.length === 0
-                  }"
-                  dndDropzone
-                  dndEffectAllowed="copyMove"
-                >
-                  <div
-                    class="dndPlaceholder h-16 border bg-blue-400 bg-opacity-25"
-                    dndPlaceholderRef
-                  ></div>
-                  <div
-                    *ngFor="let child of item.children"
-                    [dndDraggable]="child"
+                  }" dndDropzone dndEffectAllowed="copyMove">
+                  <div class="dndPlaceholder h-16 border bg-blue-400 bg-opacity-25" dndPlaceholderRef></div>
+                  <div *ngFor="let child of item.children" [dndDraggable]="child"
                     (dndCanceled)="onDragged(child, item.children!, 'none')"
                     (dndCopied)="onDragged(child, item.children!, 'move')"
                     (dndLinked)="onDragged(child, item.children!, 'link')"
-                    (dndMoved)="onDragged(child, item.children!, 'move')"
-                  >
+                    (dndMoved)="onDragged(child, item.children!, 'move')">
                     <div class="border border-dashed border-indigo-300">
                       <!-- Because This line was not working in the case of nested grid -->
                       <!-- <app-blocks [block]="child" (click)="handleClick($event, child)"></app-blocks> -->
 
                       <!-- Solution for nested grid -->
                       <ng-container *ngIf="child.name === 'container'">
-                        <app-nested
-                          [child]="child"
-                          [layout]="layout"
-                          [nestedElement]="'container'"
-                          (nodeClicked)="onItemReceived($event)"
-                        ></app-nested>
+                        <app-nested [child]="child" [layout]="layout" [nestedElement]="'container'"
+                          (nodeClicked)="onItemReceived($event)"></app-nested>
                       </ng-container>
                       <ng-container *ngIf="child.name === 'row'">
-                        <app-nested
-                          [child]="child"
-                          [layout]="layout"
-                          [nestedElement]="'row'"
-                          (nodeClicked)="onItemReceived($event)"
-                        ></app-nested>
+                        <app-nested [child]="child" [layout]="layout" [nestedElement]="'row'"
+                          (nodeClicked)="onItemReceived($event)"></app-nested>
                       </ng-container>
                       <ng-container *ngIf="child.name === 'column'">
-                        <app-nested
-                          [child]="child"
-                          [layout]="layout"
-                          [nestedElement]="'column'"
-                          (nodeClicked)="onItemReceived($event)"
-                        ></app-nested>
+                        <app-nested [child]="child" [layout]="layout" [nestedElement]="'column'"
+                          (nodeClicked)="onItemReceived($event)"></app-nested>
                       </ng-container>
                       <ng-container *ngIf="child.name === 'grid'">
-                        <app-nested
-                          [child]="child"
-                          [layout]="layout"
-                          [nestedElement]="'grid'"
-                          (nodeClicked)="onItemReceived($event)"
-                        ></app-nested>
+                        <app-nested [child]="child" [layout]="layout" [nestedElement]="'grid'"
+                          (nodeClicked)="onItemReceived($event)"></app-nested>
                       </ng-container>
-                      <ng-container
-                        *ngIf="
+                      <ng-container *ngIf="
                           child.name !== 'row' &&
                           child.name !== 'container' &&
                           child.name !== 'grid' &&
                           child.name !== 'column'
-                        "
-                      >
-                        <app-blocks
-                          [block]="child"
-                          (click)="handleClick($event, child)"
-                        ></app-blocks>
+                        ">
+                        <app-blocks [block]="child" (click)="handleClick($event, child)"></app-blocks>
                       </ng-container>
                     </div>
                   </div>
@@ -591,16 +361,12 @@
               </ng-container>
 
               <ng-container *ngIf="item.name === 'row'">
-                <div
-                  (dndDrop)="onDrop($event, item.children)"
-                  class="name gap-{{ item.data.gap }} flex  items-{{
+                <div (dndDrop)="onDrop($event, item.children)" class="name gap-{{ item.data.gap }} flex  items-{{
                     item.data.vAlignment
-                  }}"
-                  [ngClass]="{
+                  }}" [ngClass]="{
                     'p-8':
                       !this.item.children || this.item.children.length === 0
-                  }"
-                  [ngStyle]="{
+                  }" [ngStyle]="{
                     'margin-top': item.data.mt + 'px',
                     'margin-bottom': item.data.mb + 'px',
                     'margin-left': item.data.ml + 'px',
@@ -622,69 +388,38 @@
                         ? item.data?.pr
                         : 32) + 'px',
                     'justify-content': item.data.alignment
-                  }"
-                  dndDropzone
-                  dndEffectAllowed="copyMove"
-                >
-                  <div
-                    class="dndPlaceholder h-16 border bg-blue-400 bg-opacity-25"
-                    dndPlaceholderRef
-                  ></div>
-                  <div
-                    *ngFor="let child of item.children"
-                    [dndDraggable]="child"
+                  }" dndDropzone dndEffectAllowed="copyMove">
+                  <div class="dndPlaceholder h-16 border bg-blue-400 bg-opacity-25" dndPlaceholderRef></div>
+                  <div *ngFor="let child of item.children" [dndDraggable]="child"
                     (dndCanceled)="onDragged(child, item.children!, 'none')"
                     (dndCopied)="onDragged(child, item.children!, 'move')"
                     (dndLinked)="onDragged(child, item.children!, 'link')"
-                    (dndMoved)="onDragged(child, item.children!, 'move')"
-                    class="name"
-                  >
+                    (dndMoved)="onDragged(child, item.children!, 'move')" class="name">
                     <div class="border border-dashed border-indigo-300">
                       <!-- Solution for nested grid -->
                       <ng-container *ngIf="child.name === 'container'">
-                        <app-nested
-                          [child]="child"
-                          [layout]="layout"
-                          [nestedElement]="'container'"
-                          (nodeClicked)="onItemReceived($event)"
-                        ></app-nested>
+                        <app-nested [child]="child" [layout]="layout" [nestedElement]="'container'"
+                          (nodeClicked)="onItemReceived($event)"></app-nested>
                       </ng-container>
                       <ng-container *ngIf="child.name === 'row'">
-                        <app-nested
-                          [child]="child"
-                          [layout]="layout"
-                          [nestedElement]="'row'"
-                          (nodeClicked)="onItemReceived($event)"
-                        ></app-nested>
+                        <app-nested [child]="child" [layout]="layout" [nestedElement]="'row'"
+                          (nodeClicked)="onItemReceived($event)"></app-nested>
                       </ng-container>
                       <ng-container *ngIf="child.name === 'column'">
-                        <app-nested
-                          [child]="child"
-                          [layout]="layout"
-                          [nestedElement]="'column'"
-                          (nodeClicked)="onItemReceived($event)"
-                        ></app-nested>
+                        <app-nested [child]="child" [layout]="layout" [nestedElement]="'column'"
+                          (nodeClicked)="onItemReceived($event)"></app-nested>
                       </ng-container>
                       <ng-container *ngIf="child.name === 'grid'">
-                        <app-nested
-                          [child]="child"
-                          [layout]="layout"
-                          [nestedElement]="'grid'"
-                          (nodeClicked)="onItemReceived($event)"
-                        ></app-nested>
+                        <app-nested [child]="child" [layout]="layout" [nestedElement]="'grid'"
+                          (nodeClicked)="onItemReceived($event)"></app-nested>
                       </ng-container>
-                      <ng-container
-                        *ngIf="
+                      <ng-container *ngIf="
                           child.name !== 'row' &&
                           child.name !== 'container' &&
                           child.name !== 'grid' &&
                           child.name !== 'column'
-                        "
-                      >
-                        <app-blocks
-                          [block]="child"
-                          (click)="handleClick($event, child)"
-                        ></app-blocks>
+                        ">
+                        <app-blocks [block]="child" (click)="handleClick($event, child)"></app-blocks>
                       </ng-container>
                     </div>
                   </div>
@@ -692,16 +427,12 @@
               </ng-container>
 
               <ng-container *ngIf="item.name === 'column'">
-                <div
-                  (dndDrop)="onDrop($event, item.children)"
-                  class="name  gap-{{ item.data.gap }} flex flex-col justify-{{
+                <div (dndDrop)="onDrop($event, item.children)" class="name  gap-{{ item.data.gap }} flex flex-col justify-{{
                     item.data.alignment
-                  }} items-{{ item.data.hAlignment }}"
-                  [ngClass]="{
+                  }} items-{{ item.data.hAlignment }}" [ngClass]="{
                     'p-8':
                       !this.item.children || this.item.children.length === 0
-                  }"
-                  [ngStyle]="{
+                  }" [ngStyle]="{
                     'margin-top': item.data.mt + 'px',
                     'margin-bottom': item.data.mb + 'px',
                     'margin-left': item.data.ml + 'px',
@@ -722,72 +453,39 @@
                       (item.children && item.children.length > 0
                         ? item.data?.pr
                         : 32) + 'px'
-                  }"
-                  dndDropzone
-                  dndEffectAllowed="copyMove"
-                  style="width: -webkit-fill-available"
-                >
-                  <div
-                    class="dndPlaceholder h-16 border bg-blue-400 bg-opacity-25"
-                    dndPlaceholderRef
-                  ></div>
-                  <div
-                    *ngFor="let child of item.children"
-                    [dndDraggable]="child"
+                  }" dndDropzone dndEffectAllowed="copyMove" style="width: -webkit-fill-available">
+                  <div class="dndPlaceholder h-16 border bg-blue-400 bg-opacity-25" dndPlaceholderRef></div>
+                  <div *ngFor="let child of item.children" [dndDraggable]="child"
                     (dndCanceled)="onDragged(child, item.children!, 'none')"
                     (dndCopied)="onDragged(child, item.children!, 'move')"
                     (dndLinked)="onDragged(child, item.children!, 'link')"
-                    (dndMoved)="onDragged(child, item.children!, 'move')"
-                    class="name"
-                    style="width: -webkit-fill-available"
-                  >
+                    (dndMoved)="onDragged(child, item.children!, 'move')" class="name"
+                    style="width: -webkit-fill-available">
                     <div class="border border-dashed border-indigo-300">
                       <!-- Solution for nested grid -->
                       <ng-container *ngIf="child.name === 'column'">
-                        <app-nested
-                          [child]="child"
-                          [layout]="layout"
-                          [nestedElement]="'column'"
-                          (nodeClicked)="onItemReceived($event)"
-                        ></app-nested>
+                        <app-nested [child]="child" [layout]="layout" [nestedElement]="'column'"
+                          (nodeClicked)="onItemReceived($event)"></app-nested>
                       </ng-container>
-                      <ng-container *ngIf="child.name === 'container'"
-                        >''
-                        <app-nested
-                          [child]="child"
-                          [layout]="layout"
-                          [nestedElement]="'container'"
-                          (nodeClicked)="onItemReceived($event)"
-                        ></app-nested>
+                      <ng-container *ngIf="child.name === 'container'">''
+                        <app-nested [child]="child" [layout]="layout" [nestedElement]="'container'"
+                          (nodeClicked)="onItemReceived($event)"></app-nested>
                       </ng-container>
                       <ng-container *ngIf="child.name === 'row'">
-                        <app-nested
-                          [child]="child"
-                          [layout]="layout"
-                          [nestedElement]="'row'"
-                          (nodeClicked)="onItemReceived($event)"
-                        ></app-nested>
+                        <app-nested [child]="child" [layout]="layout" [nestedElement]="'row'"
+                          (nodeClicked)="onItemReceived($event)"></app-nested>
                       </ng-container>
                       <ng-container *ngIf="child.name === 'grid'">
-                        <app-nested
-                          [child]="child"
-                          [layout]="layout"
-                          [nestedElement]="'grid'"
-                          (nodeClicked)="onItemReceived($event)"
-                        ></app-nested>
+                        <app-nested [child]="child" [layout]="layout" [nestedElement]="'grid'"
+                          (nodeClicked)="onItemReceived($event)"></app-nested>
                       </ng-container>
-                      <ng-container
-                        *ngIf="
+                      <ng-container *ngIf="
                           child.name !== 'row' &&
                           child.name !== 'container' &&
                           child.name !== 'grid' &&
                           child.name !== 'column'
-                        "
-                      >
-                        <app-blocks
-                          [block]="child"
-                          (click)="handleClick($event, child)"
-                        ></app-blocks>
+                        ">
+                        <app-blocks [block]="child" (click)="handleClick($event, child)"></app-blocks>
                       </ng-container>
                     </div>
                   </div>
@@ -796,198 +494,114 @@
 
               <ng-container *ngIf="item.name === 'form'">
                 <div class="name">
-                  <div
-                    [ngClass]="{
+                  <div [ngClass]="{
                       'p-8':
                         !this.item.children || this.item.children.length === 0
-                    }"
-                  ></div>
+                    }"></div>
                   <div *ngFor="let child of item.children" class="name">
                     <ng-container *ngIf="child.name === 'container'">
-                      <app-nested
-                        [child]="child"
-                        [layout]="layout"
-                        [nestedElement]="'container'"
-                        [isParentForm]="true"
-                        (click)="handleClickForm($event, child, item)"
-                      ></app-nested>
+                      <app-nested [child]="child" [layout]="layout" [nestedElement]="'container'" [isParentForm]="true"
+                        (click)="handleClickForm($event, child, item)"></app-nested>
                     </ng-container>
                     <ng-container *ngIf="child.name === 'row'">
-                      <app-nested
-                        [child]="child"
-                        [layout]="layout"
-                        [nestedElement]="'row'"
-                        [isParentForm]="true"
-                        (click)="handleClickForm($event, child, item)"
-                      ></app-nested>
+                      <app-nested [child]="child" [layout]="layout" [nestedElement]="'row'" [isParentForm]="true"
+                        (click)="handleClickForm($event, child, item)"></app-nested>
                     </ng-container>
                     <ng-container *ngIf="child.name === 'grid'">
-                      <app-nested
-                        [child]="child"
-                        [layout]="layout"
-                        [nestedElement]="'grid'"
-                        [isParentForm]="true"
-                        (click)="handleClickForm($event, child, item)"
-                      ></app-nested>
+                      <app-nested [child]="child" [layout]="layout" [nestedElement]="'grid'" [isParentForm]="true"
+                        (click)="handleClickForm($event, child, item)"></app-nested>
                     </ng-container>
                     <ng-container *ngIf="child.name === 'column'">
-                      <app-nested
-                        [child]="child"
-                        [layout]="layout"
-                        [nestedElement]="'column'"
-                        (nodeClicked)="onItemReceived($event)"
-                      ></app-nested>
+                      <app-nested [child]="child" [layout]="layout" [nestedElement]="'column'"
+                        (nodeClicked)="onItemReceived($event)"></app-nested>
                     </ng-container>
-                    <ng-container
-                      *ngIf="
+                    <ng-container *ngIf="
                         child.name !== 'row' &&
                         child.name !== 'container' &&
                         child.name !== 'grid' &&
                         child.name !== 'column'
-                      "
-                    >
-                      <app-blocks
-                        [block]="child"
-                        (click)="handleClickForm($event, child, item)"
-                      ></app-blocks>
+                      ">
+                      <app-blocks [block]="child" (click)="handleClickForm($event, child, item)"></app-blocks>
                     </ng-container>
                   </div>
                 </div>
               </ng-container>
 
               <div class="relative-container">
-                <div
-                  class="trash-icon"
-                  *ngIf="this.activeItem?.id === item?.id"
-                >
-                  <vezo-icon
-                    icon="trash"
-                    class="mr-2 text-red-500 cursor-pointer"
-                    className="w-4 h-4"
-                    (click)="deleteActiveItem(true)"
-                  ></vezo-icon>
+                <div class="trash-icon" *ngIf="this.activeItem?.id === item?.id">
+                  <vezo-icon icon="trash" class="mr-2 text-red-500 cursor-pointer" className="w-4 h-4"
+                    (click)="deleteActiveItem(true)"></vezo-icon>
                 </div>
-                <app-blocks
-                  [block]="item"
-                  (click)="handleClick($event, item)"
-                  class="block-content"
-                ></app-blocks>
+                <app-blocks [block]="item" (click)="handleClick($event, item)" class="block-content"></app-blocks>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div
-        [ngClass]="{
-          'w-4/12': this.rightPanelExpanded == true
-        }"  class="h-[600px]"
-        style="position: -webkit-sticky; position: sticky; top: 0; " #stickyDiv
-      >
+      <div [ngClass]="{
+          'w-4/12 overflow-y-scroll': this.rightPanelExpanded == true
+        }" class="h-[600px]" style="position: -webkit-sticky; position: sticky; top: 0; " #stickyDiv>
         <div *ngIf="this.rightPanelExpanded">
           <div class="flex justify-end align-top">
             <div class="w-1/12">
-              <div
-                style="
+              <div style="
                   height: 47px;
                   border-bottom-left-radius: 4px;
                   align-items: center;
-                "
-                class="border-b cursor-pointer border-l border-r flex justify-center px-2 shadow-md bg-white"
-                (click)="this.rightPanelExpanded = !this.rightPanelExpanded"
-              >
-                <vezo-icon
-                  [icon]="'chevronRight'"
-                  className=" w-5 h-5"
-                  style="color: black"
-                ></vezo-icon>
+                " class="border-b cursor-pointer border-l border-r flex justify-center px-2 shadow-md bg-white"
+                (click)="this.rightPanelExpanded = !this.rightPanelExpanded">
+                <vezo-icon [icon]="'chevronRight'" className=" w-5 h-5" style="color: black"></vezo-icon>
                 <!-- <vezo-icon *ngIf="this.rightPanelExpanded==false " [icon]="'chevronLeft'"
                         className="cursor-pointer w-5 h-5" style="color:black"></vezo-icon> -->
               </div>
             </div>
-            <div
-              class="w-11/12 bg-white border-l border-b"
-              style="border-color: #818cf8"
-            >
+            <div class="w-11/12 bg-white border-l border-b" style="border-color: #818cf8">
               <div class="flex">
-                <div
-                  class="w-6/12 p-3 cursor-pointer"
-                  [style.background-color]="
+                <div class="w-6/12 p-3 cursor-pointer" [style.background-color]="
                     this.activeItem?.id === null ? '#4038CA' : '#C7D2FE'
-                  "
-                  (click)="onClickPickElement()"
-                >
+                  " (click)="onClickPickElement()">
                   <div class="flex justify-between gap-3">
                     <div>
-                      <span
-                        *ngIf="!showProps"
-                        [style.color]="
+                      <span *ngIf="!showProps" [style.color]="
                           this.activeItem?.id === null ? '#F6F6F6' : '#454545'
-                        "
-                        style="font-size: 12px; font-weight: 500"
-                        >PICK AN ELEMENT</span
-                      >
-                      <span
-                        *ngIf="showProps"
-                        [style.color]="
+                        " style="font-size: 12px; font-weight: 500">PICK AN ELEMENT</span>
+                      <span *ngIf="showProps" [style.color]="
                           this.activeItem?.id === null ? '#F6F6F6' : '#454545'
-                        "
-                        style="font-size: 12px; font-weight: 500"
-                        >Widgets</span
-                      >
+                        " style="font-size: 12px; font-weight: 500">Widgets</span>
                     </div>
-                    <div
-                      class="bg-slate-200 rounded-full flex justify-center items-center w-6 h-6"
-                    >
+                    <div class="bg-slate-200 rounded-full flex justify-center items-center w-6 h-6">
                       <!-- <vezo-icon icon="bars2" *ngIf="!showProps"
                                                 className="cursor-pointer w-4 h-4" (click)="showProps=!showProps"
                                                 style="color:white"></vezo-icon>
                                             <vezo-icon icon="squares2x2" *ngIf="showProps"
                                                 className="cursor-pointer w-4 h-4" style="color:white"
                                                 (click)="showProps=!showProps"></vezo-icon> -->
-                      <img
-                        *ngIf="!showProps"
-                        src="assets/switch_left.svg"
-                        class="w-4 h-4"
-                        (click)="showProps = !showProps"
-                      />
-                      <img
-                        *ngIf="showProps"
-                        src="assets/switch_right.svg"
-                        class="w-4 h-4"
-                        (click)="showProps = !showProps"
-                      />
+                      <img *ngIf="!showProps" src="assets/switch_left.svg" class="w-4 h-4"
+                        (click)="showProps = !showProps" />
+                      <img *ngIf="showProps" src="assets/switch_right.svg" class="w-4 h-4"
+                        (click)="showProps = !showProps" />
                     </div>
                   </div>
                 </div>
 
-                <div
-                  class="w-6/12 p-3 justify-center"
-                  [style.background-color]="
+                <div class="w-6/12 p-3 justify-center" [style.background-color]="
                     this.activeItem?.id !== null ? '#4038CA' : '#C7D2FE'
-                  "
-                >
-                  <div
-                    [style.color]="
+                  ">
+                  <div [style.color]="
                       this.activeItem?.id !== null ? '#F6F6F6' : '#454545'
-                    "
-                    style="
+                    " style="
                       font-size: 12px;
                       font-weight: 500;
                       display: flex;
                       justify-content: center;
                       align-items: center;
-                    "
-                  >
+                    ">
                     STYLES
                   </div>
                 </div>
               </div>
               <!-- All elements -->
-              <div
-                *ngIf="this.activeItem?.id == null"
-                class=""
-                style="height: calc(100vh - 132px); overflow-y: scroll"
-              >
+              <div *ngIf="this.activeItem?.id == null" class="" style="height: calc(100vh - 132px); overflow-y: scroll">
                 <div *ngIf="!showProps">
                   <!-- <div class="m-3 bg-white">
                                         <vezo-searchfield type="text" placeholder="Search"
@@ -995,58 +609,30 @@
                                     </div> -->
 
                   <!-- Virtual Elements -->
-                  <div
-                    class="m-3 flex gap-2 justify-start align-middle"
-                    style="align-items: center"
-                  >
-                    <div
-                      *ngIf="virtualElementsExpand"
-                      class="cursor-pointer"
-                      (click)="virtualElementsExpand = !virtualElementsExpand"
-                    >
+                  <div class="m-3 flex gap-2 justify-start align-middle" style="align-items: center">
+                    <div *ngIf="virtualElementsExpand" class="cursor-pointer"
+                      (click)="virtualElementsExpand = !virtualElementsExpand">
                       <img src="assets/elementsClose.svg" />
                     </div>
-                    <div
-                      *ngIf="!virtualElementsExpand"
-                      class="cursor-pointer"
-                      (click)="virtualElementsExpand = !virtualElementsExpand"
-                    >
-                      <img
-                        *ngIf="this.isExpanded == false"
-                        src="assets/Polygon 5.svg"
-                        style="width: 7px; height: 14px"
-                      />
+                    <div *ngIf="!virtualElementsExpand" class="cursor-pointer"
+                      (click)="virtualElementsExpand = !virtualElementsExpand">
+                      <img *ngIf="this.isExpanded == false" src="assets/Polygon 5.svg"
+                        style="width: 7px; height: 14px" />
                     </div>
-                    <div
-                      style="font-size: 16px; font-weight: 600; color: black"
-                    >
+                    <div style="font-size: 16px; font-weight: 600; color: black">
                       Visual Elements
                     </div>
                   </div>
-                  <div
-                    *ngIf="virtualElementsExpand"
-                    class="dndList px-3 py-1 name"
-                  >
+                  <div *ngIf="virtualElementsExpand" class="dndList px-3 py-1 name">
                     <div class="grid grid-cols-2 gap-2">
-                      <div
-                        *ngFor="
+                      <div *ngFor="
                           let item of getList(
                             draggableListLeftVE,
                             filteredDraggableListLeftVE
                           )
-                        "
-                        [dndDraggable]="item"
-                        [dndEffectAllowed]="item.effectAllowed"
-                        class="cursor-move"
-                      >
-                        <div
-                          class="draggable-item mb-2 border bg-white shadow-sm"
-                          style="border-radius: 4px"
-                        >
-                          <div
-                            class="flex gap-3 py-2 px-2"
-                            style="justify-content: start; align-items: center"
-                          >
+                        " [dndDraggable]="item" [dndEffectAllowed]="item.effectAllowed" class="cursor-move">
+                        <div class="draggable-item mb-2 border bg-white shadow-sm" style="border-radius: 4px">
+                          <div class="flex gap-3 py-2 px-2" style="justify-content: start; align-items: center">
                             <div class="col-2">
                               <img [src]="item.icon" />
                             </div>
@@ -1060,58 +646,30 @@
                   </div>
 
                   <!-- Layout Elements -->
-                  <div
-                    class="m-3 flex gap-2 justify-start align-middle"
-                    style="align-items: center"
-                  >
-                    <div
-                      *ngIf="layoutElementsExpand"
-                      class="cursor-pointer"
-                      (click)="layoutElementsExpand = !layoutElementsExpand"
-                    >
+                  <div class="m-3 flex gap-2 justify-start align-middle" style="align-items: center">
+                    <div *ngIf="layoutElementsExpand" class="cursor-pointer"
+                      (click)="layoutElementsExpand = !layoutElementsExpand">
                       <img src="assets/elementsClose.svg" />
                     </div>
-                    <div
-                      *ngIf="!layoutElementsExpand"
-                      class="cursor-pointer"
-                      (click)="layoutElementsExpand = !layoutElementsExpand"
-                    >
-                      <img
-                        *ngIf="this.isExpanded == false"
-                        src="assets/Polygon 5.svg"
-                        style="width: 7px; height: 14px"
-                      />
+                    <div *ngIf="!layoutElementsExpand" class="cursor-pointer"
+                      (click)="layoutElementsExpand = !layoutElementsExpand">
+                      <img *ngIf="this.isExpanded == false" src="assets/Polygon 5.svg"
+                        style="width: 7px; height: 14px" />
                     </div>
-                    <div
-                      style="font-size: 16px; font-weight: 600; color: black"
-                    >
+                    <div style="font-size: 16px; font-weight: 600; color: black">
                       Layout Elements
                     </div>
                   </div>
-                  <div
-                    *ngIf="layoutElementsExpand"
-                    class="dndList px-3 py-1 name"
-                  >
+                  <div *ngIf="layoutElementsExpand" class="dndList px-3 py-1 name">
                     <div class="grid grid-cols-2 gap-2">
-                      <div
-                        *ngFor="
+                      <div *ngFor="
                           let item of getList(
                             draggableListLeftLE,
                             filteredDraggableListLeftLE
                           )
-                        "
-                        [dndDraggable]="item"
-                        [dndEffectAllowed]="item.effectAllowed"
-                        class="cursor-move"
-                      >
-                        <div
-                          class="draggable-item mb-2 border bg-white shadow-sm"
-                          style="border-radius: 4px"
-                        >
-                          <div
-                            class="flex gap-3 py-2 px-2"
-                            style="justify-content: start; align-items: center"
-                          >
+                        " [dndDraggable]="item" [dndEffectAllowed]="item.effectAllowed" class="cursor-move">
+                        <div class="draggable-item mb-2 border bg-white shadow-sm" style="border-radius: 4px">
+                          <div class="flex gap-3 py-2 px-2" style="justify-content: start; align-items: center">
                             <div class="col-2">
                               <img [src]="item.icon" />
                             </div>
@@ -1123,58 +681,30 @@
                   </div>
 
                   <!-- Page Elements -->
-                  <div
-                    class="m-3 flex gap-2 justify-start align-middle"
-                    style="align-items: center"
-                  >
-                    <div
-                      *ngIf="pageElementsExpand"
-                      class="cursor-pointer"
-                      (click)="pageElementsExpand = !pageElementsExpand"
-                    >
+                  <div class="m-3 flex gap-2 justify-start align-middle" style="align-items: center">
+                    <div *ngIf="pageElementsExpand" class="cursor-pointer"
+                      (click)="pageElementsExpand = !pageElementsExpand">
                       <img src="assets/elementsClose.svg" />
                     </div>
-                    <div
-                      *ngIf="!pageElementsExpand"
-                      class="cursor-pointer"
-                      (click)="pageElementsExpand = !pageElementsExpand"
-                    >
-                      <img
-                        *ngIf="this.isExpanded == false"
-                        src="assets/Polygon 5.svg"
-                        style="width: 7px; height: 14px"
-                      />
+                    <div *ngIf="!pageElementsExpand" class="cursor-pointer"
+                      (click)="pageElementsExpand = !pageElementsExpand">
+                      <img *ngIf="this.isExpanded == false" src="assets/Polygon 5.svg"
+                        style="width: 7px; height: 14px" />
                     </div>
-                    <div
-                      style="font-size: 16px; font-weight: 600; color: black"
-                    >
+                    <div style="font-size: 16px; font-weight: 600; color: black">
                       Page Elements
                     </div>
                   </div>
-                  <div
-                    *ngIf="pageElementsExpand"
-                    class="dndList px-3 py-1 name"
-                  >
+                  <div *ngIf="pageElementsExpand" class="dndList px-3 py-1 name">
                     <div class="grid grid-cols-2 gap-2">
-                      <div
-                        *ngFor="
+                      <div *ngFor="
                           let item of getList(
                             draggableListLeftPE,
                             filteredDraggableListLeftPE
                           )
-                        "
-                        [dndDraggable]="item"
-                        [dndEffectAllowed]="item.effectAllowed"
-                        class="cursor-move"
-                      >
-                        <div
-                          class="draggable-item mb-2 border bg-white shadow-sm"
-                          style="border-radius: 4px"
-                        >
-                          <div
-                            class="flex gap-3 py-2 px-2"
-                            style="justify-content: start; align-items: center"
-                          >
+                        " [dndDraggable]="item" [dndEffectAllowed]="item.effectAllowed" class="cursor-move">
+                        <div class="draggable-item mb-2 border bg-white shadow-sm" style="border-radius: 4px">
+                          <div class="flex gap-3 py-2 px-2" style="justify-content: start; align-items: center">
                             <div class="col-2">
                               <img [src]="item.icon" />
                             </div>
@@ -1185,22 +715,13 @@
                     </div>
                   </div>
                 </div>
-                <div
-                  *ngIf="showProps"
-                  class="p-2 bg-gray-100 h-[80vh] overflow-auto"
-                >
+                <div *ngIf="showProps" class="p-2 bg-gray-100 h-[80vh] overflow-auto">
                   <!-- Copy the complete component -->
                   <div *ngIf="widgetTree.length !== 0" class="flex justify-end">
-                    <img
-                      src="assets/copy-clipboard.svg"
-                      (click)="copyThisPage(this.draggableListRight)"
-                      style="width: 20px; height: 20px; cursor: pointer"
-                    />
-                    <div
-                      style="font-size: 12px"
-                      class="ml-1 cursor-pointer"
-                      (click)="copyThisPage(this.draggableListRight)"
-                    >
+                    <img src="assets/copy-clipboard.svg" (click)="copyThisPage(this.draggableListRight)"
+                      style="width: 20px; height: 20px; cursor: pointer" />
+                    <div style="font-size: 12px" class="ml-1 cursor-pointer"
+                      (click)="copyThisPage(this.draggableListRight)">
                       Copy All
                     </div>
                   </div>
@@ -1208,52 +729,37 @@
                   <!-- Widget Tree Code -->
                   <div style="display: flex; flex-direction: column">
                     <div *ngFor="let item of widgetTree">
-                      <app-widget-tree-node
-                        [node]="item"
-                        (nodeClicked)="onItemReceived($event)"
+                      <app-widget-tree-node [node]="item" (nodeClicked)="onItemReceived($event)"
                         (copyClicked)="onItemReceivedCopy($event)"
-                        (pasteClicked)="onItemReceivedPaste($event)"
-                      ></app-widget-tree-node>
+                        (pasteClicked)="onItemReceivedPaste($event)"></app-widget-tree-node>
                     </div>
                     <div *ngIf="widgetTree.length == 0">
-                      <div
-                        style="
+                      <div style="
                           font-size: 14px;
                           font-weight: 500;
                           color: #2e2e2e;
-                        "
-                      >
+                        ">
                         No Widget Tree Available.
                       </div>
                     </div>
                   </div>
 
                   <!-- Paste content-->
-                  <div
-                    class="flex justify-start items-center mt-2 gap-1 cursor-pointer"
-                    *ngIf="checkPageAvailable()"
-                    (click)="pasteThisPage()"
-                  >
+                  <div class="flex justify-start items-center mt-2 gap-1 cursor-pointer" *ngIf="checkPageAvailable()"
+                    (click)="pasteThisPage()">
                     <div style="font-size: 12px">Paste</div>
-                    <img
-                      src="assets/content_paste.svg"
-                      style="width: 16px; height: auto"
-                    />
+                    <img src="assets/content_paste.svg" style="width: 16px; height: auto" />
                   </div>
                 </div>
               </div>
               <!-- Elements's Property -->
-              <div
-                *ngIf="this.activeItem?.id != null"
-                class="ml-2 mt-2"
-                style="font-size: 16px; font-weight: 400; color: #2e2e2e"
-              >
+              <div *ngIf="this.activeItem?.id != null" class="ml-2 mt-2"
+                style="font-size: 16px; font-weight: 400; color: #2e2e2e">
                 Element- {{ this.activeItem?.content | capitalize }}
               </div>
               <div *ngIf="this.activeItem?.id != null" class="p-3">
                 <div class="min-h-[24rem]">
-                  <div
-                    *ngIf="
+                  <div *ngIf="
                       this.activeItem.name == 'heading' ||
                       this.activeItem.name == 'button' ||
                       this.activeItem.name == 'input' ||
@@ -1265,38 +771,23 @@
                       this.activeItem.name == 'table' ||
                       this.activeItem.name == 'image' ||
                       this.activeItem.name == 'divider' ||
-                      this.activeItem.name == 'video' ||
-                      this.activeItem.name == 'card'
-                    "
-                  >
-                    <app-properties
-                      [fields]="fields"
-                      [forms]="forms"
-                      [props]="activeItem"
-                      [collections]="collections"
-                      (deleteProp)="deleteActiveItem($event)"
-                      (getCollectionFields)="getFields($event)"
-                      [comingFromPage]="true"
-                    ></app-properties>
+                      this.activeItem.name == 'video'
+                    ">
+                    <app-properties [fields]="fields" [forms]="forms" [props]="activeItem" [collections]="collections"
+                      (deleteProp)="deleteActiveItem($event)" (getCollectionFields)="getFields($event)"
+                      [comingFromPage]="true"></app-properties>
                   </div>
-                  <div
-                    *ngIf="
+                  <div *ngIf="
                       this.activeItem.name == 'form' ||
                       this.activeItem.name == 'grid' ||
                       this.activeItem.name == 'container' ||
                       this.activeItem.name == 'row' ||
-                      this.activeItem.name == 'column'
-                    "
-                  >
-                    <app-properties2
-                      [fields]="fields"
-                      [forms]="forms"
-                      [props]="activeItem"
-                      [collections]="collections"
-                      (deleteProp)="deleteActiveItem($event)"
-                      (getCollectionFields)="getFields($event)"
-                      [comingFromPage]="true"
-                    ></app-properties2>
+                      this.activeItem.name == 'column' ||
+                      this.activeItem.name == 'card'
+                    ">
+                    <app-properties2 [fields]="fields" [forms]="forms" [props]="activeItem" [collections]="collections"
+                      (deleteProp)="deleteActiveItem($event)" (getCollectionFields)="getFields($event)"
+                      [comingFromPage]="true"></app-properties2>
                   </div>
 
                   <div class="text-center m-8" *ngIf="!activeItem">
@@ -1312,11 +803,7 @@
                       <vezo-input label="Page URL"></vezo-input>
                       <vezo-input label="Primary Collection"></vezo-input>
                       <div class="text-right mb-8 pt-4">
-                        <vezo-button
-                          label="Save"
-                          className="bg-gray-50"
-                          (click)="saveDefinition()"
-                        ></vezo-button>
+                        <vezo-button label="Save" className="bg-gray-50" (click)="saveDefinition()"></vezo-button>
                       </div>
                     </div>
                   </div>
@@ -1326,40 +813,23 @@
           </div>
         </div>
         <div *ngIf="!this.rightPanelExpanded">
-          <div
-            style="
+          <div style="
               height: 47px;
               width: 32px;
               border-bottom-left-radius: 4px;
               align-items: center;
-            "
-            class="border-b border-l border-r flex justify-center px-2 shadow-md bg-white"
-            (click)="this.rightPanelExpanded = !this.rightPanelExpanded"
-          >
-            <vezo-icon
-              [icon]="'chevronLeft'"
-              className="cursor-pointer w-5 h-5"
-              style="color: black"
-            ></vezo-icon>
+            " class="border-b border-l border-r flex justify-center px-2 shadow-md bg-white"
+            (click)="this.rightPanelExpanded = !this.rightPanelExpanded">
+            <vezo-icon [icon]="'chevronLeft'" className="cursor-pointer w-5 h-5" style="color: black"></vezo-icon>
           </div>
         </div>
       </div>
     </div>
-    <div
-      *ngIf="this.screenId == null"
-      style="height: 100vh; width: 85%"
-      class="flex justify-center items-center"
-    >
-      <div
-        *ngIf="this.data.length > 0"
-        style="font-size: 16px; font-weight: 500"
-      >
+    <div *ngIf="this.screenId == null" style="height: 100vh; width: 85%" class="flex justify-center items-center">
+      <div *ngIf="this.data.length > 0" style="font-size: 16px; font-weight: 500">
         Please Select the Page
       </div>
-      <div
-        *ngIf="this.data.length <= 0"
-        style="font-size: 16px; font-weight: 500"
-      >
+      <div *ngIf="this.data.length <= 0" style="font-size: 16px; font-weight: 500">
         No Page Found, Add One!
       </div>
     </div>
@@ -1371,51 +841,36 @@
   <ng-template vTemplate="header">Page</ng-template>
   <ng-template vTemplate="content">
     <form [formGroup]="form">
-      <vezo-select
+      <!-- <vezo-select
         optionLabel="applicationName"
         [items]="applicationItems"
         formControlName="application"
         label="Application"
-      ></vezo-select>
-      <vezo-select
-        optionLabel="microServiceName"
-        [items]="microserviceItems"
-        formControlName="microService"
-        label="Microservice"
-        (ngModelChange)="getCollectionItems()"
-      ></vezo-select>
+      ></vezo-select> -->
+      <vezo-select optionLabel="microServiceName" [items]="microserviceItems" formControlName="microService"
+        label="Microservice" (ngModelChange)="getCollectionItems()"></vezo-select>
       <!-- <vezo-select optionLabel="collectionName" [items]="collectionItems" formControlName="collection"
                 label="Collection"></vezo-select> -->
       <vezo-input label="Page Name" formControlName="screenName"></vezo-input>
-      <error-message
-        [controlName]="form.controls['screenName']"
-      ></error-message>
+      <error-message [controlName]="form.controls['screenName']"></error-message>
     </form>
   </ng-template>
   <ng-template vTemplate="footer">
     <div class="text-right">
-      <vezo-button
-        label="Save"
-        [disabled]="!form.valid"
-        (click)="saveDataByApplication(this.currentApplication.id)"
-      ></vezo-button>
+      <vezo-button label="Save" [disabled]="!form.valid"
+        (click)="saveDataByApplication(this.currentApplication.id)"></vezo-button>
     </div>
   </ng-template>
 </vezo-modal>
 
 <!-- Code for re-confirmation of delete the page -->
 <vezo-modal [(visible)]="visibleDeleteConfirmation">
-  <ng-template vTemplate="header"
-    >Are you sure, you want to delete this page ?</ng-template
-  >
+  <ng-template vTemplate="header">Are you sure, you want to delete this page ?</ng-template>
   <ng-template vTemplate="footer">
     <div class="w-full flex justify-end gap-4 items-center">
-      <vezo-button
-        label="No"
-        (click)="
+      <vezo-button label="No" (click)="
           this.visibleDeleteConfirmation = !this.visibleDeleteConfirmation
-        "
-      ></vezo-button>
+        "></vezo-button>
 
       <vezo-button label="Yes" (click)="deleteConfirmed()"></vezo-button>
     </div>
@@ -1424,69 +879,64 @@
 
 <!-- Code for Choosing Image from Media Manager -->
 <vezo-modal [(visible)]="this.selectAssetModel">
-    <ng-template vTemplate="header">
-        <div class="flex justify-between items-center">
-            <div class="flex justify-start items-center gap-2"
-                style="background-color: #FFFFFF; border-width: 1px; border-color: #E9E9FB; height: 32px; width: auto; border-radius: 4px;">
-                <img src="assets/image_search.png" class="ml-1" style="width: 24px; height: 24px;" />
-                <input type="text" placeholder="Search..." [(ngModel)]="searchQuery" (input)="searchAssets()"
-                    class="mr-2" style="border: none !important; height: 25px !important; width: auto;" />
+  <ng-template vTemplate="header">
+    <div class="flex justify-between items-center">
+      <div class="flex justify-start items-center gap-2"
+        style="background-color: #FFFFFF; border-width: 1px; border-color: #E9E9FB; height: 32px; width: auto; border-radius: 4px;">
+        <img src="assets/image_search.png" class="ml-1" style="width: 24px; height: 24px;" />
+        <input type="text" placeholder="Search..." [(ngModel)]="searchQuery" (input)="searchAssets()" class="mr-2"
+          style="border: none !important; height: 25px !important; width: auto;" />
+      </div>
+    </div>
+  </ng-template>
+  <ng-template vTemplate="content">
+    <!-- Code for the Grid View Assets -->
+    <div style="height:400px ; overflow-y: scroll;">
+      <div class="flex flex-wrap gap-4 p-5" style="justify-items: start; background-color: #EEF2FF;">
+        <div *ngFor="let asset of getAssetList(); let i = index">
+          <div style="background-color: #FFFFFF; width: 100px; height:160px ; border-radius: 8px;" class="p-3">
+            <div class="flex justify-center items-center p-4"
+              style="width: auto; height: 80px; border-radius: 8px; border-width: 1px; border-color:#000000;">
+              <img [src]="asset.url" style="width:70px; height: auto" alt="Image" />
             </div>
-        </div>
-    </ng-template>
-    <ng-template vTemplate="content">
-        <!-- Code for the Grid View Assets -->
-        <div style="height:400px ; overflow-y: scroll;">
-            <div class="flex flex-wrap gap-4 p-5" style="justify-items: start; background-color: #EEF2FF;">
-                <div *ngFor="let asset of getAssetList(); let i = index">
-                    <div style="background-color: #FFFFFF; width: 100px; height:160px ; border-radius: 8px;"
-                        class="p-3">
-                        <div class="flex justify-center items-center p-4"
-                            style="width: auto; height: 80px; border-radius: 8px; border-width: 1px; border-color:#000000;">
-                            <img [src]="asset.url" style="width:70px; height: auto" alt="Image" />
-                        </div>
-                        <div class="flex justify-between items-center mt-2" style="flex-wrap: wrap-reverse;">
-                            <div style="display: flex; flex-direction: column;" class="gap-1">
-                                <div class="flex justify-between items-center gap-2 w-auto">
-                                    <div class="file-name" style="font-size: 12px; font-weight: 500; color: #4F46E5;">
-                                        {{asset.fileName}}+'1282iqehjfkldcccccccccccccccccccccccccccccmvs';
-                                    </div>
-                                </div>
-                                <div class="flex justify-center items-center mt-2 cursor-pointer">
-                                    <div class="w-full text-center flex justify-center items-center"
-                                        (click)="sendThisAsset(asset)"
-                                        style="height: 24px; background-color: #C7222a; border-radius: 6px; color:#FFFFFF; font-size: 12px; font-weight: 500;">
-                                        Select
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            <div class="flex justify-between items-center mt-2" style="flex-wrap: wrap-reverse;">
+              <div style="display: flex; flex-direction: column;" class="gap-1">
+                <div class="flex justify-between items-center gap-2 w-auto">
+                  <div class="file-name" style="font-size: 12px; font-weight: 500; color: #4F46E5;">
+                    {{asset.fileName}}+'1282iqehjfkldcccccccccccccccccccccccccccccmvs';
+                  </div>
                 </div>
-                <div *ngIf="this.getAssetList().length <= 0" class="flex justify-center items-center w-full"
-                    style="flex-direction: column; height: 90%;">
-                    <div class="text-center">
-                        <p style="font-size: 16px; font-weight: 500; color: #888888;">No Asset Found!</p>
-                    </div>
+                <div class="flex justify-center items-center mt-2 cursor-pointer">
+                  <div class="w-full text-center flex justify-center items-center" (click)="sendThisAsset(asset)"
+                    style="height: 24px; background-color: #C7222a; border-radius: 6px; color:#FFFFFF; font-size: 12px; font-weight: 500;">
+                    Select
+                  </div>
                 </div>
+              </div>
             </div>
+          </div>
         </div>
-    </ng-template>
-    <!-- <ng-template vTemplate="footer">
+        <div *ngIf="this.getAssetList().length <= 0" class="flex justify-center items-center w-full"
+          style="flex-direction: column; height: 90%;">
+          <div class="text-center">
+            <p style="font-size: 16px; font-weight: 500; color: #888888;">No Asset Found!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <!-- <ng-template vTemplate="footer">
         <div class="text-right">
             <vezo-button label="Save" [disabled]="!form.valid" (click)="saveData()"></vezo-button>
         </div>
     </ng-template> -->
 </vezo-modal>
 
- <!-- We are sending our complete page to this preview compoenent so that this compoent can render in new tab -->
+<!-- We are sending our complete page to this preview compoenent so that this compoent can render in new tab -->
 <div [hidden]="true">
   <app-page-preview [draggableListRight]="this.draggableListRight"></app-page-preview>
 </div>
 
 <!-- Toast Message and Loading Code -->
 <vezo-toast></vezo-toast>
-<ngx-loading
-  [show]="loading"
-  [config]="{ backdropBorderRadius: '3px' }"
-></ngx-loading>
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px' }"></ngx-loading>

@@ -103,7 +103,7 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
       disable: false,
       handle: false,
       data: {
-        label: 'Input Label', placeholder: 'Placeholder', labelFont: '14', labelWeight: '400', labelColor: '#000000', fieldHeight: '35', fieldRadius: '4', bgColor: '#f1f3f6', borderColor: '#f1f3f6', borderWidth: '1',
+        label: 'Input Label', placeholder: 'Placeholder', labelFont: '14', labelWeight: '400', labelColor: '#000000',fontSize: '14', fontWeight: '400', fontColor: '#000000', fieldHeight: '35', fieldRadius: '4', bgColor: '#f1f3f6', borderColor: '#f1f3f6', borderWidth: '1',
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
       },
       mappedData: {}, // this will consist of the data that is mapped 
@@ -773,7 +773,7 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
 
   //childHeight = 500;
   childWidth = 700; // giving default width as 700 to our component
-  zoom = 0.3;
+  zoom = 0.4;
 
   get childStyles() {
     return {
@@ -794,7 +794,7 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
   }
 
   resetZoom() {
-    this.zoom = 0.3;
+    this.zoom = 0.4;
   }
 
   updateChildStyles() {

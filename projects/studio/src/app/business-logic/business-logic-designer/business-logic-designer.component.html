@@ -137,86 +137,262 @@
     </div>
 </div>
 </div> -->
+
+
 <div class="h-screen">
-    <h2 class="text-lg mb-4">{{wf.workflowName}}</h2>
-    <sqd-designer theme="light" [undoStackSize]="10" [definition]="definition"
-        [toolboxConfiguration]="toolboxConfiguration" [stepsConfiguration]="stepsConfiguration" [controlBar]="true"
-        [areEditorsHidden]="false" [globalEditor]="globalEditor" [stepEditor]="stepEditor"
-        (onReady)="onDesignerReady($event)" (onDefinitionChanged)="onDefinitionChanged($event)">
-    </sqd-designer>
+  <h2 class="text-lg mb-4">{{ wf.workflowName }}</h2>
+  <sqd-designer
+    theme="light"
+    [undoStackSize]="10"
+    [definition]="definition"
+    [toolboxConfiguration]="toolboxConfiguration"
+    [stepsConfiguration]="stepsConfiguration"
+    [controlBar]="true"
+    [areEditorsHidden]="false"
+    [globalEditor]="globalEditor"
+    [stepEditor]="stepEditor"
+    (onReady)="onDesignerReady($event)"
+    (onDefinitionChanged)="onDefinitionChanged($event)"
+  >
+  </sqd-designer>
 </div>
 <ng-template #globalEditor let-editor>
-    <div class="p-4">
-        <h2 class="heading inline-block my-3">Service Config</h2>
-        <vezo-button (click)="generateServiceCode()" label="Generate Code"
-            className="inline-block float-right"></vezo-button>
+  <div class="p-4">
+    <h2 class="heading inline-block my-3">Service Config</h2>
+    <vezo-button
+      (click)="generateServiceCode()"
+      label="Generate Code"
+      className="inline-block float-right"
+    ></vezo-button>
 
-        <h3 class="my-4 font-semibold">Collections</h3>
-        <input [(ngModel)]="editor.definition.properties.collections"
-            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            (input)="updateProperty(editor.definition.properties, 'collections', $event, editor.context)" />
-        <p class="my-2 text-slate-400">Enter comma separated collection names</p>
+    <h3 class="my-4 font-semibold">Models</h3>
+    <input
+      [(ngModel)]="editor.definition.properties.collections"
+      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      (input)="
+        updateProperty(
+          editor.definition.properties,
+          'collections',
+          $event,
+          editor.context
+        )
+      "
+    />
+    
+    <p class="my-2 text-slate-400">Enter comma separated collection names</p>
 
-        <h3 class="my-4 font-semibold">Return Type</h3>
-        <input [(ngModel)]="editor.definition.properties.returnType"
-            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            (input)="updateProperty(editor.definition.properties, 'returnType', $event, editor.context)" />
+    <h3 class="my-4 font-semibold">Response Output</h3>
+    <input
+      [(ngModel)]="editor.definition.properties.returnType"
+      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      (input)="
+        updateProperty(
+          editor.definition.properties,
+          'returnType',
+          $event,
+          editor.context
+        )
+      "
+    />
 
-        <h3 class="my-4 font-semibold">Declarations</h3>
-        <textarea [(ngModel)]="editor.definition.properties.declarations" rows="6"
-            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            (input)="updateProperty(editor.definition.properties, 'declarations', $event, editor.context)"></textarea>
+    <!-- <h3 class="my-4 font-semibold">Declarations</h3>
+    <textarea
+      [(ngModel)]="editor.definition.properties.declarations"
+      rows="6"
+      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      (input)="
+        updateProperty(
+          editor.definition.properties,
+          'declarations',
+          $event,
+          editor.context
+        )
+      "
+    ></textarea> -->
 
-        <h3 class="my-4 font-semibold">Schedule</h3>
-        <input type="number" [value]="editor.definition.properties.velocity"
-            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            (input)="updateProperty(editor.definition.properties, 'velocity', $event, editor.context)" />
-        <p class="my-2 text-slate-400">Enter time delay to execute in seconds</p>
-        <vezo-button (click)="saveDefinition()" label="Save" className="my-4 float-right"></vezo-button>
-        <vezo-button (click)="reloadDefinitionClicked()" label="Clear"
-            className="m-4 bg-slate-50 float-right"></vezo-button>
-    </div>
+    <h3 class="my-4 font-semibold">Schedule</h3>
+    <input
+      [value]="editor.definition.properties.schedule"
+      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      (input)="
+        updateProperty(
+          editor.definition.properties,
+          'schedule',
+          $event,
+          editor.context
+        )
+      "
+    />
+    <p class="my-2 text-slate-400">Enter time delay to execute in seconds</p>
+    <vezo-button
+      (click)="saveDefinition()"
+      label="Save"
+      className="my-4 float-right"
+    ></vezo-button>
+    <vezo-button
+      (click)="reloadDefinitionClicked()"
+      label="Clear"
+      className="m-4 bg-slate-50 float-right"
+    ></vezo-button>
+  </div>
 </ng-template>
 
 <ng-template #stepEditor let-editor>
-    <div class="p-4">
-        <h2 class="text-lg">Step Editor</h2>
+  <div class="p-4">
+    <h2 class="text-lg">Step Editor</h2>
+    <h3 class="my-4 font-semibold">{{ editor.step.properties.stepName }}</h3>
+    <h3 class="my-4 font-semibold">Name</h3>
 
-        <h3 class="my-4 font-semibold">Name</h3>
+    <input
+      type="text"
+      [value]="editor.step.name"
+      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      (input)="updateName(editor.step, $event, editor.context)"
+    />
+    {{ editor.step | json }}
+    <!-- hanlde types of steps and data to be gathered from user-->
+    <h3 class="my-4 font-semibold">Config</h3>
+    <ng-container *ngIf="editor.step.type === 'getDsData'">
+      <select class="border p-2 w-full my-2">
+        <option>FindOne</option>
+        <option>FindAll</option>
+        <option>FindById</option>
+        <option>Custom JPA Query</option>
+      </select>
+      <input
+        class="shadow appearance-none border rounded w-full py-2 px-3 my-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        type="text"
+        placeholder="Custom query"
+      />
+      <p class="my-2 text-slate-400">
+        Enter the query to be used to fetch data from data source.
+      </p>
+    </ng-container>
 
-        <input type="text" [value]="editor.step.name"
-            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            (input)="updateName(editor.step, $event, editor.context)" />
+    <ng-container *ngIf="editor.step.type === 'if'">
+      <h3 class="my-2 font-semibold">Configure Conditions</h3>
+      <div class="mb-2" (click)="openConditionEditor(editor)">
+        <button class="bg-indigo-600 rounded text-white p-2">
+          Edit Conditions
+        </button>
+      </div>
+    </ng-container>
 
-        <h3 class="my-4 font-semibold">Expression</h3>
-        <textarea [value]="editor.step.properties.expression" rows="6"
-            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            (input)="updateProperty(editor.step.properties, 'expression', $event, editor.context)"></textarea>
-        <p class="my-2 text-slate-400">Enter the expression to be evaluated to proceed to next step.</p> <a href=""
-            target="_blank" class="text-blue-400">Refer
-            docs
-            on how to write expressions</a>
+    <a href="" target="_blank" class="text-blue-400"
+      >Refer docs on how to configure steps</a
+    >
 
+    <h3 class="my-4 font-semibold">Schedule</h3>
+    <input
+      type="number"
+      [value]="editor.step.properties.velocity"
+      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      (input)="
+        updateProperty(
+          editor.step.properties,
+          'velocity',
+          $event,
+          editor.context
+        )
+      "
+    />
+    <p class="my-2 text-slate-400">Enter time delay to execute in seconds</p>
 
-        <h3 class="my-4 font-semibold">Schedule</h3>
-        <input type="number" [value]="editor.step.properties.velocity"
-            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            (input)="updateProperty(editor.step.properties, 'velocity', $event, editor.context)" />
-        <p class="my-2 text-slate-400">Enter time delay to execute in seconds</p>
-
-        <vezo-button (click)="saveDefinition()" label="Save" className="my-4 float-right"></vezo-button>
-        <vezo-button (click)="reloadDefinitionClicked()" label="Reload" className="m-4 float-right"></vezo-button>
-    </div>
+    <vezo-button
+      (click)="saveDefinition()"
+      label="Save"
+      className="my-4 float-right"
+    ></vezo-button>
+    <vezo-button
+      (click)="reloadDefinitionClicked()"
+      label="Reload"
+      className="m-4 float-right"
+    ></vezo-button>
+  </div>
 </ng-template>
 
 <br />
 
-
-
-
 <textarea cols="60" rows="18">{{ definitionJSON }}</textarea>
 <br />
-<vezo-button (click)="reloadDefinitionClicked()" label="Reload definition" className="my-4"></vezo-button>
+<vezo-button
+  (click)="reloadDefinitionClicked()"
+  label="Reload definition"
+  className="my-4"
+></vezo-button>
 <br />
+<!-- <vezo-select
+  [(ngModel)]="returnType"
+  [items]="returnType"
+  optionLabel="label"
+  optionValue="name"
+></vezo-select> -->
+
+<vezo-modal [(visible)]="showConditionEditor">
+  <ng-template vTemplate="header">Conditions</ng-template>
+  <ng-template vTemplate="content">
+    <div class="border p-2 rounded mb-2">
+      <h3 class="semi-bold my-2">Condition Group</h3>
+      <div class="flex gap-4">
+        <vezo-select label="Field"></vezo-select>
+        <vezo-select
+          label="condition"
+          [items]="operators"
+          optionLabel="label"
+          optionValue="name"
+        ></vezo-select>
+        <vezo-select label="Model Value"></vezo-select>
+        <vezo-input label="Static Value"></vezo-input>
+      </div>
+      <div class="text-center my-4">OR</div>
+      <div class="flex gap-4">
+        <vezo-select label="Field"></vezo-select>
+        <vezo-select
+          label="condition"
+          [items]="operators"
+          optionLabel="label"
+          optionValue="name"
+        ></vezo-select>
+        <vezo-select label="Model Value"></vezo-select>
+        <vezo-input label="Static Value"></vezo-input>
+      </div>
+      <div class="text-right">
+        Add one more condition:
+        <vezo-button label="And" className="mr-2"></vezo-button
+        ><vezo-button label="Or"></vezo-button>
+      </div>
+    </div>
+    <div class="text-center my-4">AND</div>
+    <div class="border p-2 rounded mb-2">
+      <h3 class="semi-bold my-2">Condition Group</h3>
+      <div class="flex gap-4">
+        <vezo-select label="Field"></vezo-select>
+        <vezo-select
+          label="condition"
+          [items]="operators"
+          optionLabel="label"
+          optionValue="name"
+        ></vezo-select>
+        <vezo-select label="Model Value"></vezo-select>
+        <vezo-input label="Static Value"></vezo-input>
+      </div>
+      <div class="text-right">
+        Add one more condition:
+        <vezo-button label="And" className="mr-2"></vezo-button
+        ><vezo-button label="Or"></vezo-button>
+      </div>
+    </div>
+    <div class="text-right">
+      Add one more group:
+      <vezo-button label="And" className="mr-2"></vezo-button
+      ><vezo-button label="Or"></vezo-button>
+    </div>
+  </ng-template>
+  <ng-template vTemplate="footer">
+    <div class="text-right">
+      <vezo-button label="Save" (click)="updateConditions()"></vezo-button>
+    </div>
+  </ng-template>
+</vezo-modal>
 
 <vezo-toast></vezo-toast>

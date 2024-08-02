@@ -1,14 +1,22 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { MessageService } from '@splenta/vezo/src/public-api';
-import { iif } from 'rxjs';
+import { ApplicationService } from '../../application/application.service';
+import { Application } from '../../application/application';
+import { GenericComponent } from '../../utils/genericcomponent';
+import { FormGroup } from '@angular/forms';
+import { ScreenService } from '../screen.service';
 
 @Component({
   selector: 'app-properties',
   templateUrl: './properties.component.html'
 })
-export class PropertiesComponent implements OnChanges {
+export class PropertiesComponent extends GenericComponent implements OnChanges {
 
+  form!: FormGroup<any>;
+  data: [] = [];
+  componentName: string = 'Screen';
+  
   @Input() props: any = {};
   @Input() fields: any[] = [];
   @Input() collections: any[] = [];
@@ -28,18 +36,23 @@ export class PropertiesComponent implements OnChanges {
 
   isReceivedUrlSameAsInput: boolean = false;
 
+  currentApplication : Application = {};
+
 
   column: any = {};
 
   boxShawdowOptions: any = ['sm', 'md', 'lg', 'xl', '2xl', 'inner', 'none'];
 
   constructor(
-    private messageService: MessageService,
+    messageService: MessageService,
     private router: Router,
-    private cdRef: ChangeDetectorRef
+    private cdRef: ChangeDetectorRef,
+    private screenService : ScreenService,
+    private applicationService : ApplicationService
   ) {
+    super(screenService, messageService);
     this.ImageURL = null;
-    this.actualImageReceived = null;
+    this.actualImageReceived = null; 
   }
 
 
@@ -52,8 +65,17 @@ export class PropertiesComponent implements OnChanges {
       this.actualImageReceived = null;
       this.ImageURL = null;
     }
-    
+
+    this.applicationService.getActiveApplication().subscribe((val:any) => {
+      this.currentApplication = val ;
+      this.getAllScreenByApplication();
+    });
   }
+
+  getAllScreenByApplication()
+  {
+    this.getAllDataById(this.currentApplication.id);
+  }   
 
   @Output() deleteProp = new EventEmitter<boolean>();
   validations: any[] = ['Required', 'Alpha', 'Alpha Numeric', 'Numbers', 'Password', 'Email', 'Telephone', 'Pattern'];
@@ -187,6 +209,11 @@ export class PropertiesComponent implements OnChanges {
 
   chooseAssetClicked() {
     this.assetModelOpen.emit(true);
+  }
+
+  check( datatest : any)
+  {
+     console.log(datatest);
   }
 
 }

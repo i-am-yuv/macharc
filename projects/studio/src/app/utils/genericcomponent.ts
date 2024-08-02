@@ -77,13 +77,13 @@ export abstract class GenericComponent {
       if (callBack) callBack(res);
     });
   }
-  preSave() {}
-  preSaveByApplication() {}
+  preSave() { }
+  preSaveByApplication() { }
 
 
-  postSave(data:any) {}
+  postSave(data: any) { }
 
-  postSaveByApplication(data:any) {}
+  postSaveByApplication(data: any) { }
 
 
   saveData() {
@@ -119,10 +119,20 @@ export abstract class GenericComponent {
     }
   }
 
-  saveDataByApplication( applicationId : any) {
+  saveDataByApplication(applicationId: any) {
     this.preSaveByApplication();
     //this.form.value.collection = null ;// No collection for page
+    // this.form.value.application['id'] = applicationId ; 
+
+    // Clone the form value
+    //const formData = { ...this.form.value };
+
+    // Ensure application is an object and add the id
+    
+
     const formData = this.form.value;
+    formData.application = { ...formData.application, id: applicationId };
+    
     if (!formData.id) {
       this.dataService.createData(formData).then((res: any) => {
         if (res) {
@@ -174,7 +184,7 @@ export abstract class GenericComponent {
     });
   }
 
-  deleteDataByApplication(ds: any ,applicationId:any) {
+  deleteDataByApplication(ds: any, applicationId: any) {
     this.dataService.deleteData(ds).then((res: any) => {
       if (res) {
         this.messageService.add({

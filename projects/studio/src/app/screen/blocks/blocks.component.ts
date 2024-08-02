@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { EffectAllowed } from 'ngx-drag-drop';
 
 interface DraggableItem {
@@ -25,6 +25,9 @@ export class BlocksComponent {
 
    @Input() activeItem: any;
 
+   @Output() screenDefination = new EventEmitter<any>();
+
+
   // @ViewChild('videoPlayer') videoPlayer!: ElementRef;
 
   // playVideo() {
@@ -40,4 +43,15 @@ export class BlocksComponent {
   //   this.videoPlayer.nativeElement.currentTime = 0;
   // }
 
+  btnNavigation( screenDefinition : any  )
+  {
+    console.log('Button Clicked');
+    console.log(screenDefinition) ;
+
+    if(screenDefinition !== null || screenDefinition !== undefined)
+    {
+      console.log('entered');
+      this.screenDefination.emit(screenDefinition);
+    }
+  }
 }
