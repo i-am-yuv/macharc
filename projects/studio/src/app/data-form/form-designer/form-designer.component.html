@@ -588,13 +588,13 @@
                         <div *ngIf="this.activeItem?.id != null" class="p-3">
                             <div class="min-h-[24rem]">
                                 <div
-                                    *ngIf="this.activeItem.name=='heading' || this.activeItem.name=='button' || this.activeItem.name=='input' || this.activeItem.name=='textarea' || this.activeItem.name=='dropdown' || this.activeItem.name=='checkbox' || this.activeItem.name=='radio' || this.activeItem.name=='switch' || this.activeItem.name=='table' || this.activeItem.name=='image' || this.activeItem.name=='divider' || this.activeItem.name=='video' || this.activeItem.name=='card' ">
+                                    *ngIf="this.activeItem.name=='heading' || this.activeItem.name=='button' || this.activeItem.name=='input' || this.activeItem.name=='textarea' || this.activeItem.name=='dropdown' || this.activeItem.name=='checkbox' || this.activeItem.name=='radio' || this.activeItem.name=='switch' || this.activeItem.name=='table' || this.activeItem.name=='image' || this.activeItem.name=='divider' || this.activeItem.name=='video'">
                                     <app-properties [fields]="fields" [props]="activeItem" [collections]="collections"
                                         (deleteProp)="deleteActiveItem($event)" [ImageURL]="this.imageURL"
                                         (assetModelOpen)="checkImageModelClicked($event)"></app-properties>
                                 </div>
                                 <div
-                                    *ngIf="this.activeItem.name=='form' || this.activeItem.name=='grid' || this.activeItem.name=='container' || this.activeItem.name=='row' || this.activeItem.name=='column'">
+                                    *ngIf="this.activeItem.name=='form' || this.activeItem.name=='grid' || this.activeItem.name=='container' || this.activeItem.name=='row' || this.activeItem.name=='column'  || this.activeItem.name=='card' ">
                                     <app-properties2 [fields]="fields" [props]="activeItem" [collections]="collections"
                                         (deleteProp)="deleteActiveItem($event)"></app-properties2>
                                 </div>

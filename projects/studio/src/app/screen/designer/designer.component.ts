@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { DndDropEvent, DropEffect, EffectAllowed } from 'ngx-drag-drop';
 import { ScreenService } from '../screen.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -43,7 +43,7 @@ interface DraggableItem {
   templateUrl: './designer.component.html',
   styleUrls: ['./designer.component.scss']
 })
-export class DesignerComponent extends GenericComponent implements OnInit {
+export class DesignerComponent extends GenericComponent implements OnInit , OnDestroy {
 
   @ViewChild('PagePreviewComponent', { static: false }) PagePreviewComponent !: ElementRef;
 
@@ -83,7 +83,7 @@ export class DesignerComponent extends GenericComponent implements OnInit {
       disable: false,
       handle: false,
       data: {
-        label: 'Input Label', placeholder: 'Placeholder', labelFont: '14', labelWeight: '400', labelColor: '#000000',fontSize: '14', fontWeight: '400', fontColor: '#000000', fieldHeight: '35', fieldRadius: '4', bgColor: '#f1f3f6', borderColor: '#f1f3f6', borderWidth: '1',
+        label: 'Input Label', placeholder: 'Placeholder', labelFont: '14', labelWeight: '400', labelColor: '#000000', fontSize: '14', fontWeight: '400', fontColor: '#000000', fieldHeight: '35', fieldRadius: '4', bgColor: '#f1f3f6', borderColor: '#f1f3f6', borderWidth: '1',
         mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
       },
       mappedData: {}, // this will consist of the data that is mapped 
@@ -125,7 +125,7 @@ export class DesignerComponent extends GenericComponent implements OnInit {
         text: 'Input Label', fontSize: '12', fontWeight: '600', fontColor: '#4338ca',
         bgColor: '#e0e7ff', borderColor: '#c7d2fe', borderWidth: '1', borderRadius: '4', width: '100', height: '35',
         btnAlignment: 'center', textAlignment: 'center',
-        mt: '0', mb: '0', ml: '0', mr: '0'
+        mt: '0', mb: '0', ml: '0', mr: '0', navigateTo: ''
       },
       mappedData: {},
       icon: 'assets/button.svg'
@@ -385,7 +385,7 @@ export class DesignerComponent extends GenericComponent implements OnInit {
   collection: Collection = {};
   microserviceItems: MicroService[] = [];
   applicationItems: Application[] = [];
-  currentApplication : Application = {}  ;
+  currentApplication: Application = {};
 
   constructor(
     private screenService: ScreenService,
@@ -401,7 +401,7 @@ export class DesignerComponent extends GenericComponent implements OnInit {
     private applicationService: ApplicationService,
     private renderer: Renderer2, private el: ElementRef,
     private mediaService: MediaService,
-    private layoutService : LayoutService
+    private layoutService: LayoutService
   ) {
     super(screenService, messageService);
     this.form = this.fb.group({
@@ -419,8 +419,8 @@ export class DesignerComponent extends GenericComponent implements OnInit {
   public ngOnInit() {
     this.layoutService.checkPadding(false);
 
-    this.applicationService.getActiveApplication().subscribe((val:any) => {
-      this.currentApplication = val ;
+    this.applicationService.getActiveApplication().subscribe((val: any) => {
+      this.currentApplication = val;
     });
 
     this.updateChildStyles();
@@ -459,7 +459,7 @@ export class DesignerComponent extends GenericComponent implements OnInit {
     this.activeItem = null;
     this.screenId = null;
     this.router.navigate(['/builder/screens/designer/' + null]);
-    this.deleteDataByApplication(item , this.currentApplication.id);
+    this.deleteDataByApplication(item, this.currentApplication.id);
     this.activeItem = null;
     this.screenId = null;
     this.router.navigate(['/builder/screens/designer/' + null]);
@@ -700,7 +700,7 @@ export class DesignerComponent extends GenericComponent implements OnInit {
 
   //childHeight = 500;
   childWidth = 700; // giving default width as 700 to our component
-  zoom = 0.3;
+  zoom = 0.4;
 
   get childStyles() {
     return {
@@ -723,7 +723,7 @@ export class DesignerComponent extends GenericComponent implements OnInit {
   }
 
   resetZoom() {
-    this.zoom = 0.3;
+    this.zoom = 0.4;
     this.updateChildStyles();
   }
 
@@ -943,8 +943,40 @@ export class DesignerComponent extends GenericComponent implements OnInit {
   // }
 
   // New Preview Code
-  previewInWeb() 
-  {
+
+  private previewWindow: Window | null = null;
+
+
+  previewInWeb() {
+    // const manContent = document.querySelector('app-page-preview')?.innerHTML;
+    // const manStyles = Array.from(document.styleSheets)
+    //   .map((sheet) => {
+    //     try {
+    //       return Array.from(sheet.cssRules || [])
+    //         .map((rule) => rule.cssText)
+    //         .join('');
+    //     } catch (e) {
+    //       console.warn('Could not read stylesheet:', sheet, e);
+    //       return '';
+    //     }
+    //   })
+    //   .join('');
+
+    // const newTab = window.open('', 'preview');
+    // if (newTab) {
+    //   newTab.document.write(`
+    //     <html>
+    //       <head>
+    //         <style>${manStyles}</style>
+    //       </head>
+    //       <body>${manContent}</body>
+    //     </html>
+    //   `);
+    //   newTab.document.close();
+    // } else {
+    //   console.error('Failed to open new tab');
+    // }
+
     const manContent = document.querySelector('app-page-preview')?.innerHTML;
     const manStyles = Array.from(document.styleSheets)
       .map((sheet) => {
@@ -959,19 +991,40 @@ export class DesignerComponent extends GenericComponent implements OnInit {
       })
       .join('');
 
-    const newTab = window.open('', 'preview');
-    if (newTab) {
-      newTab.document.write(`
+    this.previewWindow = window.open('', 'preview');
+    if (this.previewWindow) {
+      this.previewWindow.document.write(`
         <html>
           <head>
             <style>${manStyles}</style>
           </head>
           <body>${manContent}</body>
+          <script>
+            window.addEventListener('message', function(event) {
+              if (event.data && event.data.type === 'UPDATE_CONTENT') {
+                document.body.innerHTML = event.data.content;
+              }
+            });
+          </script>
         </html>
       `);
-      newTab.document.close();
+      this.previewWindow.document.close();
     } else {
       console.error('Failed to open new tab');
+    }
+  }
+
+   // Call this method whenever the content changes
+   updatePreviewContent() {
+    const manContent = document.querySelector('app-page-preview')?.innerHTML;
+    if (this.previewWindow) {
+      this.previewWindow.postMessage({ type: 'UPDATE_CONTENT', content: manContent }, '*');
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.previewWindow) {
+      this.previewWindow.close();
     }
   }
 
@@ -1076,6 +1129,18 @@ export class DesignerComponent extends GenericComponent implements OnInit {
     this.imageURL = asset.url;
     this.selectAssetModel = false;
     console.log(this.imageURL);
+  }
+
+  renderNewPage(screenDefination: any) {
+    console.log('Rendering new page');
+    console.log(screenDefination);
+    if (screenDefination !== null) {
+      this.draggableListRight = JSON.parse(screenDefination);
+      setTimeout(() => {
+        this.previewInWeb();
+       }, 2000);
+    }
+
   }
 
 }

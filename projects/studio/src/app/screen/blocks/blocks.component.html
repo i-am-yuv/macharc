@@ -7,8 +7,8 @@
         'padding-top':  block.data?.pt+'px',  'padding-bottom':  block.data?.pb+'px',  'padding-left':  block.data?.pl+'px',  'padding-right':  block.data?.pr+'px', 'word-wrap': 'break-word', 'word-break': 'break-all','white-space': 'normal'
      }">{{ (block.mappedData?.text == null ) ? block.data?.text : block.mappedData?.text }}</div>
 </ng-container>
-<ng-container *ngIf="block.name === 'button'">
-    <div class="text-{{ block.data?.align ? block.data.align : block.data?.btnAlignment }}">
+<ng-container *ngIf="block.name === 'button'" >
+    <div class="text-{{ block.data?.align ? block.data.align : block.data?.btnAlignment }}" (click)="btnNavigation(block.data?.navigateTo)">
         <vezo-button 
         [label]="(block.mappedData?.text == null ) ? block.data?.text : block.mappedData?.text"
         [btnInfo]="{ 

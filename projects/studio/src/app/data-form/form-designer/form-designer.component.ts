@@ -773,7 +773,7 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
 
   //childHeight = 500;
   childWidth = 700; // giving default width as 700 to our component
-  zoom = 0.3;
+  zoom = 0.4;
 
   get childStyles() {
     return {
@@ -794,7 +794,7 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
   }
 
   resetZoom() {
-    this.zoom = 0.3;
+    this.zoom = 0.4;
   }
 
   updateChildStyles() {
