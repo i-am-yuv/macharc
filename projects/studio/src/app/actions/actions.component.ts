@@ -282,6 +282,10 @@ export class ActionsComponent extends GenericComponent implements OnInit {
 
   }
 
+  getDataSorted() {
+    return this.data.sort((a: any, b: any) => a.actionName.localeCompare(b.actionName));
+  }
+
   openFormPopup() {
     this.form.reset();
     this.visible = true;

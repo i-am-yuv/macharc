@@ -66,9 +66,9 @@ export class AppWizardComponent extends GenericComponent {
     this.form = this.fb.group({
       id: '',
       applicationName: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
-      applicationCode: ['', [Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
-      applicationDescription: [],
-      backendApiUrl: []
+      applicationCode: ['', [Validators.required,Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
+      applicationDescription: ['', [Validators.required,Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
+      backendApiUrl: ['', [Validators.required,Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]]
     });
 
     this.id = this.route.snapshot.paramMap.get('id');

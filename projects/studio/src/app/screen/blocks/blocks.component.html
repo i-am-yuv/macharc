@@ -7,8 +7,8 @@
         'padding-top':  block.data?.pt+'px',  'padding-bottom':  block.data?.pb+'px',  'padding-left':  block.data?.pl+'px',  'padding-right':  block.data?.pr+'px', 'word-wrap': 'break-word', 'word-break': 'break-all','white-space': 'normal'
      }">{{ (block.mappedData?.text == null ) ? block.data?.text : block.mappedData?.text }}</div>
 </ng-container>
-<ng-container *ngIf="block.name === 'button'">
-    <div class="text-{{ block.data?.align ? block.data.align : block.data?.btnAlignment }}">
+<ng-container *ngIf="block.name === 'button'" >
+    <div class="text-{{ block.data?.align ? block.data.align : block.data?.btnAlignment }}" (click)="btnNavigation(block.data?.navigateTo)">
         <vezo-button 
         [label]="(block.mappedData?.text == null ) ? block.data?.text : block.mappedData?.text"
         [btnInfo]="{ 
@@ -46,6 +46,9 @@
         [labelInfo]="{ size:(block.mappedData?.labelFont == null ) ? block.data?.labelFont+'px' : block.mappedData?.labelFont+'px',
      weight: (block.mappedData?.labelWeight == null ) ? block.data?.labelWeight : block.mappedData?.labelWeight, 
      color:(block.mappedData?.labelColor == null ) ? block.data?.labelColor : block.mappedData?.labelColor, 
+     fontSize:(block.mappedData?.fontSize == null ) ? block.data?.fontSize+'px' : block.mappedData?.fontSize+'px',
+     fontWeight: (block.mappedData?.fontWeight == null ) ? block.data?.fontWeight : block.mappedData?.fontWeight, 
+     fontColor:(block.mappedData?.fontColor == null ) ? block.data?.fontColor : block.mappedData?.fontColor, 
     height: (block.mappedData?.fieldHeight == null ) ? block.data?.fieldHeight+'px' : block.mappedData?.fieldHeight+'px' ,
      radius:(block.mappedData?.fieldRadius == null ) ? block.data?.fieldRadius+'px' : block.mappedData?.fieldRadius+'px' , 
      bgColor: (block.mappedData?.bgColor == null ) ? block.data?.bgColor : block.mappedData?.bgColor,

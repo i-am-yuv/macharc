@@ -45,13 +45,13 @@ export class CollectionComponent extends GenericComponent implements OnInit {
         '',
         [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)],
       ],
-      customTableName: ['', [Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
-      collectionKind: [''],
+      customTableName: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
+      collectionKind: ['', Validators.required],
       crud: [],
       readonly: [],
       hasService: [],
-      microService: [],
-      dataSource: [],
+      microService: ['', Validators.required],
+      dataSource: ['', Validators.required]
     });
   }
   ngOnInit(): void {

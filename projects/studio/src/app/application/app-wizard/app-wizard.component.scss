@@ -1,0 +1,22 @@
+:host::ng-deep {
+    .border-slate-300 {
+        border-radius: 4px !important;
+    }
+
+    .btn{
+        width: 280px;
+        height: 48px;
+        background-color:  #4038CA;
+        color: white;
+        
+        text-align: center !important;
+        border-radius: 2px !important;
+    }
+    .btn1{
+        font-size: 22px;
+        font-weight: 600;
+    }
+    .place-items-center {
+        display: contents !important;
+    }
+}
