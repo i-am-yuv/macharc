@@ -29,6 +29,7 @@ export class DataFormComponent extends GenericComponent {
   microserviceItems: MicroService[] = [];
   applicationItems: Application[] = [];
   override pageData = {};
+  currentApplication : Application = {};
 
   constructor(
     private fb: FormBuilder,
@@ -54,7 +55,12 @@ export class DataFormComponent extends GenericComponent {
     })
   }
   ngOnInit(): void {
-    this.getAllData();
+
+    this.applicationService.getActiveApplication().subscribe((val:any) => {
+      this.currentApplication = val ;
+      this.getAllDataById(this.currentApplication.id);
+    });
+
     this.collectionId = this.route.snapshot.paramMap.get('id');
     if (this.collectionId) {
       this.collectionService.getData({ id: this.collectionId }).then((res: any) => {

@@ -1,6 +1,7 @@
 export const environment = {
   production: false,
-  apiurl: 'http://10.20.3.47:8222/api',
+  // apiurl: 'https://studio.macharc.com/api',
+  apiurl: 'http://localhost:8222/api',
   // apiurl: 'http://10.20.3.70:8222/api',
   // gitServerUrl: 'http://localhost:8282'
   gitServerUrl: 'http://localhost:8282',
@@ -12,5 +13,6 @@ export const environment = {
     storageBucket: "macharc-dev.appspot.com",
     messagingSenderId: "846154939781",
     appId: "1:846154939781:web:fb45d62680d8fb5f3618ec"
-  }
+  },
+  webTerminal:'ws://localhost:8686/rsocket' 
 };

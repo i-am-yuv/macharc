@@ -11,32 +11,23 @@
   </div>
 </div>
 
-<div class="bg-white p-16">
+<div class="bg-white px-16">
   <form [formGroup]="form">
-    <vezo-select
-      [items]="projects"
-      optionLabel="projectName"
-      label="Project"
-      formControlName="project"
-    ></vezo-select>
-    <vezo-input
-      label="Service Code"
-      formControlName="microServiceCode"
-    ></vezo-input>
-    <error-message
-      [controlName]="form.controls['microServiceCode']"
-    ></error-message>
-    <vezo-input label="Package Name" formControlName="packageName"></vezo-input>
-    <error-message [controlName]="form.controls['packageName']"></error-message>
+    <vezo-select [items]="projects" optionLabel="projectName" label="Project" formControlName="project"></vezo-select>
+    <vezo-input label="Service Code" formControlName="microServiceCode"></vezo-input>
+    <error-message [controlName]="form.controls['microServiceCode']"></error-message>
+    <div class="mt-2">
+      <vezo-input label="Package Name" formControlName="packageName" (input)="checkPackageName()"></vezo-input>
+      <!-- <error-message [controlName]="form.controls['packageName']"></error-message> -->
+      <div *ngIf="form.get('packageName')?.invalid">
+        <small>Use format: text.text.text.</small>
+      </div>
+    </div>
+
     <div>
-      <div class="inline-block w-1/2 pr-4">
-        <vezo-inputnumber
-          label="Port Number"
-          formControlName="portNumber"
-        ></vezo-inputnumber>
-        <error-message
-          [controlName]="form.controls['portNumber']"
-        ></error-message>
+      <div class="inline-block w-1/2 pr-4 mt-2">
+        <vezo-inputnumber label="Port Number" formControlName="portNumber"></vezo-inputnumber>
+        <error-message [controlName]="form.controls['portNumber']"></error-message>
       </div>
       <div class="inline-block w-1/2">
         <vezo-select
@@ -85,4 +76,15 @@
     </div>
   </form>
   <vezo-toast></vezo-toast>
+
+  <!-- Web Terminal Code -->
+  <div class="mt-16">
+    <div class="flex my-4 space-x-4 place-items-center">
+      <h2 class="title mb-2 grow">Service Control</h2>
+      <vezo-button label="Disconnect" (click)="stopMessages()"></vezo-button>
+      <vezo-button label="Stop Server" (click)="stopServer()"></vezo-button>
+      <vezo-button label="Start Server" (click)="startServer()"></vezo-button>
+    </div>
+    <ng-terminal #term [minHeight]="200"></ng-terminal>
+  </div>
 </div>

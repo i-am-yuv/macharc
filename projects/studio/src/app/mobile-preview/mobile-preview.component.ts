@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
+import { LayoutService } from '../layout/layout.service';
 
 @Component({
   selector: 'app-mobile-preview',
@@ -14,11 +15,13 @@ export class MobilePreviewComponent implements OnInit {
 
   constructor(private changeDetectorRef: ChangeDetectorRef,
     private route: ActivatedRoute,
-    private authService: AuthService
+    private authService: AuthService,
+    private layoutService : LayoutService
   ) { }
 
   ngOnInit(): void {
     this.pageId = this.route.snapshot.paramMap.get('pageId');
+    this.layoutService.checkPadding(false);
   }
 
   onFlutterAppLoaded(state: any) {

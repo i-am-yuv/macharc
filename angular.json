@@ -78,7 +78,7 @@
               "./node_modules/redoc/bundles/redoc.standalone.js",
               "node_modules/@stoplight/elements/web-components.min.js",
               {
-                "input": "flutter/build/web/flutter.js",
+                "input": "flutter/web/flutter.js",
                 "inject": true,
                 "bundleName": "flutter"
               }
@@ -96,6 +96,33 @@
                   "type": "anyComponentStyle",
                   "maximumWarning": "2kb",
                   "maximumError": "4kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "projects/studio/src/environments/environment.ts",
+                  "with": "projects/studio/src/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "staging": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "10mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "projects/studio/src/environments/environment.ts",
+                  "with": "projects/studio/src/environments/environment.staging.ts"
                 }
               ],
               "outputHashing": "all"

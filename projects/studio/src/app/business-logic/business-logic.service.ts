@@ -47,7 +47,7 @@ export class BusinessLogicService extends GenericService {
   ) {
     var url = this.llmUrl + '/api/generate';
     var payload = {
-      model: 'openhermes',
+      model: 'codeqwen',
       // prompt:
       //   'You are an expert programmer that writes simple, concise code. Only respond with code as plain text, without code blocks. Create a service class in sping 3.1.0 using the following business logic. \n\n' +
       //   prompt +

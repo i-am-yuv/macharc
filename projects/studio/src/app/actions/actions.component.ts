@@ -4,8 +4,14 @@ import { Engine } from './flowy/Engine';
 import { Definition, Designer, GlobalEditorContext, Properties, Step, StepEditorContext, StepsConfiguration, ToolboxConfiguration } from 'sequential-workflow-designer';
 import { BusinessLogic } from '../business-logic/business-logic';
 import { BusinessLogicService } from '../business-logic/business-logic.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from '@splenta/vezo/src/public-api';
+import { Actions } from './action';
+import { GenericComponent } from '../utils/genericcomponent';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActionService } from './action.service';
+import { DataFormService } from '../data-form/data-form.service';
+import { LayoutService } from '../layout/layout.service';
 
 declare var flowy: any;
 function createDefinition() {
@@ -33,7 +39,7 @@ export interface Action {
   templateUrl: './actions.component.html',
   styleUrls: ['./actions.component.scss']
 })
-export class ActionsComponent implements OnInit {
+export class ActionsComponent extends GenericComponent implements OnInit {
   // Old Code Start-------------------------------------
 
   // @ViewChild('canvas', { static: false }) public canvas!: ElementRef;
@@ -181,6 +187,12 @@ export class ActionsComponent implements OnInit {
 
 
   // New Code Starts from here
+
+
+  data: Actions[] = [];
+  componentName: string = 'Action Form';
+  form!: FormGroup<any>;
+
   private designer?: Designer;
 
   public definition: Definition = createDefinition();
@@ -189,11 +201,30 @@ export class ActionsComponent implements OnInit {
   wfId: string | null = '';
   wf: BusinessLogic = {};
   dataDef: string | undefined = '';
+
+  allActions: Actions[] = [];
+  actionId: any;
+  currentAction: Actions = {};
+
   constructor(
     private businessLogicService: BusinessLogicService,
     private route: ActivatedRoute,
-    private msgService: MessageService
-  ) { }
+    private actionService: ActionService,
+    private formService: DataFormService,
+    private msgService: MessageService,
+    private layoutService : LayoutService,
+    private fb: FormBuilder,
+    private router : Router
+  ) {
+    super(actionService, msgService);
+    this.form = this.fb.group({
+      id: '',
+      actionName: ['', Validators.required],
+      actionType: ['', Validators.required],
+      actionTasks: [''],
+    });
+  }
+
   public readonly toolboxConfiguration: ToolboxConfiguration = {
     groups: [
       // {
@@ -216,12 +247,22 @@ export class ActionsComponent implements OnInit {
       this.toolboxGroup('Main'),
     ],
   };
+
   public readonly stepsConfiguration: StepsConfiguration = {
     iconUrlProvider: (componentType, type) => `./assets/${type}.svg`,
     validator: () => true,
   };
 
   public ngOnInit() {
+
+    this.actionId = this.route.snapshot.paramMap.get('id');
+    this.layoutService.checkPadding(false);
+    this.getAllData();
+    if( this.actionId )
+    {
+      this.getThisAction(this.actionId);
+    }
+
     this.updateDefinitionJSON();
     this.wfId = this.route.snapshot.paramMap.get('id');
     if (this.wfId) {
@@ -237,10 +278,71 @@ export class ActionsComponent implements OnInit {
       });
     }
     else {
-
     }
 
   }
+
+  openFormPopup() {
+    this.form.reset();
+    this.visible = true;
+  }
+
+  openCurrentAction(action : any )
+  {
+    this.currentAction  = action ; 
+    this.actionId = action.id ;
+    this.router.navigate(['/actions/' + action.id]);  
+  }
+
+  getThisAction( actionId : any )
+  {
+    this.actionService.getActionByActionId(actionId).then(
+      (res: any) => {
+        if (res) {
+          this.currentAction = res.content ;
+        }
+        else {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Error while fetching this action.',
+            life: 3000,
+          });
+        }
+      }
+    ).catch((err: any) => {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: err.error.message,
+        life: 3000,
+      });
+    })
+  }
+
+  hoverAction(actionType: string, action: any) {
+    if (actionType == 'enter') {
+      this.currentAction = action;
+    }
+    else {
+      this.currentAction = {};
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   public onDesignerReady(designer: Designer) {
     this.designer = designer;
@@ -349,6 +451,8 @@ export class ActionsComponent implements OnInit {
       });
     });
   }
+
+
 }
 
 

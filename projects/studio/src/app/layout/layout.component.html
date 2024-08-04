@@ -42,7 +42,7 @@
               'bg-indigo-50 rounded-r-lg': this.menuView == 'menuItemsBackend'
             }"
             (click)="selectMenuItem('menuItemsBackend')"
-            [routerLink]="['/builder/microservices/' + activeProject?.id]"
+            [routerLink]="['/builder/microservices']"
           >
             <!-- <vezo-icon icon="rectangleStack"></vezo-icon> -->
             <img
@@ -173,7 +173,7 @@
       </div>
       <div
         class="cursor-pointer"
-        [routerLink]="['/builder/microservices/' + activeProject?.id]"
+        [routerLink]="['/builder/microservices']"
         (click)="selectMenuItem('menuItemsBackend')"
       >
         <!-- <vezo-icon
@@ -266,7 +266,7 @@
   >
     <div
       [ngClass]="{
-        'p-5': !isPageOrComponent,
+        'p-5': giveDefaultPadding,
         'bg-white h-screen overflow-x-scroll': true
       }"
     >

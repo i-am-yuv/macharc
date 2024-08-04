@@ -14,6 +14,8 @@ import { LayoutService } from './layout.service';
 })
 export class LayoutComponent {
   showSideBar: boolean | undefined = false;
+  giveDefaultPadding: boolean = true;
+
   menuView: string = '';
   activeProject: Project | undefined = {
     id: '',
@@ -140,24 +142,30 @@ export class LayoutComponent {
           routerLink: ['/applications'],
           image: 'assets/Application.svg',
         },
+        // {
+        //   label: 'Pages',
+        //   icon: 'clipboard',
+        //   routerLink: ['/builder/screens/designer/' + null],
+        //   image: 'assets/PAGES.svg',
+        // },
+        // {
+        //   label: 'Actions',
+        //   icon: 'clipboard',
+        //   routerLink: ['/actions'],
+        //   image: 'assets/Action_R.svg',
+        // },
+        // {
+        //   label: 'Components',
+        //   icon: 'clipboard',
+        //   routerLink: ['/builder/forms/designer/' + null],
+        //   image: 'assets/Component _R.svg',
+        // },
         {
-          label: 'Pages',
+          label: 'Reports',
           icon: 'clipboard',
-          routerLink: ['/builder/screens/designer/' + null],
-          image: 'assets/PAGES.svg',
-        },
-        {
-          label: 'Actions',
-          icon: 'clipboard',
-          routerLink: ['/actions'],
-          image: 'assets/Action_R.svg',
-        },
-        {
-          label: 'Components',
-          icon: 'clipboard',
-          routerLink: ['/builder/forms/designer/' + null],
-          image: 'assets/Component _R.svg',
-        },
+          routerLink: ['/builder/reports'],
+          image: 'assets/Reports_L.svg',
+        }
         // {
         //   label: 'Mobile Builder',
         //   icon: 'clipboard',
@@ -193,12 +201,6 @@ export class LayoutComponent {
           image: 'assets/Integration_L.svg',
         },
         {
-          label: 'Reports',
-          icon: 'clipboard',
-          routerLink: ['/builder/reports'],
-          image: 'assets/Reports_L.svg',
-        },
-        {
           label: 'Releases',
           icon: 'clipboard',
           routerLink: ['/releases'],
@@ -223,8 +225,6 @@ export class LayoutComponent {
 
   roles: any;
   username: string = '';
-  isPageOrComponent = false;
-
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -255,14 +255,14 @@ export class LayoutComponent {
       sessionStorage.setItem('menuItemName', this.menuView);
     }
 
-    this.router.events
-      .pipe(filter((event) => event instanceof NavigationEnd))
-      .subscribe(() => {
-        this.checkRoute();
-      });
-
-    // Initial check
-    this.checkRoute();
+    this.layoutService.checkForPadding.subscribe(
+      (res) => {
+        this.giveDefaultPadding = res;
+      },
+      (err) => {
+        this.giveDefaultPadding = true;
+      }
+    )
   }
 
   logout() {
@@ -297,15 +297,15 @@ export class LayoutComponent {
     sessionStorage.removeItem('menuItemName');
   }
 
-  checkRoute(): void {
-    const currentUrl = this.router.url;
-    this.isPageOrComponent =
-      currentUrl.includes('/builder/screens/designer/') ||
-      currentUrl.includes('/builder/forms/designer/') ||
-      currentUrl.includes('/media-manager') ||
-      currentUrl.includes('/actions') ||
-      currentUrl.includes('/projects/manage') ||
-      currentUrl.includes('/builder/mobile-preview') ||
-      currentUrl.includes('/applications/manage');
-  }
+  // checkRoute(): void {
+  //   const currentUrl = this.router.url;
+  //   this.isPageOrComponent =
+  //     currentUrl.includes('/builder/screens/designer/') ||
+  //     currentUrl.includes('/builder/forms/designer/') ||
+  //     currentUrl.includes('/media-manager') ||
+  //     currentUrl.includes('/actions') ||
+  //     currentUrl.includes('/projects/manage') ||
+  //     currentUrl.includes('/builder/mobile-preview') ||
+  //     currentUrl.includes('/applications/manage');
+  // }
 }

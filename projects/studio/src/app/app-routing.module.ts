@@ -221,12 +221,15 @@ const routes: Routes = [
   // { path: 'actions', component: ActionsComponent },
   {
     path: 'actions',
-    component: LayoutComponent,
+    // component: LayoutComponent,
     children: [
       {
         path: '',
         component: DispatcherComponent,
-        children: [{ path: '', component: ActionsComponent }],
+        children: [
+          { path: '', component: ActionsComponent },
+          { path: ':id', component: ActionsComponent }
+        ],
       },
     ],
   },
@@ -280,7 +283,7 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
-  },
+  }
 ];
 
 @NgModule({

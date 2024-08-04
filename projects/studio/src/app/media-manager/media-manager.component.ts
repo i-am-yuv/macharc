@@ -12,6 +12,7 @@ import { GcpUploadService } from './gcp-upload.service';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { environment } from '../../environments/environment';
 import { initializeApp } from 'firebase/app';
+import { LayoutService } from '../layout/layout.service';
 
 
 @Component({
@@ -47,13 +48,14 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
 
   constructor(private http: HttpClient, private msgService: MessageService, private formService: DataFormService, private fb: FormBuilder,
     private mediaService: MediaService, private route: ActivatedRoute, private router: Router,
-    private gcpUploadService: GcpUploadService
+    private gcpUploadService: GcpUploadService, private layoutService : LayoutService
   ) {
     super(formService, msgService);
   }
 
   ngOnInit(): void {
     this.folderId = this.route.snapshot.paramMap.get('id');
+    this.layoutService.checkPadding(false);
     this.form = this.fb.group({
       id: '',
       folderName: ['']

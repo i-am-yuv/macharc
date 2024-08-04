@@ -59,6 +59,7 @@ export class MicroserviceComponent extends GenericComponent implements OnInit {
       packageName: [''],
       packaging: ['Jar'],
       portNumber: ['', [Validators.required]],
+      project: { id: this.projectId },
     });
   }
   ngOnInit(): void {
@@ -73,6 +74,7 @@ export class MicroserviceComponent extends GenericComponent implements OnInit {
       }
     });
   }
+
   generateService(ms: MicroService) {
     this.loading = true;
     this.micrService

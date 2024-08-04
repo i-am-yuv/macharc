@@ -11,7 +11,10 @@
         <p class="text-xs">{{ application.applicationDescription }}</p>
         <div class="py-4 min-h-[6rem]">
           <ul class="mx-6 space-y-2">
-            <li class="flex place-items-center cursor-pointer" [routerLink]="['/builder/screens']">
+            <li
+              class="flex place-items-center cursor-pointer"
+              (click)="goToApplicationPages(application)"
+            >
               <vezo-icon icon="cog6Tooth" className="w-4"></vezo-icon>
               <div class="ml-2 flex-grow">Pages</div>
               <vezo-icon icon="arrowRight" className="w-4"></vezo-icon>
@@ -21,7 +24,10 @@
               <div class="ml-2 flex-grow">Actions</div>
               <vezo-icon icon="arrowRight" className="w-4"></vezo-icon>
             </li>
-            <li class="flex place-items-center cursor-pointer" [routerLink]="['/builder/forms']">
+            <li
+              class="flex place-items-center cursor-pointer"
+              (click)="goToApplicationComponents(application)"
+            >
               <vezo-icon icon="cog6Tooth" className="w-4"></vezo-icon>
               <div class="ml-2 flex-grow">Components</div>
               <vezo-icon icon="arrowRight" className="w-4"></vezo-icon>
@@ -34,8 +40,11 @@
           </ul>
         </div>
         <p class="text-right mr-2">
-          <vezo-button icon="cpuChip" className="bg-blue-500 hover:bg-blue-600 text-white mr-2" label="MANAGE"
-            [routerLink]="['/applications/manage/' + application.id]"></vezo-button>
+          <vezo-button
+            icon="cpuChip"
+            className="bg-blue-500 hover:bg-blue-600 text-white mr-2"
+            label="MANAGE" (click)="manageApplication( application)"
+          ></vezo-button>
           <!-- <vezo-button icon="star" className="bg-blue-700 hover:bg-blue-900 text-white"
                         label="Set Default"></vezo-button> -->
         </p>

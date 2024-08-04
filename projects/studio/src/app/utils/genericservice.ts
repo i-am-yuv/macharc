@@ -40,6 +40,29 @@ export abstract class GenericService {
         return res;
     }
 
+    async getAllDataByApplicationId( applicationId : any , pagination?: Pagination, search?: string) {
+        var params = [];
+        if (pagination?.pageNo) {
+            params.push('page=' + pagination.pageNo);
+        }
+        if (pagination?.pageSize) {
+            params.push('size=' + pagination.pageSize);
+        }
+        if (pagination?.sortField) {
+            params.push('sort=' + pagination.sortField + ',' + pagination.sortDir);
+        }
+        if (search) {
+            params.push('filter=' + search);
+        }
+        var pageFilter = '';
+        if (params.length > 0) {
+            pageFilter += '?' + params.join('&');
+        }
+        var url = this.apiurl + '/' + this.endpoint +'/Application/'+ applicationId;
+        const res = await lastValueFrom(this.http.get<any>(url));
+        return res;
+    }
+
     async getData(data: any) {
         var url = this.apiurl + '/' + this.endpoint + '/' + encodeURIComponent(data.id!);
         const res = await lastValueFrom(this.http.get<any>(url));
