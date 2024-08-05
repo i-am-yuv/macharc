@@ -8,9 +8,22 @@ import { lastValueFrom } from 'rxjs';
 })
 export class ThemeService extends GenericService {
 
-  endpoint: string = 'theme';
+  endpoint: string = 'themes';
 
   constructor(http: HttpClient) {
     super(http);
   }
+
+  async updateThemeByApplicationId(applicationId: string, body: any) {
+    var url = this.apiurl + '/' + this.endpoint + '/' + applicationId;
+    const res = await lastValueFrom(this.http.post<any>(url, body));
+    return res;
+  }
+  
+  async getThemeByApplicationId(applicationId: string) {
+    var url = this.apiurl + '/' + this.endpoint + '/' + applicationId;
+    const res = await lastValueFrom(this.http.get<any>(url));
+    return res;
+  }
+
 }
