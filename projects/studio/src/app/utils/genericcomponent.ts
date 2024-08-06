@@ -58,7 +58,7 @@ export abstract class GenericComponent {
 
   getAllDataById(applicationId: any, callBack?: (resData: any) => void) {
     this.dataService.getAllDataByApplicationId(applicationId, this.pageData, this.search).then((res: any) => {
-      this.data = res;
+      this.data = res.content;
       // this.pageData!.totalElements = res.totalElements;
       // this.pageData!.pageNo = res.pageable.pageNumber;
       // this.pageData!.pageSize = res.pageable.pageSize;
@@ -81,7 +81,8 @@ export abstract class GenericComponent {
   preSaveByApplication() { }
 
 
-  postSave(data: any) { }
+  postSave(data: any) { 
+  }
 
   postSaveByApplication(data: any) { }
 

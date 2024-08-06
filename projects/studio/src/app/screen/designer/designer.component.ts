@@ -700,7 +700,7 @@ export class DesignerComponent extends GenericComponent implements OnInit , OnDe
 
   //childHeight = 500;
   childWidth = 700; // giving default width as 700 to our component
-  zoom = 0.4;
+  zoom = 1;
 
   get childStyles() {
     return {

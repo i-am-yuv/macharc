@@ -4,6 +4,7 @@ import { MessageService } from '@splenta/vezo/src/public-api';
 import { GenericComponent } from '../../utils/genericcomponent';
 import { Datasource } from '../datasource';
 import { DatasourceService } from '../datasource.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-datasource-form',
@@ -27,6 +28,7 @@ form: FormGroup<any>;
   constructor(
     private fb: FormBuilder,
     dsService: DatasourceService,
+    private router : Router ,
     messageService: MessageService,
     private dataSourceService: DatasourceService) {
     super(dsService, messageService);
@@ -67,5 +69,10 @@ form: FormGroup<any>;
   setDefaultPort() {
     var dbType = this.dbTypes.find((t: any) => t.name === this.form.value.dbType);
     this.form.patchValue({ dbPort: dbType.defaultPort });
+  }
+
+  override postSave(data : any) 
+  {
+    this.router.navigate(['/datasources']) ;
   }
 }

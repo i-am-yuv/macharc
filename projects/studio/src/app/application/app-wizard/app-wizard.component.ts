@@ -67,8 +67,8 @@ export class AppWizardComponent extends GenericComponent {
       id: '',
       applicationName: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
       applicationCode: ['', [Validators.required,Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
-      applicationDescription: ['', [Validators.required,Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
-      backendApiUrl: ['', [Validators.required,Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]]
+      applicationDescription: ['', [Validators.required,Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]]
+      // backendApiUrl: ['', [Validators.required,Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]]
     });
 
     this.id = this.route.snapshot.paramMap.get('id');
@@ -90,5 +90,9 @@ export class AppWizardComponent extends GenericComponent {
   naviagateListingPage()
   {
     this.router.navigate(['applications']) ;
+  }
+
+  override postSave(data: any) { 
+    this.naviagateListingPage();
   }
 }

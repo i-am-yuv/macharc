@@ -43,7 +43,7 @@ interface DraggableItem {
 })
 export class FormDesignerComponent extends GenericComponent implements OnInit {
   form!: FormGroup<any>;
-  data: any;
+  data:DataForm[]=[];
   componentName: string = 'Component';
 
   loading: boolean = false;
@@ -636,7 +636,7 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
     // console.log(this.data['content']);
 
     if (this.data) {
-      return this.data['content'].sort((a: any, b: any) =>
+      return this.data.sort((a: any, b: any) =>
         a?.formName.localeCompare(b?.formName)
       );
     } else {
@@ -988,7 +988,7 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
     return this.searchValue.trim() === '' ? originalList : filteredList;
   }
 
-  //---------- Zoom and Screen Resize code from here
+  //---------- Zoom and Screen Resize code from here----------------------------------------------------//
   @ViewChild('parent') parent!: ElementRef;
 
   //childHeight = 500;

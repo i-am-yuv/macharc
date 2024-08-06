@@ -89,5 +89,9 @@ export class WizardComponent extends GenericComponent {
   {
     this.router.navigate(['projects']) ;
   }
+
+  override postSave(data: any) { 
+    this.naviagateListingPage();
+   }
 }
 

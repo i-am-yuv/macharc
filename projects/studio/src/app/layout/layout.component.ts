@@ -116,6 +116,12 @@ export class LayoutComponent {
           image: 'assets/microservice_L.svg',
         },
         {
+          label: 'Datasources',
+          icon: 'clipboard',
+          routerLink: ['/datasources'],
+          image: 'assets/Database2.svg',
+        },
+        {
           label: 'Models',
           icon: 'clipboard',
           routerLink: ['/builder/collections'],
@@ -126,7 +132,7 @@ export class LayoutComponent {
           icon: 'clipboard',
           routerLink: ['/builder/services'],
           image: 'assets/Services_L.svg',
-        },
+        }
       ],
       showSubMenu: true,
     },

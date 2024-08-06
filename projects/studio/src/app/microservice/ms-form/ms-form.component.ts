@@ -154,19 +154,6 @@ export class MsFormComponent
     this.form.get('packageName')?.updateValueAndValidity();
   }
 
-  // override postSave(data:any)
-  // {
-  //   this.msService.generateCode(data).then((res: any) => {
-  //     if (res) {
-  //       // this.messageService.add({
-  //       //   severity: 'success',
-  //       //   detail: this.componentName + ' created',
-  //       //   summary: this.componentName + ' created',
-  //       // });
-  //     }
-  //   });
-  // }
-
   override saveData() {
     // this.preSave();
     //this.form.value.collection = null ;// No collection for page
@@ -182,7 +169,7 @@ export class MsFormComponent
             summary: this.componentName + ' created',
           });
           this.getAllData();
-          // this.postSave(res);
+          this.router.navigate(['/builder/microservices']);
         }
       });
     } else {
@@ -195,31 +182,11 @@ export class MsFormComponent
             summary: this.componentName + ' updated',
           });
           this.getAllData();
-          // this.postSave(res);
+          this.router.navigate(['/builder/microservices']);
         }
       });
     }
   }
-  override postSave(data: any) {
-    this.msService.generateCode(data).then((res: any) => {
-      if (res) {
-        // this.messageService.add({
-        //   severity: 'success',
-        //   detail: this.componentName + ' created',
-        //   summary: this.componentName + ' created',
-        // });
-        console.log(res);
-      }
-    }).catch((err) => {
-      this.messageService.add({
-        severity: 'error',
-        detail: 'Error',
-        summary: 'Error while generating the code',
-      });
-    })
-  }
-
-  // Code added for web Terminal
 
   title = 'client';
   message = '';
