@@ -775,7 +775,8 @@
                     ">
                     <app-properties [fields]="fields" [forms]="forms" [props]="activeItem" [collections]="collections"
                       (deleteProp)="deleteActiveItem($event)" (getCollectionFields)="getFields($event)"
-                      [comingFromPage]="true"></app-properties>
+                      [comingFromPage]="true"[ImageURL]="this.imageURL"
+                      (assetModelOpen)="checkImageModelClicked($event)" ></app-properties>
                   </div>
                   <div *ngIf="
                       this.activeItem.name == 'form' ||
@@ -903,7 +904,7 @@
               <div style="display: flex; flex-direction: column;" class="gap-1">
                 <div class="flex justify-between items-center gap-2 w-auto">
                   <div class="file-name" style="font-size: 12px; font-weight: 500; color: #4F46E5;">
-                    {{asset.fileName}}+'1282iqehjfkldcccccccccccccccccccccccccccccmvs';
+                    {{asset.fileName}}
                   </div>
                 </div>
                 <div class="flex justify-center items-center mt-2 cursor-pointer">
