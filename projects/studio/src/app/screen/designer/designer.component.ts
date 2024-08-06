@@ -1038,7 +1038,7 @@ export class DesignerComponent extends GenericComponent implements OnInit , OnDe
       this.msgService.add({ severity: 'info', summary: 'Info', detail: 'No Preview available for an empty page.' });
       return;
     }
-    this.router.navigate(['/builder/mobile-preview']);
+    this.router.navigate([`/builder/mobile-preview/${this.screenId}`]);
   }
 
   currentPage: any;
