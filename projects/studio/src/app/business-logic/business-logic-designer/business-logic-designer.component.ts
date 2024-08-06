@@ -17,6 +17,7 @@ import { GenericComponent } from '../../utils/genericcomponent';
 import { Collection } from '../../collection/collection';
 import { FormGroup } from '@angular/forms';
 import { CollectionService } from '../../collection/collection.service';
+import { sequence } from '@angular/animations';
 
 function createDefinition() {
   return {
@@ -36,7 +37,7 @@ function createDefinition() {
   styleUrls: ['./business-logic-designer.component.scss'],
 })
 export class BusinessLogicDesignerComponent extends GenericComponent implements OnInit {
-  
+
   form!: FormGroup<any>;
   data: Collection[] = [];
   componentName: string = '';
@@ -63,13 +64,16 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
   activeConditions: any[] = [];
 
   showConditionEditor: boolean = false;
+  showModelsOptions: boolean = false;
+  showFetchDataPopup: boolean = false;
+
   conditionEditor: any;
   constructor(
     private businessLogicService: BusinessLogicService,
     private route: ActivatedRoute,
     private msgService: MessageService,
-    private  collectionService : CollectionService
-  ) { 
+    private collectionService: CollectionService
+  ) {
     super(collectionService, msgService);
     this.getAllModels();
   }
@@ -101,7 +105,7 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
     iconUrlProvider: (componentType, type) => `./assets/${type}.svg`,
     validator: () => true,
   };
-  
+
   public ngOnInit() {
     this.getAllModels();
     this.updateDefinitionJSON();
@@ -249,18 +253,79 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
     this.conditionEditor = editor;
   }
 
+  ModelEditor: any;
+  openModelsPopup(editor: any) {
+    this.showModelsOptions = !this.showModelsOptions;
+    this.ModelEditor = editor;
+  }
+
   updateConditions() {
     // to handle this by partha
   }
 
   // New Code
-  selectedModels : any ;
-  getAllModels()
-  {
+  selectedModels: Collection[] = [];
+  currentModel: Collection = {};
+  selectedOperation: any;
+  selectedResOp : any;
+  responseOtOptions = ["void", "custom"];
+ 
+  getAllModels() {
     console.log('enter');
     this.getAllData();
+
     // setTimeout(() => {
     //   console.log(this.data[0].collectionName);
     // }, 5000);
+  }
+
+  saveModels(editor: any) {
+    console.log(this.selectedModels);
+
+    this.updatePropertyCollection(
+      editor.definition.properties,
+      'collections',
+      this.selectedModels,
+      editor.context
+    );
+
+    this.showModelsOptions = false;
+  }
+
+  public updatePropertyCollection(
+    properties: Properties,
+    name: string,
+    selctedModels: any,
+    context: GlobalEditorContext | StepEditorContext
+  ) {
+    properties[name] = selctedModels;
+    if( this.selectedResOp === 'custom' )
+    {
+      //  properties.returnType = {} ;
+      properties['returnType']= [ 'firstName' , 'lastName']; // just for testing
+     }
+     else if(this.selectedResOp === 'void')
+     {
+      properties['returnType']= "void";
+     }
+
+    context.notifyPropertiesChanged();
+  }
+
+  saveFetchData(editor: any) {
+    // this.sequence.find(item => item.type === "getDsData");
+    this.saveInfo(editor.definition.sequence, editor.context);
+  }
+
+  public saveInfo(sequence: any, context: GlobalEditorContext | StepEditorContext) {
+    sequence = sequence.find((item: any) => item.type === "getDsData");
+    sequence.properties.stepName = this.currentModel.collectionName ;
+    sequence.properties.expression = this.selectedOperation  ;
+    context.notifyPropertiesChanged();
+    this.showFetchDataPopup = false;
+  }
+
+  onSelectionChange(event: any) {
+    console.log('Selected option:', this.selectedOperation);
   }
 }

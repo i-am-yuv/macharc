@@ -95,6 +95,7 @@ import { NestedPreviewComponent } from './data-form/nested-preview/nested-previe
 import { MultiSelectModule } from 'primeng/multiselect';
 import { PrimeNGConfig } from 'primeng/api';
 import { ToggleButtonModule } from 'primeng/togglebutton';
+import { DropdownModule } from 'primeng/dropdown';
 
 @NgModule({
   declarations: [
@@ -192,7 +193,8 @@ import { ToggleButtonModule } from 'primeng/togglebutton';
     NgFlutterComponent,
     NgxLoadingModule.forRoot({}),
     MultiSelectModule,
-    ToggleButtonModule
+    ToggleButtonModule,
+    DropdownModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [

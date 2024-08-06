@@ -154,7 +154,14 @@
       className="inline-block float-right"></vezo-button>
 
     <h3 class="my-4 font-semibold">Models</h3>
-    <input [(ngModel)]="editor.definition.properties.collections"
+
+    <div class="mb-2" (click)="openModelsPopup(editor)">
+      <button class="bg-indigo-600 rounded text-white p-2">
+        Select Models
+      </button>
+    </div>
+
+    <!-- <input [(ngModel)]="editor.definition.properties.collections"
       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
       (input)="
         updateProperty(
@@ -163,26 +170,9 @@
           $event,
           editor.context
         )
-      " />
+      " /> -->
 
-    <!-- MultiSelect Code for models -->
-    <p-multiSelect [options]="this.data" [(ngModel)]="this.selectedModels" optionLabel="collectionName"
-      placeholder="Select Models">
-    </p-multiSelect>
-
-    <p class="my-2 text-slate-400">Enter comma separated collection names</p>
-
-    <h3 class="my-4 font-semibold">Response Output</h3>
-    <input [(ngModel)]="editor.definition.properties.returnType"
-      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-      (input)="
-        updateProperty(
-          editor.definition.properties,
-          'returnType',
-          $event,
-          editor.context
-        )
-      " />
+    <p class="my-2 text-slate-400">Please select from the popup.</p>
 
     <!-- <h3 class="my-4 font-semibold">Declarations</h3>
     <textarea
@@ -226,22 +216,16 @@
     <input type="text" [value]="editor.step.name"
       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
       (input)="updateName(editor.step, $event, editor.context)" />
-    {{ editor.step | json }}
+    <!-- {{ editor.step | json }} -->
     <!-- hanlde types of steps and data to be gathered from user-->
     <h3 class="my-4 font-semibold">Config</h3>
+
+
     <ng-container *ngIf="editor.step.type === 'getDsData'">
-      <select class="border p-2 w-full my-2">
-        <option>FindOne</option>
-        <option>FindAll</option>
-        <option>FindById</option>
-        <option>Custom JPA Query</option>
-      </select>
-      <input
-        class="shadow appearance-none border rounded w-full py-2 px-3 my-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        type="text" placeholder="Custom query" />
-      <p class="my-2 text-slate-400">
-        Enter the query to be used to fetch data from data source.
-      </p>
+      <button class="bg-indigo-600 rounded text-white p-2"
+        (click)="this.showFetchDataPopup = !this.showFetchDataPopup ">
+        Configure
+      </button>
     </ng-container>
 
     <ng-container *ngIf="editor.step.type === 'if'">
@@ -253,7 +237,7 @@
       </div>
     </ng-container>
 
-    <a href="" target="_blank" class="text-blue-400">Refer docs on how to configure steps</a>
+    <p href="" target="_blank" class="text-blue-400 mt-2">Refer docs on how to configure steps</p>
 
     <h3 class="my-4 font-semibold">Schedule</h3>
     <input type="number" [value]="editor.step.properties.velocity"
@@ -335,6 +319,70 @@
   <ng-template vTemplate="footer">
     <div class="text-right">
       <vezo-button label="Save" (click)="updateConditions()"></vezo-button>
+    </div>
+  </ng-template>
+</vezo-modal>
+
+<!-- Model for Select Models in the global editor -->
+<vezo-modal [(visible)]="showModelsOptions">
+  <ng-template vTemplate="header">Select Models</ng-template>
+  <ng-template vTemplate="content">
+    <h3 class="semi-bold my-2">Models</h3>
+    <p-multiSelect [options]="this.data" [(ngModel)]="this.selectedModels" optionLabel="collectionName"
+      placeholder="Select Models">
+    </p-multiSelect>
+
+    <h3 class="my-4 font-semibold">Response Output</h3>
+
+    <p-dropdown [options]="this.responseOtOptions" [(ngModel)]="this.selectedResOp" 
+      placeholder="Select Models">
+    </p-dropdown>
+
+    <!-- <input [(ngModel)]="editor.definition.properties.returnType"
+      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      (input)="
+        updateProperty(
+          editor.definition.properties,
+          'returnType',
+          $event,
+          editor.context
+        )
+      " /> -->
+  </ng-template>
+  <ng-template vTemplate="footer">
+    <div class="text-right">
+      <vezo-button label="Save" (click)="saveModels(this.ModelEditor)"></vezo-button>
+    </div>
+  </ng-template>
+</vezo-modal>
+
+<!-- Model for Configure Fetch Data in the Step editor -->
+<vezo-modal [(visible)]="showFetchDataPopup">
+  <ng-template vTemplate="header">Configure</ng-template>
+  <ng-template vTemplate="content">
+    <!-- <p-multiSelect [options]="this.selectedModels" [(ngModel)]="this.currentModel" optionLabel="collectionName"
+        placeholder="Chosse Model">
+      </p-multiSelect> -->
+    <p-dropdown [options]="this.selectedModels" [(ngModel)]="this.currentModel" optionLabel="collectionName"
+      placeholder="Choose the Model" [style]="{ width: '100%' }"> </p-dropdown>
+
+    <select class="border p-2 w-full my-4" [(ngModel)]="selectedOperation" (change)="onSelectionChange($event)">
+      <option>FindOne</option>
+      <option>FindAll</option>
+      <option>FindById</option>
+      <option>Custom JPA Query</option>
+    </select>
+
+    <input
+      class="shadow appearance-none border rounded w-full py-2 px-3 my-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      type="text" placeholder="Custom query" />
+    <p class="my-2 text-slate-400">
+      Enter the query to be used to fetch data from data source.
+    </p>
+  </ng-template>
+  <ng-template vTemplate="footer">
+    <div class="text-right">
+      <vezo-button label="Save" (click)="saveFetchData(this.ModelEditor)"></vezo-button>
     </div>
   </ng-template>
 </vezo-modal>
