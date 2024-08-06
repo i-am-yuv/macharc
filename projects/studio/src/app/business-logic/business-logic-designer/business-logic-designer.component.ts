@@ -13,6 +13,10 @@ import {
 } from 'sequential-workflow-designer';
 import { BusinessLogic } from '../business-logic';
 import { BusinessLogicService } from '../business-logic.service';
+import { GenericComponent } from '../../utils/genericcomponent';
+import { Collection } from '../../collection/collection';
+import { FormGroup } from '@angular/forms';
+import { CollectionService } from '../../collection/collection.service';
 
 function createDefinition() {
   return {
@@ -31,7 +35,12 @@ function createDefinition() {
   templateUrl: './business-logic-designer.component.html',
   styleUrls: ['./business-logic-designer.component.scss'],
 })
-export class BusinessLogicDesignerComponent implements OnInit {
+export class BusinessLogicDesignerComponent extends GenericComponent implements OnInit {
+  
+  form!: FormGroup<any>;
+  data: Collection[] = [];
+  componentName: string = '';
+
   private designer?: Designer;
 
   public definition: Definition = createDefinition();
@@ -58,8 +67,13 @@ export class BusinessLogicDesignerComponent implements OnInit {
   constructor(
     private businessLogicService: BusinessLogicService,
     private route: ActivatedRoute,
-    private msgService: MessageService
-  ) {}
+    private msgService: MessageService,
+    private  collectionService : CollectionService
+  ) { 
+    super(collectionService, msgService);
+    this.getAllModels();
+  }
+
   public readonly toolboxConfiguration: ToolboxConfiguration = {
     groups: [
       // {
@@ -82,12 +96,14 @@ export class BusinessLogicDesignerComponent implements OnInit {
       this.toolboxGroup('Main'),
     ],
   };
+
   public readonly stepsConfiguration: StepsConfiguration = {
     iconUrlProvider: (componentType, type) => `./assets/${type}.svg`,
     validator: () => true,
   };
-
+  
   public ngOnInit() {
+    this.getAllModels();
     this.updateDefinitionJSON();
     this.wfId = this.route.snapshot.paramMap.get('id');
     this.businessLogicService.getData({ id: this.wfId }).then((res: any) => {
@@ -235,5 +251,16 @@ export class BusinessLogicDesignerComponent implements OnInit {
 
   updateConditions() {
     // to handle this by partha
+  }
+
+  // New Code
+  selectedModels : any ;
+  getAllModels()
+  {
+    console.log('enter');
+    this.getAllData();
+    // setTimeout(() => {
+    //   console.log(this.data[0].collectionName);
+    // }, 5000);
   }
 }

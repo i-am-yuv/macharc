@@ -14,6 +14,7 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "^15.0.0",
+    "@angular/cdk": "^14.0.4",
     "@angular/common": "^15.0.0",
     "@angular/compiler": "^15.0.0",
     "@angular/core": "^15.0.0",
@@ -37,6 +38,8 @@
     "ngx-monaco-editor-v2": "^15.0.1",
     "patch-package": "^8.0.0",
     "postinstall-postinstall": "^2.1.0",
+    "primeicons": "^6.0.0",
+    "primeng": "^15.0.0",
     "redoc": "^2.0.0",
     "rsocket-core": "^0.0.29-alpha.0",
     "rsocket-types": "^0.0.29-alpha.0",

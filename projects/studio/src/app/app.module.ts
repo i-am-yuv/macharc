@@ -92,6 +92,9 @@ import { ContenteditableValueAccessor } from './utils/constenteditable.directive
 import { NgTerminalModule } from 'ng-terminal';
 import { PagePreviewComponent } from './screen/page-preview/page-preview.component';
 import { NestedPreviewComponent } from './data-form/nested-preview/nested-preview.component';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { PrimeNGConfig } from 'primeng/api';
+import { ToggleButtonModule } from 'primeng/togglebutton';
 
 @NgModule({
   declarations: [
@@ -188,7 +191,9 @@ import { NestedPreviewComponent } from './data-form/nested-preview/nested-previe
     NgxLoadingModule.forRoot({}),
     NgFlutterComponent,
     NgxLoadingModule.forRoot({}),
-],
+    MultiSelectModule,
+    ToggleButtonModule
+  ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [
     HttpClientModule,
@@ -199,4 +204,10 @@ import { NestedPreviewComponent } from './data-form/nested-preview/nested-previe
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(private primengConfig: PrimeNGConfig) { }
+
+  ngOnInit() {
+    this.primengConfig.ripple = true;
+  }
+}

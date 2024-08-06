@@ -8,3 +8,7 @@ export interface BusinessLogic {
   microService?: MicroService;
   generatedCode?: string;
 }
+export interface City {
+  name: string,
+  code: string
+}
