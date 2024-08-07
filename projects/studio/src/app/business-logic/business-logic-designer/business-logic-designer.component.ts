@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { MessageService } from '@splenta/vezo/src/public-api';
+import { MessageService, Pagination } from '@splenta/vezo/src/public-api';
 import {
   Definition,
   Designer,
@@ -11,13 +11,14 @@ import {
   StepsConfiguration,
   ToolboxConfiguration,
 } from 'sequential-workflow-designer';
-import { BusinessLogic } from '../business-logic';
+import { BusinessLogic, ConditionGroup } from '../business-logic';
 import { BusinessLogicService } from '../business-logic.service';
 import { GenericComponent } from '../../utils/genericcomponent';
 import { Collection } from '../../collection/collection';
 import { FormGroup } from '@angular/forms';
 import { CollectionService } from '../../collection/collection.service';
-import { sequence } from '@angular/animations';
+import { FieldService } from '../../fields/field.service';
+import { FilterBuilder } from '../../utils/FilterBuilder';
 
 function createDefinition() {
   return {
@@ -66,13 +67,17 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
   showConditionEditor: boolean = false;
   showModelsOptions: boolean = false;
   showFetchDataPopup: boolean = false;
+  showLoopEditor: boolean = false;
 
   conditionEditor: any;
+  ModelEditor: any;
+  loopEditor: any;
   constructor(
     private businessLogicService: BusinessLogicService,
     private route: ActivatedRoute,
     private msgService: MessageService,
-    private collectionService: CollectionService
+    private collectionService: CollectionService,
+    private fieldsService: FieldService
   ) {
     super(collectionService, msgService);
     this.getAllModels();
@@ -217,7 +222,7 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
         this.createTaskStep(null, 'getDsData', 'Fetch Data', null),
         this.createIfStep(null, [], []),
         this.createContainerStep(null, []),
-        this.createTaskStep(null, 'email', 'Send email', null),
+        // this.createTaskStep(null, 'email', 'Send email', null),
         this.createTaskStep(null, 'callWebclient', 'Call APIS', null),
         this.createTaskStep(null, 'saveDsData', 'Save data', null),
         // this.createTaskStep(null, 'responseOutput', 'Response Output', null),
@@ -252,8 +257,11 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
     this.showConditionEditor = !this.showConditionEditor;
     this.conditionEditor = editor;
   }
+  openLoopEditor(editor: any) {
+    this.showLoopEditor = !this.showLoopEditor;
+    this.loopEditor = editor;
+  }
 
-  ModelEditor: any;
   openModelsPopup(editor: any) {
     this.showModelsOptions = !this.showModelsOptions;
     this.ModelEditor = editor;
@@ -267,21 +275,24 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
   selectedModels: Collection[] = [];
   currentModel: Collection = {};
   selectedOperation: any;
-  selectedResOp : any;
+  selectedResOp: any;
   responseOtOptions = ["void", "custom"];
- 
-  getAllModels() {
-    console.log('enter');
-    this.getAllData();
+  selectedDate: any;
+  fieldArrays : string[] =[] ;
 
+  loopFirstValue: any;
+  loopOperator: any;
+  loopSecondValue: any;
+  loopStaticValue: any;
+
+  getAllModels() {
+    this.getAllData();
     // setTimeout(() => {
     //   console.log(this.data[0].collectionName);
     // }, 5000);
   }
 
   saveModels(editor: any) {
-    console.log(this.selectedModels);
-
     this.updatePropertyCollection(
       editor.definition.properties,
       'collections',
@@ -299,33 +310,103 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
     context: GlobalEditorContext | StepEditorContext
   ) {
     properties[name] = selctedModels;
-    if( this.selectedResOp === 'custom' )
-    {
-      //  properties.returnType = {} ;
-      properties['returnType']= [ 'firstName' , 'lastName']; // just for testing
-     }
-     else if(this.selectedResOp === 'void')
-     {
-      properties['returnType']= "void";
-     }
+    properties['schedule'] = this.selectedDate;
+    if (this.selectedResOp === 'custom') {
 
+      var fieldsArray: string[] = [];
+      var i = 0;
+      for (i = 0; i < this.selectedModels.length; i++) {
+        var filterStr = FilterBuilder.equal('collection.id', this.selectedModels[i].id + '');
+        this.search = filterStr;
+        var pagination !: Pagination;
+        this.fieldsService.getAllData(pagination, this.search).then((res: any) => {
+          for (var k = 0; k < res.content.length; k++) {
+            fieldsArray.push(res.content[k].fieldName);
+          }
+        })
+      }
+      if (i === this.selectedModels.length) {
+        properties['returnType'] = fieldsArray;
+        this.fieldArrays = fieldsArray ;
+        console.log(properties);
+      }
+    }
+    else if (this.selectedResOp === 'void') {
+      properties['returnType'] = "void";
+    }
     context.notifyPropertiesChanged();
   }
 
   saveFetchData(editor: any) {
     // this.sequence.find(item => item.type === "getDsData");
-    this.saveInfo(editor.definition.sequence, editor.context);
+    this.saveInfoFetch(editor.definition.sequence, editor.context);
   }
 
-  public saveInfo(sequence: any, context: GlobalEditorContext | StepEditorContext) {
+  public saveInfoFetch(sequence: any, context: GlobalEditorContext | StepEditorContext) {
     sequence = sequence.find((item: any) => item.type === "getDsData");
-    sequence.properties.stepName = this.currentModel.collectionName ;
-    sequence.properties.expression = this.selectedOperation  ;
+    sequence.properties.stepName = this.currentModel.collectionName;
+    sequence.properties.expression = this.selectedOperation;
     context.notifyPropertiesChanged();
     this.showFetchDataPopup = false;
   }
 
   onSelectionChange(event: any) {
     console.log('Selected option:', this.selectedOperation);
+  }
+
+  updateConditionsLoop(editor: any) {
+    console.log(editor);
+    this.saveInfoLoop(
+      editor.definition.sequence,
+      editor.context
+    );
+
+    this.showLoopEditor = false;
+  }
+
+  public saveInfoLoop(sequence: any, context: GlobalEditorContext | StepEditorContext) {
+    sequence = sequence.find((item: any) => item.type === "loop");
+    sequence.properties['firstValue'] = this.loopFirstValue ;
+    sequence.properties['operator'] = this.loopOperator ;
+    sequence.properties['secondValue'] = this.loopSecondValue ;
+    sequence.properties['staticValue'] = this.loopStaticValue ;
+    context.notifyPropertiesChanged();
+  }
+
+  // if else condition code
+
+  conditionGroups: ConditionGroup[] = [
+    { conditions: [{ firstValue: '', operator: '=', secondValue: '' }] }
+  ];
+  newConditionGroupConnector: string = 'AND';
+
+  addCondition(groupIndex: number): void {
+    const group = this.conditionGroups[groupIndex];
+    if (group.conditions.length > 0) {
+      group.conditions[group.conditions.length - 1].connector = group.connector || 'AND';
+    }
+    group.conditions.push({ firstValue: '', operator: '=', secondValue: '' });
+  }
+
+  removeCondition(groupIndex: number, conditionIndex: number): void {
+    this.conditionGroups[groupIndex].conditions.splice(conditionIndex, 1);
+    if (this.conditionGroups[groupIndex].conditions.length === 0) {
+      this.conditionGroups[groupIndex].conditions.push({ firstValue: '', operator: '=', secondValue: '' });
+    }
+  }
+
+  addConditionGroup(): void {
+    const lastGroup = this.conditionGroups[this.conditionGroups.length - 1];
+    lastGroup.connector = this.newConditionGroupConnector;
+    this.conditionGroups.push({ conditions: [{ firstValue: '', operator: '=', secondValue: '' }] });
+  }
+
+  saveConditions(): void {
+    const payload = this.conditionGroups.map(group => ({
+      conditions: group.conditions,
+      connector: group.connector
+    }));
+    console.log('Payload:', JSON.stringify(payload));
+    
   }
 }

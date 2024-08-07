@@ -81,4 +81,10 @@ export class BusinessLogicService extends GenericService {
 
     return obj;
   }
+
+  // async getCollectionFieldsByCollectionId(collectionId: any) {
+  //   var url = this.apiurl + '/field?filter=collection.id%20%3A%20%27ce8f1faf-138e-4786-a9ab-6ef52a862e63%27'
+  //   const res = await lastValueFrom(this.http.post<any>(url, wf));
+  //   return res;
+  // }
 }

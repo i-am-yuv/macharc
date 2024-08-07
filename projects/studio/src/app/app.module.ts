@@ -96,6 +96,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { PrimeNGConfig } from 'primeng/api';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { DropdownModule } from 'primeng/dropdown';
+import { CalendarModule } from 'primeng/calendar';
 
 @NgModule({
   declarations: [
@@ -194,7 +195,8 @@ import { DropdownModule } from 'primeng/dropdown';
     NgxLoadingModule.forRoot({}),
     MultiSelectModule,
     ToggleButtonModule,
-    DropdownModule
+    DropdownModule,
+    CalendarModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [
