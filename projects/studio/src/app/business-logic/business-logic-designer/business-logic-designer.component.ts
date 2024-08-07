@@ -11,7 +11,7 @@ import {
   StepsConfiguration,
   ToolboxConfiguration,
 } from 'sequential-workflow-designer';
-import { BusinessLogic, ConditionGroup } from '../business-logic';
+import { BusinessLogic, Condition, ConditionGroup } from '../business-logic';
 import { BusinessLogicService } from '../business-logic.service';
 import { GenericComponent } from '../../utils/genericcomponent';
 import { Collection } from '../../collection/collection';
@@ -68,10 +68,14 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
   showModelsOptions: boolean = false;
   showFetchDataPopup: boolean = false;
   showLoopEditor: boolean = false;
+  showAPIEditor : boolean =  false ;
 
   conditionEditor: any;
   ModelEditor: any;
   loopEditor: any;
+  apiEditor: any;
+
+
   constructor(
     private businessLogicService: BusinessLogicService,
     private route: ActivatedRoute,
@@ -267,6 +271,11 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
     this.ModelEditor = editor;
   }
 
+  openAPIEditor(editor: any) {
+    this.showAPIEditor = !this.showAPIEditor;
+    this.apiEditor = editor;
+  }
+
   updateConditions() {
     // to handle this by partha
   }
@@ -376,30 +385,48 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
   // if else condition code
 
   conditionGroups: ConditionGroup[] = [
-    { conditions: [{ firstValue: '', operator: '=', secondValue: '' }] }
+    { conditions: [{ firstValue: '', operator: '=', secondValue: '', manualEntry: false }] }
   ];
   newConditionGroupConnector: string = 'AND';
+
+  getDropdownOptions() {
+    return [{ label: 'Enter Manually', value: 'manual' }, ...this.fieldArrays];
+  }
 
   addCondition(groupIndex: number): void {
     const group = this.conditionGroups[groupIndex];
     if (group.conditions.length > 0) {
       group.conditions[group.conditions.length - 1].connector = group.connector || 'AND';
     }
-    group.conditions.push({ firstValue: '', operator: '=', secondValue: '' });
+    group.conditions.push({ firstValue: '', operator: '=', secondValue: '' ,manualEntry: false });
   }
+
+  // addCondition(groupIndex: number): void {
+  //   this.conditionGroups[groupIndex].conditions.push({ firstValue: '', operator: '=', secondValue: '', manualEntry: false });
+  // }
 
   removeCondition(groupIndex: number, conditionIndex: number): void {
     this.conditionGroups[groupIndex].conditions.splice(conditionIndex, 1);
     if (this.conditionGroups[groupIndex].conditions.length === 0) {
-      this.conditionGroups[groupIndex].conditions.push({ firstValue: '', operator: '=', secondValue: '' });
+      this.conditionGroups[groupIndex].conditions.push({ firstValue: '', operator: '=', secondValue: '' , manualEntry: false});
     }
   }
 
   addConditionGroup(): void {
     const lastGroup = this.conditionGroups[this.conditionGroups.length - 1];
     lastGroup.connector = this.newConditionGroupConnector;
-    this.conditionGroups.push({ conditions: [{ firstValue: '', operator: '=', secondValue: '' }] });
+    this.conditionGroups.push({ conditions: [{ firstValue: '', operator: '=', secondValue: '', manualEntry: false  }] });
   }
+
+  handleSecondValueChange(condition: Condition, value: string): void {
+    if (value === 'manual') {
+      condition.manualEntry = true;
+      condition.secondValue = '';
+    } else {
+      condition.manualEntry = false;
+    }
+  }
+
 
   saveConditions(): void {
     const payload = this.conditionGroups.map(group => ({
@@ -408,5 +435,11 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
     }));
     console.log('Payload:', JSON.stringify(payload));
     
+  }
+
+  // Code for API step editor
+  updateApiEditor(editor : any)
+  {
+
   }
 }

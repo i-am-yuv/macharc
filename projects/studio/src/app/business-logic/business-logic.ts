@@ -18,6 +18,8 @@ export interface Condition {
   operator: string;
   secondValue: string;
   connector?: string;
+  manualEntry?: boolean;
+
 }
 
 export interface ConditionGroup {
