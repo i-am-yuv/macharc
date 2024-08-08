@@ -428,13 +428,26 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
   }
 
 
-  saveConditions(): void {
+  updateIfConditions(editor: any) {
+    console.log(editor);
+    this.saveIfConditions(
+      editor.definition.sequence,
+      editor.context
+    );
+
+    this.showConditionEditor = false;
+  }
+
+  saveIfConditions( sequence: any, context: GlobalEditorContext | StepEditorContext ){
     const payload = this.conditionGroups.map(group => ({
       conditions: group.conditions,
       connector: group.connector
     }));
     console.log('Payload:', JSON.stringify(payload));
-    
+
+    sequence = sequence.find((item: any) => item.type === "if");
+    sequence.properties['conditionDefination'] = JSON.stringify(payload) ;
+    context.notifyPropertiesChanged();
   }
 
   // Code for API step editor

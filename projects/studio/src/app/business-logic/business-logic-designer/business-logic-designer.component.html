@@ -235,7 +235,7 @@
 
 
     <ng-container *ngIf="editor.step.type === 'callWebclient'">
-      <div class="mb-2" (click)="openLoopEditor(editor)">
+      <div class="mb-2" (click)="openAPIEditor(editor)">
         <button class="bg-indigo-600 rounded text-white p-2">
           select Condition
         </button>
@@ -419,11 +419,12 @@
               </p-dropdown> -->
 
               <div *ngIf="!condition.manualEntry">
-                <p-dropdown [options]="getDropdownOptions()" [(ngModel)]="condition.secondValue" placeholder="Choose Fields"
-                  (onChange)="handleSecondValueChange(condition, $event.value)" [showClear]="true"></p-dropdown>
+                <p-dropdown [options]="getDropdownOptions()" [(ngModel)]="condition.secondValue"
+                  placeholder="Choose Fields" (onChange)="handleSecondValueChange(condition, $event.value)"
+                  [showClear]="true"></p-dropdown>
               </div>
               <div *ngIf="condition.manualEntry">
-                <div class="border p-2 rounded flex justify-between items-center gap-1"> 
+                <div class="border p-2 rounded flex justify-between items-center gap-1">
                   <input [(ngModel)]="condition.secondValue" placeholder="Enter value manually" />
                   <div class="cursor-pointer" (click)="condition.manualEntry = !condition.manualEntry">X</div>
                 </div>
@@ -483,7 +484,7 @@
   </ng-template>
   <ng-template vTemplate="footer">
     <div class="text-right">
-      <vezo-button label="Save" (click)="saveConditions()"></vezo-button>
+      <vezo-button label="Save" (click)="updateIfConditions(this.ModelEditor)"></vezo-button>
     </div>
   </ng-template>
 </vezo-modal>
@@ -541,7 +542,7 @@
           [showClear]="true">
         </p-dropdown>
 
-        <p-dropdown [options]="this.operators" [(ngModel)]="this.loopOperator" placeholder="Choose Operator"
+        <p-dropdown [options]="this.fieldArrays" [(ngModel)]="this.loopFirstValue" placeholder="Choose Fields"
           [showClear]="true">
         </p-dropdown>
 
@@ -550,7 +551,7 @@
   </ng-template>
   <ng-template vTemplate="footer">
     <div class="text-right">
-      <vezo-button label="Save" (click)="updateApiEditor(this.apiEditor)"></vezo-button>
+      <vezo-button label="Save" (click)="updateApiEditor(this.ModelEditor)"></vezo-button>
     </div>
   </ng-template>
 </vezo-modal>
