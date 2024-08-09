@@ -438,27 +438,32 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
     // }
 
     // Loop through selectedModels
-  for (let i = 0; i < selectedModels.length; i++) {
-    const model = selectedModels[i];
-    const filterStr = FilterBuilder.equal('collection.id', model.id + '');
-    this.search = filterStr;
-    let pagination!: Pagination;
+    for (let i = 0; i < selectedModels.length; i++) {
+      const model = selectedModels[i];
+      const filterStr = FilterBuilder.equal('collection.id', model.id + '');
+      this.search = filterStr;
+      let pagination!: Pagination;
 
-    this.fieldsService.getAllData(pagination, this.search).then((res: any) => {
-      const items = res.content.map((field: any) => ({
-        label: field.fieldName, 
-        value: field        
-      }));
+      this.fieldsService.getAllData(pagination, this.search).then((res: any) => {
 
-      const collectionObj = {
-        label: model.collectionName, 
-        value: model,             
-        items: items                
-      };
-      this.finalListModels.push(collectionObj);
-    });
-  }
-    console.log( this.finalListModels) ;
+        for (var k = 0; k < res.content.length; k++) {
+          this.fieldArrays.push(res.content[k]);
+        }
+
+        const items = res.content.map((field: any) => ({
+          label: field.fieldName,
+          value: field
+        }));
+
+        const collectionObj = {
+          label: model.collectionName,
+          value: model,
+          items: items
+        };
+        this.finalListModels.push(collectionObj);
+      });
+    }
+    console.log(this.finalListModels);
     context.notifyPropertiesChanged();
   }
 
@@ -515,7 +520,7 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
   newConditionGroupConnector: string = 'AND';
 
   getDropdownOptions() {
-    return [{ label: 'Enter Manually', value: 'manual' }, ...this.fieldArrays];
+    return [{ fieldName: 'Enter Manually', value: 'manual' }, ...this.fieldArrays];
   }
 
   addCondition(groupIndex: number): void {
@@ -543,8 +548,10 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
     this.conditionGroups.push({ conditions: [{ firstValue: '', operator: '=', secondValue: '', manualEntry: false }] });
   }
 
-  handleSecondValueChange(condition: Condition, value: string): void {
-    if (value === 'manual') {
+  handleSecondValueChange(condition: Condition, e: any): void {
+    // console.log(condition);
+    console.log(e);
+    if (e === 'Enter Manually') {
       condition.manualEntry = true;
       condition.secondValue = '';
     } else {
@@ -578,4 +585,13 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
   updateApiEditor(editor: any) {
     console.log(this.msSelected);
   }
+
+  truncateField(fieldName: string): string {
+    const maxLength = 10; // Set your desired max length
+    if (fieldName.length > maxLength) {
+      return fieldName.substring(0, maxLength) + '...';
+    }
+    return fieldName;
+  }
+  
 }

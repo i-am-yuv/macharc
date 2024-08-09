@@ -301,10 +301,10 @@
       optionValue="label" [style]="{ width: '100%' }">
     </p-dropdown>
 
-    <div class="mt-2"
+    <div class="mt-4"
       *ngIf="this.resType !==null && this.resType !== undefined && this.resType !== '' && this.resType !== 'void' ">
       <p-dropdown [options]="this.allPojos" [(ngModel)]="this.selectedResOp" optionLabel="collectionName"
-        placeholder="Select" [showClear]="true" [style]="{ width: '100%' }" class="w-full"></p-dropdown>
+        placeholder="Select Pojo" [showClear]="true" [style]="{ width: '100%' }" class="w-full"></p-dropdown>
     </div>
 
 
@@ -364,120 +364,105 @@
 <vezo-modal [(visible)]="showConditionEditor">
   <ng-template vTemplate="header">Conditions</ng-template>
   <ng-template vTemplate="content">
-    <div style="height: 300px; overflow-y: auto;">
-      <!-- Old Code -->
-      <!-- <div class="border p-2 rounded mb-2">
-        <h3 class="semi-bold my-2">Condition Group</h3>
-        <div class="flex gap-4">
-          <vezo-select label="Field"></vezo-select>
-          <vezo-select label="condition" [items]="operators" optionLabel="label" optionValue="name"></vezo-select>
-          <vezo-select label="Model Value"></vezo-select>
-          <vezo-input label="Static Value"></vezo-input>
-        </div>
-        <div class="text-center my-4">OR</div>
-        <div class="flex gap-4">
-          <vezo-select label="Field"></vezo-select>
-          <vezo-select label="condition" [items]="operators" optionLabel="label" optionValue="name"></vezo-select>
-          <vezo-select label="Model Value"></vezo-select>
-          <vezo-input label="Static Value"></vezo-input>
-        </div>
-        <div class="text-right">
-          Add one more condition:
-          <vezo-button label="And" className="mr-2"></vezo-button><vezo-button label="Or"></vezo-button>
-        </div>
-      </div>
-      <div class="text-center my-4">AND</div>
-      <div class="border p-2 rounded mb-2">
-        <h3 class="semi-bold my-2">Condition Group</h3>
-        <div class="flex gap-4">
-          <vezo-select label="Field"></vezo-select>
-          <vezo-select label="condition" [items]="operators" optionLabel="label" optionValue="name"></vezo-select>
-          <vezo-select label="Model Value"></vezo-select>
-          <vezo-input label="Static Value"></vezo-input>
-        </div>
-        <div class="text-right">
-          Add one more condition:
-          <vezo-button label="And" className="mr-2"></vezo-button><vezo-button label="Or"></vezo-button>
-        </div>
-      </div>
-      <div class="text-right">
-        Add one more group:
-        <vezo-button label="And" className="mr-2"></vezo-button><vezo-button label="Or"></vezo-button>
-      </div> -->
-
+    <div style="height: 400px; overflow-y: auto;">
       <!-- New Code -->
       <div>
         <div class="condition-builder">
-          <div *ngFor="let group of conditionGroups; let groupIndex = index" class="condition-group">
-            <div *ngFor="let condition of group.conditions; let conditionIndex = index" class="condition">
-              <p-dropdown [options]="this.fieldArrays" [(ngModel)]="condition.firstValue" optionLabel="fieldName"
-                optionValue="fieldName" placeholder="Choose Fields" [showClear]="true" [style]="{ width: '100%' }"
-                class="w-full">
-              </p-dropdown>
+          <div *ngFor="let group of conditionGroups; let groupIndex = index"
+            class="p-2 flex justify-center items-center" style="flex-direction: column;">
 
-              <p-dropdown [options]="this.operators" [(ngModel)]="condition.operator" [optionLabel]="'name'"
-                [optionValue]="'name'" placeholder="">
-              </p-dropdown>
+            <div class="condition-group w-full">
+              <div *ngFor="let condition of group.conditions; let conditionIndex = index" class="condition">
 
-              <!-- <p-dropdown [options]="this.fieldArrays" [(ngModel)]="condition.secondValue" placeholder="Choose Fields"
+                <div class="flex justify-between items-center gap-4">
+
+                  <p-dropdown [options]="this.fieldArrays" [(ngModel)]="condition.firstValue" optionLabel="fieldName"
+                    optionValue="fieldName" placeholder="Choose Fields" [showClear]="true" [style]="{ width: '100%' }"
+                    class="w-full">
+
+                    <!-- Custom Template for Selected Item -->
+                    <ng-template pTemplate="selectedItem" let-selectedOption>
+                      <span>{{ truncateField(selectedOption.fieldName) }}</span>
+                    </ng-template>
+
+                  </p-dropdown>
+
+                  <p-dropdown [options]="this.operators" [(ngModel)]="condition.operator" optionLabel="label"
+                    optionValue="name">
+                  </p-dropdown>
+
+                  <!-- <p-dropdown [options]="this.fieldArrays" [(ngModel)]="condition.secondValue" placeholder="Choose Fields"
                 [showClear]="true">
               </p-dropdown> -->
 
-              <div *ngIf="!condition.manualEntry">
-                <p-dropdown [options]="getDropdownOptions()" [(ngModel)]="condition.secondValue" optionLabel="fieldName"
-                  optionValue="fieldName" placeholder="Choose Fields"
-                  (onChange)="handleSecondValueChange(condition, $event.value)" [showClear]="true"
-                  [style]="{ width: '100%' }" class="w-full"></p-dropdown>
-              </div>
-              <div *ngIf="condition.manualEntry">
-                <div class="border p-2 rounded flex justify-between items-center gap-1">
-                  <input [(ngModel)]="condition.secondValue" placeholder="Enter value manually" />
-                  <div class="cursor-pointer" (click)="condition.manualEntry = !condition.manualEntry">X</div>
+                  <div *ngIf="!condition.manualEntry">
+                    <!-- <p-dropdown [options]="getDropdownOptions()" [(ngModel)]="condition.secondValue"
+                      optionLabel="fieldName" optionValue="fieldName" placeholder="Choose Fields"
+                      (onChange)="handleSecondValueChange(condition, $event.value)" [showClear]="true"></p-dropdown> -->
+
+                    <p-dropdown [options]="getDropdownOptions()" [(ngModel)]="condition.secondValue" optionLabel="fieldName"
+                      optionValue="fieldName" placeholder="Choose Fields" [showClear]="true" (onChange)="handleSecondValueChange(condition, $event.value)">
+
+                      <!-- Custom Template for Selected Item -->
+                      <ng-template pTemplate="selectedItem" let-selectedOption>
+                        <span>{{ truncateField(selectedOption.fieldName) }}</span>
+                      </ng-template>
+
+                    </p-dropdown>
+
+                  </div>
+                  <div *ngIf="condition.manualEntry">
+                    <div class="border p-2 rounded flex justify-between items-center gap-1">
+                      <input [(ngModel)]="condition.secondValue" placeholder="Enter value manually" />
+                      <div class="cursor-pointer" (click)="condition.manualEntry = !condition.manualEntry">X</div>
+                    </div>
+                  </div>
+
+                  <vezo-icon icon="trash" (click)="removeCondition(groupIndex, conditionIndex)"
+                    className="w-4 h-4 text-red-400 cursor-pointer"></vezo-icon>
+                </div>
+
+                <div *ngIf="conditionIndex < group.conditions.length - 1">
+                  <!-- <select [(ngModel)]="condition.connector" class="p-2">
+                  <option value="AND">AND</option>
+                  <option value="OR">OR</option>
+                </select> -->
+                  <p-toggleButton [(ngModel)]="condition.connector" onLabel="AND" offLabel="OR"></p-toggleButton>
                 </div>
               </div>
 
-              <vezo-icon icon="trash" (click)="removeCondition(groupIndex, conditionIndex)"
-                className="w-4 h-4 text-red-400 cursor-pointer"></vezo-icon>
-
-              <div *ngIf="conditionIndex < group.conditions.length - 1">
-                <select [(ngModel)]="condition.connector" class="p-2">
-                  <option value="AND">AND</option>
-                  <option value="OR">OR</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="flex justify-center items-center">
-              <div
-                class="px-2 py-1 mt-2 bg-indigo-200 cursor-pointer border rounded-lg flex justify-center items-center"
-                style="width: fit-content;">
-                <button (click)="addCondition(groupIndex)" style="margin-bottom: 0.5rem;">Add Condition</button>
+              <div class="flex justify-center items-center" style="margin-top:16px;">
+                <!-- <button (click)="addCondition(groupIndex)" style="margin-bottom: 0.5rem;">Add Condition</button> -->
+                <button (click)="addCondition(groupIndex)" class="bg-indigo-600 rounded text-white p-2">
+                  Add Condition
+                </button>
               </div>
             </div>
 
             <div *ngIf="groupIndex < conditionGroups.length - 1">
-              <div class="p-1 border rounded cursor-pointer" style="width: fit-content;">
-                <select [(ngModel)]="group.connector" class="p-2">
+              <div style="margin-top:20px;">
+                <!-- <select [(ngModel)]="group.connector" class="p-2">
                   <option value="AND">AND</option>
                   <option value="OR">OR</option>
-                </select>
+                </select> -->
+                <p-toggleButton [(ngModel)]="group.connector" onLabel="AND" offLabel="OR"></p-toggleButton>
               </div>
             </div>
-
 
           </div>
           <div class="add-options">
-            <div class="p-1 border rounded cursor-pointer " style="width: fit-content;">
-              <select [(ngModel)]="newConditionGroupConnector" class="p-2">
+            <div>
+              <!-- <select [(ngModel)]="newConditionGroupConnector" class="p-2">
                 <option value="AND">AND</option>
                 <option value="OR">OR</option>
-              </select>
+              </select> -->
+              <p-toggleButton [(ngModel)]="newConditionGroupConnector" onLabel="AND" offLabel="OR"></p-toggleButton>
             </div>
             <div class="mt-2 flex justify-center items-center w-full">
-              <div class="px-2 py-1 bg-indigo-200 cursor-pointer border rounded-lg flex justify-center items-center"
-                style="width: fit-content;">
-                <button (click)="addConditionGroup()" style="margin-bottom: 0.5rem;">Add Condition Group</button>
-              </div>
+              <!-- <button (click)="addConditionGroup()" style="margin-bottom: 0.5rem;">Add Condition Group</button> -->
+              <button (click)="addConditionGroup()" class="bg-indigo-600 rounded text-white p-2">
+                Add Condition Group
+              </button>
             </div>
           </div>
           <!-- <button (click)="saveConditions()">Save</button> -->
