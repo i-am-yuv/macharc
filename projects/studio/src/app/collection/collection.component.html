@@ -80,10 +80,11 @@
   <ng-template vTemplate="header">Collection</ng-template>
   <ng-template vTemplate="content">
     <form [formGroup]="form">
-      <vezo-select optionLabel="microServiceName" [items]="microserviceItems" formControlName="microService"
-        label="Microservice"></vezo-select>
-      <vezo-select optionLabel="dataSourceName" [items]="form.value.microService?.datasources"
-        *ngIf="form.value.microService" formControlName="dataSource" label="Datasource"></vezo-select>
+      <vezo-select *ngIf="!this.microserviceId" optionLabel="microServiceName" [items]="microserviceItems" formControlName="microService"
+        label="Microservice Name"></vezo-select>
+
+      <vezo-select optionLabel="dataSourceName" [items]="this.microService?.datasources"
+         formControlName="dataSource" label="Datasource"></vezo-select>
       <div class="mt-2">
         <vezo-input label="Collection Name" formControlName="collectionName"></vezo-input>
         <error-message [controlName]="form.controls['collectionName']"></error-message>
@@ -92,10 +93,10 @@
         <vezo-select optionLabel="label" optionValue="value" [items]="collectionTypeItems"
           formControlName="collectionKind" label="Collection Type"></vezo-select>
       </div>
-      <div class="mt-2">
+      <!-- <div class="mt-2">
         <vezo-input label="Custom Table Name" formControlName="customTableName"></vezo-input>
         <error-message [controlName]="form.controls['customTableName']"></error-message>
-      </div>
+      </div> -->
 
       <!-- <vezo-radiobutton formControlName="collectionType" value="CRUD" name="crud"
                 label="Generate CRUD Endpoints"></vezo-radiobutton>

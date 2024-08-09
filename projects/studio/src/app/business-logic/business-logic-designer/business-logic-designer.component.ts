@@ -19,6 +19,9 @@ import { FormGroup } from '@angular/forms';
 import { CollectionService } from '../../collection/collection.service';
 import { FieldService } from '../../fields/field.service';
 import { FilterBuilder } from '../../utils/FilterBuilder';
+import { MicroService } from '../../microservice/microservice';
+import { MicroserviceService } from '../../microservice/microservice.service';
+import { ProjectService } from '../../project/project.service';
 
 function createDefinition() {
   return {
@@ -41,9 +44,12 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
 
   form!: FormGroup<any>;
   data: Collection[] = [];
+  allMicroservice: MicroService[] = [];
   componentName: string = '';
 
   private designer?: Designer;
+  projectId: any;
+
 
   public definition: Definition = createDefinition();
   public definitionJSON?: string;
@@ -52,23 +58,35 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
   wf: BusinessLogic = {};
   dataDef: string | undefined = '';
   returnType = [
-    { name: 'void', label: 'Nothing' },
-    { name: 'Order', label: 'Order' },
+    { name: 'void', label: 'void' },
+    { name: 'custom', label: 'custom' },
   ];
 
   operators = [
     { name: '<', label: 'Less Than' },
     { name: '>', label: 'Greater Than' },
-    { name: '=', label: 'Equal To' },
+    { name: '==', label: 'Equal To' },
+    { name: '!=', label: 'Not Equal To' },
+    { name: '<=', label: 'Less Than Or Equal To' },
+    { name: '>=', label: 'Greater Than Or Equal To' },
     { name: '~', label: 'Contains' },
   ];
+
+  operations = [
+    { name: 'Find all', label: 'FindAll' },
+    { name: 'Find one', label: 'FindOne' },
+    { name: 'Find by an Id', label: 'FindById' },
+    { name: 'Custom JPA query', label: 'CustomJpaQuery' },
+  ];
   activeConditions: any[] = [];
+  allModels: Collection[] = [];
+  allPojos: [] = [];
 
   showConditionEditor: boolean = false;
   showModelsOptions: boolean = false;
   showFetchDataPopup: boolean = false;
   showLoopEditor: boolean = false;
-  showAPIEditor : boolean =  false ;
+  showAPIEditor: boolean = false;
 
   conditionEditor: any;
   ModelEditor: any;
@@ -81,10 +99,29 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
     private route: ActivatedRoute,
     private msgService: MessageService,
     private collectionService: CollectionService,
-    private fieldsService: FieldService
+    private microserivce: MicroserviceService,
+    private fieldsService: FieldService,
+    private projectService: ProjectService
   ) {
     super(collectionService, msgService);
-    this.getAllModels();
+    this.getAllMicroSerivices();
+  }
+
+  getAllMicroSerivices() {
+    this.projectService.getActiveProject().subscribe((val) => {
+      this.projectId = val?.id;
+      if (this.projectId) {
+        var filterStr = FilterBuilder.equal('project.id', this.projectId);
+        this.search = filterStr;
+        var pagination !: Pagination;
+        this.microserivce.getAllData(pagination, this.search).then(
+          (res) => {
+            this.allMicroservice = res.content;
+            console.log(this.allMicroservice);
+          }
+        );
+      }
+    });
   }
 
   public readonly toolboxConfiguration: ToolboxConfiguration = {
@@ -116,7 +153,7 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
   };
 
   public ngOnInit() {
-    this.getAllModels();
+
     this.updateDefinitionJSON();
     this.wfId = this.route.snapshot.paramMap.get('id');
     this.businessLogicService.getData({ id: this.wfId }).then((res: any) => {
@@ -127,6 +164,8 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
           this.definition = JSON.parse(this.dataDef);
           this.updateDefinitionJSON();
         }
+        this.getAllModels();
+        this.getAllPojos();
       }
     });
   }
@@ -180,6 +219,21 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
     };
   }
 
+  createFetchDataStep(
+    id: null,
+    type: string,
+    name: string,
+    properties: any | undefined
+  ) {
+    return {
+      id,
+      componentType: 'task',
+      type,
+      name,
+      properties: properties || { schedule: 0, model: name, queryType: '' , customQuery: 'null' },
+    };
+  }
+
   createImportStep(
     id: null,
     type: string,
@@ -223,7 +277,7 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
       name,
       steps: [
         // this.createImportStep(null, 'import', 'Import Models', null),
-        this.createTaskStep(null, 'getDsData', 'Fetch Data', null),
+        this.createFetchDataStep(null, 'getDsData', 'Fetch Data', null),
         this.createIfStep(null, [], []),
         this.createContainerStep(null, []),
         // this.createTaskStep(null, 'email', 'Send email', null),
@@ -280,25 +334,43 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
     // to handle this by partha
   }
 
-  // New Code
+  // New Code -------------------------------------------------------------------------------------------->
+
   selectedModels: Collection[] = [];
   currentModel: Collection = {};
+  msSelected: MicroService = {};
   selectedOperation: any;
-  selectedResOp: any;
-  responseOtOptions = ["void", "custom"];
+  selectedResOp: Collection = {};
   selectedDate: any;
-  fieldArrays : string[] =[] ;
+  fieldArrays: string[] = [];
 
   loopFirstValue: any;
   loopOperator: any;
   loopSecondValue: any;
   loopStaticValue: any;
+  resType: any;
+  fetchDataSchedule : any ;
+  customJPAQuery : any;
 
   getAllModels() {
-    this.getAllData();
-    // setTimeout(() => {
-    //   console.log(this.data[0].collectionName);
-    // }, 5000);
+
+    this.businessLogicService.getModelsByMicroserivce(this.wf.microService?.id!).then((res: any) => {
+      this.allModels = res;
+    }).catch(
+      (err) => {
+        console.log(err);
+      }
+    )
+  }
+
+  getAllPojos() {
+    this.businessLogicService.getPojosByMicroserivce(this.wf.microService?.id!).then((res: any) => {
+      this.allPojos = res;
+    }).catch(
+      (err) => {
+        console.log(err);
+      }
+    )
   }
 
   saveModels(editor: any) {
@@ -320,27 +392,10 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
   ) {
     properties[name] = selctedModels;
     properties['schedule'] = this.selectedDate;
-    if (this.selectedResOp === 'custom') {
-
-      var fieldsArray: string[] = [];
-      var i = 0;
-      for (i = 0; i < this.selectedModels.length; i++) {
-        var filterStr = FilterBuilder.equal('collection.id', this.selectedModels[i].id + '');
-        this.search = filterStr;
-        var pagination !: Pagination;
-        this.fieldsService.getAllData(pagination, this.search).then((res: any) => {
-          for (var k = 0; k < res.content.length; k++) {
-            fieldsArray.push(res.content[k].fieldName);
-          }
-        })
-      }
-      if (i === this.selectedModels.length) {
-        properties['returnType'] = fieldsArray;
-        this.fieldArrays = fieldsArray ;
-        console.log(properties);
-      }
+    if (this.selectedResOp !== null && this.resType !== 'void') {
+      properties['returnType'] = this.selectedResOp;
     }
-    else if (this.selectedResOp === 'void') {
+    else if (this.resType === 'void') {
       properties['returnType'] = "void";
     }
     context.notifyPropertiesChanged();
@@ -353,8 +408,18 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
 
   public saveInfoFetch(sequence: any, context: GlobalEditorContext | StepEditorContext) {
     sequence = sequence.find((item: any) => item.type === "getDsData");
-    sequence.properties.stepName = this.currentModel.collectionName;
-    sequence.properties.expression = this.selectedOperation;
+    sequence.properties.model = this.currentModel.collectionName;
+    if( this.selectedOperation == 'CustomJpaQuery' )
+    {
+      sequence.properties.queryType = this.selectedOperation;
+      sequence.properties.customQuery = this.customJPAQuery ;
+    }
+    else{
+      sequence.properties.queryType = this.selectedOperation;
+      sequence.properties.customQuery = "null" ;
+    }
+    sequence.properties.schedule = this.fetchDataSchedule;
+
     context.notifyPropertiesChanged();
     this.showFetchDataPopup = false;
   }
@@ -375,10 +440,10 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
 
   public saveInfoLoop(sequence: any, context: GlobalEditorContext | StepEditorContext) {
     sequence = sequence.find((item: any) => item.type === "loop");
-    sequence.properties['firstValue'] = this.loopFirstValue ;
-    sequence.properties['operator'] = this.loopOperator ;
-    sequence.properties['secondValue'] = this.loopSecondValue ;
-    sequence.properties['staticValue'] = this.loopStaticValue ;
+    sequence.properties['firstValue'] = this.loopFirstValue;
+    sequence.properties['operator'] = this.loopOperator;
+    sequence.properties['secondValue'] = this.loopSecondValue;
+    sequence.properties['staticValue'] = this.loopStaticValue;
     context.notifyPropertiesChanged();
   }
 
@@ -398,7 +463,7 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
     if (group.conditions.length > 0) {
       group.conditions[group.conditions.length - 1].connector = group.connector || 'AND';
     }
-    group.conditions.push({ firstValue: '', operator: '=', secondValue: '' ,manualEntry: false });
+    group.conditions.push({ firstValue: '', operator: '=', secondValue: '', manualEntry: false });
   }
 
   // addCondition(groupIndex: number): void {
@@ -408,14 +473,14 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
   removeCondition(groupIndex: number, conditionIndex: number): void {
     this.conditionGroups[groupIndex].conditions.splice(conditionIndex, 1);
     if (this.conditionGroups[groupIndex].conditions.length === 0) {
-      this.conditionGroups[groupIndex].conditions.push({ firstValue: '', operator: '=', secondValue: '' , manualEntry: false});
+      this.conditionGroups[groupIndex].conditions.push({ firstValue: '', operator: '=', secondValue: '', manualEntry: false });
     }
   }
 
   addConditionGroup(): void {
     const lastGroup = this.conditionGroups[this.conditionGroups.length - 1];
     lastGroup.connector = this.newConditionGroupConnector;
-    this.conditionGroups.push({ conditions: [{ firstValue: '', operator: '=', secondValue: '', manualEntry: false  }] });
+    this.conditionGroups.push({ conditions: [{ firstValue: '', operator: '=', secondValue: '', manualEntry: false }] });
   }
 
   handleSecondValueChange(condition: Condition, value: string): void {
@@ -427,7 +492,6 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
     }
   }
 
-
   updateIfConditions(editor: any) {
     console.log(editor);
     this.saveIfConditions(
@@ -438,7 +502,7 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
     this.showConditionEditor = false;
   }
 
-  saveIfConditions( sequence: any, context: GlobalEditorContext | StepEditorContext ){
+  saveIfConditions(sequence: any, context: GlobalEditorContext | StepEditorContext) {
     const payload = this.conditionGroups.map(group => ({
       conditions: group.conditions,
       connector: group.connector
@@ -446,13 +510,12 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
     console.log('Payload:', JSON.stringify(payload));
 
     sequence = sequence.find((item: any) => item.type === "if");
-    sequence.properties['conditionDefination'] = JSON.stringify(payload) ;
+    sequence.properties['conditionDefination'] = payload;
     context.notifyPropertiesChanged();
   }
 
   // Code for API step editor
-  updateApiEditor(editor : any)
-  {
-
+  updateApiEditor(editor: any) {
+    console.log(this.msSelected);
   }
 }

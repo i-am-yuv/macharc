@@ -78,7 +78,7 @@
   <ng-template vTemplate="header">Service</ng-template>
   <ng-template vTemplate="content">
     <form [formGroup]="form">
-      <vezo-select
+      <vezo-select *ngIf="!this.microserviceId"
         label="Micro Service"
         formControlName="microService"
         [items]="microServices"
