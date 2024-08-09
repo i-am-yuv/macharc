@@ -27,6 +27,13 @@ export interface ConditionGroup {
   connector?: string;
 }
 
+export interface CollectionObj{
+ label : string ;
+  value : string ;
+  items :[] ;
+}
+
+
 // interface Condition {
 //   firstValue: string;
 //   operator: string;

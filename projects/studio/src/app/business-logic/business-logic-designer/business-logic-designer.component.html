@@ -295,17 +295,18 @@
     </p-multiSelect>
 
     <h3 class="my-2 font-semibold">Response Output</h3>
-    
+
     <!-- First Selecting if Void or Custom -->
-    <p-dropdown [options]="this.returnType" [(ngModel)]="this.resType" placeholder="Select" optionLabel="name" optionValue="label"
-      [style]="{ width: '100%' }">
+    <p-dropdown [options]="this.returnType" [(ngModel)]="this.resType" placeholder="Select" optionLabel="name"
+      optionValue="label" [style]="{ width: '100%' }">
     </p-dropdown>
 
-    <div class="mt-2" *ngIf="this.resType !==null && this.resType !== undefined && this.resType !== '' && this.resType !== 'void' ">
+    <div class="mt-2"
+      *ngIf="this.resType !==null && this.resType !== undefined && this.resType !== '' && this.resType !== 'void' ">
       <p-dropdown [options]="this.allPojos" [(ngModel)]="this.selectedResOp" optionLabel="collectionName"
-      placeholder="Select"  [showClear]="true" [style]="{ width: '100%' }" class="w-full"></p-dropdown>
+        placeholder="Select" [showClear]="true" [style]="{ width: '100%' }" class="w-full"></p-dropdown>
     </div>
-   
+
 
     <h3 class="my-2 font-semibold">Schedule</h3>
 
@@ -316,8 +317,9 @@
   </ng-template>
   <ng-template vTemplate="footer">
     <div class="text-right">
-      <vezo-button label="Save" [disabled]="((this.selectedModels === null) || (this.resType === null) || (this.resType !== 'void' && this.selectedResOp === null ) ) "
-       (click)="saveModels(this.ModelEditor)"></vezo-button>
+      <vezo-button label="Save"
+        [disabled]="((this.selectedModels === null) || (this.resType === null) || (this.resType !== 'void' && this.selectedResOp === null ) ) "
+        (click)="saveModels(this.ModelEditor)"></vezo-button>
     </div>
   </ng-template>
 </vezo-modal>
@@ -326,7 +328,7 @@
 <vezo-modal [(visible)]="showFetchDataPopup">
   <ng-template vTemplate="header">Configure</ng-template>
   <ng-template vTemplate="content">
-   
+
     <p-dropdown [options]="this.selectedModels" [(ngModel)]="this.currentModel" optionLabel="collectionName"
       placeholder="Choose the Model" [style]="{ width: '100%' }" class="w-full"> </p-dropdown>
 
@@ -339,14 +341,15 @@
     <div *ngIf="this.selectedOperation === 'CustomJpaQuery'">
       <input
         class="shadow appearance-none border rounded w-full py-2 px-3 my-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        type="text" placeholder="Custom query"[(ngModel)]="this.customJPAQuery"  />
+        type="text" placeholder="Custom query" [(ngModel)]="this.customJPAQuery" />
       <div class="mt-1 text-slate-400">
         Enter the query to be used to fetch data from data source.
       </div>
     </div>
 
     <div class="mt-6">
-      <p-calendar [(ngModel)]="fetchDataSchedule" placeholder="Schedule" [showTime]="true" [hourFormat]="'12'"></p-calendar>
+      <p-calendar [(ngModel)]="fetchDataSchedule" placeholder="Schedule" [showTime]="true"
+        [hourFormat]="'12'"></p-calendar>
     </div>
 
   </ng-template>
@@ -407,8 +410,9 @@
         <div class="condition-builder">
           <div *ngFor="let group of conditionGroups; let groupIndex = index" class="condition-group">
             <div *ngFor="let condition of group.conditions; let conditionIndex = index" class="condition">
-              <p-dropdown [options]="this.fieldArrays" [(ngModel)]="condition.firstValue" placeholder="Choose Fields"
-                [showClear]="true" [style]="{ width: '100%' }" class="w-full">
+              <p-dropdown [options]="this.fieldArrays" [(ngModel)]="condition.firstValue" optionLabel="fieldName"
+                optionValue="fieldName" placeholder="Choose Fields" [showClear]="true" [style]="{ width: '100%' }"
+                class="w-full">
               </p-dropdown>
 
               <p-dropdown [options]="this.operators" [(ngModel)]="condition.operator" [optionLabel]="'name'"
@@ -420,9 +424,10 @@
               </p-dropdown> -->
 
               <div *ngIf="!condition.manualEntry">
-                <p-dropdown [options]="getDropdownOptions()" [(ngModel)]="condition.secondValue"
-                  placeholder="Choose Fields" (onChange)="handleSecondValueChange(condition, $event.value)"
-                  [showClear]="true" [style]="{ width: '100%' }" class="w-full"></p-dropdown>
+                <p-dropdown [options]="getDropdownOptions()" [(ngModel)]="condition.secondValue" optionLabel="fieldName"
+                  optionValue="fieldName" placeholder="Choose Fields"
+                  (onChange)="handleSecondValueChange(condition, $event.value)" [showClear]="true"
+                  [style]="{ width: '100%' }" class="w-full"></p-dropdown>
               </div>
               <div *ngIf="condition.manualEntry">
                 <div class="border p-2 rounded flex justify-between items-center gap-1">
@@ -495,26 +500,43 @@
   <ng-template vTemplate="content">
     <div style="height: 300px; overflow-y: auto;">
       <div class="flex gap-4 w-full justify-between items-center">
-        <!-- <vezo-select label="Choose Fields"></vezo-select>
-        <vezo-select label="condition" [items]="operators" optionLabel="label" optionValue="name"></vezo-select>
-        <vezo-select label="Model Value"></vezo-select>
-        <vezo-input label="Static Value"></vezo-input> -->
 
-        <p-dropdown [options]="this.fieldArrays" [(ngModel)]="this.loopFirstValue" placeholder="Choose Fields"
-          [showClear]="true" [style]="{ width: '100%' }" class="w-full">
+        <!-- <p-dropdown [options]="this.fieldArrays" [(ngModel)]="this.loopFirstValue" placeholder="Choose Fields"
+          optionLabel="fieldName" [showClear]="true" [style]="{ width: '100%' }" class="w-full">
+        </p-dropdown> -->
+
+        <p-dropdown [options]="this.finalListModels" [(ngModel)]="this.loopFirstValue" placeholder="Choose Fields"
+          [group]="true">
+          <ng-template let-group pTemplate="group">
+            <div class="flex gap-2 justify-start items-center">
+              <img src="assets/collection_L.svg" style="width: 16px; height:auto">
+              <span>{{ group.label }}</span>
+            </div>
+          </ng-template>
         </p-dropdown>
 
-        <p-dropdown [options]="this.operators" [(ngModel)]="this.loopOperator" placeholder="Choose Operator"
-          [showClear]="true">
+        <p-dropdown [options]="this.operators" [(ngModel)]="this.loopOperator">
         </p-dropdown>
 
         <div class="w-full py-2 border border-rounded flex justify-between items-center"
           style="flex-direction: column;">
-          <p-dropdown
+          <!-- <p-dropdown
             *ngIf="this.loopStaticValue == null || this.loopStaticValue =='' || this.loopStaticValue == undefined "
             [options]="this.fieldArrays" [(ngModel)]="this.loopSecondValue" placeholder="Choose Fields"
-            [showClear]="true">
+            optionLabel="fieldName" [showClear]="true">
+          </p-dropdown> -->
+          <p-dropdown
+            *ngIf="this.loopStaticValue == null || this.loopStaticValue =='' || this.loopStaticValue == undefined "
+            [options]="this.finalListModels" [(ngModel)]="this.loopSecondValue" placeholder="Choose Fields"
+            [group]="true">
+            <ng-template let-group pTemplate="group">
+              <div class="flex gap-2 justify-start items-center">
+                <img src="assets/collection_L.svg" style="width: 16px; height:auto">
+                <span>{{ group.label }}</span>
+              </div>
+            </ng-template>
           </p-dropdown>
+
           <div *ngIf="this.loopSecondValue == null && (this.loopStaticValue == '' || this.loopStaticValue == null ) ">OR
           </div>
           <vezo-input [(ngModel)]="this.loopStaticValue" *ngIf="this.loopSecondValue == null" className="w-full"

@@ -11,7 +11,7 @@ import {
   StepsConfiguration,
   ToolboxConfiguration,
 } from 'sequential-workflow-designer';
-import { BusinessLogic, Condition, ConditionGroup } from '../business-logic';
+import { BusinessLogic, CollectionObj, Condition, ConditionGroup } from '../business-logic';
 import { BusinessLogicService } from '../business-logic.service';
 import { GenericComponent } from '../../utils/genericcomponent';
 import { Collection } from '../../collection/collection';
@@ -22,6 +22,7 @@ import { FilterBuilder } from '../../utils/FilterBuilder';
 import { MicroService } from '../../microservice/microservice';
 import { MicroserviceService } from '../../microservice/microservice.service';
 import { ProjectService } from '../../project/project.service';
+import { Field } from '../../fields/field';
 
 function createDefinition() {
   return {
@@ -230,7 +231,7 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
       componentType: 'task',
       type,
       name,
-      properties: properties || { schedule: 0, model: name, queryType: '' , customQuery: 'null' },
+      properties: properties || { schedule: 0, model: name, queryType: '', customQuery: 'null' },
     };
   }
 
@@ -342,15 +343,16 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
   selectedOperation: any;
   selectedResOp: Collection = {};
   selectedDate: any;
-  fieldArrays: string[] = [];
+  fieldArrays: Field[] = [];
+  finalListModels: CollectionObj[] = [];
 
   loopFirstValue: any;
   loopOperator: any;
   loopSecondValue: any;
   loopStaticValue: any;
   resType: any;
-  fetchDataSchedule : any ;
-  customJPAQuery : any;
+  fetchDataSchedule: any;
+  customJPAQuery: any;
 
   getAllModels() {
 
@@ -387,10 +389,10 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
   public updatePropertyCollection(
     properties: Properties,
     name: string,
-    selctedModels: any,
+    selectedModels: any,
     context: GlobalEditorContext | StepEditorContext
   ) {
-    properties[name] = selctedModels;
+    properties[name] = selectedModels;
     properties['schedule'] = this.selectedDate;
     if (this.selectedResOp !== null && this.resType !== 'void') {
       properties['returnType'] = this.selectedResOp;
@@ -398,6 +400,65 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
     else if (this.resType === 'void') {
       properties['returnType'] = "void";
     }
+
+    this.fieldArrays = [];
+    var i = 0;
+    // console.log( this.selectedModels);
+    // for (i = 0; i < selectedModels.length; i++) {
+    //   var filterStr = FilterBuilder.equal('collection.id', this.selectedModels[i].id + '');
+    //   this.search = filterStr;
+    //   var pagination !: Pagination;
+    //   this.fieldsService.getAllData(pagination, this.search).then((res: any) => {
+    //     for (var k = 0; k < res.content.length; k++) {
+    //       this.fieldArrays.push(res.content[k]);
+    //     }
+    //   })
+    // }
+
+    // for (let i = 0; i < selectedModels.length; i++) {
+    //   const model = selectedModels[i];
+    //   const filterStr = FilterBuilder.equal('collection.id', model.id + '');
+    //   this.search = filterStr;
+    //   let pagination!: Pagination;
+
+    //   this.fieldsService.getAllData(pagination, this.search).then((res: any) => {
+    //     // const items = res.content.map((field: any) => field);
+    //     const items = res.content.map((field: any) => ({
+    //       fieldName: field.fieldName,
+    //       value: field.id
+    //     }));
+
+    //     const collectionObj = {
+    //       fieldName: model.collectionName, 
+    //       value: model.id, // CollectionId
+    //       items: items // Field objects
+    //     };
+    //     this.finalListModels.push(collectionObj);
+    //   });
+    // }
+
+    // Loop through selectedModels
+  for (let i = 0; i < selectedModels.length; i++) {
+    const model = selectedModels[i];
+    const filterStr = FilterBuilder.equal('collection.id', model.id + '');
+    this.search = filterStr;
+    let pagination!: Pagination;
+
+    this.fieldsService.getAllData(pagination, this.search).then((res: any) => {
+      const items = res.content.map((field: any) => ({
+        label: field.fieldName, 
+        value: field        
+      }));
+
+      const collectionObj = {
+        label: model.collectionName, 
+        value: model,             
+        items: items                
+      };
+      this.finalListModels.push(collectionObj);
+    });
+  }
+    console.log( this.finalListModels) ;
     context.notifyPropertiesChanged();
   }
 
@@ -409,14 +470,13 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
   public saveInfoFetch(sequence: any, context: GlobalEditorContext | StepEditorContext) {
     sequence = sequence.find((item: any) => item.type === "getDsData");
     sequence.properties.model = this.currentModel.collectionName;
-    if( this.selectedOperation == 'CustomJpaQuery' )
-    {
+    if (this.selectedOperation == 'CustomJpaQuery') {
       sequence.properties.queryType = this.selectedOperation;
-      sequence.properties.customQuery = this.customJPAQuery ;
+      sequence.properties.customQuery = this.customJPAQuery;
     }
-    else{
+    else {
       sequence.properties.queryType = this.selectedOperation;
-      sequence.properties.customQuery = "null" ;
+      sequence.properties.customQuery = "null";
     }
     sequence.properties.schedule = this.fetchDataSchedule;
 
