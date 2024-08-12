@@ -9,6 +9,10 @@ import { GenericComponent } from '../utils/genericcomponent';
 import { Field } from './field';
 import { FieldService } from './field.service';
 
+export interface dtoPayloadItem {
+  id?: string;
+};
+
 @Component({
   selector: 'app-fields',
   templateUrl: './fields.component.html',
@@ -43,6 +47,9 @@ export class FieldsComponent extends GenericComponent implements OnInit {
   showForm: boolean = false;
   fieldType: string = 'String';
   collections: any[] = [];
+  showGenerateDtoModel: boolean = false;
+
+  dtoSelectedFields: [] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -99,6 +106,34 @@ export class FieldsComponent extends GenericComponent implements OnInit {
         this.msgService.add({ severity: 'success', summary: 'Generated', detail: 'All apis created' });
         this.getAllData();
       })
+    }
+  }
+
+
+  generateDTO() {
+    if (this.collectionId) {
+      var finalPayload: dtoPayloadItem[] = [];
+      // Transforming the list for the correct payload format
+      for (var i = 0; i < this.dtoSelectedFields.length; i++) {
+        var tempObj: dtoPayloadItem = {};
+        tempObj.id = this.dtoSelectedFields[i];
+        finalPayload.push(tempObj);
+      }
+      // console.log( 'finalDTOPayload' ) ;
+      // console.log( finalPayload) ;
+
+      this.collectionService.generateDTO(this.collectionId, finalPayload).then((res: any) => {
+        this.msgService.add({ severity: 'success', summary: 'Success', detail: 'DTO Generated' });
+        this.getAllData();
+        this.showGenerateDtoModel = false;
+      }).catch(
+        (err) => {
+          console.log("Inside Error");
+          this.msgService.add({ severity: 'success', summary: 'Success', detail: 'DTO Generated' });
+          this.getAllData();
+          this.showGenerateDtoModel = false;
+        }
+      )
     }
   }
 

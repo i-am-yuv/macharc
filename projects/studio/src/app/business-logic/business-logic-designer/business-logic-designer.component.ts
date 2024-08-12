@@ -88,6 +88,8 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
   showFetchDataPopup: boolean = false;
   showLoopEditor: boolean = false;
   showAPIEditor: boolean = false;
+  showSaveDataEditor: boolean = false;
+
 
   conditionEditor: any;
   ModelEditor: any;
@@ -220,6 +222,21 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
     };
   }
 
+  createSaveDataTaskStep(
+    id: null,
+    type: string,
+    name: string,
+    properties: any | undefined
+  ) {
+    return {
+      id,
+      componentType: 'task',
+      type,
+      name,
+      properties: properties || { collection: '' },
+    };
+  }
+
   createFetchDataStep(
     id: null,
     type: string,
@@ -283,7 +300,7 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
         this.createContainerStep(null, []),
         // this.createTaskStep(null, 'email', 'Send email', null),
         this.createTaskStep(null, 'callWebclient', 'Call APIS', null),
-        this.createTaskStep(null, 'saveDsData', 'Save data', null),
+        this.createSaveDataTaskStep(null, 'saveDsData', 'Save data', null),
         // this.createTaskStep(null, 'responseOutput', 'Response Output', null),
       ],
     };
@@ -331,6 +348,10 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
     this.apiEditor = editor;
   }
 
+  openSaveDataEditor(editor: any) {
+    this.showSaveDataEditor = !this.showSaveDataEditor ;
+  }
+
   updateConditions() {
     // to handle this by partha
   }
@@ -345,6 +366,7 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
   selectedDate: any;
   fieldArrays: Field[] = [];
   finalListModels: CollectionObj[] = [];
+  saveDataModel : Collection = {};
 
   loopFirstValue: any;
   loopOperator: any;
@@ -578,6 +600,23 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
 
     sequence = sequence.find((item: any) => item.type === "if");
     sequence.properties['conditionDefination'] = payload;
+    context.notifyPropertiesChanged();
+  }
+
+  updateSaveDataEditor(editor: any)
+  {
+    this.saveThisModel(
+      editor.definition.sequence,
+      editor.context
+    );
+
+    this.showSaveDataEditor = false;
+  }
+
+  saveThisModel(sequence: any, context: GlobalEditorContext | StepEditorContext) {
+    
+    sequence = sequence.find((item: any) => item.type === "saveDsData");
+    sequence.properties['collection'] = this.saveDataModel;
     context.notifyPropertiesChanged();
   }
 

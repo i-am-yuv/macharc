@@ -242,6 +242,14 @@
       </div>
     </ng-container>
 
+    <ng-container *ngIf="editor.step.type === 'saveDsData'">
+      <div class="mb-2" (click)="openSaveDataEditor(editor)">
+        <button class="bg-indigo-600 rounded text-white p-2">
+          Configure
+        </button>
+      </div>
+    </ng-container>
+
     <p href="" target="_blank" class="text-blue-400 mt-2">Refer docs on how to configure steps</p>
 
     <h3 class="my-4 font-semibold">Schedule</h3>
@@ -400,8 +408,9 @@
                       optionLabel="fieldName" optionValue="fieldName" placeholder="Choose Fields"
                       (onChange)="handleSecondValueChange(condition, $event.value)" [showClear]="true"></p-dropdown> -->
 
-                    <p-dropdown [options]="getDropdownOptions()" [(ngModel)]="condition.secondValue" optionLabel="fieldName"
-                      optionValue="fieldName" placeholder="Choose Fields" [showClear]="true" (onChange)="handleSecondValueChange(condition, $event.value)">
+                    <p-dropdown [options]="getDropdownOptions()" [(ngModel)]="condition.secondValue"
+                      optionLabel="fieldName" optionValue="fieldName" placeholder="Choose Fields" [showClear]="true"
+                      (onChange)="handleSecondValueChange(condition, $event.value)">
 
                       <!-- Custom Template for Selected Item -->
                       <ng-template pTemplate="selectedItem" let-selectedOption>
@@ -423,11 +432,11 @@
                 </div>
 
                 <div *ngIf="conditionIndex < group.conditions.length - 1">
-                  <!-- <select [(ngModel)]="condition.connector" class="p-2">
-                  <option value="AND">AND</option>
-                  <option value="OR">OR</option>
-                </select> -->
-                  <p-toggleButton [(ngModel)]="condition.connector" onLabel="AND" offLabel="OR"></p-toggleButton>
+                  <select [(ngModel)]="condition.connector" class="p-2">
+                    <option value="AND">AND</option>
+                    <option value="OR">OR</option>
+                  </select>
+                  <!-- <p-toggleButton [(ngModel)]="condition.connector" onLabel="AND" offLabel="OR"></p-toggleButton> -->
                 </div>
               </div>
 
@@ -441,22 +450,22 @@
 
             <div *ngIf="groupIndex < conditionGroups.length - 1">
               <div style="margin-top:20px;">
-                <!-- <select [(ngModel)]="group.connector" class="p-2">
+                <select [(ngModel)]="group.connector" class="p-2">
                   <option value="AND">AND</option>
                   <option value="OR">OR</option>
-                </select> -->
-                <p-toggleButton [(ngModel)]="group.connector" onLabel="AND" offLabel="OR"></p-toggleButton>
+                </select>
+                <!-- <p-toggleButton [(ngModel)]="group.connector" onLabel="AND" offLabel="OR"></p-toggleButton> -->
               </div>
             </div>
 
           </div>
           <div class="add-options">
             <div>
-              <!-- <select [(ngModel)]="newConditionGroupConnector" class="p-2">
+              <select [(ngModel)]="newConditionGroupConnector" class="p-2">
                 <option value="AND">AND</option>
                 <option value="OR">OR</option>
-              </select> -->
-              <p-toggleButton [(ngModel)]="newConditionGroupConnector" onLabel="AND" offLabel="OR"></p-toggleButton>
+              </select>
+              <!-- <p-toggleButton [(ngModel)]="newConditionGroupConnector" onLabel="AND" offLabel="OR"></p-toggleButton> -->
             </div>
             <div class="mt-2 flex justify-center items-center w-full">
               <!-- <button (click)="addConditionGroup()" style="margin-bottom: 0.5rem;">Add Condition Group</button> -->
@@ -559,6 +568,26 @@
   <ng-template vTemplate="footer">
     <div class="text-right">
       <vezo-button label="Save" (click)="updateApiEditor(this.ModelEditor)"></vezo-button>
+    </div>
+  </ng-template>
+</vezo-modal>
+
+<!-- Model for Save Data -->
+<vezo-modal [(visible)]="showSaveDataEditor">
+  <ng-template vTemplate="header">Configuration</ng-template>
+  <ng-template vTemplate="content">
+    <div style="height: 300px; overflow-y: auto;">
+      <div class="flex gap-4 w-full justify-start items-center">
+        <p-dropdown [options]="this.selectedModels" [(ngModel)]="this.saveDataModel" placeholder="Select Model"
+          [showClear]="true" [style]="{ width: '80%' }" class="w-full" optionLabel="collectionName">
+        </p-dropdown>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template vTemplate="footer">
+    <div class="text-right">
+      <vezo-button label="Save" [disabled]="this.saveDataModel==null"
+        (click)="updateSaveDataEditor(this.ModelEditor)"></vezo-button>
     </div>
   </ng-template>
 </vezo-modal>
