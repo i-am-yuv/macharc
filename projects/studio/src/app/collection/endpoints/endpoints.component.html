@@ -17,22 +17,21 @@
             <vezo-accordion>
                 <vezo-accordion-section header="CUSTOM" [showSection]="true">
                     <div class="my-2 subheading" *ngIf="!data.length">NONE</div>
-                    <div class="divide-y" *ngIf="data.length">
+                    <div class="divide-y  " *ngIf="data.length">
                         <ng-container *ngFor="let ep of data">
-                            <div class="py-4 grid grid-cols-12" *ngIf="!ep.crud">
-                                <div class="col-span-9 w-full space-y-2">
-                                    <p class="subheading">{{ ep.endpointName }}</p>
-                                    <p><span
-                                            class="bg-{{getEpColor(ep.endpointType)}}-200 px-3 py-1 text-xs rounded-lg mr-2">{{
-                                            ep.endpointType
+                            <div class="py-2 grid grid-cols-12 my-1 bg-indigo-50" *ngIf="!ep.crud">
+                                <div class="col-span-9 w-full ">
+                                    <div>{{ ep.endpointName }}</div>
+                                    <div ><span
+                                            class="bg-{{getEpColor(ep.endPointType)}}-200 text-xs rounded-lg px-2">{{
+                                            ep.endPointType
                                             }}</span>
-                                    </p>
-                                    <p class="break-all"> {{ ep.endpointPath }}
-                                    </p>
+                                    </div>
+                                    <div> {{ ep.endpointPath }}</div>
                                 </div>
                                 <div class="col-span-3 w-full text-right cursor-pointer">
-                                    <vezo-icon icon="chevronRight" className="w-12 h-12 text-indigo-400"
-                                        strokeWidth="0.5" (click)="editCustomEndpoint(ep)"></vezo-icon>
+                                    <vezo-icon icon="chevronRight" className="w-6 h-6 text-indigo-400" strokeWidth="0.5"
+                                        (click)="editCustomEndpoint(ep)"></vezo-icon>
                                 </div>
                             </div>
                         </ng-container>
@@ -44,7 +43,7 @@
                 <vezo-accordion-section header="CRUD">
                     <div class="divide-y">
                         <ng-container *ngFor="let ep of data">
-                            <div class="py-4 grid grid-cols-12" *ngIf="ep.crud">
+                            <div class="py-4 grid grid-cols-12" *ngIf="ep.isCrud == true">
                                 <div class="col-span-9 w-full space-y-2">
                                     <p class="subheading">{{ ep.endpointName }}</p>
                                     <p><span
@@ -64,7 +63,6 @@
                     </div>
 
                 </vezo-accordion-section>
-
 
             </vezo-accordion>
 
@@ -119,10 +117,25 @@
 
                         <vezo-select label="Return Type" formControlName="returnType" [items]="returnTypes"
                             optionLabel="label" optionValue="value"></vezo-select>
+
+                        <p-dropdown *ngIf="this.form.value.returnType == 'collection' " [options]="this.responseDto"
+                            formControlName="responseDto" placeholder="Select Response DTO" optionLabel="dtoClassName"
+                            [style]="{ width: '100%' }">
+                        </p-dropdown>
+
                         <vezo-select label="Service" formControlName="workflow" [items]="services"
                             *ngIf="!form.value.crud" optionLabel="workflowName"></vezo-select>
-                        <vezo-select label="Pojo" formControlName="pojo" [items]="collections" *ngIf="!form.value.crud"
-                            optionLabel="collectionName"></vezo-select>
+
+                        <!-- <vezo-select label="Request DTO" formControlName="pojo" [items]="collections"
+                            *ngIf="!form.value.crud" optionLabel="collectionName"></vezo-select> -->
+
+                        <!-- <vezo-select label="Request DTO" formControlName="pojo" [items]="requestDto"
+                             optionLabel="dtoClassName" optionValue="id"></vezo-select> -->
+
+                        <p-dropdown [options]="this.requestDto" formControlName="requestDto"
+                            placeholder="Select Request DTO" optionLabel="dtoClassName" [style]="{ width: '100%' }">
+                        </p-dropdown>
+
                         <div></div>
                     </ng-container>
                     <vezo-select label=" API Source" formControlName="datasource" [items]="datasources"

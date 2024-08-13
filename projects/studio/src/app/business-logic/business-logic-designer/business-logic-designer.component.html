@@ -385,8 +385,7 @@
                 <div class="flex justify-between items-center gap-4">
 
                   <p-dropdown [options]="this.fieldArrays" [(ngModel)]="condition.firstValue" optionLabel="fieldName"
-                    optionValue="fieldName" placeholder="Choose Fields" [showClear]="true" [style]="{ width: '100%' }"
-                    class="w-full">
+                    placeholder="Choose Fields" [showClear]="true" [style]="{ width: '100%' }" class="w-full">
 
                     <!-- Custom Template for Selected Item -->
                     <ng-template pTemplate="selectedItem" let-selectedOption>
@@ -409,7 +408,7 @@
                       (onChange)="handleSecondValueChange(condition, $event.value)" [showClear]="true"></p-dropdown> -->
 
                     <p-dropdown [options]="getDropdownOptions()" [(ngModel)]="condition.secondValue"
-                      optionLabel="fieldName" optionValue="fieldName" placeholder="Choose Fields" [showClear]="true"
+                      optionLabel="fieldName" placeholder="Choose Fields" [showClear]="true"
                       (onChange)="handleSecondValueChange(condition, $event.value)">
 
                       <!-- Custom Template for Selected Item -->
@@ -432,11 +431,16 @@
                 </div>
 
                 <div *ngIf="conditionIndex < group.conditions.length - 1">
-                  <select [(ngModel)]="condition.connector" class="p-2">
-                    <option value="AND">AND</option>
-                    <option value="OR">OR</option>
-                  </select>
-                  <!-- <p-toggleButton [(ngModel)]="condition.connector" onLabel="AND" offLabel="OR"></p-toggleButton> -->
+                  <div class="border rounded px-2 py-1  ">
+                    <select [(ngModel)]="condition.connector"  class="px-2 py-1">
+                      <option value="AND">AND</option>
+                      <option value="OR">OR</option>
+                    </select>
+                  </div>
+                  <!-- <p-dropdown [options]="this.connector" [(ngModel)]="condition.connector" 
+                    optionLabel="name" optionValue="name">
+                  </p-dropdown> -->
+                  <!-- <p-toggleButton [(ngModel)]="condition.connector" onLabel="AND" offLabel="OR" (ngModelChange)="conditionChangeCall(condition.connector)" ></p-toggleButton> -->
                 </div>
               </div>
 

@@ -73,6 +73,11 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
     { name: '~', label: 'Contains' },
   ];
 
+  connector = [
+    { name : 'AND' , label : '&&'} ,
+    { name : 'OR' , label : '||' }
+  ]
+
   operations = [
     { name: 'Find all', label: 'FindAll' },
     { name: 'Find one', label: 'FindOne' },
@@ -349,7 +354,7 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
   }
 
   openSaveDataEditor(editor: any) {
-    this.showSaveDataEditor = !this.showSaveDataEditor ;
+    this.showSaveDataEditor = !this.showSaveDataEditor;
   }
 
   updateConditions() {
@@ -366,7 +371,7 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
   selectedDate: any;
   fieldArrays: Field[] = [];
   finalListModels: CollectionObj[] = [];
-  saveDataModel : Collection = {};
+  saveDataModel: Collection = {};
 
   loopFirstValue: any;
   loopOperator: any;
@@ -603,8 +608,7 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
     context.notifyPropertiesChanged();
   }
 
-  updateSaveDataEditor(editor: any)
-  {
+  updateSaveDataEditor(editor: any) {
     this.saveThisModel(
       editor.definition.sequence,
       editor.context
@@ -614,7 +618,7 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
   }
 
   saveThisModel(sequence: any, context: GlobalEditorContext | StepEditorContext) {
-    
+
     sequence = sequence.find((item: any) => item.type === "saveDsData");
     sequence.properties['collection'] = this.saveDataModel;
     context.notifyPropertiesChanged();
@@ -632,5 +636,4 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
     }
     return fieldName;
   }
-  
 }

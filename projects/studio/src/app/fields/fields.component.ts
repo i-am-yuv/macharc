@@ -49,6 +49,12 @@ export class FieldsComponent extends GenericComponent implements OnInit {
   collections: any[] = [];
   showGenerateDtoModel: boolean = false;
 
+  dtoTypes: any[] = [
+    { label: 'Request DTO', value: 'RequestDTO' },
+    { label: 'Response DTO', value: 'ResponseDTO' },
+  ];
+  currentDTO: any;
+
   dtoSelectedFields: [] = [];
 
   constructor(
@@ -89,6 +95,13 @@ export class FieldsComponent extends GenericComponent implements OnInit {
         this.collection = res;
       })
     }
+    this.setDefaultDTO();
+  }
+
+  setDefaultDTO() {
+    if (this.dtoTypes.length > 0) {
+      this.currentDTO = this.dtoTypes[0].value;
+    }
   }
 
   generateFromTable() {
@@ -111,29 +124,58 @@ export class FieldsComponent extends GenericComponent implements OnInit {
 
 
   generateDTO() {
-    if (this.collectionId) {
-      var finalPayload: dtoPayloadItem[] = [];
-      // Transforming the list for the correct payload format
-      for (var i = 0; i < this.dtoSelectedFields.length; i++) {
-        var tempObj: dtoPayloadItem = {};
-        tempObj.id = this.dtoSelectedFields[i];
-        finalPayload.push(tempObj);
-      }
-      // console.log( 'finalDTOPayload' ) ;
-      // console.log( finalPayload) ;
+    if (this.currentDTO == 'ResponseDTO') {
+      if (this.collectionId) {
+        alert('This is ResponseDTO') ;
+        var finalPayload: dtoPayloadItem[] = [];
+        // Transforming the list for the correct payload format
+        for (var i = 0; i < this.dtoSelectedFields.length; i++) {
+          var tempObj: dtoPayloadItem = {};
+          tempObj.id = this.dtoSelectedFields[i];
+          finalPayload.push(tempObj);
+        }
 
-      this.collectionService.generateDTO(this.collectionId, finalPayload).then((res: any) => {
-        this.msgService.add({ severity: 'success', summary: 'Success', detail: 'DTO Generated' });
-        this.getAllData();
-        this.showGenerateDtoModel = false;
-      }).catch(
-        (err) => {
-          console.log("Inside Error");
-          this.msgService.add({ severity: 'success', summary: 'Success', detail: 'DTO Generated' });
+        this.collectionService.generateResponseDTO(this.collectionId, finalPayload).then((res: any) => {
+          this.msgService.add({ severity: 'success', summary: 'Success', detail: 'Response DTO Generated' });
           this.getAllData();
           this.showGenerateDtoModel = false;
+        }).catch(
+          (err) => {
+            console.log("Inside Error");
+            this.msgService.add({ severity: 'success', summary: 'Success', detail: 'Response DTO Generated' });
+            this.getAllData();
+            this.showGenerateDtoModel = false;
+          }
+        )
+      }
+    }
+    else if (this.currentDTO == 'RequestDTO')
+    {
+      if (this.collectionId) {
+        alert('This is RequestDTO') ;
+
+        var finalPayload: dtoPayloadItem[] = [];
+        // Transforming the list for the correct payload format
+        for (var i = 0; i < this.dtoSelectedFields.length; i++) {
+          var tempObj: dtoPayloadItem = {};
+          tempObj.id = this.dtoSelectedFields[i];
+          finalPayload.push(tempObj);
         }
-      )
+        this.collectionService.generateRequestDTO(this.collectionId, finalPayload).then((res: any) => {
+          this.msgService.add({ severity: 'success', summary: 'Success', detail: 'Request DTO Generated' });
+          this.getAllData();
+          console.log("Inside Success");
+          this.showGenerateDtoModel = false;
+        }).catch(
+          (err) => {
+            console.log("Inside Error");
+            console.log(err);
+            this.msgService.add({ severity: 'success', summary: 'Success', detail: 'Request DTO Generated' });
+            this.getAllData()
+            this.showGenerateDtoModel = false;
+          }
+        )
+      }
     }
   }
 
