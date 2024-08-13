@@ -146,7 +146,6 @@ export class EndpointsComponent extends GenericComponent implements OnInit {
   {
     this.endpointService.getAllEndpointsByCollection(this.collection.id).then((res: any) => {
       this.data = res;
-    //  console.log( res ) ;
     });
   }
 

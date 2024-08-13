@@ -432,7 +432,7 @@
 
                 <div *ngIf="conditionIndex < group.conditions.length - 1">
                   <div class="border rounded px-2 py-1  ">
-                    <select [(ngModel)]="condition.connector"  class="px-2 py-1">
+                    <select [(ngModel)]="condition.connector" class="px-2 py-1">
                       <option value="AND">AND</option>
                       <option value="OR">OR</option>
                     </select>
@@ -558,15 +558,40 @@
     <div style="height: 300px; overflow-y: auto;">
       <div class="flex gap-4 w-full justify-start items-center">
 
-        <p-dropdown [options]="this.allMicroservice" [(ngModel)]="this.msSelected" placeholder="Select Microserive"
-          [showClear]="true" [style]="{ width: '100%' }" class="w-full" optionLabel="microServiceName">
+        <p-dropdown [options]="this.allModels" [(ngModel)]="this.modelSelectedAPI" placeholder="Select Model"
+          [style]="{ width: '100%' }" class="w-full" optionLabel="collectionName"
+          (ngModelChange)="getTheReqDtos(this.modelSelectedAPI)">
         </p-dropdown>
 
-        <p-dropdown [options]="this.fieldArrays" [(ngModel)]="this.loopFirstValue" placeholder="Select API"
-          [showClear]="true" [style]="{ width: '100%' }" class="w-full">
+        <p-dropdown *ngIf="this.modelSelectedAPI !== null " [options]="this.allEndpointsByModel"
+          [(ngModel)]="this.currentEndpointByModel" placeholder="Select Endpoint" [style]="{ width: '100%' }"
+          class="w-full" optionLabel="endpointName" (ngModelChange)="endpointChange(this.currentEndpointByModel)">
         </p-dropdown>
 
       </div>
+
+      <div *ngFor="let reqDtoField of allFieldsByReqDto">
+
+        <div class="flex mt-8 w-full gap-4 justify-between mx-4 items-center">
+
+          <div class="w-1/2">{{reqDtoField.fieldName}}</div>
+
+          <div class="w-1/2 flex justify-start">
+            <p-dropdown [options]="this.finalListModels" [(ngModel)]="this.selectedModelForDtoField"
+              placeholder="Choose Model Field" [group]="true" [appendTo]="'body'">
+              <ng-template let-group pTemplate="group">
+                <div class="flex gap-2 justify-start items-center">
+                  <img src="assets/collection_L.svg" style="width: 16px; height:auto">
+                  <span>{{ group.label }}</span>
+                </div>
+              </ng-template>
+            </p-dropdown>
+          </div>
+
+        </div>
+
+      </div>
+
     </div>
   </ng-template>
   <ng-template vTemplate="footer">

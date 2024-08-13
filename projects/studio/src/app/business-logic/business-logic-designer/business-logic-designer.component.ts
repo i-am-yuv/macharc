@@ -23,6 +23,8 @@ import { MicroService } from '../../microservice/microservice';
 import { MicroserviceService } from '../../microservice/microservice.service';
 import { ProjectService } from '../../project/project.service';
 import { Field } from '../../fields/field';
+import { EndpointService } from '../../collection/endpoints/endpoint.service';
+import { Endpoint } from '../../collection/endpoints/endpoint';
 
 function createDefinition() {
   return {
@@ -86,6 +88,10 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
   ];
   activeConditions: any[] = [];
   allModels: Collection[] = [];
+  allEndpointsByModel : Endpoint[] = [];
+  allFieldsByReqDto : Field[] = [];
+
+  
   allPojos: [] = [];
 
   showConditionEditor: boolean = false;
@@ -109,7 +115,8 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
     private collectionService: CollectionService,
     private microserivce: MicroserviceService,
     private fieldsService: FieldService,
-    private projectService: ProjectService
+    private projectService: ProjectService,
+    private endpointService : EndpointService
   ) {
     super(collectionService, msgService);
     this.getAllMicroSerivices();
@@ -372,6 +379,11 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
   fieldArrays: Field[] = [];
   finalListModels: CollectionObj[] = [];
   saveDataModel: Collection = {};
+
+  modelSelectedAPI : Collection = {};
+  currentEndpointByModel : Endpoint = {};
+  selectedModelForDtoField: any;
+
 
   loopFirstValue: any;
   loopOperator: any;
@@ -636,4 +648,24 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
     }
     return fieldName;
   }
+
+  getTheReqDtos( selectedModel : Collection)
+  {
+    this.endpointService.getAllEndpointsByCollection(selectedModel.id).then((res: any) => {
+      this.allEndpointsByModel = res;
+      console.log('current Endpoints of model');
+      console.log( this.allEndpointsByModel) ;
+    });
+  }
+
+  endpointChange( endpoint : Endpoint)
+  {
+    console.log( endpoint) ;
+    this.fieldsService.getFieldsByRequestDto(endpoint.requestDto?.id).then((res: any) => {
+      this.allFieldsByReqDto = res;
+      console.log( this.allFieldsByReqDto) ;
+    });
+  }
+
+
 }
