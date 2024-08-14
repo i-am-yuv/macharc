@@ -10,16 +10,25 @@
     <h1 class="title">Microservice</h1>
     <div class="flex justify-end gap-4 items-center">
       <div>
-        <vezo-button icon="chevronRight" [routerLink]="['/builder/collections/' + msId]"
-          label="Model Definitions"></vezo-button>
+        <vezo-button
+          icon="chevronRight"
+          [routerLink]="['/builder/collections/' + msId]"
+          label="Model Definitions"
+        ></vezo-button>
       </div>
       <div>
-        <vezo-button icon="chevronRight" [routerLink]="['/builder/datasources/' + msId]"
-          label="Link Datasources"></vezo-button>
+        <vezo-button
+          icon="chevronRight"
+          [routerLink]="['/builder/datasources/' + msId]"
+          label="Link Datasources"
+        ></vezo-button>
       </div>
       <div>
-        <vezo-button icon="chevronRight" [routerLink]="['/builder/services/' + msId]"
-          label="Service Definitions"></vezo-button>
+        <vezo-button
+          icon="chevronRight"
+          [routerLink]="['/builder/services/' + msId]"
+          label="Service Definitions"
+        ></vezo-button>
       </div>
     </div>
   </div>
@@ -31,19 +40,35 @@
 
     <div class="mt-2 flex justify-between items-center w-full gap-4">
       <div class="inline-block w-1/2">
-        <vezo-input label="Microserive Name" formControlName="microServiceName"></vezo-input>
-        <error-message [controlName]="form.controls['microServiceName']"></error-message>
+        <vezo-input
+          label="Microserive Name"
+          formControlName="microServiceName"
+        ></vezo-input>
+        <error-message
+          [controlName]="form.controls['microServiceName']"
+        ></error-message>
       </div>
       <div class="inline-block w-1/2">
-        <vezo-input label="Microservice Code" formControlName="microServiceCode"></vezo-input>
-        <error-message [controlName]="form.controls['microServiceCode']"></error-message>
+        <vezo-input
+          label="Microservice Code"
+          formControlName="microServiceCode"
+        ></vezo-input>
+        <error-message
+          [controlName]="form.controls['microServiceCode']"
+        ></error-message>
       </div>
     </div>
 
     <div class="mt-2">
-      <vezo-input label="Package Name" formControlName="packageName" [placeholder]="'com.example.demo'"
-        (input)="checkPackageName()"></vezo-input>
-      <error-message [controlName]="form.controls['packageName']"></error-message>
+      <vezo-input
+        label="Package Name"
+        formControlName="packageName"
+        [placeholder]="'com.example.demo'"
+        (input)="checkPackageName()"
+      ></vezo-input>
+      <error-message
+        [controlName]="form.controls['packageName']"
+      ></error-message>
       <div *ngIf="form.get('packageName')?.invalid">
         <small class="text-red-600">Use format: com.example.demo</small>
       </div>
@@ -70,63 +95,68 @@
         ></vezo-select>
       </div>
     </div>
-   
 
     <div class="flex justify-between items-center">
-
-    <div class="flex justify-between items-center">
-      <div class="pb-4 flex my-4 gap-4 w-3/4">
-        <div>
-          <vezo-button
-            icon="chevronRight"
-            [routerLink]="['/builder/collections/' + msId]"
-            label="Model Definitions"
-          ></vezo-button>
+      <div class="flex justify-between items-center">
+        <div class="pb-4 flex my-4 gap-4 w-3/4">
+          <div>
+            <vezo-button
+              icon="chevronRight"
+              [routerLink]="['/builder/collections/' + msId]"
+              label="Model Definitions"
+            ></vezo-button>
+          </div>
+          <div>
+            <vezo-button
+              icon="chevronRight"
+              [routerLink]="['/builder/datasources/' + msId]"
+              label="Link Datasources"
+            ></vezo-button>
+          </div>
+          <div>
+            <vezo-button
+              icon="chevronRight"
+              [routerLink]="['/builder/services/' + msId]"
+              label="Service Definitions"
+            ></vezo-button>
+          </div>
+          <div>
+            <vezo-button
+              icon="chevronRight"
+              (click)="commitCode()"
+              label="Commit Code"
+            ></vezo-button>
+          </div>
         </div>
-        <div>
-          <vezo-button
-            icon="chevronRight"
-            [routerLink]="['/builder/datasources/' + msId]"
-            label="Link Datasources"
-          ></vezo-button>
-        </div>
-        <div>
-          <vezo-button
-            icon="chevronRight"
-            [routerLink]="['/builder/services/' + msId]"
-            label="Service Definitions"
-          ></vezo-button>
-        </div>
-        <div>
-          <vezo-button
-            icon="chevronRight"
-            (click)="commitCode()"
-            label="Commit Code"
-          ></vezo-button>
+        <div class="flex text-right gap-2 justify-end items-center w-1/4">
+          <div class="w-6/12">
+            <vezo-button
+              label="Save"
+              [disabled]="!form.valid"
+              (click)="saveData()"
+            ></vezo-button>
+          </div>
         </div>
       </div>
-      <div class="flex text-right gap-2 justify-end items-center w-1/4">
-        <div class="w-6/12">
+
+      <vezo-toast></vezo-toast>
+
+      <!-- Web Terminal Code -->
+      <div class="mt-16">
+        <div class="flex my-4 space-x-4 place-items-center">
+          <h2 class="title mb-2 grow">Service Control</h2>
           <vezo-button
-            label="Save"
-            [disabled]="!form.valid"
-            (click)="saveData()"
+            label="Disconnect"
+            (click)="stopMessages()"
+          ></vezo-button>
+          <vezo-button label="Stop Server" (click)="stopServer()"></vezo-button>
+          <vezo-button
+            label="Start Server"
+            (click)="startServer()"
           ></vezo-button>
         </div>
+        <ng-terminal #term [minHeight]="200"></ng-terminal>
       </div>
     </div>
-
   </form>
-  <vezo-toast></vezo-toast>
-
-  <!-- Web Terminal Code -->
-  <div class="mt-16">
-    <div class="flex my-4 space-x-4 place-items-center">
-      <h2 class="title mb-2 grow">Service Control</h2>
-      <vezo-button label="Disconnect" (click)="stopMessages()"></vezo-button>
-      <vezo-button label="Stop Server" (click)="stopServer()"></vezo-button>
-      <vezo-button label="Start Server" (click)="startServer()"></vezo-button>
-    </div>
-    <ng-terminal #term [minHeight]="200"></ng-terminal>
-  </div>
 </div>
