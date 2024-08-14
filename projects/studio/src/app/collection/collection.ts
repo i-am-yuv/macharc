@@ -9,4 +9,17 @@ export interface Collection {
     crud?: boolean;
     readonly?: boolean;
     hasService?: boolean;
+    requestDto ?: RequestDto ;
+    responseDto ?: ResponseDto ;
+
+}
+
+export interface RequestDto{
+    id ?: string ;
+    dtoClassName ?: string;
+}
+
+export interface ResponseDto{
+    id ?: string ;
+    dtoClassName ?: string;
 }

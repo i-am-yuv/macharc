@@ -75,4 +75,14 @@ export class BusinessLogicComponent extends GenericComponent implements OnInit {
   showAiGen(wf: BusinessLogic) {
     this.router.navigate(['/builder/services/ai/' + wf.id]);
   }
+
+  override preSave() { 
+    if (!this.form.value.microService && this.microserviceId ) {
+      this.form.value.microService = {
+        id: ''
+      }
+      this.form.value.microService.id = this.microserviceId;
+      console.log(this.form.value.microService.id);
+    }
+  }
 }

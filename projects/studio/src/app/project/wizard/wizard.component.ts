@@ -42,8 +42,8 @@ export class WizardComponent extends GenericComponent {
     this.form = this.fb.group({
       id: '',
       projectName: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
-      projectCode: ['', [Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
-      projectDescription: [],
+      projectCode: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
+      projectDescription: [ '', Validators.required,],
       isdefault: [false]
     });
 

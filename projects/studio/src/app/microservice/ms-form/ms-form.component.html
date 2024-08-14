@@ -6,37 +6,46 @@
       className="cursor-pointer"
     ></vezo-icon>
   </div>
-  <div>
+  <div class="flex justify-between items-center w-full">
     <h1 class="title">Microservice</h1>
+    <div class="flex justify-end gap-4 items-center">
+      <div>
+        <vezo-button icon="chevronRight" [routerLink]="['/builder/collections/' + msId]"
+          label="Model Definitions"></vezo-button>
+      </div>
+      <div>
+        <vezo-button icon="chevronRight" [routerLink]="['/builder/datasources/' + msId]"
+          label="Link Datasources"></vezo-button>
+      </div>
+      <div>
+        <vezo-button icon="chevronRight" [routerLink]="['/builder/services/' + msId]"
+          label="Service Definitions"></vezo-button>
+      </div>
+    </div>
   </div>
 </div>
 
 <div class="bg-white px-16">
   <form [formGroup]="form">
-    <vezo-select
-      [items]="projects"
-      optionLabel="projectName"
-      label="Project"
-      formControlName="project"
-    ></vezo-select>
-    <vezo-input
-      label="Service Code"
-      formControlName="microServiceCode"
-    ></vezo-input>
-    <error-message
-      [controlName]="form.controls['microServiceCode']"
-    ></error-message>
+    <!-- <vezo-select [items]="projects" optionLabel="projectName" label="Project" formControlName="project"></vezo-select> -->
+
+    <div class="mt-2 flex justify-between items-center w-full gap-4">
+      <div class="inline-block w-1/2">
+        <vezo-input label="Microserive Name" formControlName="microServiceName"></vezo-input>
+        <error-message [controlName]="form.controls['microServiceName']"></error-message>
+      </div>
+      <div class="inline-block w-1/2">
+        <vezo-input label="Microservice Code" formControlName="microServiceCode"></vezo-input>
+        <error-message [controlName]="form.controls['microServiceCode']"></error-message>
+      </div>
+    </div>
+
     <div class="mt-2">
-      <vezo-input
-        label="Package Name"
-        formControlName="packageName"
-        (input)="checkPackageName()"
-      ></vezo-input>
-      <error-message
-        [controlName]="form.controls['packageName']"
-      ></error-message>
+      <vezo-input label="Package Name" formControlName="packageName" [placeholder]="'com.example.demo'"
+        (input)="checkPackageName()"></vezo-input>
+      <error-message [controlName]="form.controls['packageName']"></error-message>
       <div *ngIf="form.get('packageName')?.invalid">
-        <small>Use format: text.text.text.</small>
+        <small class="text-red-600">Use format: com.example.demo</small>
       </div>
     </div>
 
@@ -61,13 +70,9 @@
         ></vezo-select>
       </div>
     </div>
-    <vezo-textarea
-      label="Service Name"
-      formControlName="microServiceName"
-    ></vezo-textarea>
-    <error-message
-      [controlName]="form.controls['microServiceName']"
-    ></error-message>
+   
+
+    <div class="flex justify-between items-center">
 
     <div class="flex justify-between items-center">
       <div class="pb-4 flex my-4 gap-4 w-3/4">
@@ -108,15 +113,9 @@
             (click)="saveData()"
           ></vezo-button>
         </div>
-        <div class="w-6/12">
-          <vezo-button
-            label="Generate DTO"
-            [disabled]="!form.valid"
-            (click)="generateDTO()"
-          ></vezo-button>
-        </div>
       </div>
     </div>
+
   </form>
   <vezo-toast></vezo-toast>
 

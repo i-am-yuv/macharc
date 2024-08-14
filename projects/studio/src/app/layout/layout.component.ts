@@ -114,24 +114,40 @@ export class LayoutComponent {
           icon: 'clipboard',
           routerLink: ['/builder/microservices'],
           image: 'assets/microservice_L.svg',
-        },
+        }
+        // ,
+        // {
+        //   label: 'Datasources',
+        //   icon: 'clipboard',
+        //   routerLink: ['/datasources'],
+        //   image: 'assets/Database2.svg',
+        // },
+        // {
+        //   label: 'Models',
+        //   icon: 'clipboard',
+        //   routerLink: ['/builder/collections'],
+        //   image: 'assets/collection_L.svg',
+        // },
+        // {
+        //   label: 'Services',
+        //   icon: 'clipboard',
+        //   routerLink: ['/builder/services'],
+        //   image: 'assets/Services_L.svg',
+        // }
+      ],
+      showSubMenu: true,
+    },
+  ];
+
+  menuItemsDatasource: any[] = [
+    {
+      label: 'Datasource',
+      items: [
         {
-          label: 'Datasources',
+          label: 'Datasource',
           icon: 'clipboard',
           routerLink: ['/datasources'],
           image: 'assets/Database2.svg',
-        },
-        {
-          label: 'Models',
-          icon: 'clipboard',
-          routerLink: ['/builder/collections'],
-          image: 'assets/collection_L.svg',
-        },
-        {
-          label: 'Services',
-          icon: 'clipboard',
-          routerLink: ['/builder/services'],
-          image: 'assets/Services_L.svg',
         }
       ],
       showSubMenu: true,
@@ -288,7 +304,10 @@ export class LayoutComponent {
       return this.menuItemsFrontend;
     } else if (this.menuView == 'menuItemsSettings') {
       return this.menuItemsSettings;
-    } else {
+    } else if (this.menuView == 'menuItemsDatasource') {
+      return this.menuItemsDatasource;
+    }
+     else {
       return this.menuItems;
     }
   }

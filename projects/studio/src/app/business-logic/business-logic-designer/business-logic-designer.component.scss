@@ -38,6 +38,7 @@
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	flex-direction: column;
 	gap: 0.5rem;
   }
   
@@ -54,5 +55,42 @@
   select {
 	margin-left: 0.5rem;
   }
+
+  :host::ng-deep {
+    .p-button {
+       padding: 0.1rem !important;
+    }
+	.p-togglebutton.p-button {
+		border: none !important;
+	}
+	.p-togglebutton.p-button.p-highlight {
+		background-color:#4f46e5 !important;
+		border-color: none !important;
+		color: white !important;
+		padding-left: 5px !important;
+		padding-right: 5px !important;
+	}
+	.p-togglebutton.p-button:not(.p-disabled):not(.p-highlight):hover {
+		background-color:#4f46e5 !important;
+		border-color: none !important;
+		color: white !important;
+		padding-left: 5px !important;
+		padding-right: 5px !important;
+	}
+	.p-togglebutton.p-button {
+		background-color:#4f46e5 !important;
+		border-color: none !important;
+		color: white !important;
+		padding-left: 5px !important;
+		padding-right: 5px !important;
+	}
+	.ui-dropdown-label-container {
+		display: inline-block;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	  }
+	  
+}
   
   

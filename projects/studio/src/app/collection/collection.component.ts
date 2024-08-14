@@ -45,17 +45,18 @@ export class CollectionComponent extends GenericComponent implements OnInit {
         '',
         [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)],
       ],
-      customTableName: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
+      // customTableName: [''],
       collectionKind: ['', Validators.required],
       crud: [],
       readonly: [],
       hasService: [],
-      microService: ['', Validators.required],
-      dataSource: ['', Validators.required]
+      microService: [],
+      dataSource: ['']
     });
   }
   ngOnInit(): void {
     this.microserviceId = this.route.snapshot.paramMap.get('id');
+
     if (this.microserviceId) {
       this.microserviceService
         .getData({ id: this.microserviceId })
@@ -77,9 +78,17 @@ export class CollectionComponent extends GenericComponent implements OnInit {
       }
     });
   }
+
   override preSave(): void {
-    if (!this.form.value.microService) {
-      this.form.patchValue({ microservice: this.microService });
+   
+    console.log( 'this is form') ;
+    console.log( this.form.value);
+    if (!this.form.value.microService && this.microserviceId ) {
+      this.form.value.microService = {
+        id: ''
+      }
+      this.form.value.microService.id = this.microserviceId;
+      console.log(this.form.value.microService.id);
     }
   }
 

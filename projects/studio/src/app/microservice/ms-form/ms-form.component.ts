@@ -23,6 +23,7 @@ import { environment } from 'projects/studio/src/environments/environment';
 import { Payload, ReactiveSocket } from 'rsocket-types';
 import { Subject } from 'rxjs';
 import { MicroserviceService } from '../microservice.service';
+import { Project } from '../../project/project';
 
 @Component({
   selector: 'app-ms-form',
@@ -40,7 +41,10 @@ export class MsFormComponent
   packaging: any[] = ['Jar', 'War'];
   projects: any[] = [];
   loading: boolean = false;
-
+  activeProject: Project | undefined = {
+    id: '',
+    projectName: 'SELECT PROJECT',
+  };
   webSocketUrl = environment.webTerminal;
 
   constructor(
@@ -66,7 +70,7 @@ export class MsFormComponent
       packageName: ['', [Validators.required, this.packageNameValidator]],
       packaging: ['Jar', Validators.required],
       portNumber: ['', [Validators.required, Validators.maxLength(5)]],
-      project: ['', [Validators.required]],
+      project: [''],
     });
   }
 
@@ -76,6 +80,12 @@ export class MsFormComponent
     }
     this.projectService.getAllData().then((res: any) => {
       this.projects = res.content;
+    });
+
+   // this.projectService.setActiveProject();
+    this.projectService.getActiveProject().subscribe((val) => {
+      this.activeProject = val;
+      console.log( this.activeProject ) ;
     });
     // Code for web-terminal
 
@@ -167,8 +177,9 @@ export class MsFormComponent
   }
 
   override saveData() {
-    // this.preSave();
-    //this.form.value.collection = null ;// No collection for page
+    
+    // default sending the active project
+    this.form.value.project = this.activeProject ;
     const formData = this.form.value;
     if (!formData.id) {
       formData.id = null;
