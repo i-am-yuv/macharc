@@ -27,7 +27,7 @@ export class EndpointsComponent extends GenericComponent implements OnInit {
   getEpColor(type: any) {
     const colors = [
       { type: 'GET', color: 'green' },
-      { type: 'POST', color: 'orange' },
+      { type: 'POST', color: 'blue' },
       { type: 'PUT', color: 'purple' },
       { type: 'PATCH', color: 'yellow' },
       { type: 'DELETE', color: 'red' },
@@ -176,10 +176,30 @@ export class EndpointsComponent extends GenericComponent implements OnInit {
 
   override preSave(): void {
     this.form.patchValue({ collection: { id: this.collectionId } });
+    if( this.form.value.returnType !== 'collection' )
+    {
+      this.form.value.responseDto = null ;
+    }
     this.activeEp = this.form.value;
-    // this.form.patchValue({ pathVariables: JSON.stringify(this.pathVariables) });
   }
   addPathVariable() {
     this.pathVariables.push({ variableName: '', variableType: '' });
+  }
+
+  saveCustomData()
+  {
+    if( this.form.value.returnType == 'collection')
+    {
+      this.saveData()
+    }
+    else{
+      this.form.value.responseDto = null ;
+      console.log(this.form.value);
+      this.saveData()
+    }
+  }
+
+  override postSave(data: any) { 
+    this.getEndPointsByCollectionId() ;
   }
 }
