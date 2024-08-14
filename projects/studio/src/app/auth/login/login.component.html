@@ -99,19 +99,11 @@
             ></error-message>
           </div>
 
-          <div class="mt-4">
-            <vezo-input
-              label="Password"
-              formControlName="password"
-              type="password"
-              required=""
-              class="InputText"
-              placeholder="Enter Password"
-            ></vezo-input>
-            <error-message
-              [controlName]="loginForm.controls['password']"
-            ></error-message>
-          </div>
+                    <div class="mt-4">
+                        <vezo-input label="Password" formControlName="password" required="" class="InputText"
+                            placeholder="Enter Password" type="password"></vezo-input>
+                        <error-message [controlName]="loginForm.controls['password']"></error-message>
+                    </div>
 
           <div
             claas="text-center flex"

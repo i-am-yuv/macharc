@@ -89,6 +89,7 @@ import { Properties2Component } from './screen/properties2/properties2.component
 import { TemplatesComponent } from './screen/templates/templates.component';
 import { SettingsComponent } from './settings/settings.component';
 import { ContenteditableValueAccessor } from './utils/constenteditable.directive';
+import { ThemeComponent } from './theme/theme.component';
 import { NgTerminalModule } from 'ng-terminal';
 import { PagePreviewComponent } from './screen/page-preview/page-preview.component';
 import { NestedPreviewComponent } from './data-form/nested-preview/nested-preview.component';
@@ -145,6 +146,7 @@ import { NestedPreviewComponent } from './data-form/nested-preview/nested-previe
     MediaManagerComponent,
     Properties2Component,
     MobilePreviewComponent,
+    ThemeComponent,
     PagePreviewComponent,
     NestedPreviewComponent,
   ],

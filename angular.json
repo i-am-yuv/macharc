@@ -78,7 +78,12 @@
               "./node_modules/redoc/bundles/redoc.standalone.js",
               "node_modules/@stoplight/elements/web-components.min.js",
               {
-                "input": "flutter/web/flutter.js",
+                "input": "flutter/build/web/flutter.js",
+                "inject": true,
+                "bundleName": "flutter"
+              },
+              {
+                "input": "flutter/build/web/flutter_bootstrap.js",
                 "inject": true,
                 "bundleName": "flutter"
               }
