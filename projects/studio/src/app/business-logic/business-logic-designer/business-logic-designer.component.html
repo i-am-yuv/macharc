@@ -570,14 +570,11 @@
 
       </div>
 
-      <div *ngFor="let reqDtoField of allFieldsByReqDto">
-
+      <div *ngFor="let reqDtoField of allFieldsByReqDto; index as i">
         <div class="flex mt-8 w-full gap-4 justify-between mx-4 items-center">
-
           <div class="w-1/2">{{reqDtoField.fieldName}}</div>
-
           <div class="w-1/2 flex justify-start">
-            <p-dropdown [options]="this.finalListModels" [(ngModel)]="this.selectedModelForDtoField"
+            <p-dropdown [options]="this.finalListModels" [(ngModel)]="selectedModelForDtoField[i]" (ngModelChange)="modelSelectedForReqDto(reqDtoField , selectedModelForDtoField[i])"
               placeholder="Choose Model Field" [group]="true" [appendTo]="'body'">
               <ng-template let-group pTemplate="group">
                 <div class="flex gap-2 justify-start items-center">
@@ -587,9 +584,7 @@
               </ng-template>
             </p-dropdown>
           </div>
-
         </div>
-
       </div>
 
     </div>

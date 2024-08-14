@@ -1,3 +1,4 @@
+import { Field } from '../fields/field';
 import { MicroService } from '../microservice/microservice';
 
 export interface BusinessLogic {
@@ -33,6 +34,10 @@ export interface CollectionObj{
   items :[] ;
 }
 
+export interface reqDtoMappedModel{
+  reqDtoField : Field ;
+  mappedModelField : Field ;
+ }
 
 // interface Condition {
 //   firstValue: string;

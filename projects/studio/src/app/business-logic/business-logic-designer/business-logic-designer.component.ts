@@ -11,7 +11,7 @@ import {
   StepsConfiguration,
   ToolboxConfiguration,
 } from 'sequential-workflow-designer';
-import { BusinessLogic, CollectionObj, Condition, ConditionGroup } from '../business-logic';
+import { BusinessLogic, CollectionObj, Condition, ConditionGroup, reqDtoMappedModel } from '../business-logic';
 import { BusinessLogicService } from '../business-logic.service';
 import { GenericComponent } from '../../utils/genericcomponent';
 import { Collection } from '../../collection/collection';
@@ -76,8 +76,8 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
   ];
 
   connector = [
-    { name : 'AND' , label : '&&'} ,
-    { name : 'OR' , label : '||' }
+    { name: 'AND', label: '&&' },
+    { name: 'OR', label: '||' }
   ]
 
   operations = [
@@ -88,10 +88,10 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
   ];
   activeConditions: any[] = [];
   allModels: Collection[] = [];
-  allEndpointsByModel : Endpoint[] = [];
-  allFieldsByReqDto : Field[] = [];
+  allEndpointsByModel: Endpoint[] = [];
+  allFieldsByReqDto: Field[] = [];
 
-  
+
   allPojos: [] = [];
 
   showConditionEditor: boolean = false;
@@ -116,7 +116,7 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
     private microserivce: MicroserviceService,
     private fieldsService: FieldService,
     private projectService: ProjectService,
-    private endpointService : EndpointService
+    private endpointService: EndpointService
   ) {
     super(collectionService, msgService);
     this.getAllMicroSerivices();
@@ -219,7 +219,7 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
   private updateDefinitionJSON() {
     this.definitionJSON = JSON.stringify(this.definition, null, 2);
   }
-  createTaskStep(
+  createTaskStepAPI(
     id: null,
     type: string,
     name: string,
@@ -230,7 +230,7 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
       componentType: 'task',
       type,
       name,
-      properties: properties || { velocity: 0, stepName: name, expression: '' },
+      properties: properties || { collection: '', endpoint: '', mappedData: [] },
     };
   }
 
@@ -278,6 +278,7 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
       properties: properties || { velocity: 0, name: name, models: [] },
     };
   }
+
   createIfStep(id: null, _true: never[], _false: never[]) {
     return {
       id,
@@ -311,7 +312,7 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
         this.createIfStep(null, [], []),
         this.createContainerStep(null, []),
         // this.createTaskStep(null, 'email', 'Send email', null),
-        this.createTaskStep(null, 'callWebclient', 'Call APIS', null),
+        this.createTaskStepAPI(null, 'callWebclient', 'Call APIS', null),
         this.createSaveDataTaskStep(null, 'saveDsData', 'Save data', null),
         // this.createTaskStep(null, 'responseOutput', 'Response Output', null),
       ],
@@ -380,9 +381,9 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
   finalListModels: CollectionObj[] = [];
   saveDataModel: Collection = {};
 
-  modelSelectedAPI : Collection = {};
-  currentEndpointByModel : Endpoint = {};
-  selectedModelForDtoField: any;
+  modelSelectedAPI: Collection = {};
+  currentEndpointByModel: Endpoint = {};
+  selectedModelForDtoField: []= [];
 
 
   loopFirstValue: any;
@@ -437,44 +438,11 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
       properties['returnType'] = this.selectedResOp;
     }
     else if (this.resType === 'void') {
-      properties['returnType'] = "void";
+      properties['returnType'] = {};
     }
 
     this.fieldArrays = [];
     var i = 0;
-    // console.log( this.selectedModels);
-    // for (i = 0; i < selectedModels.length; i++) {
-    //   var filterStr = FilterBuilder.equal('collection.id', this.selectedModels[i].id + '');
-    //   this.search = filterStr;
-    //   var pagination !: Pagination;
-    //   this.fieldsService.getAllData(pagination, this.search).then((res: any) => {
-    //     for (var k = 0; k < res.content.length; k++) {
-    //       this.fieldArrays.push(res.content[k]);
-    //     }
-    //   })
-    // }
-
-    // for (let i = 0; i < selectedModels.length; i++) {
-    //   const model = selectedModels[i];
-    //   const filterStr = FilterBuilder.equal('collection.id', model.id + '');
-    //   this.search = filterStr;
-    //   let pagination!: Pagination;
-
-    //   this.fieldsService.getAllData(pagination, this.search).then((res: any) => {
-    //     // const items = res.content.map((field: any) => field);
-    //     const items = res.content.map((field: any) => ({
-    //       fieldName: field.fieldName,
-    //       value: field.id
-    //     }));
-
-    //     const collectionObj = {
-    //       fieldName: model.collectionName, 
-    //       value: model.id, // CollectionId
-    //       items: items // Field objects
-    //     };
-    //     this.finalListModels.push(collectionObj);
-    //   });
-    // }
 
     // Loop through selectedModels
     for (let i = 0; i < selectedModels.length; i++) {
@@ -513,7 +481,7 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
 
   public saveInfoFetch(sequence: any, context: GlobalEditorContext | StepEditorContext) {
     sequence = sequence.find((item: any) => item.type === "getDsData");
-    sequence.properties.model = this.currentModel.collectionName;
+    sequence.properties.model = this.currentModel;
     if (this.selectedOperation == 'CustomJpaQuery') {
       sequence.properties.queryType = this.selectedOperation;
       sequence.properties.customQuery = this.customJPAQuery;
@@ -590,7 +558,7 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
   handleSecondValueChange(condition: Condition, e: any): void {
     // console.log(condition);
     console.log(e);
-    if (e === 'Enter Manually') {
+    if (e.value === "manual") {
       condition.manualEntry = true;
       condition.secondValue = '';
     } else {
@@ -616,7 +584,7 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
     console.log('Payload:', JSON.stringify(payload));
 
     sequence = sequence.find((item: any) => item.type === "if");
-    sequence.properties['conditionDefination'] = payload;
+    sequence.properties['conditionGroups'] = payload;
     context.notifyPropertiesChanged();
   }
 
@@ -639,6 +607,48 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
   // Code for API step editor
   updateApiEditor(editor: any) {
     console.log(this.msSelected);
+    this.saveThisAPICall(
+      editor.definition.sequence,
+      editor.context
+    );
+
+    this.showAPIEditor = false;
+  }
+
+  reqDtoModelMappedList: reqDtoMappedModel[] = [];
+  currReqDtoModel !:reqDtoMappedModel ;
+
+  saveThisAPICall(sequence: any, context: GlobalEditorContext | StepEditorContext) {
+    sequence = sequence.find((item: any) => item.type === "callWebclient");
+
+    sequence.properties['collection'] = this.modelSelectedAPI;
+    sequence.properties['endpoint'] = this.currentEndpointByModel;
+    sequence.properties['mappedData'] = this.reqDtoModelMappedList;
+    context.notifyPropertiesChanged();
+  }
+
+  modelSelectedForReqDto(reqDtoField: any, modelSelected: any) {
+
+    console.log( reqDtoField );
+    console.log( modelSelected );
+
+    const existingIndex = this.reqDtoModelMappedList.findIndex(
+      (item) => item.reqDtoField.id === reqDtoField.id
+    );
+
+    if (existingIndex !== -1) {
+      this.reqDtoModelMappedList[existingIndex].mappedModelField = modelSelected;
+    } else {
+      // this.currReqDtoModel.reqDtoField = reqDtoField;
+      // this.currReqDtoModel.mappedModelField = modelSelected;
+
+      this.currReqDtoModel = {
+        reqDtoField: reqDtoField,
+        mappedModelField: modelSelected
+      };
+
+      this.reqDtoModelMappedList.push(this.currReqDtoModel);
+    }
   }
 
   truncateField(fieldName: string): string {
@@ -649,23 +659,19 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
     return fieldName;
   }
 
-  getTheReqDtos( selectedModel : Collection)
-  {
+  getTheReqDtos(selectedModel: Collection) {
     this.endpointService.getAllEndpointsByCollection(selectedModel.id).then((res: any) => {
       this.allEndpointsByModel = res;
       console.log('current Endpoints of model');
-      console.log( this.allEndpointsByModel) ;
+      console.log(this.allEndpointsByModel);
     });
   }
 
-  endpointChange( endpoint : Endpoint)
-  {
-    console.log( endpoint) ;
+  endpointChange(endpoint: Endpoint) {
+    console.log(endpoint);
     this.fieldsService.getFieldsByRequestDto(endpoint.requestDto?.id).then((res: any) => {
       this.allFieldsByReqDto = res;
-      console.log( this.allFieldsByReqDto) ;
+      console.log(this.allFieldsByReqDto);
     });
   }
-
-
 }
