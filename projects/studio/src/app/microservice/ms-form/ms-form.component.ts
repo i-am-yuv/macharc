@@ -1,5 +1,11 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  ValidationErrors,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from '@splenta/vezo/src/public-api';
 import { FunctionsUsingCSI, NgTerminal } from 'ng-terminal';
@@ -43,15 +49,22 @@ export class MsFormComponent
     messageService: MessageService,
     private projectService: ProjectService,
     private router: Router,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute
+  ) {
     super(msService, messageService);
     this.msId = this.route.snapshot.paramMap.get('id');
     this.form = this.fb.group({
       id: '',
-      microServiceCode: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
-      microServiceName: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
+      microServiceCode: [
+        '',
+        [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)],
+      ],
+      microServiceName: [
+        '',
+        [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)],
+      ],
       packageName: ['', [Validators.required, this.packageNameValidator]],
-      packaging: ['Jar' , Validators.required ],
+      packaging: ['Jar', Validators.required],
       portNumber: ['', [Validators.required, Validators.maxLength(5)]],
       project: ['', [Validators.required]],
     });
@@ -138,7 +151,6 @@ export class MsFormComponent
       },
     });
   }
-
 
   loadData(res: any): void {
     this.form.patchValue({ ...res });
@@ -286,9 +298,18 @@ export class MsFormComponent
     });
   }
 
-  generateDTO()
-  {
+  generateDTO() {
     // Code for generating the DTO Here
     console.log(this.form.value);
+  }
+
+  commitCode() {
+    this.msService.commitCode(this.msId).then(() => {
+      this.messageService.add({
+        severity: 'success',
+        detail: 'Code commited',
+        summary: 'Code commited successfully',
+      });
+    });
   }
 }
