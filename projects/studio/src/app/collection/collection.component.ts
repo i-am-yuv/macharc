@@ -80,9 +80,9 @@ export class CollectionComponent extends GenericComponent implements OnInit {
   }
 
   override preSave(): void {
-    // if (!this.form.value.microService) {
-    //   this.form.patchValue({ microservice: this.microService });
-    // }
+   
+    console.log( 'this is form') ;
+    console.log( this.form.value);
     if (!this.form.value.microService && this.microserviceId ) {
       this.form.value.microService = {
         id: ''
