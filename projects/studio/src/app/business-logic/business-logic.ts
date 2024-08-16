@@ -32,7 +32,7 @@ export interface ConditionGroup {
 export interface CollectionObj {
   label: string;
   value: string;
-  items: [];
+  items: any;
 }
 
 export interface reqDtoMappedModel {

@@ -52,8 +52,7 @@ function createDefinition() {
 })
 export class BusinessLogicDesignerComponent
   extends GenericComponent
-  implements OnInit
-{
+  implements OnInit {
   form!: FormGroup<any>;
   data: Collection[] = [];
   allMicroservice: MicroService[] = [];
@@ -99,7 +98,7 @@ export class BusinessLogicDesignerComponent
 
   operations = [
     { name: 'Find all', label: 'FindAll' },
-    { name: 'Find one', label: 'FindOne' },
+    // { name: 'Find one', label: 'FindOne' },
     { name: 'Find by an Id', label: 'FindById' },
     { name: 'Custom JPA query', label: 'CustomJpaQuery' },
   ];
@@ -447,6 +446,7 @@ export class BusinessLogicDesignerComponent
       });
   }
 
+  // Save Models Code Start
   saveModels(editor: any) {
     this.updatePropertyCollection(
       editor.definition.properties,
@@ -521,6 +521,7 @@ export class BusinessLogicDesignerComponent
     context.notifyPropertiesChanged();
   }
 
+  // Fetch Data Code Start
   saveFetchData(editor: any) {
     // this.sequence.find(item => item.type === "getDsData");
     console.log(JSON.stringify(editor));
@@ -553,6 +554,7 @@ export class BusinessLogicDesignerComponent
     console.log('Selected option:', this.selectedOperation);
   }
 
+  // Loop Code Start
   updateConditionsLoop(editor: any) {
     console.log(JSON.stringify(editor));
     this.saveInfoLoop(editor.step, editor.context);
@@ -594,8 +596,7 @@ export class BusinessLogicDesignerComponent
     context.notifyPropertiesChanged();
   }
 
-  // if else condition code
-
+  // If else condition code Start
   conditionGroups: ConditionGroup[] = [
     {
       conditions: [
@@ -610,11 +611,22 @@ export class BusinessLogicDesignerComponent
   ];
   newConditionGroupConnector: string = 'AND';
 
+  any : any;
   getDropdownOptions() {
-    return [
-      { fieldName: 'Enter Manually', value: 'manual' },
-      ...this.fieldArrays,
-    ];
+
+    const newObject: CollectionObj = {
+      label: 'Manual',
+      value: 'manual',
+      items: [
+        {
+          label: 'Enter Manual',
+          value: 'manual'
+        }
+      ]
+    };
+    // return this.finalListModels ;
+    this.any = [newObject, ...this.finalListModels] ;
+    return [newObject, ...this.finalListModels];
   }
 
   addCondition(groupIndex: number): void {
@@ -664,9 +676,10 @@ export class BusinessLogicDesignerComponent
   }
 
   handleSecondValueChange(condition: Condition, e: any): void {
-    // console.log(condition);
+    console.log(this.finalListModels);
+    console.log( this.any);
     console.log(e);
-    if (e.value === 'manual') {
+    if (e === 'manual') {
       condition.manualEntry = true;
       condition.secondValue = null;
     } else {
@@ -702,6 +715,7 @@ export class BusinessLogicDesignerComponent
     this.showSaveDataEditor = false;
   }
 
+  // Save Data Code Start
   saveThisModel(
     sequence: any,
     context: GlobalEditorContext | StepEditorContext
@@ -711,7 +725,7 @@ export class BusinessLogicDesignerComponent
     context.notifyPropertiesChanged();
   }
 
-  // Code for API step editor
+  // Call Api code start
   updateApiEditor(editor: any) {
     console.log(this.msSelected);
     this.saveThisAPICall(editor.definition.sequence, editor.context);
