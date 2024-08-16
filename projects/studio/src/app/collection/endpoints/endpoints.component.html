@@ -116,13 +116,14 @@
                         <vezo-input label="Endpoint Details" formControlName="description"></vezo-input>
 
 
-                        <vezo-select label="Return Type" formControlName="returnType" [items]="returnTypes"
+                        <!-- No return type as it will take from the selected service  -->
+                        <!-- <vezo-select label="Return Type" formControlName="returnType" [items]="returnTypes"
                             optionLabel="label" optionValue="value"></vezo-select>
 
                         <p-dropdown *ngIf="this.form.value.returnType == 'collection' " [options]="this.responseDto"
                             formControlName="responseDto" placeholder="Select Response DTO" optionLabel="dtoClassName"
                             [style]="{ width: '100%' }">
-                        </p-dropdown>
+                        </p-dropdown> -->
 
                         <vezo-select label="Service" formControlName="workflow" [items]="services"
                             *ngIf="!form.value.crud" optionLabel="workflowName"></vezo-select>
@@ -133,7 +134,7 @@
                         <!-- <vezo-select label="Request DTO" formControlName="pojo" [items]="requestDto"
                              optionLabel="dtoClassName" optionValue="id"></vezo-select> -->
 
-                        <p-dropdown [options]="this.requestDto" formControlName="requestDto"
+                        <p-dropdown *ngIf="this.form.value.endPointType == 'POST' || this.form.value.endPointType == 'PATCH' || this.form.value.endPointType == 'PUT' " [options]="this.requestDto" formControlName="requestDto"
                             placeholder="Select Request DTO" optionLabel="dtoClassName" [style]="{ width: '100%' }">
                         </p-dropdown>
 

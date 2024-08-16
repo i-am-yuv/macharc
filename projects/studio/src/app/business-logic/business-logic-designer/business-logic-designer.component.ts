@@ -423,6 +423,7 @@ export class BusinessLogicDesignerComponent
   resType: any;
   fetchDataSchedule: any;
   customJPAQuery: any;
+  loopManualEntry : boolean = false ;
 
   getAllModels() {
     this.businessLogicService
@@ -596,6 +597,15 @@ export class BusinessLogicDesignerComponent
     context.notifyPropertiesChanged();
   }
 
+  handleValueChanges(e : any)
+  {
+     console.log(e);
+     if( e == 'manual' )
+     {
+      this.loopManualEntry = true;
+     }
+  }
+
   // If else condition code Start
   conditionGroups: ConditionGroup[] = [
     {
@@ -625,7 +635,7 @@ export class BusinessLogicDesignerComponent
       ]
     };
     // return this.finalListModels ;
-    this.any = [newObject, ...this.finalListModels] ;
+    // this.any = [newObject, ...this.finalListModels] ;
     return [newObject, ...this.finalListModels];
   }
 

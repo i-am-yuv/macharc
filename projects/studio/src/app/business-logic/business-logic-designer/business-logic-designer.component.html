@@ -426,7 +426,7 @@
                 <div class="flex justify-between items-center gap-4">
 
                   <p-dropdown [options]="this.finalListModels" [(ngModel)]="condition.firstValue"
-                    placeholder="Choose Fields" [group]="true" class="w-full  custom-dropdown" >
+                    placeholder="Choose Fields" [group]="true" class="w-full  custom-dropdown">
                     <ng-template let-group pTemplate="group">
                       <div class="flex gap-2 justify-start items-center">
                         <img src="assets/collection_L.svg" style="width: 16px; height: auto" />
@@ -437,7 +437,7 @@
 
 
                   <p-dropdown [options]="this.operators" [(ngModel)]="condition.operator" optionLabel="label"
-                    optionValue="name" >
+                    optionValue="name">
                   </p-dropdown>
 
                   <div *ngIf="!condition.manualEntry">
@@ -547,7 +547,7 @@
         </p-dropdown> -->
 
         <p-dropdown [options]="this.finalListModels" [(ngModel)]="this.loopFirstValue" placeholder="Choose Fields"
-          [group]="true">
+          [group]="true"  >
           <ng-template let-group pTemplate="group">
             <div class="flex gap-2 justify-start items-center">
               <img src="assets/collection_L.svg" style="width: 16px; height: auto" />
@@ -559,18 +559,11 @@
         <p-dropdown [options]="this.operators" [(ngModel)]="this.loopOperator">
         </p-dropdown>
 
-        <div class="w-full py-2 border border-rounded flex justify-between items-center" style="flex-direction: column">
-          <!-- <p-dropdown
-            *ngIf="this.loopStaticValue == null || this.loopStaticValue =='' || this.loopStaticValue == undefined "
-            [options]="this.fieldArrays" [(ngModel)]="this.loopSecondValue" placeholder="Choose Fields"
-            optionLabel="fieldName" [showClear]="true">
-          </p-dropdown> -->
-          <p-dropdown *ngIf="
-              this.loopStaticValue == null ||
-              this.loopStaticValue == '' ||
-              this.loopStaticValue == undefined
-            " [options]="this.finalListModels" [(ngModel)]="this.loopSecondValue" placeholder="Choose Fields"
-            [group]="true">
+        <div class="w-full flex justify-between items-center">
+
+          <p-dropdown *ngIf="this.loopManualEntry == false " [options]="getDropdownOptions()"
+            [(ngModel)]="this.loopSecondValue" placeholder="Choose Fields" 
+            (onChange)="handleValueChanges( $event.value)" [group]="true" [showClear]="true">
             <ng-template let-group pTemplate="group">
               <div class="flex gap-2 justify-start items-center">
                 <img src="assets/collection_L.svg" style="width: 16px; height: auto" />
@@ -579,14 +572,14 @@
             </ng-template>
           </p-dropdown>
 
-          <div *ngIf="
-              this.loopSecondValue == null &&
-              (this.loopStaticValue == '' || this.loopStaticValue == null)
-            ">
-            OR
+          <div
+            *ngIf="this.loopManualEntry"
+            class="border p-2 rounded flex justify-between items-center gap-1">
+            <input [(ngModel)]="this.loopStaticValue" placeholder="Enter value manually" />
+            <div class="cursor-pointer" (click)="this.loopManualEntry = !this.loopManualEntry">
+              X
+            </div>
           </div>
-          <vezo-input [(ngModel)]="this.loopStaticValue" *ngIf="this.loopSecondValue == null" className="w-full"
-            [placeholder]="'Enter Value'"></vezo-input>
         </div>
       </div>
     </div>
@@ -610,8 +603,9 @@
         </p-dropdown>
 
         <p-dropdown *ngIf="this.modelSelectedAPI !== null" [options]="this.allEndpointsByModel"
-          [(ngModel)]="this.currentEndpointByModel" placeholder="Select Endpoint" [style]="{ width: '100%' }" [appendTo]="'body'"
-          class="w-full" optionLabel="endpointName" (ngModelChange)="endpointChange(this.currentEndpointByModel)">
+          [(ngModel)]="this.currentEndpointByModel" placeholder="Select Endpoint" [style]="{ width: '100%' }"
+          [appendTo]="'body'" class="w-full" optionLabel="endpointName"
+          (ngModelChange)="endpointChange(this.currentEndpointByModel)">
         </p-dropdown>
       </div>
 

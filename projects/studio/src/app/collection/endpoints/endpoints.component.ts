@@ -91,7 +91,7 @@ export class EndpointsComponent extends GenericComponent implements OnInit {
       endpointPath: [''],
       endPointType: [''],
       description: [''],
-      returnType: [''],
+      // returnType: [''],
       pathVariables: [''],
       workflow: [''],
       crud: [false],
@@ -99,7 +99,7 @@ export class EndpointsComponent extends GenericComponent implements OnInit {
       webhook: [''],
       api: [''],
       requestDto: [''],
-      responseDto:[''],
+      // responseDto:[''],
       collection: [''],
       requestJson: [''],
       responseJson: [''],
@@ -176,9 +176,9 @@ export class EndpointsComponent extends GenericComponent implements OnInit {
 
   override preSave(): void {
     this.form.patchValue({ collection: { id: this.collectionId } });
-    if( this.form.value.returnType !== 'collection' )
+    if( this.form.value.endPointType == 'GET'  || this.form.value.endPointType == 'DELETE')
     {
-      this.form.value.responseDto = null ;
+      this.form.value.requestDto = null ;
     }
     this.activeEp = this.form.value;
   }

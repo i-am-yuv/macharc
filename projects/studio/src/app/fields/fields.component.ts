@@ -126,7 +126,7 @@ export class FieldsComponent extends GenericComponent implements OnInit {
   generateDTO() {
     if (this.currentDTO == 'ResponseDTO') {
       if (this.collectionId) {
-        alert('This is ResponseDTO') ;
+        // alert('This is ResponseDTO') ;
         var finalPayload: dtoPayloadItem[] = [];
         // Transforming the list for the correct payload format
         for (var i = 0; i < this.dtoSelectedFields.length; i++) {
@@ -152,7 +152,7 @@ export class FieldsComponent extends GenericComponent implements OnInit {
     else if (this.currentDTO == 'RequestDTO')
     {
       if (this.collectionId) {
-        alert('This is RequestDTO') ;
+        // alert('This is RequestDTO') ;
 
         var finalPayload: dtoPayloadItem[] = [];
         // Transforming the list for the correct payload format
