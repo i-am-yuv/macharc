@@ -95,53 +95,27 @@
         ></vezo-select>
       </div>
     </div>
-
-    <div class="flex justify-between items-center">
-      <div class="flex justify-between items-center">
-        <div class="pb-4 flex my-4 gap-4 w-3/4">
-          <div>
-            <vezo-button
-              icon="chevronRight"
-              [routerLink]="['/builder/collections/' + msId]"
-              label="Model Definitions"
-            ></vezo-button>
-          </div>
-          <div>
-            <vezo-button
-              icon="chevronRight"
-              [routerLink]="['/builder/datasources/' + msId]"
-              label="Link Datasources"
-            ></vezo-button>
-          </div>
-          <div>
-            <vezo-button
-              icon="chevronRight"
-              [routerLink]="['/builder/services/' + msId]"
-              label="Service Definitions"
-            ></vezo-button>
-          </div>
-          <div>
-            <vezo-button
-              icon="chevronRight"
-              (click)="commitCode()"
-              label="Commit Code"
-            ></vezo-button>
-          </div>
-        </div>
-        <div class="flex text-right gap-2 justify-end items-center w-1/4">
-          <div class="w-6/12">
-            <vezo-button
-              label="Save"
-              [disabled]="!form.valid"
-              (click)="saveData()"
-            ></vezo-button>
-          </div>
-        </div>
+    <div class="text-right w-full my-4">
+      <vezo-button
+        label="Save"
+        [disabled]="!form.valid"
+        (click)="saveData()"
+      ></vezo-button>
+    </div>
+    <div class="my-4">
+      <div class="">
+        <vezo-textarea
+          placeholder="Commit message"
+          label="Commit code"
+        ></vezo-textarea>
       </div>
+      <div class="my-4 text-right">
+        <vezo-button (click)="commitCode()" label="Commit Code"></vezo-button>
+      </div>
+    </div>
 
-      <vezo-toast></vezo-toast>
-
-      <!-- Web Terminal Code -->
+    <!-- Web Terminal Code -->
+    <div>
       <div class="mt-16">
         <div class="flex my-4 space-x-4 place-items-center">
           <h2 class="title mb-2 grow">Service Control</h2>
@@ -160,3 +134,5 @@
     </div>
   </form>
 </div>
+
+<vezo-toast></vezo-toast>

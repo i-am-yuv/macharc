@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { MessageService, Pagination } from '@splenta/vezo/src/public-api';
 import {
@@ -11,20 +12,26 @@ import {
   StepsConfiguration,
   ToolboxConfiguration,
 } from 'sequential-workflow-designer';
-import { BusinessLogic, CollectionObj, Condition, ConditionGroup, reqDtoMappedModel } from '../business-logic';
-import { BusinessLogicService } from '../business-logic.service';
-import { GenericComponent } from '../../utils/genericcomponent';
 import { Collection } from '../../collection/collection';
-import { FormGroup } from '@angular/forms';
 import { CollectionService } from '../../collection/collection.service';
+import { Endpoint } from '../../collection/endpoints/endpoint';
+import { EndpointService } from '../../collection/endpoints/endpoint.service';
+import { Field } from '../../fields/field';
 import { FieldService } from '../../fields/field.service';
-import { FilterBuilder } from '../../utils/FilterBuilder';
 import { MicroService } from '../../microservice/microservice';
 import { MicroserviceService } from '../../microservice/microservice.service';
 import { ProjectService } from '../../project/project.service';
-import { Field } from '../../fields/field';
-import { EndpointService } from '../../collection/endpoints/endpoint.service';
-import { Endpoint } from '../../collection/endpoints/endpoint';
+import { FilterBuilder } from '../../utils/FilterBuilder';
+import { GenericComponent } from '../../utils/genericcomponent';
+import {
+  BusinessLogic,
+  CollectionObj,
+  Condition,
+  ConditionGroup,
+  InputParam,
+  reqDtoMappedModel,
+} from '../business-logic';
+import { BusinessLogicService } from '../business-logic.service';
 
 function createDefinition() {
   return {
@@ -43,8 +50,10 @@ function createDefinition() {
   templateUrl: './business-logic-designer.component.html',
   styleUrls: ['./business-logic-designer.component.scss'],
 })
-export class BusinessLogicDesignerComponent extends GenericComponent implements OnInit {
-
+export class BusinessLogicDesignerComponent
+  extends GenericComponent
+  implements OnInit
+{
   form!: FormGroup<any>;
   data: Collection[] = [];
   allMicroservice: MicroService[] = [];
@@ -52,7 +61,6 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
 
   private designer?: Designer;
   projectId: any;
-
 
   public definition: Definition = createDefinition();
   public definitionJSON?: string;
@@ -63,6 +71,15 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
   returnType = [
     { name: 'void', label: 'void' },
     { name: 'custom', label: 'custom' },
+  ];
+
+  dataTypes = [
+    { name: 'String', label: 'String' },
+    { name: 'Integer', label: 'int' },
+    { name: 'BigDecimal', label: 'Decimal' },
+    { name: 'Long', label: 'Long' },
+    { name: 'UUID', label: 'UUID' },
+    { name: 'Model', label: 'Model' },
   ];
 
   operators = [
@@ -77,8 +94,8 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
 
   connector = [
     { name: 'AND', label: '&&' },
-    { name: 'OR', label: '||' }
-  ]
+    { name: 'OR', label: '||' },
+  ];
 
   operations = [
     { name: 'Find all', label: 'FindAll' },
@@ -91,22 +108,23 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
   allEndpointsByModel: Endpoint[] = [];
   allFieldsByReqDto: Field[] = [];
 
-
   allPojos: [] = [];
 
   showConditionEditor: boolean = false;
   showModelsOptions: boolean = false;
+  showParamsOptions: boolean = false;
   showFetchDataPopup: boolean = false;
   showLoopEditor: boolean = false;
   showAPIEditor: boolean = false;
   showSaveDataEditor: boolean = false;
 
-
   conditionEditor: any;
   ModelEditor: any;
   loopEditor: any;
   apiEditor: any;
-
+  paramsEditor: any;
+  saveDataEditor: any;
+  fetchDataEditor: any;
 
   constructor(
     private businessLogicService: BusinessLogicService,
@@ -128,13 +146,11 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
       if (this.projectId) {
         var filterStr = FilterBuilder.equal('project.id', this.projectId);
         this.search = filterStr;
-        var pagination !: Pagination;
-        this.microserivce.getAllData(pagination, this.search).then(
-          (res) => {
-            this.allMicroservice = res.content;
-            console.log(this.allMicroservice);
-          }
-        );
+        var pagination!: Pagination;
+        this.microserivce.getAllData(pagination, this.search).then((res) => {
+          this.allMicroservice = res.content;
+          console.log(this.allMicroservice);
+        });
       }
     });
   }
@@ -168,7 +184,6 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
   };
 
   public ngOnInit() {
-
     this.updateDefinitionJSON();
     this.wfId = this.route.snapshot.paramMap.get('id');
     this.businessLogicService.getData({ id: this.wfId }).then((res: any) => {
@@ -230,7 +245,11 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
       componentType: 'task',
       type,
       name,
-      properties: properties || { collection: '', endpoint: '', mappedData: [] },
+      properties: properties || {
+        collection: '',
+        endpoint: '',
+        mappedData: [],
+      },
     };
   }
 
@@ -245,7 +264,7 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
       componentType: 'task',
       type,
       name,
-      properties: properties || { collection: '' },
+      properties: properties || {},
     };
   }
 
@@ -260,7 +279,12 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
       componentType: 'task',
       type,
       name,
-      properties: properties || { schedule: 0, model: name, queryType: '', customQuery: 'null' },
+      properties: properties || {
+        schedule: 0,
+        model: name,
+        queryType: '',
+        customQuery: 'null',
+      },
     };
   }
 
@@ -312,7 +336,7 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
         this.createIfStep(null, [], []),
         this.createContainerStep(null, []),
         // this.createTaskStep(null, 'email', 'Send email', null),
-        this.createTaskStepAPI(null, 'callWebclient', 'Call APIS', null),
+        this.createTaskStepAPI(null, 'callWebclient', 'Call API', null),
         this.createSaveDataTaskStep(null, 'saveDsData', 'Save data', null),
         // this.createTaskStep(null, 'responseOutput', 'Response Output', null),
       ],
@@ -356,6 +380,11 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
     this.ModelEditor = editor;
   }
 
+  openParamsPopup(editor: any) {
+    this.showParamsOptions = !this.showParamsOptions;
+    this.paramsEditor = editor;
+  }
+
   openAPIEditor(editor: any) {
     this.showAPIEditor = !this.showAPIEditor;
     this.apiEditor = editor;
@@ -363,6 +392,7 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
 
   openSaveDataEditor(editor: any) {
     this.showSaveDataEditor = !this.showSaveDataEditor;
+    this.saveDataEditor = editor;
   }
 
   updateConditions() {
@@ -381,10 +411,11 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
   finalListModels: CollectionObj[] = [];
   saveDataModel: Collection = {};
 
+  selectedParams: InputParam[] = [{ dataType: '', varName: '' }];
+
   modelSelectedAPI: Collection = {};
   currentEndpointByModel: Endpoint = {};
-  selectedModelForDtoField: []= [];
-
+  selectedModelForDtoField: [] = [];
 
   loopFirstValue: any;
   loopOperator: any;
@@ -395,24 +426,25 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
   customJPAQuery: any;
 
   getAllModels() {
-
-    this.businessLogicService.getModelsByMicroserivce(this.wf.microService?.id!).then((res: any) => {
-      this.allModels = res;
-    }).catch(
-      (err) => {
+    this.businessLogicService
+      .getModelsByMicroserivce(this.wf.microService?.id!)
+      .then((res: any) => {
+        this.allModels = res;
+      })
+      .catch((err) => {
         console.log(err);
-      }
-    )
+      });
   }
 
   getAllPojos() {
-    this.businessLogicService.getPojosByMicroserivce(this.wf.microService?.id!).then((res: any) => {
-      this.allPojos = res;
-    }).catch(
-      (err) => {
+    this.businessLogicService
+      .getPojosByMicroserivce(this.wf.microService?.id!)
+      .then((res: any) => {
+        this.allPojos = res;
+      })
+      .catch((err) => {
         console.log(err);
-      }
-    )
+      });
   }
 
   saveModels(editor: any) {
@@ -420,25 +452,39 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
       editor.definition.properties,
       'collections',
       this.selectedModels,
+      this.selectedParams,
       editor.context
     );
 
     this.showModelsOptions = false;
   }
 
+  saveParams(editor: any) {
+    this.updatePropertyCollection(
+      editor.definition.properties,
+      'params',
+      this.selectedModels,
+      this.selectedParams,
+      editor.context
+    );
+
+    this.showParamsOptions = false;
+  }
+
   public updatePropertyCollection(
     properties: Properties,
     name: string,
     selectedModels: any,
+    selectedParams: InputParam[],
     context: GlobalEditorContext | StepEditorContext
   ) {
     properties[name] = selectedModels;
     properties['schedule'] = this.selectedDate;
+    properties['params'] = selectedParams;
     if (this.selectedResOp !== null && this.resType !== 'void') {
       properties['returnType'] = this.selectedResOp;
-    }
-    else if (this.resType === 'void') {
-      properties['returnType'] = {};
+    } else if (this.resType === 'void') {
+      properties['returnType'] = null;
     }
 
     this.fieldArrays = [];
@@ -451,24 +497,25 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
       this.search = filterStr;
       let pagination!: Pagination;
 
-      this.fieldsService.getAllData(pagination, this.search).then((res: any) => {
+      this.fieldsService
+        .getAllData(pagination, this.search)
+        .then((res: any) => {
+          for (var k = 0; k < res.content.length; k++) {
+            this.fieldArrays.push(res.content[k]);
+          }
 
-        for (var k = 0; k < res.content.length; k++) {
-          this.fieldArrays.push(res.content[k]);
-        }
+          const items = res.content.map((field: any) => ({
+            label: field.fieldName,
+            value: field,
+          }));
 
-        const items = res.content.map((field: any) => ({
-          label: field.fieldName,
-          value: field
-        }));
-
-        const collectionObj = {
-          label: model.collectionName,
-          value: model,
-          items: items
-        };
-        this.finalListModels.push(collectionObj);
-      });
+          const collectionObj = {
+            label: model.collectionName,
+            value: model,
+            items: items,
+          };
+          this.finalListModels.push(collectionObj);
+        });
     }
     console.log(this.finalListModels);
     context.notifyPropertiesChanged();
@@ -476,21 +523,27 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
 
   saveFetchData(editor: any) {
     // this.sequence.find(item => item.type === "getDsData");
-    this.saveInfoFetch(editor.definition.sequence, editor.context);
+    console.log(JSON.stringify(editor));
+    this.saveInfoFetch(editor.step, editor.context);
   }
-
-  public saveInfoFetch(sequence: any, context: GlobalEditorContext | StepEditorContext) {
-    sequence = sequence.find((item: any) => item.type === "getDsData");
-    sequence.properties.model = this.currentModel;
+  openFetchDataEditor(editor: any) {
+    this.showFetchDataPopup = !this.showFetchDataPopup;
+    this.fetchDataEditor = editor;
+  }
+  public saveInfoFetch(
+    sequence: any,
+    context: GlobalEditorContext | StepEditorContext
+  ) {
+    // sequence = sequence.find((item: any) => item.type === 'getDsData');
+    sequence.properties['model'] = this.currentModel;
     if (this.selectedOperation == 'CustomJpaQuery') {
-      sequence.properties.queryType = this.selectedOperation;
-      sequence.properties.customQuery = this.customJPAQuery;
+      sequence.properties['queryType'] = this.selectedOperation;
+      sequence.properties['customQuery'] = this.customJPAQuery;
+    } else {
+      sequence.properties['queryType'] = this.selectedOperation;
+      sequence.properties['customQuery'] = 'null';
     }
-    else {
-      sequence.properties.queryType = this.selectedOperation;
-      sequence.properties.customQuery = "null";
-    }
-    sequence.properties.schedule = this.fetchDataSchedule;
+    sequence.properties['schedule'] = this.fetchDataSchedule;
 
     context.notifyPropertiesChanged();
     this.showFetchDataPopup = false;
@@ -501,41 +554,82 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
   }
 
   updateConditionsLoop(editor: any) {
-    console.log(editor);
-    this.saveInfoLoop(
-      editor.definition.sequence,
-      editor.context
-    );
+    console.log(JSON.stringify(editor));
+    this.saveInfoLoop(editor.step, editor.context);
 
     this.showLoopEditor = false;
   }
 
-  public saveInfoLoop(sequence: any, context: GlobalEditorContext | StepEditorContext) {
-    sequence = sequence.find((item: any) => item.type === "loop");
-    sequence.properties['firstValue'] = this.loopFirstValue;
-    sequence.properties['operator'] = this.loopOperator;
-    sequence.properties['secondValue'] = this.loopSecondValue;
-    sequence.properties['staticValue'] = this.loopStaticValue;
+  public saveInfoLoop(
+    sequence: any,
+    context: GlobalEditorContext | StepEditorContext
+  ) {
+    // sequence = sequence.find((item: any) => item.type === 'loop');
+    sequence.properties['conditionGroups'] = [];
+    let isManualEntry: boolean = false;
+    if (this.loopStaticValue) {
+      isManualEntry = true;
+    }
+    var conditions: any[] = [
+      {
+        conditions: [
+          {
+            firstValue: this.loopFirstValue,
+            operator: this.loopOperator.name,
+            secondValue: this.loopSecondValue ? this.loopSecondValue : null,
+            manualEntry: isManualEntry,
+            manualEntryValue: this.loopStaticValue,
+          },
+        ],
+      },
+    ];
+    sequence.properties['conditionGroups'] = conditions;
+    // sequence.properties['conditionGroups'][0][''] = this.loopFirstValue;
+    // sequence.properties['conditionGroups'][0]['operator'] =
+    //   this.loopOperator.name;
+    // sequence.properties['conditionGroups'][0]['secondValue'] =
+    //   this.loopSecondValue;
+    // sequence.properties['conditionGroups'][0]['staticValue'] =
+    //   this.loopStaticValue;
     context.notifyPropertiesChanged();
   }
 
   // if else condition code
 
   conditionGroups: ConditionGroup[] = [
-    { conditions: [{ firstValue: '', operator: '=', secondValue: '', manualEntry: false }] }
+    {
+      conditions: [
+        {
+          firstValue: '',
+          operator: '=',
+          secondValue: null,
+          manualEntry: false,
+        },
+      ],
+    },
   ];
   newConditionGroupConnector: string = 'AND';
 
   getDropdownOptions() {
-    return [{ fieldName: 'Enter Manually', value: 'manual' }, ...this.fieldArrays];
+    return [
+      { fieldName: 'Enter Manually', value: 'manual' },
+      ...this.fieldArrays,
+    ];
   }
 
   addCondition(groupIndex: number): void {
     const group = this.conditionGroups[groupIndex];
     if (group.conditions.length > 0) {
-      group.conditions[group.conditions.length - 1].connector = group.connector || 'AND';
+      group.conditions[group.conditions.length - 1].connector =
+        group.connector || 'AND';
     }
-    group.conditions.push({ firstValue: '', operator: '=', secondValue: '', manualEntry: false });
+    group.conditions.push({
+      firstValue: '',
+      operator: '=',
+      secondValue: null,
+      manualEntry: false,
+      manualEntryValue: '',
+    });
   }
 
   // addCondition(groupIndex: number): void {
@@ -545,22 +639,36 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
   removeCondition(groupIndex: number, conditionIndex: number): void {
     this.conditionGroups[groupIndex].conditions.splice(conditionIndex, 1);
     if (this.conditionGroups[groupIndex].conditions.length === 0) {
-      this.conditionGroups[groupIndex].conditions.push({ firstValue: '', operator: '=', secondValue: '', manualEntry: false });
+      this.conditionGroups[groupIndex].conditions.push({
+        firstValue: '',
+        operator: '=',
+        secondValue: null,
+        manualEntry: false,
+      });
     }
   }
 
   addConditionGroup(): void {
     const lastGroup = this.conditionGroups[this.conditionGroups.length - 1];
     lastGroup.connector = this.newConditionGroupConnector;
-    this.conditionGroups.push({ conditions: [{ firstValue: '', operator: '=', secondValue: '', manualEntry: false }] });
+    this.conditionGroups.push({
+      conditions: [
+        {
+          firstValue: '',
+          operator: '=',
+          secondValue: null,
+          manualEntry: false,
+        },
+      ],
+    });
   }
 
   handleSecondValueChange(condition: Condition, e: any): void {
     // console.log(condition);
     console.log(e);
-    if (e.value === "manual") {
+    if (e.value === 'manual') {
       condition.manualEntry = true;
-      condition.secondValue = '';
+      condition.secondValue = null;
     } else {
       condition.manualEntry = false;
     }
@@ -568,58 +676,57 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
 
   updateIfConditions(editor: any) {
     console.log(editor);
-    this.saveIfConditions(
-      editor.definition.sequence,
-      editor.context
-    );
+    this.saveIfConditions(editor.definition.sequence, editor.context);
 
     this.showConditionEditor = false;
   }
 
-  saveIfConditions(sequence: any, context: GlobalEditorContext | StepEditorContext) {
-    const payload = this.conditionGroups.map(group => ({
+  saveIfConditions(
+    sequence: any,
+    context: GlobalEditorContext | StepEditorContext
+  ) {
+    const payload = this.conditionGroups.map((group) => ({
       conditions: group.conditions,
-      connector: group.connector
+      connector: group.connector,
     }));
     console.log('Payload:', JSON.stringify(payload));
 
-    sequence = sequence.find((item: any) => item.type === "if");
+    sequence = sequence.find((item: any) => item.type === 'if');
     sequence.properties['conditionGroups'] = payload;
     context.notifyPropertiesChanged();
   }
 
   updateSaveDataEditor(editor: any) {
-    this.saveThisModel(
-      editor.definition.sequence,
-      editor.context
-    );
+    this.saveThisModel(editor.step, editor.context);
 
     this.showSaveDataEditor = false;
   }
 
-  saveThisModel(sequence: any, context: GlobalEditorContext | StepEditorContext) {
-
-    sequence = sequence.find((item: any) => item.type === "saveDsData");
-    sequence.properties['collection'] = this.saveDataModel;
+  saveThisModel(
+    sequence: any,
+    context: GlobalEditorContext | StepEditorContext
+  ) {
+    // sequence = sequence.find((item: any) => item.type === 'saveDsData');
+    sequence.properties['model'] = this.saveDataModel;
     context.notifyPropertiesChanged();
   }
 
   // Code for API step editor
   updateApiEditor(editor: any) {
     console.log(this.msSelected);
-    this.saveThisAPICall(
-      editor.definition.sequence,
-      editor.context
-    );
+    this.saveThisAPICall(editor.definition.sequence, editor.context);
 
     this.showAPIEditor = false;
   }
 
   reqDtoModelMappedList: reqDtoMappedModel[] = [];
-  currReqDtoModel !:reqDtoMappedModel ;
+  currReqDtoModel!: reqDtoMappedModel;
 
-  saveThisAPICall(sequence: any, context: GlobalEditorContext | StepEditorContext) {
-    sequence = sequence.find((item: any) => item.type === "callWebclient");
+  saveThisAPICall(
+    sequence: any,
+    context: GlobalEditorContext | StepEditorContext
+  ) {
+    sequence = sequence.find((item: any) => item.type === 'callWebclient');
 
     sequence.properties['collection'] = this.modelSelectedAPI;
     sequence.properties['endpoint'] = this.currentEndpointByModel;
@@ -628,23 +735,23 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
   }
 
   modelSelectedForReqDto(reqDtoField: any, modelSelected: any) {
-
-    console.log( reqDtoField );
-    console.log( modelSelected );
+    console.log(reqDtoField);
+    console.log(modelSelected);
 
     const existingIndex = this.reqDtoModelMappedList.findIndex(
       (item) => item.reqDtoField.id === reqDtoField.id
     );
 
     if (existingIndex !== -1) {
-      this.reqDtoModelMappedList[existingIndex].mappedModelField = modelSelected;
+      this.reqDtoModelMappedList[existingIndex].mappedModelField =
+        modelSelected;
     } else {
       // this.currReqDtoModel.reqDtoField = reqDtoField;
       // this.currReqDtoModel.mappedModelField = modelSelected;
 
       this.currReqDtoModel = {
         reqDtoField: reqDtoField,
-        mappedModelField: modelSelected
+        mappedModelField: modelSelected,
       };
 
       this.reqDtoModelMappedList.push(this.currReqDtoModel);
@@ -660,18 +767,26 @@ export class BusinessLogicDesignerComponent extends GenericComponent implements 
   }
 
   getTheReqDtos(selectedModel: Collection) {
-    this.endpointService.getAllEndpointsByCollection(selectedModel.id).then((res: any) => {
-      this.allEndpointsByModel = res;
-      console.log('current Endpoints of model');
-      console.log(this.allEndpointsByModel);
-    });
+    this.endpointService
+      .getAllEndpointsByCollection(selectedModel.id)
+      .then((res: any) => {
+        this.allEndpointsByModel = res;
+        console.log('current Endpoints of model');
+        console.log(this.allEndpointsByModel);
+      });
   }
 
   endpointChange(endpoint: Endpoint) {
     console.log(endpoint);
-    this.fieldsService.getFieldsByRequestDto(endpoint.requestDto?.id).then((res: any) => {
-      this.allFieldsByReqDto = res;
-      console.log(this.allFieldsByReqDto);
-    });
+    this.fieldsService
+      .getFieldsByRequestDto(endpoint.requestDto?.id)
+      .then((res: any) => {
+        this.allFieldsByReqDto = res;
+        console.log(this.allFieldsByReqDto);
+      });
+  }
+
+  addParam() {
+    this.selectedParams.push({});
   }
 }

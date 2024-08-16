@@ -44,9 +44,17 @@ import { ColorpickerModule } from '@splenta/vezo/colorpicker';
 import { InputnumberModule } from '@splenta/vezo/inputnumber';
 import { SeachfieldModule } from '@splenta/vezo/searchfield';
 import { SidebarModule } from '@splenta/vezo/sidebar';
+import { NgTerminalModule } from 'ng-terminal';
 import { NgChartsModule } from 'ng2-charts';
 import { NgxLoadingModule } from 'ngx-loading';
 import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
+import { PrimeNGConfig } from 'primeng/api';
+import { CalendarModule } from 'primeng/calendar';
+import { DropdownModule } from 'primeng/dropdown';
+import { InputTextModule } from 'primeng/inputtext';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { ToggleButtonModule } from 'primeng/togglebutton';
 import { SequentialWorkflowDesignerModule } from 'sequential-workflow-designer-angular';
 import { AclComponent } from './acl/acl.component';
 import { ActionsComponent } from './actions/actions.component';
@@ -64,6 +72,7 @@ import { DataFormComponent } from './data-form/data-form.component';
 import { FormDesignerComponent } from './data-form/form-designer/form-designer.component';
 import { MenuPanelCreateComponent } from './data-form/menu-panel/menu-panel-create/menu-panel-create.component';
 import { MenuPanelComponent } from './data-form/menu-panel/menu-panel.component';
+import { NestedPreviewComponent } from './data-form/nested-preview/nested-preview.component';
 import { NestedComponent } from './data-form/nested/nested.component';
 import { WidgetTreeNodeComponent } from './data-form/widget-tree-node/widget-tree-node.component';
 import { DatasourceFormComponent } from './datasource/datasource-form/datasource-form.component';
@@ -84,21 +93,12 @@ import { ReleasesComponent } from './releases/releases.component';
 import { QueryBuilderComponent } from './reports/query-builder/query-builder.component';
 import { ReportDesignerComponent } from './reports/report-designer/report-designer.component';
 import { ReportsComponent } from './reports/reports.component';
+import { PagePreviewComponent } from './screen/page-preview/page-preview.component';
 import { PropertiesComponent } from './screen/properties/properties.component';
 import { Properties2Component } from './screen/properties2/properties2.component';
 import { TemplatesComponent } from './screen/templates/templates.component';
 import { SettingsComponent } from './settings/settings.component';
 import { ContenteditableValueAccessor } from './utils/constenteditable.directive';
-import { NgTerminalModule } from 'ng-terminal';
-import { PagePreviewComponent } from './screen/page-preview/page-preview.component';
-import { NestedPreviewComponent } from './data-form/nested-preview/nested-preview.component';
-import { MultiSelectModule } from 'primeng/multiselect';
-import { PrimeNGConfig } from 'primeng/api';
-import { ToggleButtonModule } from 'primeng/togglebutton';
-import { DropdownModule } from 'primeng/dropdown';
-import { CalendarModule } from 'primeng/calendar';
-import { SelectButtonModule } from 'primeng/selectbutton';
-
 
 @NgModule({
   declarations: [
@@ -199,7 +199,8 @@ import { SelectButtonModule } from 'primeng/selectbutton';
     ToggleButtonModule,
     DropdownModule,
     CalendarModule,
-    SelectButtonModule
+    SelectButtonModule,
+    InputTextModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [
@@ -212,7 +213,7 @@ import { SelectButtonModule } from 'primeng/selectbutton';
   bootstrap: [AppComponent],
 })
 export class AppModule {
-  constructor(private primengConfig: PrimeNGConfig) { }
+  constructor(private primengConfig: PrimeNGConfig) {}
 
   ngOnInit() {
     this.primengConfig.ripple = true;

@@ -1,3 +1,4 @@
+import { Collection } from '../collection/collection';
 import { Field } from '../fields/field';
 import { MicroService } from '../microservice/microservice';
 
@@ -10,17 +11,17 @@ export interface BusinessLogic {
   generatedCode?: string;
 }
 export interface City {
-  name: string,
-  code: string
+  name: string;
+  code: string;
 }
 
 export interface Condition {
   firstValue: string;
   operator: string;
-  secondValue: string;
+  secondValue?: Field | null;
   connector?: string;
   manualEntry?: boolean;
-
+  manualEntryValue?: string;
 }
 
 export interface ConditionGroup {
@@ -28,16 +29,16 @@ export interface ConditionGroup {
   connector?: string;
 }
 
-export interface CollectionObj{
- label : string ;
-  value : string ;
-  items :[] ;
+export interface CollectionObj {
+  label: string;
+  value: string;
+  items: [];
 }
 
-export interface reqDtoMappedModel{
-  reqDtoField : Field ;
-  mappedModelField : Field ;
- }
+export interface reqDtoMappedModel {
+  reqDtoField: Field;
+  mappedModelField: Field;
+}
 
 // interface Condition {
 //   firstValue: string;
@@ -50,3 +51,9 @@ export interface reqDtoMappedModel{
 //   conditions: Condition[];
 //   connector?: string;
 // }
+
+export interface InputParam {
+  dataType?: string;
+  varName?: string;
+  model?: Collection;
+}

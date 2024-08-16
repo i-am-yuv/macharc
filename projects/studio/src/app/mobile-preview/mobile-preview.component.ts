@@ -22,7 +22,13 @@ export class MobilePreviewComponent implements OnInit {
 
   ngOnInit(): void {
     this.pageId = this.route.snapshot.paramMap.get('pageId');
-    this.layoutService.checkPadding(false);
+    setTimeout(() => {
+      this.layoutService.checkPadding(false);
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.layoutService.checkPadding(true);
   }
 
   onFlutterAppLoaded(state: any) {
@@ -30,7 +36,7 @@ export class MobilePreviewComponent implements OnInit {
     this.flutterState.onTextChanged(() => {
       this.onTextChanged();
     });
-    console.log(this.pageId);
+    // console.log(this.pageId);
 
     this.flutterState?.setScreen('text');
     this.onTokenSet(this.authService.getAuthToken());
