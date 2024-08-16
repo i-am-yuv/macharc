@@ -29,6 +29,7 @@ import {
   Condition,
   ConditionGroup,
   InputParam,
+  pojoMappedModel,
   reqDtoMappedModel,
 } from '../business-logic';
 import { BusinessLogicService } from '../business-logic.service';
@@ -116,6 +117,9 @@ export class BusinessLogicDesignerComponent
   showLoopEditor: boolean = false;
   showAPIEditor: boolean = false;
   showSaveDataEditor: boolean = false;
+  showSetResponseDataEditor: boolean = false;
+
+
 
   conditionEditor: any;
   ModelEditor: any;
@@ -124,6 +128,7 @@ export class BusinessLogicDesignerComponent
   paramsEditor: any;
   saveDataEditor: any;
   fetchDataEditor: any;
+  setResDataEditor: any;
 
   constructor(
     private businessLogicService: BusinessLogicService,
@@ -267,6 +272,22 @@ export class BusinessLogicDesignerComponent
     };
   }
 
+  createSetResponseDataStep(
+    id: null,
+    type: string,
+    name: string,
+    properties: any | undefined
+  ) {
+    return {
+      id,
+      componentType: 'task',
+      type,
+      name,
+      properties: properties || {},
+    };
+  }
+
+
   createFetchDataStep(
     id: null,
     type: string,
@@ -337,7 +358,7 @@ export class BusinessLogicDesignerComponent
         // this.createTaskStep(null, 'email', 'Send email', null),
         this.createTaskStepAPI(null, 'callWebclient', 'Call API', null),
         this.createSaveDataTaskStep(null, 'saveDsData', 'Save data', null),
-        // this.createTaskStep(null, 'responseOutput', 'Response Output', null),
+        this.createSetResponseDataStep(null, 'import', 'Set Response Data', null),
       ],
     };
   }
@@ -394,6 +415,11 @@ export class BusinessLogicDesignerComponent
     this.saveDataEditor = editor;
   }
 
+  openSetResponseDataEditor(editor: any) {
+    this.showSetResponseDataEditor = !this.showSetResponseDataEditor;
+    this.setResDataEditor = editor;
+  }
+
   updateConditions() {
     // to handle this by partha
   }
@@ -409,12 +435,16 @@ export class BusinessLogicDesignerComponent
   fieldArrays: Field[] = [];
   finalListModels: CollectionObj[] = [];
   saveDataModel: Collection = {};
+  selectedResPojo: Collection = {};
+  selectedPojoFields: Field[] = [];
 
   selectedParams: InputParam[] = [{ dataType: '', varName: '' }];
 
   modelSelectedAPI: Collection = {};
   currentEndpointByModel: Endpoint = {};
   selectedModelForDtoField: [] = [];
+  selectedModelForsetResField: [] = [];
+
 
   loopFirstValue: any;
   loopOperator: any;
@@ -423,7 +453,7 @@ export class BusinessLogicDesignerComponent
   resType: any;
   fetchDataSchedule: any;
   customJPAQuery: any;
-  loopManualEntry : boolean = false ;
+  loopManualEntry: boolean = false;
 
   getAllModels() {
     this.businessLogicService
@@ -490,7 +520,7 @@ export class BusinessLogicDesignerComponent
 
     this.fieldArrays = [];
     var i = 0;
-
+    this.finalListModels = [];
     // Loop through selectedModels
     for (let i = 0; i < selectedModels.length; i++) {
       const model = selectedModels[i];
@@ -523,15 +553,18 @@ export class BusinessLogicDesignerComponent
   }
 
   // Fetch Data Code Start
+
+  openFetchDataEditor(editor: any) {
+    this.showFetchDataPopup = !this.showFetchDataPopup;
+    this.fetchDataEditor = editor;
+  }
+
   saveFetchData(editor: any) {
     // this.sequence.find(item => item.type === "getDsData");
     console.log(JSON.stringify(editor));
     this.saveInfoFetch(editor.step, editor.context);
   }
-  openFetchDataEditor(editor: any) {
-    this.showFetchDataPopup = !this.showFetchDataPopup;
-    this.fetchDataEditor = editor;
-  }
+
   public saveInfoFetch(
     sequence: any,
     context: GlobalEditorContext | StepEditorContext
@@ -597,13 +630,11 @@ export class BusinessLogicDesignerComponent
     context.notifyPropertiesChanged();
   }
 
-  handleValueChanges(e : any)
-  {
-     console.log(e);
-     if( e == 'manual' )
-     {
+  handleValueChanges(e: any) {
+    console.log(e);
+    if (e == 'manual') {
       this.loopManualEntry = true;
-     }
+    }
   }
 
   // If else condition code Start
@@ -621,7 +652,6 @@ export class BusinessLogicDesignerComponent
   ];
   newConditionGroupConnector: string = 'AND';
 
-  any : any;
   getDropdownOptions() {
 
     const newObject: CollectionObj = {
@@ -635,7 +665,6 @@ export class BusinessLogicDesignerComponent
       ]
     };
     // return this.finalListModels ;
-    // this.any = [newObject, ...this.finalListModels] ;
     return [newObject, ...this.finalListModels];
   }
 
@@ -687,7 +716,6 @@ export class BusinessLogicDesignerComponent
 
   handleSecondValueChange(condition: Condition, e: any): void {
     console.log(this.finalListModels);
-    console.log( this.any);
     console.log(e);
     if (e === 'manual') {
       condition.manualEntry = true;
@@ -699,7 +727,7 @@ export class BusinessLogicDesignerComponent
 
   updateIfConditions(editor: any) {
     console.log(editor);
-    this.saveIfConditions(editor.definition.sequence, editor.context);
+    this.saveIfConditions(editor.step, editor.context);
 
     this.showConditionEditor = false;
   }
@@ -714,10 +742,13 @@ export class BusinessLogicDesignerComponent
     }));
     console.log('Payload:', JSON.stringify(payload));
 
-    sequence = sequence.find((item: any) => item.type === 'if');
+    // sequence = sequence.find((item: any) => item.type === 'if');
     sequence.properties['conditionGroups'] = payload;
     context.notifyPropertiesChanged();
   }
+
+
+  // Save Data Code Start
 
   updateSaveDataEditor(editor: any) {
     this.saveThisModel(editor.step, editor.context);
@@ -725,7 +756,6 @@ export class BusinessLogicDesignerComponent
     this.showSaveDataEditor = false;
   }
 
-  // Save Data Code Start
   saveThisModel(
     sequence: any,
     context: GlobalEditorContext | StepEditorContext
@@ -738,8 +768,7 @@ export class BusinessLogicDesignerComponent
   // Call Api code start
   updateApiEditor(editor: any) {
     console.log(this.msSelected);
-    this.saveThisAPICall(editor.definition.sequence, editor.context);
-
+    this.saveThisAPICall(editor.step, editor.context);
     this.showAPIEditor = false;
   }
 
@@ -750,7 +779,7 @@ export class BusinessLogicDesignerComponent
     sequence: any,
     context: GlobalEditorContext | StepEditorContext
   ) {
-    sequence = sequence.find((item: any) => item.type === 'callWebclient');
+    // sequence = sequence.find((item: any) => item.type === 'callWebclient');
 
     sequence.properties['collection'] = this.modelSelectedAPI;
     sequence.properties['endpoint'] = this.currentEndpointByModel;
@@ -813,4 +842,59 @@ export class BusinessLogicDesignerComponent
   addParam() {
     this.selectedParams.push({});
   }
+
+  // Set Response Pojo Code start
+
+  pojoModelMappedList: pojoMappedModel[] = [];
+  currPojoModel!: pojoMappedModel;
+
+  getPojoFields(pojo: Collection) {
+
+    const filterStr = FilterBuilder.equal('collection.id', pojo.id + '');
+    this.search = filterStr;
+    let pagination!: Pagination;
+
+    this.fieldsService
+      .getAllData(pagination, this.search)
+      .then((res: any) => {
+        this.selectedPojoFields = res.content;
+      });
+  }
+
+  modelSelectedForSetResData(pojoField: any, modelSelected: any) {
+
+    const existingIndex = this.pojoModelMappedList.findIndex(
+      (item) => item.pojoField.id === pojoField.id
+    );
+
+    if (existingIndex !== -1) {
+      this.pojoModelMappedList[existingIndex].mappedModelField = modelSelected;
+    } else {
+      
+      this.currPojoModel = {
+        pojoField: pojoField,
+        mappedModelField: modelSelected,
+      };
+
+      this.pojoModelMappedList.push(this.currPojoModel);
+    }
+  }
+
+  updateSetResDataEditor(editor: any) {
+    console.log(editor.step.properties);
+    console.log(this.pojoModelMappedList);
+    this.saveThisSetResData(editor.step, editor.context);
+    this.showSetResponseDataEditor = false;
+  }
+
+  saveThisSetResData(
+    sequence: any,
+    context: GlobalEditorContext | StepEditorContext
+  ) {
+    // sequence = sequence.find((item: any) => item.type === 'import');
+    sequence.properties['pojo'] = this.selectedResPojo;
+    sequence.properties['mappedData'] = this.pojoModelMappedList;
+    context.notifyPropertiesChanged();
+  }
+
 }

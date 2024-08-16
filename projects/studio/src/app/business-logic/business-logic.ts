@@ -40,6 +40,11 @@ export interface reqDtoMappedModel {
   mappedModelField: Field;
 }
 
+export interface pojoMappedModel {
+  pojoField: Field;
+  mappedModelField: Field;
+}
+
 // interface Condition {
 //   firstValue: string;
 //   operator: string;

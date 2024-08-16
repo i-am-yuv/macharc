@@ -252,6 +252,13 @@
       </div>
     </ng-container>
 
+    <!-- this code is for set response data -->
+    <ng-container *ngIf="editor.step.type === 'import'">
+      <div class="mb-2" (click)="openSetResponseDataEditor(editor)">
+        <button class="bg-indigo-600 rounded text-white p-2">Configure</button>
+      </div>
+    </ng-container>
+
     <p href="" target="_blank" class="text-blue-400 mt-2">
       Refer docs on how to configure steps
     </p>
@@ -281,16 +288,8 @@
 <br />
 <vezo-button (click)="reloadDefinitionClicked()" label="Reload definition" className="my-4"></vezo-button>
 <br />
-<!-- <vezo-select
-  [(ngModel)]="returnType"
-  [items]="returnType"
-  optionLabel="label"
-  optionValue="name"
-></vezo-select> -->
-<!-- 
-<p-multiSelect [options]="this.data" [(ngModel)]="this.selectedModels" optionLabel="collectionName"
-  placeholder="Select Models">
-</p-multiSelect> -->
+
+<!-- All Model PopUp Code Starts from here ----------------------------------------------------------->
 
 <!-- All the model used for Configuration Code starts here-->
 <vezo-modal [(visible)]="showParamsOptions">
@@ -383,7 +382,7 @@
 
     <div class="mt-4">
       <p-dropdown [options]="this.operations" [(ngModel)]="this.selectedOperation" (change)="onSelectionChange($event)"
-        optionLabel="name" optionValue="label" placeholder="Choose the Model" [style]="{ width: '100%' }"
+        optionLabel="name" optionValue="label" placeholder="Choose the operations" [style]="{ width: '100%' }"
         class="w-full">
       </p-dropdown>
     </div>
@@ -500,12 +499,17 @@
             </div>
 
             <div *ngIf="groupIndex < conditionGroups.length - 1">
-              <div style="margin-top: 20px">
+              <!-- <div >
                 <select [(ngModel)]="group.connector" class="p-2">
                   <option value="AND">AND</option>
                   <option value="OR">OR</option>
                 </select>
-                <!-- <p-toggleButton [(ngModel)]="group.connector" onLabel="AND" offLabel="OR"></p-toggleButton> -->
+              </div> -->
+              <div class="border rounded px-2 py-1" style="margin-top: 20px">
+                <select [(ngModel)]="group.connector" class="px-2 py-1">
+                  <option value="AND">AND</option>
+                  <option value="OR">OR</option>
+                </select>
               </div>
             </div>
           </div>
@@ -531,7 +535,7 @@
   </ng-template>
   <ng-template vTemplate="footer">
     <div class="text-right">
-      <vezo-button label="Save" (click)="updateIfConditions(this.ModelEditor)"></vezo-button>
+      <vezo-button label="Save" (click)="updateIfConditions(this.conditionEditor)"></vezo-button>
     </div>
   </ng-template>
 </vezo-modal>
@@ -547,7 +551,7 @@
         </p-dropdown> -->
 
         <p-dropdown [options]="this.finalListModels" [(ngModel)]="this.loopFirstValue" placeholder="Choose Fields"
-          [group]="true"  >
+          [group]="true">
           <ng-template let-group pTemplate="group">
             <div class="flex gap-2 justify-start items-center">
               <img src="assets/collection_L.svg" style="width: 16px; height: auto" />
@@ -562,7 +566,7 @@
         <div class="w-full flex justify-between items-center">
 
           <p-dropdown *ngIf="this.loopManualEntry == false " [options]="getDropdownOptions()"
-            [(ngModel)]="this.loopSecondValue" placeholder="Choose Fields" 
+            [(ngModel)]="this.loopSecondValue" placeholder="Choose Fields"
             (onChange)="handleValueChanges( $event.value)" [group]="true" [showClear]="true">
             <ng-template let-group pTemplate="group">
               <div class="flex gap-2 justify-start items-center">
@@ -572,9 +576,7 @@
             </ng-template>
           </p-dropdown>
 
-          <div
-            *ngIf="this.loopManualEntry"
-            class="border p-2 rounded flex justify-between items-center gap-1">
+          <div *ngIf="this.loopManualEntry" class="border p-2 rounded flex justify-between items-center gap-1">
             <input [(ngModel)]="this.loopStaticValue" placeholder="Enter value manually" />
             <div class="cursor-pointer" (click)="this.loopManualEntry = !this.loopManualEntry">
               X
@@ -630,7 +632,7 @@
   </ng-template>
   <ng-template vTemplate="footer">
     <div class="text-right">
-      <vezo-button label="Save" (click)="updateApiEditor(this.ModelEditor)"></vezo-button>
+      <vezo-button label="Save" (click)="updateApiEditor(this.apiEditor)"></vezo-button>
     </div>
   </ng-template>
 </vezo-modal>
@@ -651,6 +653,42 @@
     <div class="text-right">
       <vezo-button label="Save" [disabled]="this.saveDataModel == null"
         (click)="updateSaveDataEditor(this.saveDataEditor)"></vezo-button>
+    </div>
+  </ng-template>
+</vezo-modal>
+
+<!-- Model for Set Response Data-->
+<vezo-modal [(visible)]="showSetResponseDataEditor">
+  <ng-template vTemplate="header">Comfigure Set Response Data</ng-template>
+  <ng-template vTemplate="content">
+
+    <p-dropdown [options]="this.allPojos" [(ngModel)]="this.selectedResPojo" placeholder="Select Pojo"
+      [showClear]="true" [style]="{ width: '100%' }" class="w-full" optionLabel="collectionName" (ngModelChange)="getPojoFields(this.selectedResPojo)">
+    </p-dropdown>
+
+    <div *ngIf="this.selectedResPojo">
+      <div *ngFor="let pojoField of selectedPojoFields; index as i">
+        <div class="flex mt-8 w-full gap-4 justify-between mx-4 items-center">
+          <div class="w-1/2">{{ pojoField.fieldName }}</div>
+          <div class="w-1/2 flex justify-start">
+            <p-dropdown [options]="this.finalListModels" [(ngModel)]="selectedModelForsetResField[i]" (ngModelChange)="modelSelectedForSetResData(pojoField, selectedModelForsetResField[i])" placeholder="Choose Model Field" [group]="true">
+              <ng-template let-group pTemplate="group">
+                <div class="flex gap-2 justify-start items-center">
+                  <img src="assets/collection_L.svg" style="width: 16px; height: auto" />
+                  <span>{{ group.label }}</span>
+                </div>
+              </ng-template>
+            </p-dropdown>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </ng-template>
+  <ng-template vTemplate="footer">
+    <div class="text-right">
+      <vezo-button label="Save" 
+        (click)="updateSetResDataEditor(this.setResDataEditor)"></vezo-button>
     </div>
   </ng-template>
 </vezo-modal>
