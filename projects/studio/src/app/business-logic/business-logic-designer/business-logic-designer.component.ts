@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { MessageService, Pagination } from '@splenta/vezo/src/public-api';
+import { parseISO } from 'date-fns/parseISO';
 import {
   Definition,
   Designer,
@@ -37,7 +38,7 @@ import { BusinessLogicService } from '../business-logic.service';
 function createDefinition() {
   return {
     properties: {
-      collections: '',
+      collections: [],
       schedule: '24/08/2024',
       // declarations: '',
       returnType: 'void',
@@ -53,7 +54,8 @@ function createDefinition() {
 })
 export class BusinessLogicDesignerComponent
   extends GenericComponent
-  implements OnInit {
+  implements OnInit
+{
   form!: FormGroup<any>;
   data: Collection[] = [];
   allMicroservice: MicroService[] = [];
@@ -118,8 +120,6 @@ export class BusinessLogicDesignerComponent
   showAPIEditor: boolean = false;
   showSaveDataEditor: boolean = false;
   showSetResponseDataEditor: boolean = false;
-
-
 
   conditionEditor: any;
   ModelEditor: any;
@@ -197,13 +197,35 @@ export class BusinessLogicDesignerComponent
         if (this.dataDef) {
           this.definition = JSON.parse(this.dataDef);
           this.updateDefinitionJSON();
+          this.populateEditorFormsData();
         }
         this.getAllModels();
         this.getAllPojos();
       }
     });
   }
+  populateEditorFormsData() {
+    if (this.definition.properties['collections']) {
+      this.selectedModels = this.definition.properties['collections'];
+    }
+    !this.definition.properties['returnType']
+      ? (this.resType = 'void')
+      : (this.resType = 'custom');
 
+    this.definition.properties['returnType']
+      ? (this.selectedResOp = this.definition.properties['returnType'])
+      : null;
+
+    if (this.definition.properties['schedule']) {
+      this.selectedDate = parseISO(
+        this.definition.properties['schedule'].toString()
+      );
+    }
+
+    this.selectedParams = this.definition.properties['params'];
+
+    // TODO: Add other vatiables for step editor model forms
+  }
   public onDesignerReady(designer: Designer) {
     this.designer = designer;
     // console.log('designer ready', this.designer);
@@ -287,7 +309,6 @@ export class BusinessLogicDesignerComponent
     };
   }
 
-
   createFetchDataStep(
     id: null,
     type: string,
@@ -358,7 +379,12 @@ export class BusinessLogicDesignerComponent
         // this.createTaskStep(null, 'email', 'Send email', null),
         this.createTaskStepAPI(null, 'callWebclient', 'Call API', null),
         this.createSaveDataTaskStep(null, 'saveDsData', 'Save data', null),
-        this.createSetResponseDataStep(null, 'import', 'Set Response Data', null),
+        this.createSetResponseDataStep(
+          null,
+          'import',
+          'Set Response Data',
+          null
+        ),
       ],
     };
   }
@@ -426,11 +452,11 @@ export class BusinessLogicDesignerComponent
 
   // New Code -------------------------------------------------------------------------------------------->
 
-  selectedModels: Collection[] = [];
+  selectedModels: Collection[] | any = [];
   currentModel: Collection = {};
   msSelected: MicroService = {};
   selectedOperation: any;
-  selectedResOp: Collection = {};
+  selectedResOp: Collection | any = {};
   selectedDate: any;
   fieldArrays: Field[] = [];
   finalListModels: CollectionObj[] = [];
@@ -438,13 +464,12 @@ export class BusinessLogicDesignerComponent
   selectedResPojo: Collection = {};
   selectedPojoFields: Field[] = [];
 
-  selectedParams: InputParam[] = [{ dataType: '', varName: '' }];
+  selectedParams: InputParam[] | any = [{ dataType: '', varName: '' }];
 
   modelSelectedAPI: Collection = {};
   currentEndpointByModel: Endpoint = {};
   selectedModelForDtoField: [] = [];
   selectedModelForsetResField: [] = [];
-
 
   loopFirstValue: any;
   loopOperator: any;
@@ -653,16 +678,15 @@ export class BusinessLogicDesignerComponent
   newConditionGroupConnector: string = 'AND';
 
   getDropdownOptions() {
-
     const newObject: CollectionObj = {
       label: 'Manual',
       value: 'manual',
       items: [
         {
           label: 'Enter Manual',
-          value: 'manual'
-        }
-      ]
+          value: 'manual',
+        },
+      ],
     };
     // return this.finalListModels ;
     return [newObject, ...this.finalListModels];
@@ -746,7 +770,6 @@ export class BusinessLogicDesignerComponent
     sequence.properties['conditionGroups'] = payload;
     context.notifyPropertiesChanged();
   }
-
 
   // Save Data Code Start
 
@@ -849,20 +872,16 @@ export class BusinessLogicDesignerComponent
   currPojoModel!: pojoMappedModel;
 
   getPojoFields(pojo: Collection) {
-
     const filterStr = FilterBuilder.equal('collection.id', pojo.id + '');
     this.search = filterStr;
     let pagination!: Pagination;
 
-    this.fieldsService
-      .getAllData(pagination, this.search)
-      .then((res: any) => {
-        this.selectedPojoFields = res.content;
-      });
+    this.fieldsService.getAllData(pagination, this.search).then((res: any) => {
+      this.selectedPojoFields = res.content;
+    });
   }
 
   modelSelectedForSetResData(pojoField: any, modelSelected: any) {
-
     const existingIndex = this.pojoModelMappedList.findIndex(
       (item) => item.pojoField.id === pojoField.id
     );
@@ -870,7 +889,6 @@ export class BusinessLogicDesignerComponent
     if (existingIndex !== -1) {
       this.pojoModelMappedList[existingIndex].mappedModelField = modelSelected;
     } else {
-      
       this.currPojoModel = {
         pojoField: pojoField,
         mappedModelField: modelSelected,
@@ -896,5 +914,4 @@ export class BusinessLogicDesignerComponent
     sequence.properties['mappedData'] = this.pojoModelMappedList;
     context.notifyPropertiesChanged();
   }
-
 }
