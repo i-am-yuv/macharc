@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService } from '@splenta/vezo/src/public-api';
+import { MessageService } from '@splenta/vezo';
 import { DndDropEvent, DropEffect, EffectAllowed } from 'ngx-drag-drop';
 import { Application } from '../../application/application';
 import { ApplicationService } from '../../application/application.service';

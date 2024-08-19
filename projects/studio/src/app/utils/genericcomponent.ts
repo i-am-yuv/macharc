@@ -1,7 +1,6 @@
 import { FormGroup } from '@angular/forms';
-import { MessageService, Pagination } from '@splenta/vezo/src/public-api';
+import { MessageService, Pagination } from '@splenta/vezo';
 import { GenericService } from './genericservice';
-import { Router } from '@angular/router';
 
 export abstract class GenericComponent {
   visible: boolean = false;
@@ -57,18 +56,20 @@ export abstract class GenericComponent {
   }
 
   getAllDataById(applicationId: any, callBack?: (resData: any) => void) {
-    this.dataService.getAllDataByApplicationId(applicationId, this.pageData, this.search).then((res: any) => {
-      this.data = res.content;
-      // this.pageData!.totalElements = res.totalElements;
-      // this.pageData!.pageNo = res.pageable.pageNumber;
-      // this.pageData!.pageSize = res.pageable.pageSize;
-      // this.pageData!.offset = res.pageable.offset;
-      // this.pageData!.sortField = '';
-      // this.pageData!.sortDir = '';
-      if (callBack) {
-        callBack(res);
-      }
-    });
+    this.dataService
+      .getAllDataByApplicationId(applicationId, this.pageData, this.search)
+      .then((res: any) => {
+        this.data = res.content;
+        // this.pageData!.totalElements = res.totalElements;
+        // this.pageData!.pageNo = res.pageable.pageNumber;
+        // this.pageData!.pageSize = res.pageable.pageSize;
+        // this.pageData!.offset = res.pageable.offset;
+        // this.pageData!.sortField = '';
+        // this.pageData!.sortDir = '';
+        if (callBack) {
+          callBack(res);
+        }
+      });
   }
 
   getData(ds: any, callBack?: (resData: any) => void) {
@@ -77,15 +78,12 @@ export abstract class GenericComponent {
       if (callBack) callBack(res);
     });
   }
-  preSave() { }
-  preSaveByApplication() { }
+  preSave() {}
+  preSaveByApplication() {}
 
+  postSave(data: any) {}
 
-  postSave(data: any) { 
-  }
-
-  postSaveByApplication(data: any) { }
-
+  postSaveByApplication(data: any) {}
 
   saveData() {
     this.preSave();
@@ -123,17 +121,16 @@ export abstract class GenericComponent {
   saveDataByApplication(applicationId: any) {
     this.preSaveByApplication();
     //this.form.value.collection = null ;// No collection for page
-    // this.form.value.application['id'] = applicationId ; 
+    // this.form.value.application['id'] = applicationId ;
 
     // Clone the form value
     //const formData = { ...this.form.value };
 
     // Ensure application is an object and add the id
-    
 
     const formData = this.form.value;
     formData.application = { ...formData.application, id: applicationId };
-    
+
     if (!formData.id) {
       this.dataService.createData(formData).then((res: any) => {
         if (res) {

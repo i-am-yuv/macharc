@@ -1,17 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { GenericComponent } from '../utils/genericcomponent';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { MessageService } from '@splenta/vezo/src/public-api';
+import { MessageService } from '@splenta/vezo';
+import { Collection } from '../collection/collection';
 import { CollectionService } from '../collection/collection.service';
 import { FieldService } from '../fields/field.service';
 import { FilterBuilder } from '../utils/FilterBuilder';
-import { Collection } from '../collection/collection';
+import { GenericComponent } from '../utils/genericcomponent';
 
 @Component({
   selector: 'app-acl',
   templateUrl: './acl.component.html',
-  styleUrls: ['./acl.component.scss']
+  styleUrls: ['./acl.component.scss'],
 })
 export class AclComponent extends GenericComponent implements OnInit {
   form: FormGroup<any>;
@@ -23,7 +23,6 @@ export class AclComponent extends GenericComponent implements OnInit {
     { label: 'Unprivileged', value: 'Unprivileged' },
     { label: 'Authorized', value: 'Authorized' },
     { label: 'System', value: 'System' },
-
   ];
   collectionId: string | null;
 
@@ -42,28 +41,33 @@ export class AclComponent extends GenericComponent implements OnInit {
 
     this.form = this.fb.group({
       id: '',
-      fieldName: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
+      fieldName: [
+        '',
+        [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)],
+      ],
       dataType: ['', [Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
       collection: this.fb.group({
-        id: this.collectionId
-      })
-    })
+        id: this.collectionId,
+      }),
+    });
   }
   override preSave(): void {
     this.form.patchValue({ collection: { id: this.collectionId } });
   }
   ngOnInit(): void {
-
     this.data = [
       { role: 'IT User', endpoint: 'GetAll', block: false },
       { role: 'IT Approver', endpoint: 'GetOn', block: false },
       { role: 'CFM User', endpoint: 'Create', block: false },
       { role: 'CFM Approver', endpoint: 'Read', block: false },
       { role: 'CFM Approver', endpoint: 'Update', block: false },
-      { role: 'CFM Approver', endpoint: 'Delete', block: false }
-    ]
+      { role: 'CFM Approver', endpoint: 'Delete', block: false },
+    ];
 
-    this.collectionService.getAllData().then(res => { this.collections = res.content; this.collection = this.collections[0] });
+    this.collectionService.getAllData().then((res) => {
+      this.collections = res.content;
+      this.collection = this.collections[0];
+    });
 
     if (this.collectionId) {
       var filterStr = FilterBuilder.equal('collection.id', this.collectionId);
@@ -71,7 +75,7 @@ export class AclComponent extends GenericComponent implements OnInit {
       this.getAllData();
       this.collectionService.getData({ id: this.collectionId }).then((res) => {
         this.collection = res;
-      })
+      });
     }
   }
 }

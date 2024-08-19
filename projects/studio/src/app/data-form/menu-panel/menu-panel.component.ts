@@ -1,22 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DataForm } from '../data-form';
-import { Collection } from '../../collection/collection';
-import { MicroService } from '../../microservice/microservice';
-import { Application } from '../../application/application';
-import { DataFormService } from '../data-form.service';
-import { MessageService } from '@splenta/vezo/src/public-api';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CollectionService } from '../../collection/collection.service';
-import { MicroserviceService } from '../../microservice/microservice.service';
+import { MessageService } from '@splenta/vezo';
+import { Application } from '../../application/application';
 import { ApplicationService } from '../../application/application.service';
+import { Collection } from '../../collection/collection';
+import { CollectionService } from '../../collection/collection.service';
+import { MicroService } from '../../microservice/microservice';
+import { MicroserviceService } from '../../microservice/microservice.service';
 import { FilterBuilder } from '../../utils/FilterBuilder';
 import { GenericComponent } from '../../utils/genericcomponent';
+import { DataForm } from '../data-form';
+import { DataFormService } from '../data-form.service';
 
 @Component({
   selector: 'app-menu-panel',
   templateUrl: './menu-panel.component.html',
-  styleUrls: ['./menu-panel.component.scss']
+  styleUrls: ['./menu-panel.component.scss'],
 })
 export class MenuPanelComponent extends GenericComponent {
   form!: FormGroup<any>;
@@ -42,49 +42,56 @@ export class MenuPanelComponent extends GenericComponent {
     super(formService, messageService);
     this.form = this.fb.group({
       id: '',
-      formName: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
+      formName: [
+        '',
+        [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)],
+      ],
       formCode: ['', [Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
       formDescription: [],
       collection: [],
       microService: [],
       application: [],
       process: [],
-    })
+    });
   }
   ngOnInit(): void {
     this.getAllData();
     this.collectionId = this.route.snapshot.paramMap.get('id');
     if (this.collectionId) {
-      this.collectionService.getData({ id: this.collectionId }).then((res: any) => {
-        this.collection = res;
-        this.form.patchValue({ collection: res });
-      })
+      this.collectionService
+        .getData({ id: this.collectionId })
+        .then((res: any) => {
+          this.collection = res;
+          this.form.patchValue({ collection: res });
+        });
     } else {
       this.microserviceService.getAllData().then((res: any) => {
         if (res) {
           this.microserviceItems = res.content;
         }
-      })
+      });
     }
     this.applicationService.getAllData().then((res: any) => {
       if (res) {
         this.applicationItems = res.content;
       }
-    })
+    });
   }
   getCollectionItems() {
     this.form.patchValue({ collection: null });
-    var filterStr = FilterBuilder.equal('microService.id', this.form.value.microService.id);
+    var filterStr = FilterBuilder.equal(
+      'microService.id',
+      this.form.value.microService.id
+    );
     this.collectionService.getAllData(undefined, filterStr).then((res: any) => {
       if (res) {
         this.collectionItems = res.content;
       }
-    })
+    });
   }
   saveFormData() {
     console.log(this.form.value);
   }
-
 
   override preSave(): void {
     console.log(this.form.value);
@@ -93,7 +100,7 @@ export class MenuPanelComponent extends GenericComponent {
       if (this.collection) {
         this.form.patchValue({ collection: this.collection });
       } else {
-        console.log('no collection')
+        console.log('no collection');
       }
     }
   }

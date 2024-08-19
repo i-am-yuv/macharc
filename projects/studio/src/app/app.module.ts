@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { FrontComponent } from './front/front.component';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MessageService, VezoModule } from '@splenta/vezo';
 import { AccordionModule } from '@splenta/vezo/accordion';
 import { ButtonModule } from '@splenta/vezo/button';
 import { CardModule } from '@splenta/vezo/card';
@@ -20,7 +21,6 @@ import { MenuModule } from '@splenta/vezo/menu';
 import { ModalModule } from '@splenta/vezo/modal';
 import { RadiobuttonModule } from '@splenta/vezo/radiobutton';
 import { SelectModule } from '@splenta/vezo/select';
-import { MessageService, VezoModule } from '@splenta/vezo/src/public-api';
 import { SwitchModule } from '@splenta/vezo/switch';
 import { TableModule } from '@splenta/vezo/table';
 import { TabsModule } from '@splenta/vezo/tabs';

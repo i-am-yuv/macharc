@@ -1,25 +1,29 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MessageService } from '@splenta/vezo/src/public-api';
+import { MessageService } from '@splenta/vezo';
 import { LoginService } from './login.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
   loginForm!: FormGroup;
 
   submitted = false;
 
-  constructor(private router: Router, private loginService: LoginService, private message: MessageService) { }
+  constructor(
+    private router: Router,
+    private loginService: LoginService,
+    private message: MessageService
+  ) {}
 
   ngOnInit() {
     this.loginForm = new FormGroup({
-      'username': new FormControl('', Validators.required),
-      'password': new FormControl('', Validators.required)
+      username: new FormControl('', Validators.required),
+      password: new FormControl('', Validators.required),
     });
   }
 
@@ -70,5 +74,4 @@ export class LoginComponent {
         this.submitted = false;
       });
   }
-
 }

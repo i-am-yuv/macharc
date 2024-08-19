@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { MessageService, Pagination } from '@splenta/vezo/src/public-api';
+import { MessageService, Pagination } from '@splenta/vezo';
 import { BusinessLogic } from '../../business-logic/business-logic';
 import { BusinessLogicService } from '../../business-logic/business-logic.service';
 import { Datasource } from '../../datasource/datasource';
@@ -44,7 +44,7 @@ export class EndpointsComponent extends GenericComponent implements OnInit {
   collection: Collection = {};
   services: BusinessLogic[] = [];
   datasources: Datasource[] = [];
-  searchByMicroservice !: string ;
+  searchByMicroservice!: string;
 
   defaultValue: string = 'Rahul Kumar'; // Default value
 
@@ -70,8 +70,8 @@ export class EndpointsComponent extends GenericComponent implements OnInit {
   pathVariables: PathVariable[] = [];
   collections: Collection[] = [];
 
-  requestDto : RequestDto[] =[] ;
-  responseDto : ResponseDto[] =[] ;
+  requestDto: RequestDto[] = [];
+  responseDto: ResponseDto[] = [];
 
   constructor(
     messageService: MessageService,
@@ -112,8 +112,8 @@ export class EndpointsComponent extends GenericComponent implements OnInit {
         this.collection = res;
 
         // this.currentRequestDto =   ;
-        this.requestDto.push(this.collection?.requestDto!) ;
-        this.responseDto.push(this.collection?.responseDto!) ;
+        this.requestDto.push(this.collection?.requestDto!);
+        this.responseDto.push(this.collection?.responseDto!);
 
         console.log(this.collection);
 
@@ -131,22 +131,27 @@ export class EndpointsComponent extends GenericComponent implements OnInit {
     });
   }
 
-  getAllServicesByMicroservices()
-  {
-     //getting the services by microservice
-     var filterStrService = FilterBuilder.equal('microService.id', this.collection.microService?.id!);
-     this.searchByMicroservice =  filterStrService ;
-     var pagination !: Pagination ;
-     this.workflowService.getAllData(pagination , this.searchByMicroservice).then((res: any) => {
-       this.services = res.content;
-     });
+  getAllServicesByMicroservices() {
+    //getting the services by microservice
+    var filterStrService = FilterBuilder.equal(
+      'microService.id',
+      this.collection.microService?.id!
+    );
+    this.searchByMicroservice = filterStrService;
+    var pagination!: Pagination;
+    this.workflowService
+      .getAllData(pagination, this.searchByMicroservice)
+      .then((res: any) => {
+        this.services = res.content;
+      });
   }
 
-  getEndPointsByCollectionId()
-  {
-    this.endpointService.getAllEndpointsByCollection(this.collection.id).then((res: any) => {
-      this.data = res;
-    });
+  getEndPointsByCollectionId() {
+    this.endpointService
+      .getAllEndpointsByCollection(this.collection.id)
+      .then((res: any) => {
+        this.data = res;
+      });
   }
 
   getPathVariables(ep: Endpoint) {
@@ -176,9 +181,11 @@ export class EndpointsComponent extends GenericComponent implements OnInit {
 
   override preSave(): void {
     this.form.patchValue({ collection: { id: this.collectionId } });
-    if( this.form.value.endPointType == 'GET'  || this.form.value.endPointType == 'DELETE')
-    {
-      this.form.value.requestDto = null ;
+    if (
+      this.form.value.endPointType == 'GET' ||
+      this.form.value.endPointType == 'DELETE'
+    ) {
+      this.form.value.requestDto = null;
     }
     this.activeEp = this.form.value;
   }
@@ -186,20 +193,17 @@ export class EndpointsComponent extends GenericComponent implements OnInit {
     this.pathVariables.push({ variableName: '', variableType: '' });
   }
 
-  saveCustomData()
-  {
-    if( this.form.value.returnType == 'collection')
-    {
-      this.saveData()
-    }
-    else{
-      this.form.value.responseDto = null ;
+  saveCustomData() {
+    if (this.form.value.returnType == 'collection') {
+      this.saveData();
+    } else {
+      this.form.value.responseDto = null;
       console.log(this.form.value);
-      this.saveData()
+      this.saveData();
     }
   }
 
-  override postSave(data: any) { 
-    this.getEndPointsByCollectionId() ;
+  override postSave(data: any) {
+    this.getEndPointsByCollectionId();
   }
 }

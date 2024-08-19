@@ -7,7 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService } from '@splenta/vezo/src/public-api';
+import { MessageService } from '@splenta/vezo';
 import { FunctionsUsingCSI, NgTerminal } from 'ng-terminal';
 import RSocketWebSocketClient from 'rsocket-websocket-client';
 import { ProjectService } from '../../project/project.service';
@@ -22,8 +22,8 @@ import {
 import { environment } from 'projects/studio/src/environments/environment';
 import { Payload, ReactiveSocket } from 'rsocket-types';
 import { Subject } from 'rxjs';
-import { MicroserviceService } from '../microservice.service';
 import { Project } from '../../project/project';
+import { MicroserviceService } from '../microservice.service';
 
 @Component({
   selector: 'app-ms-form',
@@ -82,10 +82,10 @@ export class MsFormComponent
       this.projects = res.content;
     });
 
-   // this.projectService.setActiveProject();
+    // this.projectService.setActiveProject();
     this.projectService.getActiveProject().subscribe((val) => {
       this.activeProject = val;
-      console.log( this.activeProject ) ;
+      console.log(this.activeProject);
     });
     // Code for web-terminal
 
@@ -177,9 +177,8 @@ export class MsFormComponent
   }
 
   override saveData() {
-    
     // default sending the active project
-    this.form.value.project = this.activeProject ;
+    this.form.value.project = this.activeProject;
     const formData = this.form.value;
     if (!formData.id) {
       formData.id = null;
