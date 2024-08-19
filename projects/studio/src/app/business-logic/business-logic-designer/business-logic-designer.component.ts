@@ -54,8 +54,7 @@ function createDefinition() {
 })
 export class BusinessLogicDesignerComponent
   extends GenericComponent
-  implements OnInit
-{
+  implements OnInit {
   form!: FormGroup<any>;
   data: Collection[] = [];
   allMicroservice: MicroService[] = [];
@@ -413,9 +412,28 @@ export class BusinessLogicDesignerComponent
   }
 
   openConditionEditor(editor: any) {
-    this.showConditionEditor = !this.showConditionEditor;
+    console.log(editor);
+    // For New Entry Reseting the data
+    if (Object.keys(editor.step.properties).length === 0) {
+      console.log('New Entry');
+      this.conditionGroups = [
+        {
+          conditions: [
+            {
+              firstValue: '',
+              operator: '=',
+              secondValue: null,
+              manualEntry: false,
+            },
+          ],
+        }
+      ];
+
+    }
     this.conditionEditor = editor;
+    this.showConditionEditor = !this.showConditionEditor;
   }
+
   openLoopEditor(editor: any) {
     this.showLoopEditor = !this.showLoopEditor;
     this.loopEditor = editor;
@@ -432,8 +450,16 @@ export class BusinessLogicDesignerComponent
   }
 
   openAPIEditor(editor: any) {
-    this.showAPIEditor = !this.showAPIEditor;
+    console.log(editor);
+    // For New Entry Reseting the data
+    if (editor.step.properties.collection == '') {
+      console.log('New Entry');
+      this.modelSelectedAPI = {};
+      this.currentEndpointByModel = {};
+      this.reqDtoModelMappedList = [];
+    }
     this.apiEditor = editor;
+    this.showAPIEditor = !this.showAPIEditor;
   }
 
   openSaveDataEditor(editor: any) {
@@ -442,8 +468,18 @@ export class BusinessLogicDesignerComponent
   }
 
   openSetResponseDataEditor(editor: any) {
-    this.showSetResponseDataEditor = !this.showSetResponseDataEditor;
+    console.log(editor);
+    // For New Entry Reseting the data
+
+    if (Object.keys(editor.step.properties).length === 0) {
+      console.log('New Entry');
+      this.selectedResPojo = {};
+      this.pojoModelMappedList = [];
+      this.selectedPojoFields = [];
+    }
+
     this.setResDataEditor = editor;
+    this.showSetResponseDataEditor = !this.showSetResponseDataEditor;
   }
 
   updateConditions() {
@@ -899,8 +935,8 @@ export class BusinessLogicDesignerComponent
   }
 
   updateSetResDataEditor(editor: any) {
-    console.log(editor.step.properties);
-    console.log(this.pojoModelMappedList);
+    console.log(editor.step);
+    console.log(this.pojoModelMappedList); // This list is getting changed 
     this.saveThisSetResData(editor.step, editor.context);
     this.showSetResponseDataEditor = false;
   }

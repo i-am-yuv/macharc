@@ -796,7 +796,6 @@
           class="w-full"
           optionLabel="collectionName"
           (ngModelChange)="getTheReqDtos(this.modelSelectedAPI)"
-          [appendTo]="'body'"
         >
         </p-dropdown>
 
@@ -806,7 +805,6 @@
           [(ngModel)]="this.currentEndpointByModel"
           placeholder="Select Endpoint"
           [style]="{ width: '100%' }"
-          [appendTo]="'body'"
           class="w-full"
           optionLabel="endpointName"
           (ngModelChange)="endpointChange(this.currentEndpointByModel)"
@@ -826,7 +824,6 @@
               "
               placeholder="Choose Model Field"
               [group]="true"
-              [appendTo]="'body'"
             >
               <ng-template let-group pTemplate="group">
                 <div class="flex gap-2 justify-start items-center">
@@ -899,7 +896,7 @@
     >
     </p-dropdown>
 
-    <div *ngIf="this.selectedResPojo">
+    <div *ngIf="this.selectedResPojo && this.selectedResPojo !== {}">
       <div *ngFor="let pojoField of selectedPojoFields; index as i">
         <div class="flex mt-8 w-full gap-4 justify-between mx-4 items-center">
           <div class="w-1/2">{{ pojoField.fieldName }}</div>
@@ -935,8 +932,7 @@
     <div class="text-right">
       <vezo-button
         label="Save"
-        (click)="updateSetResDataEditor(this.setResDataEditor)"
-      ></vezo-button>
+        (click)="updateSetResDataEditor(this.setResDataEditor)"></vezo-button>
     </div>
   </ng-template>
 </vezo-modal>
