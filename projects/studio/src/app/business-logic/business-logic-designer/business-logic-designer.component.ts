@@ -436,8 +436,37 @@ export class BusinessLogicDesignerComponent
   }
 
   openLoopEditor(editor: any) {
-    this.showLoopEditor = !this.showLoopEditor;
+
+    // console.log(editor);
+    // if (Object.keys(editor.step.properties).length === 0) {
+    //   console.log('New');
+    //   this.loopFirstValue = {};
+    //   this.loopOperator = {};
+    //   this.loopSecondValue = {};
+    //   this.loopStaticValue = {};
+    // }
+    // else {
+    //   console.log('Old');
+    //   for (var i = 0; i < this.definition.sequence.length; i++) {
+    //     var currDefination = this.definition.sequence[i];
+    //     if (currDefination.id == editor.step.id) {
+    //       // var logicGroup = currDefination.properties['conditionGroups'] ;
+    //       const logicGroup: any = currDefination.properties['conditionGroups'];
+
+    //       logicGroup.forEach((group: any) => {
+    //         // Loop through each condition within the group
+    //         group.conditions.forEach((condition: any) => {
+    //           this.loopFirstValue = condition.firstValue ;
+    //           this.loopOperator = condition.operator ;
+    //           this.loopSecondValue = condition.secondValue ;
+    //           this.loopStaticValue = condition.manualEntry ;
+    //         });
+    //       });
+    //     }
+    //   }
+    // }
     this.loopEditor = editor;
+    this.showLoopEditor = !this.showLoopEditor;
   }
 
   openModelsPopup(editor: any) {
@@ -467,17 +496,14 @@ export class BusinessLogicDesignerComponent
     console.log(editor);
     if (Object.keys(editor.step.properties).length === 0) {
       console.log('New');
+      this.saveDataModel = {};
     }
     else {
       console.log('Old');
       for (var i = 0; i < this.definition.sequence.length; i++) {
         var currDefination = this.definition.sequence[i];
         if (currDefination.id == editor.step.id) {
-          this.currentModel = currDefination.properties['model'];
-          this.selectedOperation = currDefination.properties['queryType'];
-          this.paramsForFetchData = currDefination.properties['paramId'];
-          this.customJPAQuery = currDefination.properties['customQuery'];
-          this.fetchDataSchedule = parseISO(currDefination.properties['schedule']?.toString() ? currDefination.properties['schedule']?.toString() : '');
+          this.saveDataModel = currDefination.properties['model'];
         }
       }
     }
@@ -515,7 +541,7 @@ export class BusinessLogicDesignerComponent
   selectedDate: any;
   fieldArrays: Field[] = [];
   finalListModels: CollectionObj[] = [];
-  saveDataModel: Collection = {};
+  saveDataModel: any = {}; // This is Collection
   selectedResPojo: Collection = {};
   selectedPojoFields: Field[] = [];
 
@@ -523,9 +549,8 @@ export class BusinessLogicDesignerComponent
 
   modelSelectedAPI: Collection = {};
   currentEndpointByModel: Endpoint = {};
-  selectedModelForDtoField: [] = [];
-  selectedModelForsetResField: [] = [];
-
+  selectedModelForDtoField: any;
+  selectedModelForsetResField: any;
   paramsForFetchData: any;
   loopFirstValue: any;
   loopOperator: any;
@@ -649,6 +674,11 @@ export class BusinessLogicDesignerComponent
     console.log(editor);
     if (editor.step.properties.model?.id == null) {
       console.log('New');
+      this.currentModel = {};
+      this.selectedOperation = {};
+      this.paramsForFetchData = {};
+      this.customJPAQuery = {};
+      this.fetchDataSchedule = null;
     }
     else {
       console.log('Old');
