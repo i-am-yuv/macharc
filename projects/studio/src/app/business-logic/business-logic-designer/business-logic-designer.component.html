@@ -796,7 +796,6 @@
           class="w-full"
           optionLabel="collectionName"
           (ngModelChange)="getTheReqDtos(this.modelSelectedAPI)"
-          [appendTo]="'body'"
         >
         </p-dropdown>
 
@@ -806,7 +805,6 @@
           [(ngModel)]="this.currentEndpointByModel"
           placeholder="Select Endpoint"
           [style]="{ width: '100%' }"
-          [appendTo]="'body'"
           class="w-full"
           optionLabel="endpointName"
           (ngModelChange)="endpointChange(this.currentEndpointByModel)"
@@ -820,9 +818,9 @@
           <div class="w-1/2 flex justify-start">
             <p-dropdown
               [options]="this.finalListModels"
-              [(ngModel)]="selectedModelForDtoField[i]"
+              [(ngModel)]="selectedModelForDtoField"
               (ngModelChange)="
-                modelSelectedForReqDto(reqDtoField, selectedModelForDtoField[i])
+                modelSelectedForReqDto(reqDtoField, selectedModelForDtoField)
               "
               placeholder="Choose Model Field"
               [group]="true"
@@ -906,11 +904,11 @@
           <div class="w-1/2 flex justify-start">
             <p-dropdown
               [options]="this.finalListModels"
-              [(ngModel)]="selectedModelForsetResField[i]"
+              [(ngModel)]="selectedModelForsetResField"
               (ngModelChange)="
                 modelSelectedForSetResData(
                   pojoField,
-                  selectedModelForsetResField[i]
+                  selectedModelForsetResField
                 )
               "
               placeholder="Choose Model Field"

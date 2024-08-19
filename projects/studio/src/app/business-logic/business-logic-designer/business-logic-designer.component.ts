@@ -468,8 +468,8 @@ export class BusinessLogicDesignerComponent
 
   modelSelectedAPI: Collection = {};
   currentEndpointByModel: Endpoint = {};
-  selectedModelForDtoField: [] = [];
-  selectedModelForsetResField: [] = [];
+  selectedModelForDtoField: any = {};
+  selectedModelForsetResField: any = {};
 
   loopFirstValue: any;
   loopOperator: any;
