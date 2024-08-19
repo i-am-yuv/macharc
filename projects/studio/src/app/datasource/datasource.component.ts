@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MessageService } from '@splenta/vezo/src/public-api';
+import { MessageService } from '@splenta/vezo';
 import { GenericComponent } from '../utils/genericcomponent';
 import { Datasource } from './datasource';
 import { DatasourceService } from './datasource.service';

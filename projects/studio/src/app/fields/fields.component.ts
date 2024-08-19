@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { MessageService } from '@splenta/vezo/src/public-api';
+import { MessageService } from '@splenta/vezo';
 import { Collection } from '../collection/collection';
 import { CollectionService } from '../collection/collection.service';
 import { FilterBuilder } from '../utils/FilterBuilder';
@@ -11,16 +11,14 @@ import { FieldService } from './field.service';
 
 export interface dtoPayloadItem {
   id?: string;
-};
+}
 
 @Component({
   selector: 'app-fields',
   templateUrl: './fields.component.html',
-  styleUrls: ['./fields.component.scss']
+  styleUrls: ['./fields.component.scss'],
 })
 export class FieldsComponent extends GenericComponent implements OnInit {
-
-
   form: FormGroup<any>;
   data: Field[] = [];
   componentName: string = 'Field';
@@ -70,14 +68,17 @@ export class FieldsComponent extends GenericComponent implements OnInit {
     // console.log(this.collectionId);
     this.form = this.fb.group({
       id: '',
-      fieldName: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
+      fieldName: [
+        '',
+        [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)],
+      ],
       dataType: ['', [Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
       fieldType: [''],
       validation: [''],
       pattern: [''],
       collection: [],
-      foreignKey: []
-    })
+      foreignKey: [],
+    });
   }
   override preSave(): void {
     this.form.patchValue({ collection: { id: this.collectionId } });
@@ -90,10 +91,10 @@ export class FieldsComponent extends GenericComponent implements OnInit {
       this.getAllData();
       this.collectionService.getAllData().then((res: any) => {
         this.collections = res.content;
-      })
+      });
       this.collectionService.getData({ id: this.collectionId }).then((res) => {
         this.collection = res;
-      })
+      });
     }
     this.setDefaultDTO();
   }
@@ -106,22 +107,33 @@ export class FieldsComponent extends GenericComponent implements OnInit {
 
   generateFromTable() {
     if (this.collectionId) {
-      this.collectionService.generateFromTable(this.collectionId).then((res: any) => {
-        this.msgService.add({ severity: 'success', summary: 'Generated', detail: 'All fields imported and apis created' });
-        this.getAllData();
-      })
+      this.collectionService
+        .generateFromTable(this.collectionId)
+        .then((res: any) => {
+          this.msgService.add({
+            severity: 'success',
+            summary: 'Generated',
+            detail: 'All fields imported and apis created',
+          });
+          this.getAllData();
+        });
     }
   }
 
   generateCode() {
     if (this.collectionId) {
-      this.collectionService.generateCode(this.collectionId).then((res: any) => {
-        this.msgService.add({ severity: 'success', summary: 'Generated', detail: 'All apis created' });
-        this.getAllData();
-      })
+      this.collectionService
+        .generateCode(this.collectionId)
+        .then((res: any) => {
+          this.msgService.add({
+            severity: 'success',
+            summary: 'Generated',
+            detail: 'All apis created',
+          });
+          this.getAllData();
+        });
     }
   }
-
 
   generateDTO() {
     if (this.currentDTO == 'ResponseDTO') {
@@ -135,22 +147,29 @@ export class FieldsComponent extends GenericComponent implements OnInit {
           finalPayload.push(tempObj);
         }
 
-        this.collectionService.generateResponseDTO(this.collectionId, finalPayload).then((res: any) => {
-          this.msgService.add({ severity: 'success', summary: 'Success', detail: 'Response DTO Generated' });
-          this.getAllData();
-          this.showGenerateDtoModel = false;
-        }).catch(
-          (err) => {
-            console.log("Inside Error");
-            this.msgService.add({ severity: 'success', summary: 'Success', detail: 'Response DTO Generated' });
+        this.collectionService
+          .generateResponseDTO(this.collectionId, finalPayload)
+          .then((res: any) => {
+            this.msgService.add({
+              severity: 'success',
+              summary: 'Success',
+              detail: 'Response DTO Generated',
+            });
             this.getAllData();
             this.showGenerateDtoModel = false;
-          }
-        )
+          })
+          .catch((err) => {
+            console.log('Inside Error');
+            this.msgService.add({
+              severity: 'success',
+              summary: 'Success',
+              detail: 'Response DTO Generated',
+            });
+            this.getAllData();
+            this.showGenerateDtoModel = false;
+          });
       }
-    }
-    else if (this.currentDTO == 'RequestDTO')
-    {
+    } else if (this.currentDTO == 'RequestDTO') {
       if (this.collectionId) {
         // alert('This is RequestDTO') ;
 
@@ -161,20 +180,29 @@ export class FieldsComponent extends GenericComponent implements OnInit {
           tempObj.id = this.dtoSelectedFields[i];
           finalPayload.push(tempObj);
         }
-        this.collectionService.generateRequestDTO(this.collectionId, finalPayload).then((res: any) => {
-          this.msgService.add({ severity: 'success', summary: 'Success', detail: 'Request DTO Generated' });
-          this.getAllData();
-          console.log("Inside Success");
-          this.showGenerateDtoModel = false;
-        }).catch(
-          (err) => {
-            console.log("Inside Error");
-            console.log(err);
-            this.msgService.add({ severity: 'success', summary: 'Success', detail: 'Request DTO Generated' });
-            this.getAllData()
+        this.collectionService
+          .generateRequestDTO(this.collectionId, finalPayload)
+          .then((res: any) => {
+            this.msgService.add({
+              severity: 'success',
+              summary: 'Success',
+              detail: 'Request DTO Generated',
+            });
+            this.getAllData();
+            console.log('Inside Success');
             this.showGenerateDtoModel = false;
-          }
-        )
+          })
+          .catch((err) => {
+            console.log('Inside Error');
+            console.log(err);
+            this.msgService.add({
+              severity: 'success',
+              summary: 'Success',
+              detail: 'Request DTO Generated',
+            });
+            this.getAllData();
+            this.showGenerateDtoModel = false;
+          });
       }
     }
   }

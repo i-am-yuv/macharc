@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService } from '@splenta/vezo/src/public-api';
+import { MessageService } from '@splenta/vezo';
 import { MicroService } from '../microservice/microservice';
 import { MicroserviceService } from '../microservice/microservice.service';
 import { FilterBuilder } from '../utils/FilterBuilder';
@@ -76,11 +76,11 @@ export class BusinessLogicComponent extends GenericComponent implements OnInit {
     this.router.navigate(['/builder/services/ai/' + wf.id]);
   }
 
-  override preSave() { 
-    if (!this.form.value.microService && this.microserviceId ) {
+  override preSave() {
+    if (!this.form.value.microService && this.microserviceId) {
       this.form.value.microService = {
-        id: ''
-      }
+        id: '',
+      };
       this.form.value.microService.id = this.microserviceId;
       console.log(this.form.value.microService.id);
     }

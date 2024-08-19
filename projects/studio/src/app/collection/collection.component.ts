@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService, Pagination } from '@splenta/vezo/src/public-api';
+import { MessageService, Pagination } from '@splenta/vezo';
 import { MicroserviceService } from '../microservice/microservice.service';
 import { FilterBuilder } from '../utils/FilterBuilder';
 import { GenericComponent } from '../utils/genericcomponent';
@@ -51,7 +51,7 @@ export class CollectionComponent extends GenericComponent implements OnInit {
       readonly: [],
       hasService: [],
       microService: [],
-      dataSource: ['']
+      dataSource: [''],
     });
   }
   ngOnInit(): void {
@@ -80,13 +80,12 @@ export class CollectionComponent extends GenericComponent implements OnInit {
   }
 
   override preSave(): void {
-   
-    console.log( 'this is form') ;
-    console.log( this.form.value);
-    if (!this.form.value.microService && this.microserviceId ) {
+    console.log('this is form');
+    console.log(this.form.value);
+    if (!this.form.value.microService && this.microserviceId) {
       this.form.value.microService = {
-        id: ''
-      }
+        id: '',
+      };
       this.form.value.microService.id = this.microserviceId;
       console.log(this.form.value.microService.id);
     }

@@ -1,17 +1,24 @@
-
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { Engine } from './flowy/Engine';
-import { Definition, Designer, GlobalEditorContext, Properties, Step, StepEditorContext, StepsConfiguration, ToolboxConfiguration } from 'sequential-workflow-designer';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MessageService } from '@splenta/vezo';
+import {
+  Definition,
+  Designer,
+  GlobalEditorContext,
+  Properties,
+  Step,
+  StepEditorContext,
+  StepsConfiguration,
+  ToolboxConfiguration,
+} from 'sequential-workflow-designer';
 import { BusinessLogic } from '../business-logic/business-logic';
 import { BusinessLogicService } from '../business-logic/business-logic.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService } from '@splenta/vezo/src/public-api';
-import { Actions } from './action';
-import { GenericComponent } from '../utils/genericcomponent';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActionService } from './action.service';
 import { DataFormService } from '../data-form/data-form.service';
 import { LayoutService } from '../layout/layout.service';
+import { GenericComponent } from '../utils/genericcomponent';
+import { Actions } from './action';
+import { ActionService } from './action.service';
 
 declare var flowy: any;
 function createDefinition() {
@@ -33,11 +40,10 @@ export interface Action {
   description: string;
 }
 
-
 @Component({
   selector: 'app-actions',
   templateUrl: './actions.component.html',
-  styleUrls: ['./actions.component.scss']
+  styleUrls: ['./actions.component.scss'],
 })
 export class ActionsComponent extends GenericComponent implements OnInit {
   // Old Code Start-------------------------------------
@@ -185,9 +191,7 @@ export class ActionsComponent extends GenericComponent implements OnInit {
   // }
   // Old Code Ends -------------------------------------
 
-
   // New Code Starts from here
-
 
   data: Actions[] = [];
   componentName: string = 'Action Form';
@@ -212,9 +216,9 @@ export class ActionsComponent extends GenericComponent implements OnInit {
     private actionService: ActionService,
     private formService: DataFormService,
     private msgService: MessageService,
-    private layoutService : LayoutService,
+    private layoutService: LayoutService,
     private fb: FormBuilder,
-    private router : Router
+    private router: Router
   ) {
     super(actionService, msgService);
     this.form = this.fb.group({
@@ -254,12 +258,10 @@ export class ActionsComponent extends GenericComponent implements OnInit {
   };
 
   public ngOnInit() {
-
     this.actionId = this.route.snapshot.paramMap.get('id');
     this.layoutService.checkPadding(false);
     this.getAllData();
-    if( this.actionId )
-    {
+    if (this.actionId) {
       this.getThisAction(this.actionId);
     }
 
@@ -276,14 +278,14 @@ export class ActionsComponent extends GenericComponent implements OnInit {
           }
         }
       });
+    } else {
     }
-    else {
-    }
-
   }
 
   getDataSorted() {
-    return this.data.sort((a: any, b: any) => a.actionName.localeCompare(b.actionName));
+    return this.data.sort((a: any, b: any) =>
+      a.actionName.localeCompare(b.actionName)
+    );
   }
 
   openFormPopup() {
@@ -291,21 +293,19 @@ export class ActionsComponent extends GenericComponent implements OnInit {
     this.visible = true;
   }
 
-  openCurrentAction(action : any )
-  {
-    this.currentAction  = action ; 
-    this.actionId = action.id ;
-    this.router.navigate(['/actions/' + action.id]);  
+  openCurrentAction(action: any) {
+    this.currentAction = action;
+    this.actionId = action.id;
+    this.router.navigate(['/actions/' + action.id]);
   }
 
-  getThisAction( actionId : any )
-  {
-    this.actionService.getActionByActionId(actionId).then(
-      (res: any) => {
+  getThisAction(actionId: any) {
+    this.actionService
+      .getActionByActionId(actionId)
+      .then((res: any) => {
         if (res) {
-          this.currentAction = res.content ;
-        }
-        else {
+          this.currentAction = res.content;
+        } else {
           this.messageService.add({
             severity: 'error',
             summary: 'Error',
@@ -313,40 +313,24 @@ export class ActionsComponent extends GenericComponent implements OnInit {
             life: 3000,
           });
         }
-      }
-    ).catch((err: any) => {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: err.error.message,
-        life: 3000,
+      })
+      .catch((err: any) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: err.error.message,
+          life: 3000,
+        });
       });
-    })
   }
 
   hoverAction(actionType: string, action: any) {
     if (actionType == 'enter') {
       this.currentAction = action;
-    }
-    else {
+    } else {
       this.currentAction = {};
     }
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   public onDesignerReady(designer: Designer) {
     this.designer = designer;
@@ -455,9 +439,4 @@ export class ActionsComponent extends GenericComponent implements OnInit {
       });
     });
   }
-
-
 }
-
-
-

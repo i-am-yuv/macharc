@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MessageService } from '@splenta/vezo/src/public-api';
+import { Router } from '@angular/router';
+import { MessageService } from '@splenta/vezo';
 import { GenericComponent } from '../utils/genericcomponent';
 import { ProjectService } from './project.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-project',
@@ -20,7 +20,7 @@ export class ProjectComponent extends GenericComponent {
     messageService: MessageService,
     private fb: FormBuilder,
     private projectService: ProjectService,
-    private router : Router
+    private router: Router
   ) {
     super(dataService, messageService);
   }
@@ -40,7 +40,4 @@ export class ProjectComponent extends GenericComponent {
       });
     });
   }
-
-
-
 }

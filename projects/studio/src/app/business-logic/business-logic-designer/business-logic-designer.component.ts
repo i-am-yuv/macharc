@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { MessageService, Pagination } from '@splenta/vezo/src/public-api';
+import { MessageService, Pagination } from '@splenta/vezo';
 import { parseISO } from 'date-fns/parseISO';
 import {
   Definition,

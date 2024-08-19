@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService } from '@splenta/vezo/src/public-api';
+import { MessageService } from '@splenta/vezo';
 import { LayoutService } from '../../layout/layout.service';
 import { GenericComponent } from '../../utils/genericcomponent';
 import { ProjectService } from '../project.service';

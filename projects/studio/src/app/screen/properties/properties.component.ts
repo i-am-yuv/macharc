@@ -1,22 +1,29 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { Router } from '@angular/router';
-import { MessageService } from '@splenta/vezo/src/public-api';
-import { ApplicationService } from '../../application/application.service';
-import { Application } from '../../application/application';
-import { GenericComponent } from '../../utils/genericcomponent';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
+import { MessageService } from '@splenta/vezo';
+import { Application } from '../../application/application';
+import { ApplicationService } from '../../application/application.service';
+import { GenericComponent } from '../../utils/genericcomponent';
 import { ScreenService } from '../screen.service';
 
 @Component({
   selector: 'app-properties',
-  templateUrl: './properties.component.html'
+  templateUrl: './properties.component.html',
 })
 export class PropertiesComponent extends GenericComponent implements OnChanges {
-
   form!: FormGroup<any>;
   data: [] = [];
   componentName: string = 'Screen';
-  
+
   @Input() props: any = {};
   @Input() fields: any[] = [];
   @Input() collections: any[] = [];
@@ -30,14 +37,14 @@ export class PropertiesComponent extends GenericComponent implements OnChanges {
 
   selectAssetModel: boolean = false;
 
-  @Output() getCollectionFields: EventEmitter<string> = new EventEmitter<string>();
+  @Output() getCollectionFields: EventEmitter<string> =
+    new EventEmitter<string>();
 
   @Output() assetModelOpen = new EventEmitter<boolean>();
 
   isReceivedUrlSameAsInput: boolean = false;
 
-  currentApplication : Application = {};
-
+  currentApplication: Application = {};
 
   column: any = {};
 
@@ -47,17 +54,19 @@ export class PropertiesComponent extends GenericComponent implements OnChanges {
     messageService: MessageService,
     private router: Router,
     private cdRef: ChangeDetectorRef,
-    private screenService : ScreenService,
-    private applicationService : ApplicationService
+    private screenService: ScreenService,
+    private applicationService: ApplicationService
   ) {
     super(screenService, messageService);
     this.ImageURL = null;
-    this.actualImageReceived = null; 
+    this.actualImageReceived = null;
   }
 
-
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['ImageURL'] && changes['ImageURL'].currentValue !== changes['ImageURL'].previousValue) {
+    if (
+      changes['ImageURL'] &&
+      changes['ImageURL'].currentValue !== changes['ImageURL'].previousValue
+    ) {
       this.actualImageReceived = changes['ImageURL'].currentValue;
       this.handleInputChange(this.actualImageReceived, 'url');
       this.cdRef.detectChanges(); // Manually trigger change detection
@@ -66,42 +75,57 @@ export class PropertiesComponent extends GenericComponent implements OnChanges {
       this.ImageURL = null;
     }
 
-    this.applicationService.getActiveApplication().subscribe((val:any) => {
-      this.currentApplication = val ;
+    this.applicationService.getActiveApplication().subscribe((val: any) => {
+      this.currentApplication = val;
       this.getAllScreenByApplication();
     });
   }
 
-  getAllScreenByApplication()
-  {
+  getAllScreenByApplication() {
     this.getAllDataById(this.currentApplication.id);
-  }   
+  }
 
   @Output() deleteProp = new EventEmitter<boolean>();
-  validations: any[] = ['Required', 'Alpha', 'Alpha Numeric', 'Numbers', 'Password', 'Email', 'Telephone', 'Pattern'];
+  validations: any[] = [
+    'Required',
+    'Alpha',
+    'Alpha Numeric',
+    'Numbers',
+    'Password',
+    'Email',
+    'Telephone',
+    'Pattern',
+  ];
   formData: any;
 
   deleteProperty() {
     this.deleteProp.emit(true);
   }
   deleteColumn() {
-    var indexToDelete = this.props.data.cols.findIndex((t: any) => t.field === this.column.field);
+    var indexToDelete = this.props.data.cols.findIndex(
+      (t: any) => t.field === this.column.field
+    );
     if (indexToDelete > 0) {
       this.props.data.cols.splice(indexToDelete, 1);
       this.column = {};
     }
   }
   addColumn() {
-    var indexToUpdate = this.props.data.cols.findIndex((t: any) => t.field === this.column.field);
+    var indexToUpdate = this.props.data.cols.findIndex(
+      (t: any) => t.field === this.column.field
+    );
     console.log(this.column);
 
     if (!this.column.heading) {
-      this.messageService.add({ severity: 'error', detail: 'Add a heading', summary: 'Error' });
+      this.messageService.add({
+        severity: 'error',
+        detail: 'Add a heading',
+        summary: 'Error',
+      });
       return;
     }
 
     if (indexToUpdate > 0) {
-
       this.props.data.cols[indexToUpdate] = this.column;
     } else {
       this.props.data.cols.push(this.column);
@@ -165,12 +189,13 @@ export class PropertiesComponent extends GenericComponent implements OnChanges {
   getInputValue(element: any): string {
     if (this.comingFromForm == true) {
       return this.props.mappedData[element];
-    }
-    else {
-      if (this.props.mappedData != null && this.props.mappedData[element] != null) {
+    } else {
+      if (
+        this.props.mappedData != null &&
+        this.props.mappedData[element] != null
+      ) {
         return this.props.mappedData[element];
-      }
-      else {
+      } else {
         return this.props.data[element];
       }
     }
@@ -178,12 +203,14 @@ export class PropertiesComponent extends GenericComponent implements OnChanges {
 
   removeDirectImage() {
     this.actualImageReceived = null;
-    this.handleInputChange('https://primefaces.org/cdn/primeng/images/galleria/galleria10.jpg', 'url');
+    this.handleInputChange(
+      'https://primefaces.org/cdn/primeng/images/galleria/galleria10.jpg',
+      'url'
+    );
   }
 
   // Function to handle changes to the ngModel of Selected Image from Asset
   handleInputChangeImage(event: any, element: any): void {
-
     // if (value !== this.ImageURL) {
     //   this.ImageURL = null;
     // }
@@ -211,9 +238,7 @@ export class PropertiesComponent extends GenericComponent implements OnChanges {
     this.assetModelOpen.emit(true);
   }
 
-  check( datatest : any)
-  {
-     console.log(datatest);
+  check(datatest: any) {
+    console.log(datatest);
   }
-
 }
