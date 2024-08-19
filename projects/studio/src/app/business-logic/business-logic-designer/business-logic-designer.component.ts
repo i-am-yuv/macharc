@@ -224,6 +224,7 @@ export class BusinessLogicDesignerComponent
     this.selectedParams = this.definition.properties['params'];
 
     // TODO: Add other vatiables for step editor model forms
+
   }
   public onDesignerReady(designer: Designer) {
     this.designer = designer;
@@ -463,8 +464,26 @@ export class BusinessLogicDesignerComponent
   }
 
   openSaveDataEditor(editor: any) {
-    this.showSaveDataEditor = !this.showSaveDataEditor;
+    console.log(editor);
+    if (Object.keys(editor.step.properties).length === 0) {
+      console.log('New');
+    }
+    else {
+      console.log('Old');
+      for (var i = 0; i < this.definition.sequence.length; i++) {
+        var currDefination = this.definition.sequence[i];
+        if (currDefination.id == editor.step.id) {
+          this.currentModel = currDefination.properties['model'];
+          this.selectedOperation = currDefination.properties['queryType'];
+          this.paramsForFetchData = currDefination.properties['paramId'];
+          this.customJPAQuery = currDefination.properties['customQuery'];
+          this.fetchDataSchedule = parseISO(currDefination.properties['schedule']?.toString() ? currDefination.properties['schedule']?.toString() : '');
+        }
+      }
+    }
     this.saveDataEditor = editor;
+    this.showSaveDataEditor = !this.showSaveDataEditor;
+
   }
 
   openSetResponseDataEditor(editor: any) {
@@ -489,7 +508,7 @@ export class BusinessLogicDesignerComponent
   // New Code -------------------------------------------------------------------------------------------->
 
   selectedModels: Collection[] | any = [];
-  currentModel: Collection = {};
+  currentModel: any;
   msSelected: MicroService = {};
   selectedOperation: any;
   selectedResOp: Collection | any = {};
@@ -507,6 +526,7 @@ export class BusinessLogicDesignerComponent
   selectedModelForDtoField: [] = [];
   selectedModelForsetResField: [] = [];
 
+  paramsForFetchData: any;
   loopFirstValue: any;
   loopOperator: any;
   loopSecondValue: any;
@@ -563,6 +583,15 @@ export class BusinessLogicDesignerComponent
     this.showParamsOptions = false;
   }
 
+  deleteThisParams(index: any) {
+    console.log(index);
+    if (index >= 0 && index < this.selectedParams.length) {
+      this.selectedParams.splice(index, 1);
+    } else {
+      console.error('Index out of bounds');
+    }
+  }
+
   public updatePropertyCollection(
     properties: Properties,
     name: string,
@@ -616,8 +645,27 @@ export class BusinessLogicDesignerComponent
   // Fetch Data Code Start
 
   openFetchDataEditor(editor: any) {
-    this.showFetchDataPopup = !this.showFetchDataPopup;
+
+    console.log(editor);
+    if (editor.step.properties.model?.id == null) {
+      console.log('New');
+    }
+    else {
+      console.log('Old');
+      for (var i = 0; i < this.definition.sequence.length; i++) {
+        var currDefination = this.definition.sequence[i];
+        if (currDefination.id == editor.step.id) {
+          this.currentModel = currDefination.properties['model'];
+          this.selectedOperation = currDefination.properties['queryType'];
+          this.paramsForFetchData = currDefination.properties['paramId'];
+          this.customJPAQuery = currDefination.properties['customQuery'];
+          this.fetchDataSchedule = parseISO(currDefination.properties['schedule']?.toString() ? currDefination.properties['schedule']?.toString() : '');
+        }
+      }
+    }
     this.fetchDataEditor = editor;
+    this.showFetchDataPopup = !this.showFetchDataPopup;
+
   }
 
   saveFetchData(editor: any) {
@@ -635,9 +683,16 @@ export class BusinessLogicDesignerComponent
     if (this.selectedOperation == 'CustomJpaQuery') {
       sequence.properties['queryType'] = this.selectedOperation;
       sequence.properties['customQuery'] = this.customJPAQuery;
+      sequence.properties['paramId'] = 'null';
+    }
+    else if (this.selectedOperation == 'FindById') {
+      sequence.properties['queryType'] = this.selectedOperation;
+      sequence.properties['paramId'] = this.paramsForFetchData;
+      sequence.properties['customQuery'] = 'null';
     } else {
       sequence.properties['queryType'] = this.selectedOperation;
       sequence.properties['customQuery'] = 'null';
+      sequence.properties['paramId'] = 'null';
     }
     sequence.properties['schedule'] = this.fetchDataSchedule;
 
