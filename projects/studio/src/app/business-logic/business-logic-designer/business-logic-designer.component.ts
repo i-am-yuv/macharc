@@ -437,34 +437,43 @@ export class BusinessLogicDesignerComponent
 
   openLoopEditor(editor: any) {
 
-    // console.log(editor);
-    // if (Object.keys(editor.step.properties).length === 0) {
-    //   console.log('New');
-    //   this.loopFirstValue = {};
-    //   this.loopOperator = {};
-    //   this.loopSecondValue = {};
-    //   this.loopStaticValue = {};
-    // }
-    // else {
-    //   console.log('Old');
-    //   for (var i = 0; i < this.definition.sequence.length; i++) {
-    //     var currDefination = this.definition.sequence[i];
-    //     if (currDefination.id == editor.step.id) {
-    //       // var logicGroup = currDefination.properties['conditionGroups'] ;
-    //       const logicGroup: any = currDefination.properties['conditionGroups'];
+    console.log(editor);
+    if (Object.keys(editor.step.properties).length === 0) {
+      console.log('New');
+      this.loopFirstValue = {};
+      this.loopOperator = {};
+      this.loopSecondValue = {};
+      this.loopStaticValue = null;
+    }
+    else {
+      console.log('Old');
+      for (var i = 0; i < this.definition.sequence.length; i++) {
+        var currDefination = this.definition.sequence[i];
+        if (currDefination.id == editor.step.id) {
+          const logicGroup: any = currDefination.properties['conditionGroups'];
 
-    //       logicGroup.forEach((group: any) => {
-    //         // Loop through each condition within the group
-    //         group.conditions.forEach((condition: any) => {
-    //           this.loopFirstValue = condition.firstValue ;
-    //           this.loopOperator = condition.operator ;
-    //           this.loopSecondValue = condition.secondValue ;
-    //           this.loopStaticValue = condition.manualEntry ;
-    //         });
-    //       });
-    //     }
-    //   }
-    // }
+          logicGroup.forEach((group: any) => {
+            // Loop through each condition within the group
+            group.conditions.forEach((condition: any) => {
+              console.log('condition');
+              console.log(condition);
+              this.loopFirstValue = condition.firstValue;
+              this.loopOperator = condition.operator;
+              if (condition.secondValue == 'manual') {
+                this.loopStaticValue = condition.manualEntryValue;
+                this.loopManualEntry = condition.manualEntry;
+                this.loopSecondValue = 'manual';
+              }
+              else {
+                this.loopSecondValue = condition.secondValue;
+                this.loopStaticValue = null
+                this.loopManualEntry = false;
+              }
+            });
+          });
+        }
+      }
+    }
     this.loopEditor = editor;
     this.showLoopEditor = !this.showLoopEditor;
   }
@@ -482,11 +491,37 @@ export class BusinessLogicDesignerComponent
   openAPIEditor(editor: any) {
     console.log(editor);
     // For New Entry Reseting the data
-    if (editor.step.properties.collection == '') {
+    if (editor.step.properties.collection == '' && editor.step.properties.endpoint == '') {
       console.log('New Entry');
       this.modelSelectedAPI = {};
       this.currentEndpointByModel = {};
+      this.allEndpointsByModel = [] ;
+      this.allFieldsByReqDto = [];
       this.reqDtoModelMappedList = [];
+      // this.selectedModelForDtoField = [];
+    }
+    else {
+      console.log('Old');
+      for (var i = 0; i < this.definition.sequence.length; i++) {
+        var currDefination = this.definition.sequence[i];
+        if (currDefination.id == editor.step.id) {
+          console.log(currDefination);
+          this.modelSelectedAPI = currDefination.properties['collection'] ? currDefination.properties['collection'] : {};
+          
+          setTimeout(() => {
+            this.getTheReqDtos(this.modelSelectedAPI);
+            this.currentEndpointByModel = currDefination.properties['endpoint'];
+            this.endpointChange(this.currentEndpointByModel);
+          }, 50);
+         
+          this.reqDtoModelMappedList = currDefination.properties['mappedData'];
+          this.selectedModelForDtoField = [];
+          for (var i = 0; i < this.reqDtoModelMappedList.length; i++) {
+            var newObj = this.reqDtoModelMappedList[i];
+            this.selectedModelForDtoField.push(newObj.mappedModelField);
+          }
+        }
+      }
     }
     this.apiEditor = editor;
     this.showAPIEditor = !this.showAPIEditor;
@@ -515,14 +550,27 @@ export class BusinessLogicDesignerComponent
   openSetResponseDataEditor(editor: any) {
     console.log(editor);
     // For New Entry Reseting the data
-
     if (Object.keys(editor.step.properties).length === 0) {
       console.log('New Entry');
       this.selectedResPojo = {};
       this.pojoModelMappedList = [];
       this.selectedPojoFields = [];
     }
-
+    else {
+      for (var i = 0; i < this.definition.sequence.length; i++) {
+        var currDefination = this.definition.sequence[i];
+        if (currDefination.id == editor.step.id) {
+          this.selectedResPojo = currDefination.properties['pojo'] ? currDefination.properties['pojo'] : {};
+          this.pojoModelMappedList = currDefination.properties['mappedData'];
+          this.getPojoFields(this.selectedResPojo);
+          this.selectedModelForsetResField = [];
+          for (var i = 0; i < this.pojoModelMappedList.length; i++) {
+            var newObj = this.pojoModelMappedList[i];
+            this.selectedModelForsetResField.push(newObj.mappedModelField);
+          }
+        }
+      }
+    }
     this.setResDataEditor = editor;
     this.showSetResponseDataEditor = !this.showSetResponseDataEditor;
   }
@@ -542,15 +590,15 @@ export class BusinessLogicDesignerComponent
   fieldArrays: Field[] = [];
   finalListModels: CollectionObj[] = [];
   saveDataModel: any = {}; // This is Collection
-  selectedResPojo: Collection = {};
+  selectedResPojo: any;
   selectedPojoFields: Field[] = [];
 
   selectedParams: InputParam[] | any = [{ dataType: '', varName: '' }];
 
-  modelSelectedAPI: Collection = {};
-  currentEndpointByModel: Endpoint = {};
-  selectedModelForDtoField: any;
-  selectedModelForsetResField: any;
+  modelSelectedAPI: any;
+  currentEndpointByModel: any;
+  selectedModelForDtoField: Field[] = [];
+  selectedModelForsetResField: Field[] = [];
   paramsForFetchData: any;
   loopFirstValue: any;
   loopOperator: any;
@@ -757,7 +805,7 @@ export class BusinessLogicDesignerComponent
         conditions: [
           {
             firstValue: this.loopFirstValue,
-            operator: this.loopOperator.name,
+            operator: this.loopOperator,
             secondValue: this.loopSecondValue ? this.loopSecondValue : null,
             manualEntry: isManualEntry,
             manualEntryValue: this.loopStaticValue,
@@ -916,7 +964,7 @@ export class BusinessLogicDesignerComponent
     this.showAPIEditor = false;
   }
 
-  reqDtoModelMappedList: reqDtoMappedModel[] = [];
+  reqDtoModelMappedList: any;
   currReqDtoModel!: reqDtoMappedModel;
 
   saveThisAPICall(
@@ -936,7 +984,7 @@ export class BusinessLogicDesignerComponent
     console.log(modelSelected);
 
     const existingIndex = this.reqDtoModelMappedList.findIndex(
-      (item) => item.reqDtoField.id === reqDtoField.id
+      (item: any) => item.reqDtoField.id === reqDtoField.id
     );
 
     if (existingIndex !== -1) {
@@ -964,23 +1012,28 @@ export class BusinessLogicDesignerComponent
   }
 
   getTheReqDtos(selectedModel: Collection) {
+    console.log('firstCall');
     this.endpointService
       .getAllEndpointsByCollection(selectedModel.id)
       .then((res: any) => {
         this.allEndpointsByModel = res;
         console.log('current Endpoints of model');
-        console.log(this.allEndpointsByModel);
+        // console.log(this.allEndpointsByModel);
       });
   }
 
-  endpointChange(endpoint: Endpoint) {
-    console.log(endpoint);
-    this.fieldsService
-      .getFieldsByRequestDto(endpoint.requestDto?.id)
-      .then((res: any) => {
-        this.allFieldsByReqDto = res;
-        console.log(this.allFieldsByReqDto);
-      });
+  endpointChange(endpoint: any) {
+    console.log('enP');
+    console.log(endpoint) ;
+    this.currentEndpointByModel = endpoint ;
+    if (endpoint !== null) {
+      this.fieldsService
+        .getFieldsByRequestDto(endpoint.requestDto?.id)
+        .then((res: any) => {
+          this.allFieldsByReqDto = res;
+          console.log(this.allFieldsByReqDto);
+        });
+    }
   }
 
   addParam() {
@@ -989,7 +1042,7 @@ export class BusinessLogicDesignerComponent
 
   // Set Response Pojo Code start
 
-  pojoModelMappedList: pojoMappedModel[] = [];
+  pojoModelMappedList: any;
   currPojoModel!: pojoMappedModel;
 
   getPojoFields(pojo: Collection) {
@@ -1004,7 +1057,7 @@ export class BusinessLogicDesignerComponent
 
   modelSelectedForSetResData(pojoField: any, modelSelected: any) {
     const existingIndex = this.pojoModelMappedList.findIndex(
-      (item) => item.pojoField.id === pojoField.id
+      (item: any) => item.pojoField.id === pojoField.id
     );
 
     if (existingIndex !== -1) {

@@ -252,7 +252,7 @@
       </div>
     </ng-container>
 
-    <!-- this code is for set response data -->
+    <!-- this code is for Set response data -->
     <ng-container *ngIf="editor.step.type === 'import'">
       <div class="mb-2" (click)="openSetResponseDataEditor(editor)">
         <button class="bg-indigo-600 rounded text-white p-2">Configure</button>
@@ -569,8 +569,7 @@
           </ng-template>
         </p-dropdown>
 
-        <p-dropdown [options]="this.operators" [(ngModel)]="this.loopOperator">
-        </p-dropdown>
+        <p-dropdown [options]="this.operators" [(ngModel)]="this.loopOperator" optionLabel="label" ></p-dropdown>
 
         <div class="w-full flex justify-between items-center">
           <p-dropdown *ngIf="this.loopManualEntry == false" [options]="getDropdownOptions()"
@@ -614,7 +613,7 @@
 
         <p-dropdown *ngIf="this.modelSelectedAPI !== null" [options]="this.allEndpointsByModel"
           [(ngModel)]="this.currentEndpointByModel" placeholder="Select Endpoint" [style]="{ width: '100%' }"
-          class="w-full" optionLabel="endpointName" (ngModelChange)="endpointChange(this.currentEndpointByModel)">
+          class="w-full" optionLabel="endpointName" (onChange)="endpointChange(this.currentEndpointByModel)">
         </p-dropdown>
       </div>
 
