@@ -514,21 +514,16 @@ export class BusinessLogicDesignerComponent
         var currDefination = this.definition.sequence[i];
         if (currDefination.id == editor.step.id) {
           console.log(currDefination);
+          this.modelSelectedAPI = currDefination.properties['collection'];
+          this.getTheReqDtos(this.modelSelectedAPI);
 
-          setTimeout(() => {
-            this.modelSelectedAPI = currDefination.properties['collection'] ? currDefination.properties['collection'] : {};
-            this.getTheReqDtos(this.modelSelectedAPI);
-          }, 1000);
-
-          setTimeout(() => {
-            this.currentEndpointByModel = currDefination.properties['endpoint'];
-            this.endpointChange(this.currentEndpointByModel);
-          }, 2000);
+          this.currentEndpointByModel = currDefination.properties['endpoint'];
+          this.endpointChange(this.currentEndpointByModel);
 
           this.reqDtoModelMappedList = currDefination.properties['mappedData'];
           this.selectedModelForDtoField = [];
-          for (var i = 0; i < this.reqDtoModelMappedList.length; i++) {
-            var newObj = this.reqDtoModelMappedList[i];
+          for (var j = 0; j < this.reqDtoModelMappedList.length; j++) {
+            var newObj = this.reqDtoModelMappedList[j];
             this.selectedModelForDtoField.push(newObj.mappedModelField);
           }
         }
@@ -568,15 +563,22 @@ export class BusinessLogicDesignerComponent
       this.selectedPojoFields = [];
     }
     else {
+      console.log('Old Entry');
+      console.log(this.definition.sequence);
       for (var i = 0; i < this.definition.sequence.length; i++) {
         var currDefination = this.definition.sequence[i];
+        console.log(currDefination);
         if (currDefination.id == editor.step.id) {
-          this.selectedResPojo = currDefination.properties['pojo'] ? currDefination.properties['pojo'] : {};
+          console.log('Found');
+          console.log(currDefination);
+          this.selectedResPojo = currDefination.properties['pojo'];
           this.pojoModelMappedList = currDefination.properties['mappedData'];
           this.getPojoFields(this.selectedResPojo);
           this.selectedModelForsetResField = [];
-          for (var i = 0; i < this.pojoModelMappedList.length; i++) {
-            var newObj = this.pojoModelMappedList[i];
+          console.log('Final List');
+          console.log(this.pojoModelMappedList);
+          for (var j = 0; j < this.pojoModelMappedList.length; j++) {
+            var newObj = this.pojoModelMappedList[j];
             this.selectedModelForsetResField.push(newObj.mappedModelField);
           }
         }
