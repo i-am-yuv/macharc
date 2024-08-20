@@ -206,6 +206,7 @@ export class BusinessLogicDesignerComponent
   populateEditorFormsData() {
     if (this.definition.properties['collections']) {
       this.selectedModels = this.definition.properties['collections'];
+      this.makeFieldListFromSelectedModel();
     }
     !this.definition.properties['returnType']
       ? (this.resType = 'void')
@@ -224,7 +225,6 @@ export class BusinessLogicDesignerComponent
     this.selectedParams = this.definition.properties['params'];
 
     // TODO: Add other vatiables for step editor model forms
-
   }
   public onDesignerReady(designer: Designer) {
     this.designer = designer;
@@ -495,7 +495,7 @@ export class BusinessLogicDesignerComponent
       console.log('New Entry');
       this.modelSelectedAPI = {};
       this.currentEndpointByModel = {};
-      this.allEndpointsByModel = [] ;
+      this.allEndpointsByModel = [];
       this.allFieldsByReqDto = [];
       this.reqDtoModelMappedList = [];
       // this.selectedModelForDtoField = [];
@@ -506,14 +506,17 @@ export class BusinessLogicDesignerComponent
         var currDefination = this.definition.sequence[i];
         if (currDefination.id == editor.step.id) {
           console.log(currDefination);
-          this.modelSelectedAPI = currDefination.properties['collection'] ? currDefination.properties['collection'] : {};
-          
+
           setTimeout(() => {
+            this.modelSelectedAPI = currDefination.properties['collection'] ? currDefination.properties['collection'] : {};
             this.getTheReqDtos(this.modelSelectedAPI);
+          }, 1000);
+
+          setTimeout(() => {
             this.currentEndpointByModel = currDefination.properties['endpoint'];
             this.endpointChange(this.currentEndpointByModel);
-          }, 50);
-         
+          }, 2000);
+
           this.reqDtoModelMappedList = currDefination.properties['mappedData'];
           this.selectedModelForDtoField = [];
           for (var i = 0; i < this.reqDtoModelMappedList.length; i++) {
@@ -681,12 +684,18 @@ export class BusinessLogicDesignerComponent
       properties['returnType'] = null;
     }
 
+   
+    context.notifyPropertiesChanged();
+  }
+
+  makeFieldListFromSelectedModel()
+  {
     this.fieldArrays = [];
     var i = 0;
     this.finalListModels = [];
     // Loop through selectedModels
-    for (let i = 0; i < selectedModels.length; i++) {
-      const model = selectedModels[i];
+    for (let i = 0; i < this.selectedModels.length; i++) {
+      const model = this.selectedModels[i];
       const filterStr = FilterBuilder.equal('collection.id', model.id + '');
       this.search = filterStr;
       let pagination!: Pagination;
@@ -712,7 +721,6 @@ export class BusinessLogicDesignerComponent
         });
     }
     console.log(this.finalListModels);
-    context.notifyPropertiesChanged();
   }
 
   // Fetch Data Code Start
@@ -1018,14 +1026,13 @@ export class BusinessLogicDesignerComponent
       .then((res: any) => {
         this.allEndpointsByModel = res;
         console.log('current Endpoints of model');
-        // console.log(this.allEndpointsByModel);
       });
   }
 
   endpointChange(endpoint: any) {
     console.log('enP');
-    console.log(endpoint) ;
-    this.currentEndpointByModel = endpoint ;
+    console.log(endpoint);
+    this.currentEndpointByModel = endpoint;
     if (endpoint !== null) {
       this.fieldsService
         .getFieldsByRequestDto(endpoint.requestDto?.id)

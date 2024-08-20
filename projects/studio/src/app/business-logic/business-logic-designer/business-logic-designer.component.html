@@ -612,8 +612,8 @@
         </p-dropdown>
 
         <p-dropdown *ngIf="this.modelSelectedAPI !== null" [options]="this.allEndpointsByModel"
-          [(ngModel)]="this.currentEndpointByModel" placeholder="Select Endpoint" [style]="{ width: '100%' }"
-          class="w-full" optionLabel="endpointName" (onChange)="endpointChange(this.currentEndpointByModel)">
+          [(ngModel)]="currentEndpointByModel" placeholder="Select Endpoint" [style]="{ width: '100%' }"
+          class="w-full" optionLabel="endpointName" (ngModelChange)="endpointChange(this.currentEndpointByModel)">
         </p-dropdown>
       </div>
 
