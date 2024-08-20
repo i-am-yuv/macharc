@@ -1,14 +1,13 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { MessageService } from '@splenta/vezo/src/lib/message.service';
+import { MessageService } from '@splenta/vezo';
 
 @Component({
   selector: 'app-properties2',
   templateUrl: './properties2.component.html',
-  styleUrls: ['./properties2.component.scss']
+  styleUrls: ['./properties2.component.scss'],
 })
 export class Properties2Component {
-
   @Input() props: any = {};
   @Input() fields: any[] = [];
   @Input() collections: any[] = [];
@@ -16,8 +15,8 @@ export class Properties2Component {
   @Input() comingFromForm: boolean = false;
   @Input() comingFromPage: boolean = false;
 
-
-  @Output() getCollectionFields: EventEmitter<string> = new EventEmitter<string>();;
+  @Output() getCollectionFields: EventEmitter<string> =
+    new EventEmitter<string>();
 
   column: any = {};
 
@@ -25,36 +24,50 @@ export class Properties2Component {
 
   constructor(
     private messageService: MessageService,
-    private router: Router
-  ) {
-
-  }
+    private router: Router,
+  ) {}
 
   @Output() deleteProp = new EventEmitter<boolean>();
-  validations: any[] = ['Required', 'Alpha', 'Alpha Numeric', 'Numbers', 'Password', 'Email', 'Telephone', 'Pattern'];
+  validations: any[] = [
+    'Required',
+    'Alpha',
+    'Alpha Numeric',
+    'Numbers',
+    'Password',
+    'Email',
+    'Telephone',
+    'Pattern',
+  ];
   formData: any;
 
   deleteProperty() {
     this.deleteProp.emit(true);
   }
   deleteColumn() {
-    var indexToDelete = this.props.data.cols.findIndex((t: any) => t.field === this.column.field);
+    var indexToDelete = this.props.data.cols.findIndex(
+      (t: any) => t.field === this.column.field,
+    );
     if (indexToDelete > 0) {
       this.props.data.cols.splice(indexToDelete, 1);
       this.column = {};
     }
   }
   addColumn() {
-    var indexToUpdate = this.props.data.cols.findIndex((t: any) => t.field === this.column.field);
+    var indexToUpdate = this.props.data.cols.findIndex(
+      (t: any) => t.field === this.column.field,
+    );
     console.log(this.column);
 
     if (!this.column.heading) {
-      this.messageService.add({ severity: 'error', detail: 'Add a heading', summary: 'Error' });
+      this.messageService.add({
+        severity: 'error',
+        detail: 'Add a heading',
+        summary: 'Error',
+      });
       return;
     }
 
     if (indexToUpdate > 0) {
-
       this.props.data.cols[indexToUpdate] = this.column;
     } else {
       this.props.data.cols.push(this.column);
@@ -110,23 +123,21 @@ export class Properties2Component {
   }
 
   getInputValue(element: any): string {
-    if( this.comingFromForm ==  true )
-      {
-        return this.props.mappedData[element] ;
+    if (this.comingFromForm == true) {
+      return this.props.mappedData[element];
+    } else {
+      if (
+        this.props.mappedData != null &&
+        this.props.mappedData[element] != null
+      ) {
+        return this.props.mappedData[element];
+      } else {
+        return this.props.data[element];
       }
-    else{
-          if(this.props.mappedData != null && this.props.mappedData[element] != null )
-            { 
-              return this.props.mappedData[element] ;
-            }
-            else{
-              return this.props.data[element] ;
-            }
     }
   }
 
   getDataFieldCount(props: any): number {
     return props && props.mappedData ? Object.keys(props.mappedData).length : 0;
   }
-
 }
