@@ -429,7 +429,15 @@ export class BusinessLogicDesignerComponent
           ],
         }
       ];
-
+    }
+    else {
+      console.log('Old');
+      for (var i = 0; i < this.definition.sequence.length; i++) {
+        var currDefination = this.definition.sequence[i];
+        if (currDefination.id == editor.step.id) {
+          this.conditionGroups = currDefination.properties['conditionGroups'];
+        }
+      }
     }
     this.conditionEditor = editor;
     this.showConditionEditor = !this.showConditionEditor;
@@ -684,12 +692,11 @@ export class BusinessLogicDesignerComponent
       properties['returnType'] = null;
     }
 
-   
+
     context.notifyPropertiesChanged();
   }
 
-  makeFieldListFromSelectedModel()
-  {
+  makeFieldListFromSelectedModel() {
     this.fieldArrays = [];
     var i = 0;
     this.finalListModels = [];
@@ -840,7 +847,7 @@ export class BusinessLogicDesignerComponent
   }
 
   // If else condition code Start
-  conditionGroups: ConditionGroup[] = [
+  conditionGroups: any = [
     {
       conditions: [
         {
@@ -937,7 +944,7 @@ export class BusinessLogicDesignerComponent
     sequence: any,
     context: GlobalEditorContext | StepEditorContext
   ) {
-    const payload = this.conditionGroups.map((group) => ({
+    const payload = this.conditionGroups.map((group: any) => ({
       conditions: group.conditions,
       connector: group.connector,
     }));
