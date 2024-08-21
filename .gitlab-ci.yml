@@ -1,6 +1,7 @@
 stages:
   - build
-  - deploy
+  - staging-build
+  - staging-deploy
 
 build-frontend:
   stage: build
@@ -24,18 +25,44 @@ build-frontend:
     - npm install
     - node_modules/.bin/ng build @splenta/vezo
     - npm run build -- --configuration=staging
-    # - node_modules/.bin/ng build studio
+  except:
+  - develop
+
+staging-build-frontend:
+  stage: staging-build
+  image: ghcr.io/cirruslabs/flutter:3.19.6
+  # variables:
+  #   GIT_SUBMODULE_STRATEGY: recursive
+  #   GIT_SUBMODULE_FORCE_HTTPS: "true"
+  before_script:
+    - git config --global credential.helper 'cache --timeout=3600'
+    - git config --global url."https://gitlab-ci-token:${CI_JOB_TOKEN}@repo.splenta.com".insteadOf "https://repo.splenta.com"
+  script:
+    - git submodule deinit -f --all
+    - rm -rf .git/modules/*
+    - git submodule init
+    - git submodule update --remote
+    - curl -fsSL https://fnm.vercel.app/install | bash
+    - export FNM_PATH="/root/.local/share/fnm"
+    - export PATH="$FNM_PATH:$PATH"
+    - eval "$(fnm env)"
+    - fnm use --install-if-missing 20
+    - npm install
+    - node_modules/.bin/ng build @splenta/vezo
+    - npm run build -- --configuration=staging
   artifacts:
-    name: "dist-output"
+    name: "dist-output-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHORT_SHA}"
     paths:
       - dist/studio
     expire_in: 1 day
+  only:
+  - develop
 
-deploy-frontend:
-  stage: deploy
+staging-deploy-frontend:
+  stage: staging-deploy
   image: alpine
   dependencies:
-    - "build-frontend"
+    - "staging-build-frontend"
   before_script:
     - apk add openssh-client
     - eval $(ssh-agent -s)
@@ -45,3 +72,8 @@ deploy-frontend:
   script:
     - mv dist/studio studio
     - scp -r -o StrictHostKeyChecking=no studio $MACHARC_STAGING_SERVER_USER@$MACHARC_STAGING_SERVER_IP:/home/gitlab-cicd/public_html/
+  only:
+  - develop
+  environment:
+    name: STAGING
+    url: https://portal.ifyn.com/sellstore/
