@@ -43,7 +43,7 @@ export class WizardComponent extends GenericComponent {
       id: '',
       projectName: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
       projectCode: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
-      projectDescription: [ '', Validators.required,],
+      projectDescription: [ '', [Validators.required]],
       isdefault: [false]
     });
 
@@ -91,7 +91,41 @@ export class WizardComponent extends GenericComponent {
   }
 
   override postSave(data: any) { 
-    this.naviagateListingPage();
+    // this.naviagateListingPage();
    }
+   
+   isModalOpen = false;
+  modalTitle = '';
+  modalButtonText = '';
+  modalType: 'success' | 'failure' = 'success';
+
+  openModal(type: 'success' | 'failure', title: string, btnText: string) {
+    this.modalTitle = title;
+    this.modalButtonText = btnText;
+    this.modalType = type;
+    this.isModalOpen = true;
+  }
+
+  closeModal() {
+    this.isModalOpen = false;
+    this.naviagateListingPage();
+    // this.postSave;
+  }
+  override postSaveShowModal(res: any, resposeType: string) {
+    // you will open the model with the type       
+    if (resposeType == 'createdSuccess') {
+      this.openModal('success', res+' created','OK');    
+    } else if (resposeType == 'createdError') {
+      this.openModal('failure', res+' creation failed','OK');    
+
+    } else if (resposeType == 'updatedSuccess') {
+      this.openModal('success', res+' updated','OK');    
+
+    } else if (resposeType == 'updatedError') {
+      this.openModal('failure', res+' updation failed','OK');    
+
+    }
+  }
+
 }
 

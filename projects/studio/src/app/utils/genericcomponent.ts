@@ -84,6 +84,9 @@ export abstract class GenericComponent {
   postSave(data: any) { 
   }
 
+  postSaveShowModal(data:any , resType : string){
+  }
+
   postSaveByApplication(data: any) { }
 
 
@@ -95,28 +98,36 @@ export abstract class GenericComponent {
       this.dataService.createData(formData).then((res: any) => {
         if (res) {
           this.visible = false;
-          this.messageService.add({
-            severity: 'success',
-            detail: this.componentName + ' created',
-            summary: this.componentName + ' created',
-          });
+          // this.messageService.add({
+          //   severity: 'success',
+          //   detail: this.componentName + ' created',
+          //   summary: this.componentName + ' created',
+          // });
           this.getAllData();
           this.postSave(res);
+          this.postSaveShowModal( this.componentName , 'createdSuccess' ) ;
         }
+      }).catch( (err)=>{
+        this.postSaveShowModal( this.componentName , 'createdError' ) ;
       });
     } else {
       this.dataService.updateData(formData).then((res: any) => {
         if (res) {
           this.visible = false;
-          this.messageService.add({
-            severity: 'success',
-            detail: this.componentName + ' updated',
-            summary: this.componentName + ' updated',
-          });
+          // this.messageService.add({
+          //   severity: 'success',
+          //   detail: this.componentName + ' updated',
+          //   summary: this.componentName + ' updated',
+          // });
           this.getAllData();
           this.postSave(res);
+          this.postSaveShowModal( this.componentName , 'updatedSuccess' ) ;
         }
-      });
+      }).catch( 
+        (err)=>{
+          this.postSaveShowModal( this.componentName , 'updatedError' ) ;
+        }
+      ) ;
     }
   }
 
@@ -138,28 +149,38 @@ export abstract class GenericComponent {
       this.dataService.createData(formData).then((res: any) => {
         if (res) {
           this.visible = false;
-          this.messageService.add({
-            severity: 'success',
-            detail: this.componentName + ' created',
-            summary: this.componentName + ' created',
-          });
+          // this.messageService.add({
+          //   severity: 'success',
+          //   detail: this.componentName + ' created',
+          //   summary: this.componentName + ' created',
+          // });
           this.getAllDataById(applicationId);
           this.postSaveByApplication(res);
+          this.postSaveShowModal( this.componentName , 'createdSuccess' ) ;
         }
-      });
+      }).catch( 
+        (err)=>{
+          this.postSaveShowModal( this.componentName , 'createdError' ) ;
+        }
+      ) ;
     } else {
       this.dataService.updateData(formData).then((res: any) => {
         if (res) {
           this.visible = false;
-          this.messageService.add({
-            severity: 'success',
-            detail: this.componentName + ' updated',
-            summary: this.componentName + ' updated',
-          });
+          // this.messageService.add({
+          //   severity: 'success',
+          //   detail: this.componentName + ' updated',
+          //   summary: this.componentName + ' updated',
+          // });
           this.getAllDataById(applicationId);
           this.postSaveByApplication(res);
+          this.postSaveShowModal( this.componentName , 'updatedSuccess' ) ;
         }
-      });
+      }).catch( 
+        (err)=>{
+          this.postSaveShowModal( this.componentName , 'updatedError' ) ;
+        }
+      ) ;
     }
   }
 

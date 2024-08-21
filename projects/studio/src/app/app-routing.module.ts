@@ -46,8 +46,8 @@ import { SettingsComponent } from './settings/settings.component';
 
 const routes: Routes = [
   {
-    path: '',
-    component: LayoutComponent,
+  path: '',
+  component: LayoutComponent,
     canActivate: [AuthGuard],
     children: [
       { path: '', component: FrontComponent },

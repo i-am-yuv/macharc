@@ -38,7 +38,7 @@ form: FormGroup<any>;
       dataSourceName: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
       dbUrl: [''],
       dbHost: ['localhost'],
-      dbPort: [''],
+      dbPort: ['',[Validators.required,Validators.maxLength(5)]],
       dbDatabaseName: [''],
       username: [''],
       password: [''],

@@ -15,6 +15,9 @@ export class AppWizardComponent extends GenericComponent {
   override form: FormGroup<any>;
   override data: any[] = [];
   override componentName: string = 'Application';
+
+  popupModelVisiblility: boolean = false;
+
   id: string | null = '';
   items = [
     {
@@ -34,23 +37,23 @@ export class AppWizardComponent extends GenericComponent {
   milestoneItems = [
     {
       'name': 'Applications',
-      'routes':'/applications'
+      'routes': '/applications'
     },
     {
       'name': 'Pages',
-      'routes':'/builder/screens/designer/null'
+      'routes': '/builder/screens/designer/null'
     },
     {
       'name': 'Components',
-      'routes':'/builder/forms/designer/null'
+      'routes': '/builder/forms/designer/null'
     },
     {
       'name': 'Actions',
-      'routes':'/actions'
+      'routes': '/actions'
     },
     {
       'name': 'Build and Deploy',
-      'routes':'/releases'
+      'routes': '/releases'
     }
   ]
 
@@ -58,16 +61,16 @@ export class AppWizardComponent extends GenericComponent {
     applicationService: ApplicationService,
     messageService: MessageService,
     private fb: FormBuilder,
-    private router: Router ,
-    private layoutService : LayoutService ,
+    private router: Router,
+    private layoutService: LayoutService,
     private route: ActivatedRoute) {
     super(applicationService, messageService);
 
     this.form = this.fb.group({
       id: '',
       applicationName: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
-      applicationCode: ['', [Validators.required,Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
-      applicationDescription: ['', [Validators.required,Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]]
+      applicationCode: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
+      applicationDescription: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]]
       // backendApiUrl: ['', [Validators.required,Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]]
     });
 
@@ -82,17 +85,53 @@ export class AppWizardComponent extends GenericComponent {
   }
 
   labelStyle = {
-    'size':'16px',
-    'weight':'400',
-    'color':'#000000'
-  }
-  
-  naviagateListingPage()
-  {
-    this.router.navigate(['applications']) ;
+    'size': '16px',
+    'weight': '400',
+    'color': '#000000'
   }
 
-  override postSave(data: any) { 
+  naviagateListingPage() {
+    this.router.navigate(['applications']);
+  }
+  closeModelPopup() {
+    this.popupModelVisiblility = false;
+  }
+  isModalOpen = false;
+  modalTitle = '';
+  modalButtonText = '';
+  modalType: 'success' | 'failure' = 'success';
+
+  openModal(type: 'success' | 'failure', title: string, btnText: string) {
+    this.modalTitle = title;
+    this.modalButtonText = btnText;
+    this.modalType = type;
+    this.isModalOpen = true;
+  }
+
+  closeModal() {
+    this.isModalOpen = false;
     this.naviagateListingPage();
   }
+
+  // override postSave(data: any) { 
+  //   this.openModal('success');    
+  // }
+
+  override postSaveShowModal(res: any, resposeType: string) {
+    // you will open the model with the type       
+    if (resposeType == 'createdSuccess') {
+      this.openModal('success', res+' created','OK');    
+    } else if (resposeType == 'createdError') {
+      this.openModal('failure', res+' creation failed','OK');    
+
+    } else if (resposeType == 'updatedSuccess') {
+      this.openModal('success', res+' updated','OK');    
+
+    } else if (resposeType == 'updatedError') {
+      this.openModal('failure', res+' updation failed','OK');    
+
+    }
+  }
+
+
 }

@@ -97,6 +97,7 @@ import { PrimeNGConfig } from 'primeng/api';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { DropdownModule } from 'primeng/dropdown';
 import { CalendarModule } from 'primeng/calendar';
+import { ModalComponent } from './modal/modal.component';
 
 @NgModule({
   declarations: [
@@ -152,6 +153,7 @@ import { CalendarModule } from 'primeng/calendar';
     MobilePreviewComponent,
     PagePreviewComponent,
     NestedPreviewComponent,
+    ModalComponent
   ],
   imports: [
     BrowserModule,
