@@ -167,18 +167,6 @@
         Confgure Params
       </button>
     </div>
-
-    <!-- <input [(ngModel)]="editor.definition.properties.collections"
-      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-      (input)="
-        updateProperty(
-          editor.definition.properties,
-          'collections',
-          $event,
-          editor.context
-        )
-      " /> -->
-
     <p class="my-2 text-slate-400">Please select from the popup.</p>
 
     <!-- <h3 class="my-4 font-semibold">Declarations</h3>
@@ -196,6 +184,9 @@
       "
     ></textarea> -->
 
+    <div class="mt-8">
+      <hr>
+    </div>
     <vezo-button (click)="saveDefinition()" label="Save" className="my-4 float-right"></vezo-button>
     <vezo-button (click)="reloadDefinitionClicked()" label="Clear"
       className="m-4 bg-slate-50 float-right"></vezo-button>
@@ -276,6 +267,10 @@
       " />
     <p class="my-2 text-slate-400">Enter time delay to execute in seconds</p>
 
+    <div class="mt-8">
+      <hr>
+    </div>
+    
     <vezo-button (click)="saveDefinition()" label="Save" className="my-4 float-right"></vezo-button>
     <vezo-button (click)="reloadDefinitionClicked()" label="Reload" className="m-4 float-right"></vezo-button>
   </div>
@@ -295,38 +290,41 @@
 <vezo-modal [(visible)]="showParamsOptions">
   <ng-template vTemplate="header">Select Models</ng-template>
   <ng-template vTemplate="content">
-    <div class="flex gap-4 justify-start items-center mt-4" *ngFor="let selectedParam of selectedParams ; index as i">
-      
-      <div class="flex" style="flex-direction: column;">
-        <label>Param Name</label>
-        <input type="text" pInputText placeholder="Param Variable Name" [(ngModel)]="selectedParam.varName" />
-      </div>
+    <div style="height: 60vh; overflow-y:auto">
+      <div class="flex gap-4 justify-start items-center mt-4" *ngFor="let selectedParam of selectedParams ; index as i">
 
-      <div>
-        <!-- First Selecting Datatype or Model -->
-        <label>Param Datatype</label>
+        <div class="flex" style="flex-direction: column;">
+          <label>Param Name</label>
+          <input type="text" pInputText placeholder="Param Variable Name" [(ngModel)]="selectedParam.varName" />
+        </div>
 
-        <p-dropdown [options]="dataTypes" [(ngModel)]="selectedParam.dataType" placeholder="Select" optionLabel="label"
-          optionValue="name" [style]="{ width: '100%' }">
-        </p-dropdown>
-      </div>
-
-      <ng-container *ngIf="selectedParam.dataType == 'Model'">
         <div>
-          <label>Param Model</label>
-          <p-dropdown label="Param Model" [options]="this.allModels" [(ngModel)]="selectedParam.model"
-            optionLabel="collectionName" placeholder="Select Model" [style]="{ width: '100%' }">
+          <!-- First Selecting Datatype or Model -->
+          <label>Param Datatype</label>
+
+          <p-dropdown [options]="dataTypes" [(ngModel)]="selectedParam.dataType" placeholder="Select"
+            optionLabel="label" optionValue="name" [style]="{ width: '100%' }">
           </p-dropdown>
         </div>
-      </ng-container>
 
-      <div class="mt-4">
-        <vezo-icon icon="trash" (click)="deleteThisParams(i)" className="w-6 h-6 text-red-400 cursor-pointer"></vezo-icon>
+        <ng-container *ngIf="selectedParam.dataType == 'Model'">
+          <div>
+            <label>Param Model</label>
+            <p-dropdown label="Param Model" [options]="this.allModels" [(ngModel)]="selectedParam.model"
+              optionLabel="collectionName" placeholder="Select Model" [style]="{ width: '100%' }">
+            </p-dropdown>
+          </div>
+        </ng-container>
+
+        <div class="mt-4">
+          <vezo-icon icon="trash" (click)="deleteThisParams(i)"
+            className="w-6 h-6 text-red-400 cursor-pointer"></vezo-icon>
+        </div>
+
       </div>
-    
-    </div>
-    <div class="text-right mt-2">
-      <vezo-button label="Add More" (click)="addParam()"></vezo-button>
+      <div class="text-right mt-2">
+        <vezo-button label="Add More" (click)="addParam()"></vezo-button>
+      </div>
     </div>
   </ng-template>
   <ng-template vTemplate="footer">
@@ -569,7 +567,7 @@
           </ng-template>
         </p-dropdown>
 
-        <p-dropdown [options]="this.operators" [(ngModel)]="this.loopOperator" optionLabel="label" ></p-dropdown>
+        <p-dropdown [options]="this.operators" [(ngModel)]="this.loopOperator" optionLabel="label"></p-dropdown>
 
         <div class="w-full flex justify-between items-center">
           <p-dropdown *ngIf="this.loopManualEntry == false" [options]="getDropdownOptions()"
@@ -604,7 +602,7 @@
 <vezo-modal [(visible)]="showAPIEditor">
   <ng-template vTemplate="header">Configuration</ng-template>
   <ng-template vTemplate="content">
-    <div style="height: 300px; overflow-y: auto">
+    <div style="height: 60vh; overflow-y:scroll">
       <div class="flex gap-4 w-full justify-start items-center">
         <p-dropdown [options]="this.allModels" [(ngModel)]="this.modelSelectedAPI" placeholder="Select Model"
           [style]="{ width: '100%' }" class="w-full" optionLabel="collectionName"
@@ -612,8 +610,8 @@
         </p-dropdown>
 
         <p-dropdown *ngIf="this.modelSelectedAPI !== null" [options]="this.allEndpointsByModel"
-          [(ngModel)]="currentEndpointByModel" placeholder="Select Endpoint" [style]="{ width: '100%' }"
-          class="w-full" optionLabel="endpointName" (ngModelChange)="endpointChange(this.currentEndpointByModel)">
+          [(ngModel)]="currentEndpointByModel" placeholder="Select Endpoint" [style]="{ width: '100%' }" class="w-full"
+          optionLabel="endpointName" (ngModelChange)="endpointChange(this.currentEndpointByModel)">
         </p-dropdown>
       </div>
 
@@ -667,29 +665,31 @@
 <vezo-modal [(visible)]="showSetResponseDataEditor">
   <ng-template vTemplate="header">Comfigure Set Response Data</ng-template>
   <ng-template vTemplate="content">
-    <p-dropdown [options]="this.allPojos" [(ngModel)]="this.selectedResPojo" placeholder="Select Pojo"
-      [showClear]="true" [style]="{ width: '100%' }" class="w-full" optionLabel="collectionName"
-      (ngModelChange)="getPojoFields(this.selectedResPojo)">
-    </p-dropdown>
+    <div style="height: 60vh; overflow-y:auto">
+      <p-dropdown [options]="this.allPojos" [(ngModel)]="this.selectedResPojo" placeholder="Select Pojo"
+        [showClear]="true" [style]="{ width: '100%' }" class="w-full" optionLabel="collectionName"
+        (ngModelChange)="getPojoFields(this.selectedResPojo)">
+      </p-dropdown>
 
-    <div *ngIf="this.selectedResPojo && this.selectedResPojo !== {}">
-      <div *ngFor="let pojoField of selectedPojoFields; index as i">
-        <div class="flex mt-8 w-full gap-4 justify-between mx-4 items-center">
-          <div class="w-1/2">{{ pojoField.fieldName }}</div>
-          <div class="w-1/2 flex justify-start">
-            <p-dropdown [options]="this.finalListModels" [(ngModel)]="selectedModelForsetResField[i]" (ngModelChange)="
+      <div *ngIf="this.selectedResPojo && this.selectedResPojo !== {}">
+        <div *ngFor="let pojoField of selectedPojoFields; index as i">
+          <div class="flex mt-8 w-full gap-4 justify-between mx-4 items-center">
+            <div class="w-1/2">{{ pojoField.fieldName }}</div>
+            <div class="w-1/2 flex justify-start">
+              <p-dropdown [options]="this.finalListModels" [(ngModel)]="selectedModelForsetResField[i]" (ngModelChange)="
                 modelSelectedForSetResData(
                   pojoField,
                   selectedModelForsetResField[i]
                 )
               " placeholder="Choose Model Field" [group]="true">
-              <ng-template let-group pTemplate="group">
-                <div class="flex gap-2 justify-start items-center">
-                  <img src="assets/collection_L.svg" style="width: 16px; height: auto" />
-                  <span>{{ group.label }}</span>
-                </div>
-              </ng-template>
-            </p-dropdown>
+                <ng-template let-group pTemplate="group">
+                  <div class="flex gap-2 justify-start items-center">
+                    <img src="assets/collection_L.svg" style="width: 16px; height: auto" />
+                    <span>{{ group.label }}</span>
+                  </div>
+                </ng-template>
+              </p-dropdown>
+            </div>
           </div>
         </div>
       </div>

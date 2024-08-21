@@ -188,7 +188,7 @@ export class BusinessLogicDesignerComponent
 
   public ngOnInit() {
     this.updateDefinitionJSON();
-    this.wfId = this.route.snapshot.paramMap.get('id');
+    this.wfId = this.route.snapshot.paramMap.get('id'); // Service ID
     this.businessLogicService.getData({ id: this.wfId }).then((res: any) => {
       if (res) {
         this.wf = res;
