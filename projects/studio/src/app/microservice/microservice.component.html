@@ -81,6 +81,10 @@
             <vezo-button icon="chevronRight" [routerLink]="['/builder/services/' + ms.id]" label="Services"
               className="bg-white border-0"></vezo-button>
           </div>
+          <div>
+            <vezo-button icon="chevronRight"  label="Actions" (click)="goToActions(ms)"
+              className="bg-white border-0"></vezo-button>
+          </div>
           <!-- <vezo-button label="Manage Collections" (click)="addData()"></vezo-button> -->
         </div>
         <!-- <div class="text-center pt-2">
