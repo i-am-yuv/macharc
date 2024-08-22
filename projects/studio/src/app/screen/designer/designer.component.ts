@@ -27,6 +27,7 @@ import { FilterBuilder } from '../../utils/FilterBuilder';
 import { GenericComponent } from '../../utils/genericcomponent';
 import { Screen } from '../screen';
 import { ScreenService } from '../screen.service';
+import { InputParam } from '../../business-logic/business-logic';
 
 interface DropzoneLayout {
   container: string;
@@ -44,6 +45,7 @@ interface DraggableItem {
   children?: any[];
   icon?: any;
   id?: any;
+  navigateTo ?: any ;
 }
 @Component({
   selector: 'app-designer',
@@ -52,8 +54,7 @@ interface DraggableItem {
 })
 export class DesignerComponent
   extends GenericComponent
-  implements OnInit, OnDestroy
-{
+  implements OnInit, OnDestroy {
   @ViewChild('PagePreviewComponent', { static: false })
   PagePreviewComponent!: ElementRef;
 
@@ -595,6 +596,8 @@ export class DesignerComponent
   mutiScreenView: boolean = false;
 
   collectionId: string | null | undefined = '';
+  selectedParams: InputParam[] | any = [{ dataType: '', varName: '' }];
+
   searchQuery: string = '';
 
   collectionItems: Collection[] = [];
@@ -602,6 +605,18 @@ export class DesignerComponent
   microserviceItems: MicroService[] = [];
   applicationItems: Application[] = [];
   currentApplication: Application = {};
+
+  paramsOptions: any[] = [{ label: 'Yes', value: 'yes' }, { label: 'No', value: 'no' }];
+  isParamvalue: string = 'no';
+
+  dataTypes = [
+    { name: 'String', label: 'String' },
+    { name: 'Integer', label: 'int' },
+    { name: 'BigDecimal', label: 'Decimal' },
+    { name: 'Long', label: 'Long' },
+    { name: 'UUID', label: 'UUID' },
+    // { name: 'Model', label: 'Model' },
+  ];
 
   constructor(
     private screenService: ScreenService,
@@ -1030,6 +1045,41 @@ export class DesignerComponent
     localStorage.removeItem('componentPage'); // Removing this for temporary purpose
   }
 
+  override saveDataByApplication(applicationId: any) {
+    this.preSaveByApplication();
+
+    const formData = this.form.value;
+    formData.application = { ...formData.application, id: applicationId };
+
+    if (!formData.id) {
+      this.screenService.createPageData(formData).then((res: any) => {
+        if (res) {
+          this.visible = false;
+          this.messageService.add({
+            severity: 'success',
+            detail: this.componentName + ' created',
+            summary: this.componentName + ' created',
+          });
+          this.getAllDataById(applicationId);
+          this.postSaveByApplication(res);
+        }
+      });
+    } else {
+      this.screenService.updatePageData(formData).then((res: any) => {
+        if (res) {
+          this.visible = false;
+          this.messageService.add({
+            severity: 'success',
+            detail: this.componentName + ' updated',
+            summary: this.componentName + ' updated',
+          });
+          this.getAllDataById(applicationId);
+          this.postSaveByApplication(res);
+        }
+      });
+    }
+  }
+
   pasteThisPageInside(afterObjectId: string) {
     this.copiedResult = localStorage.getItem('componentPage');
     this.copiedList = JSON.parse(this.copiedResult);
@@ -1424,5 +1474,23 @@ export class DesignerComponent
         this.previewInWeb();
       }, 2000);
     }
+  }
+
+  deleteThisParams(index: any) {
+    console.log(index);
+    if (index >= 0 && index < this.selectedParams.length) {
+      this.selectedParams.splice(index, 1);
+    } else {
+      console.error('Index out of bounds');
+    }
+  }
+
+  addParam() {
+    this.selectedParams.push({});
+  }
+
+  override preSaveByApplication() {
+    this.form.value['selectedParams'] = this.selectedParams;
+    // console.log(this.form.value);
   }
 }

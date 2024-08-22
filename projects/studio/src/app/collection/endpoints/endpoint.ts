@@ -1,5 +1,5 @@
 import { BusinessLogic } from '../../business-logic/business-logic';
-import { RequestDto, ResponseDto } from '../collection';
+import { Collection, RequestDto, ResponseDto } from '../collection';
 
 export interface Endpoint {
   id?: string;
@@ -15,7 +15,8 @@ export interface Endpoint {
   webhook?: boolean;
   requestJson?: string;
   responseJson?: string;
+  collection?: Collection;
   workflow?: BusinessLogic;
-  requestDto ?: RequestDto ;
-  responseDto ?: ResponseDto
+  requestDto?: RequestDto;
+  responseDto?: ResponseDto;
 }

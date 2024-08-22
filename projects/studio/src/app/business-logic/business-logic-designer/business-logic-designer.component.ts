@@ -436,6 +436,8 @@ export class BusinessLogicDesignerComponent
         var currDefination = this.definition.sequence[i];
         if (currDefination.id == editor.step.id) {
           this.conditionGroups = currDefination.properties['conditionGroups'];
+          console.log('CD') ;
+          console.log( this.conditionGroups ) ;
         }
       }
     }
