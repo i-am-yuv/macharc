@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService } from '@splenta/vezo';
+import { MessageService, Pagination } from '@splenta/vezo';
 import { DndDropEvent, DropEffect, EffectAllowed } from 'ngx-drag-drop';
 import { Application } from '../../application/application';
 import { ApplicationService } from '../../application/application.service';
@@ -28,6 +28,7 @@ import { GenericComponent } from '../../utils/genericcomponent';
 import { Screen } from '../screen';
 import { ScreenService } from '../screen.service';
 import { InputParam } from '../../business-logic/business-logic';
+import { ProjectService } from '../../project/project.service';
 
 interface DropzoneLayout {
   container: string;
@@ -596,6 +597,7 @@ export class DesignerComponent
   mutiScreenView: boolean = false;
 
   collectionId: string | null | undefined = '';
+  projectId: string | null | undefined = '';
   selectedParams: InputParam[] | any = [{ dataType: '', varName: '' }];
 
   searchQuery: string = '';
@@ -630,6 +632,7 @@ export class DesignerComponent
     private msgService: MessageService,
     private microserviceService: MicroserviceService,
     private applicationService: ApplicationService,
+    private projectService : ProjectService ,
     private renderer: Renderer2,
     private el: ElementRef,
     private mediaService: MediaService,
@@ -665,18 +668,30 @@ export class DesignerComponent
   getPageData() {
     this.loading = true;
     this.getAllDataById(this.currentApplication.id);
-    this.loading = false;
-
-    this.microserviceService.getAllData().then((res: any) => {
-      if (res) {
-        this.microserviceItems = res.content;
+    console.log('Project');
+    this.projectService.setActiveProject();
+    this.projectService.getActiveProject().subscribe((val:any) => {
+      console.log(val);
+      this.projectId = val?.id;
+      if (this.projectId) {
+        var filterStr = FilterBuilder.equal('project.id', this.projectId);
+        this.search = filterStr;
+        var paginator !: Pagination ;
+        this.microserviceService.getAllData(paginator  , this.search).then((res: any) => {
+          if (res) {
+            this.microserviceItems = res.content;
+            this.loading = false;
+          }
+        });
       }
     });
+    
     this.applicationService.getAllData().then((res: any) => {
       if (res) {
         this.applicationItems = res.content;
       }
     });
+
     this.getPageContent();
   }
 
