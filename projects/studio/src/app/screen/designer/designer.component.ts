@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService } from '@splenta/vezo';
+import { MessageService, Pagination } from '@splenta/vezo';
 import { DndDropEvent, DropEffect, EffectAllowed } from 'ngx-drag-drop';
 import { Application } from '../../application/application';
 import { ApplicationService } from '../../application/application.service';
@@ -27,6 +27,8 @@ import { FilterBuilder } from '../../utils/FilterBuilder';
 import { GenericComponent } from '../../utils/genericcomponent';
 import { Screen } from '../screen';
 import { ScreenService } from '../screen.service';
+import { InputParam } from '../../business-logic/business-logic';
+import { ProjectService } from '../../project/project.service';
 
 interface DropzoneLayout {
   container: string;
@@ -44,6 +46,7 @@ interface DraggableItem {
   children?: any[];
   icon?: any;
   id?: any;
+  navigateTo ?: any ;
 }
 @Component({
   selector: 'app-designer',
@@ -52,8 +55,7 @@ interface DraggableItem {
 })
 export class DesignerComponent
   extends GenericComponent
-  implements OnInit, OnDestroy
-{
+  implements OnInit, OnDestroy {
   @ViewChild('PagePreviewComponent', { static: false })
   PagePreviewComponent!: ElementRef;
 
@@ -595,6 +597,9 @@ export class DesignerComponent
   mutiScreenView: boolean = false;
 
   collectionId: string | null | undefined = '';
+  projectId: string | null | undefined = '';
+  selectedParams: InputParam[] | any = [{ dataType: '', varName: '' }];
+
   searchQuery: string = '';
 
   collectionItems: Collection[] = [];
@@ -602,6 +607,18 @@ export class DesignerComponent
   microserviceItems: MicroService[] = [];
   applicationItems: Application[] = [];
   currentApplication: Application = {};
+
+  paramsOptions: any[] = [{ label: 'Yes', value: 'yes' }, { label: 'No', value: 'no' }];
+  isParamvalue: string = 'no';
+
+  dataTypes = [
+    { name: 'String', label: 'String' },
+    { name: 'Integer', label: 'int' },
+    { name: 'BigDecimal', label: 'Decimal' },
+    { name: 'Long', label: 'Long' },
+    { name: 'UUID', label: 'UUID' },
+    // { name: 'Model', label: 'Model' },
+  ];
 
   constructor(
     private screenService: ScreenService,
@@ -615,6 +632,7 @@ export class DesignerComponent
     private msgService: MessageService,
     private microserviceService: MicroserviceService,
     private applicationService: ApplicationService,
+    private projectService : ProjectService ,
     private renderer: Renderer2,
     private el: ElementRef,
     private mediaService: MediaService,
@@ -650,18 +668,30 @@ export class DesignerComponent
   getPageData() {
     this.loading = true;
     this.getAllDataById(this.currentApplication.id);
-    this.loading = false;
-
-    this.microserviceService.getAllData().then((res: any) => {
-      if (res) {
-        this.microserviceItems = res.content;
+    console.log('Project');
+    this.projectService.setActiveProject();
+    this.projectService.getActiveProject().subscribe((val:any) => {
+      console.log(val);
+      this.projectId = val?.id;
+      if (this.projectId) {
+        var filterStr = FilterBuilder.equal('project.id', this.projectId);
+        this.search = filterStr;
+        var paginator !: Pagination ;
+        this.microserviceService.getAllData(paginator  , this.search).then((res: any) => {
+          if (res) {
+            this.microserviceItems = res.content;
+            this.loading = false;
+          }
+        });
       }
     });
+    
     this.applicationService.getAllData().then((res: any) => {
       if (res) {
         this.applicationItems = res.content;
       }
     });
+
     this.getPageContent();
   }
 
@@ -1028,6 +1058,41 @@ export class DesignerComponent
       detail: 'Content pasted successfully.',
     });
     localStorage.removeItem('componentPage'); // Removing this for temporary purpose
+  }
+
+  override saveDataByApplication(applicationId: any) {
+    this.preSaveByApplication();
+
+    const formData = this.form.value;
+    formData.application = { ...formData.application, id: applicationId };
+
+    if (!formData.id) {
+      this.screenService.createPageData(formData).then((res: any) => {
+        if (res) {
+          this.visible = false;
+          this.messageService.add({
+            severity: 'success',
+            detail: this.componentName + ' created',
+            summary: this.componentName + ' created',
+          });
+          this.getAllDataById(applicationId);
+          this.postSaveByApplication(res);
+        }
+      });
+    } else {
+      this.screenService.updatePageData(formData).then((res: any) => {
+        if (res) {
+          this.visible = false;
+          this.messageService.add({
+            severity: 'success',
+            detail: this.componentName + ' updated',
+            summary: this.componentName + ' updated',
+          });
+          this.getAllDataById(applicationId);
+          this.postSaveByApplication(res);
+        }
+      });
+    }
   }
 
   pasteThisPageInside(afterObjectId: string) {
@@ -1424,5 +1489,23 @@ export class DesignerComponent
         this.previewInWeb();
       }, 2000);
     }
+  }
+
+  deleteThisParams(index: any) {
+    console.log(index);
+    if (index >= 0 && index < this.selectedParams.length) {
+      this.selectedParams.splice(index, 1);
+    } else {
+      console.error('Index out of bounds');
+    }
+  }
+
+  addParam() {
+    this.selectedParams.push({});
+  }
+
+  override preSaveByApplication() {
+    this.form.value['selectedParams'] = this.selectedParams;
+    // console.log(this.form.value);
   }
 }

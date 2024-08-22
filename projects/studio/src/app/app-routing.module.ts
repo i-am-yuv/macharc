@@ -209,7 +209,7 @@ const routes: Routes = [
   },
   // { path: 'actions', component: ActionsComponent },
   {
-    path: 'actions',
+    path: 'actions/:id',
     // component: LayoutComponent,
     children: [
       {
@@ -217,7 +217,6 @@ const routes: Routes = [
         component: DispatcherComponent,
         children: [
           { path: '', component: ActionsComponent },
-          { path: ':id', component: ActionsComponent },
         ],
       },
     ],

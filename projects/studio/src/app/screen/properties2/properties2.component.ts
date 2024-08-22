@@ -1,13 +1,19 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
-import { MessageService } from '@splenta/vezo/src/lib/message.service';
+import { MessageService } from '@splenta/vezo';
+import { GenericComponent } from '../../utils/genericcomponent';
+import { FormGroup } from '@angular/forms';
+import { ScreenService } from '../screen.service';
 
 @Component({
   selector: 'app-properties2',
   templateUrl: './properties2.component.html',
   styleUrls: ['./properties2.component.scss']
 })
-export class Properties2Component {
+export class Properties2Component extends GenericComponent {
+  form !: FormGroup<any>;
+  data: [] = [];
+  componentName: string = 'Screen';
 
   @Input() props: any = {};
   @Input() fields: any[] = [];
@@ -24,11 +30,14 @@ export class Properties2Component {
   boxShawdowOptions: any = ['sm', 'md', 'lg', 'xl', '2xl', 'inner', 'none'];
 
   constructor(
-    private messageService: MessageService,
-    private router: Router
-  ) {
+    messageService: MessageService,
+    private router: Router,
+    private screenService: ScreenService,
 
+  ) {
+    super(screenService, messageService);
   }
+
 
   @Output() deleteProp = new EventEmitter<boolean>();
   validations: any[] = ['Required', 'Alpha', 'Alpha Numeric', 'Numbers', 'Password', 'Email', 'Telephone', 'Pattern'];
@@ -110,18 +119,16 @@ export class Properties2Component {
   }
 
   getInputValue(element: any): string {
-    if( this.comingFromForm ==  true )
-      {
-        return this.props.mappedData[element] ;
+    if (this.comingFromForm == true) {
+      return this.props.mappedData[element];
+    }
+    else {
+      if (this.props.mappedData != null && this.props.mappedData[element] != null) {
+        return this.props.mappedData[element];
       }
-    else{
-          if(this.props.mappedData != null && this.props.mappedData[element] != null )
-            { 
-              return this.props.mappedData[element] ;
-            }
-            else{
-              return this.props.data[element] ;
-            }
+      else {
+        return this.props.data[element];
+      }
     }
   }
 

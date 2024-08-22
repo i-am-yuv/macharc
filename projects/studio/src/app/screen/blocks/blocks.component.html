@@ -11,6 +11,7 @@
     <div class="text-{{ block.data?.align ? block.data.align : block.data?.btnAlignment }}" (click)="btnNavigation(block.data?.navigateTo)">
         <vezo-button 
         [label]="(block.mappedData?.text == null ) ? block.data?.text : block.mappedData?.text"
+        [routerLink]="['/{{block.data.navigateTo}}']"
         [btnInfo]="{ 
             fontSize: (block.mappedData?.fontSize == null ) ? block.data?.fontSize+'px' : block.mappedData?.fontSize+'px', 
             fontWeight:(block.mappedData?.fontWeight == null ) ? block.data?.fontWeight : block.mappedData?.fontWeight, 

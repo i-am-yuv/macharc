@@ -121,4 +121,10 @@ export class MicroserviceComponent extends GenericComponent implements OnInit {
   getRouterLink() {
     this.router.navigate(['/builder/microservices/create']);
   }
+
+  goToActions( ms : any )
+  {
+    this.micrService.setActiveMicroservice(ms);
+    this.router.navigate(['/actions/null']);
+  }
 }
