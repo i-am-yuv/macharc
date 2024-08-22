@@ -205,7 +205,7 @@
               <img src="assets/remove_circle_outline.svg" style="height: 24px; width: 24px" />
             </button>
           </div>
-          <div>Zoom: {{ zoom * 100 | number : "1.2-2" }}%</div>
+          <div>Zoom: {{ zoom * 100 | number: "1.2-2" }}%</div>
         </div>
         <div id="downloadable-div" [class.horizontal]="layout.dndHorizontal" [dndHorizontal]="layout.dndHorizontal"
           (dndDrop)="onDrop($event, draggableListRight)"
