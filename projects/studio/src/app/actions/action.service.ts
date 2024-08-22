@@ -3,6 +3,7 @@ import { GenericService } from '../utils/genericservice';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { lastValueFrom } from 'rxjs';
+import { Actions } from './action';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +22,19 @@ export class ActionService extends GenericService {
     var url = this.apiUrl + '/actions/'+ encodeURIComponent(actionId!); ;
     const result = await lastValueFrom(this.httpClient.get<any>(url));
     return result;
+  }
+  
+
+  async getAllActionsByMsId(msId:any) {
+    var url = this.apiUrl + '/actions/getActionsByMicroService/'+ encodeURIComponent(msId!); ;
+    const result = await lastValueFrom(this.httpClient.get<any>(url));
+    return result;
+  }
+
+  async generateServiceCode(action: Actions) {
+    var url = this.apiurl + '/' + this.endpoint + '/generateServiceCode';
+    const res = await lastValueFrom(this.http.post<any>(url, action));
+    return res;
   }
 
   // async createFolder(payload : any) {

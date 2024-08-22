@@ -120,13 +120,6 @@ export abstract class GenericComponent {
 
   saveDataByApplication(applicationId: any) {
     this.preSaveByApplication();
-    //this.form.value.collection = null ;// No collection for page
-    // this.form.value.application['id'] = applicationId ;
-
-    // Clone the form value
-    //const formData = { ...this.form.value };
-
-    // Ensure application is an object and add the id
 
     const formData = this.form.value;
     formData.application = { ...formData.application, id: applicationId };

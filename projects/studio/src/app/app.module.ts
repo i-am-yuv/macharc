@@ -100,6 +100,7 @@ import { TemplatesComponent } from './screen/templates/templates.component';
 import { SettingsComponent } from './settings/settings.component';
 import { ContenteditableValueAccessor } from './utils/constenteditable.directive';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -200,7 +201,7 @@ import { ContenteditableValueAccessor } from './utils/constenteditable.directive
     DropdownModule,
     CalendarModule,
     SelectButtonModule,
-    InputTextModule,
+    InputTextModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [
@@ -213,7 +214,7 @@ import { ContenteditableValueAccessor } from './utils/constenteditable.directive
   bootstrap: [AppComponent],
 })
 export class AppModule {
-  constructor(private primengConfig: PrimeNGConfig) {}
+  constructor(private primengConfig: PrimeNGConfig) { }
 
   ngOnInit() {
     this.primengConfig.ripple = true;
