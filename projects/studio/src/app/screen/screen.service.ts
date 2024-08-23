@@ -37,5 +37,11 @@ export class ScreenService extends GenericService {
         return res;
     }
 
+    async createPageParams(payload: any) {
+        var url = this.apiurl + '/pageParam';
+        const res = await lastValueFrom(this.httpClient.post<any>(url,payload));
+        return res;
+    }
+
     
 }
