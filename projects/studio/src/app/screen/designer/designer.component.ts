@@ -1264,35 +1264,6 @@ export class DesignerComponent
   private previewWindow: Window | null = null;
 
   previewInWeb() {
-    // const manContent = document.querySelector('app-page-preview')?.innerHTML;
-    // const manStyles = Array.from(document.styleSheets)
-    //   .map((sheet) => {
-    //     try {
-    //       return Array.from(sheet.cssRules || [])
-    //         .map((rule) => rule.cssText)
-    //         .join('');
-    //     } catch (e) {
-    //       console.warn('Could not read stylesheet:', sheet, e);
-    //       return '';
-    //     }
-    //   })
-    //   .join('');
-
-    // const newTab = window.open('', 'preview');
-    // if (newTab) {
-    //   newTab.document.write(`
-    //     <html>
-    //       <head>
-    //         <style>${manStyles}</style>
-    //       </head>
-    //       <body>${manContent}</body>
-    //     </html>
-    //   `);
-    //   newTab.document.close();
-    // } else {
-    //   console.error('Failed to open new tab');
-    // }
-
     const manContent = document.querySelector('app-page-preview')?.innerHTML;
     const manStyles = Array.from(document.styleSheets)
       .map((sheet) => {
