@@ -1,20 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { ProcessesService } from './processes.service';
-import { Process } from './process';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MessageService } from '@splenta/vezo/src/public-api';
-import { GenericComponent } from '../utils/genericcomponent';
-import { MicroserviceService } from '../microservice/microservice.service';
+import { MessageService } from '@splenta/vezo';
 import { MicroService } from '../microservice/microservice';
+import { MicroserviceService } from '../microservice/microservice.service';
+import { GenericComponent } from '../utils/genericcomponent';
+import { Process } from './process';
+import { ProcessesService } from './processes.service';
 
 @Component({
   selector: 'app-processes',
   templateUrl: './processes.component.html',
-  styleUrls: ['./processes.component.scss']
+  styleUrls: ['./processes.component.scss'],
 })
 export class ProcessesComponent extends GenericComponent implements OnInit {
-
   componentName: string = 'Processes';
 
   form: FormGroup;
@@ -28,14 +27,21 @@ export class ProcessesComponent extends GenericComponent implements OnInit {
     processService: ProcessesService,
     private microserviceService: MicroserviceService,
     messageService: MessageService,
-    private router: Router) {
+    private router: Router
+  ) {
     super(processService, messageService);
     this.form = this.fb.group({
       id: '',
-      processCode: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
-      processName: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
-      microService: []
-    })
+      processCode: [
+        '',
+        [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)],
+      ],
+      processName: [
+        '',
+        [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)],
+      ],
+      microService: [],
+    });
   }
   ngOnInit(): void {
     this.getAllData();
@@ -45,7 +51,7 @@ export class ProcessesComponent extends GenericComponent implements OnInit {
   getMicroServices() {
     this.microserviceService.getAllData().then((res: any) => {
       this.microServices = res.content;
-    })
+    });
   }
   showModeler(pr: Process) {
     this.router.navigate(['/builder/processes/modeler/' + pr.id]);

@@ -1,19 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { GenericComponent } from '../../utils/genericcomponent';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MessageService } from '@splenta/vezo/src/public-api';
-import { MicroserviceService } from '../microservice.service';
-import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
-import { DatasourceService } from '../../datasource/datasource.service';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { MessageService } from '@splenta/vezo';
 import { Datasource } from '../../datasource/datasource';
-import { validators } from 'tailwind-merge';
+import { DatasourceService } from '../../datasource/datasource.service';
+import { GenericComponent } from '../../utils/genericcomponent';
+import { MicroserviceService } from '../microservice.service';
 
 @Component({
   selector: 'app-ms-datasource',
-  templateUrl: './ms-datasource.component.html'
+  templateUrl: './ms-datasource.component.html',
 })
 export class MsDatasourceComponent extends GenericComponent implements OnInit {
-
   form: FormGroup<any>;
   data: any[] = [];
   componentName: string = '';
@@ -30,8 +28,8 @@ export class MsDatasourceComponent extends GenericComponent implements OnInit {
     super(msService, messageService);
     this.form = this.fb.group({
       id: '',
-      datasources: this.fb.array([])
-    })
+      datasources: this.fb.array([]),
+    });
   }
   ngOnInit(): void {
     this.microserviceId = this.route.snapshot.paramMap.get('id');
@@ -51,24 +49,35 @@ export class MsDatasourceComponent extends GenericComponent implements OnInit {
     this.msService.linkDs(this.microserviceId!, this.ds.id!).then((res) => {
       this.getData({ id: this.microserviceId });
       this.visible = false;
-      this.messageService.add({ severity: 'success', detail: this.componentName + ' linked', summary: this.componentName + ' linked' });
+      this.messageService.add({
+        severity: 'success',
+        detail: this.componentName + ' linked',
+        summary: this.componentName + ' linked',
+      });
     });
-
   }
   unlinkData(ds: any) {
     this.msService.unLinkDs(this.microserviceId!, ds.id!).then((res) => {
       this.getData({ id: this.microserviceId });
-      this.messageService.add({ severity: 'success', detail: this.componentName + ' unlinked', summary: this.componentName + ' unlinked' });
+      this.messageService.add({
+        severity: 'success',
+        detail: this.componentName + ' unlinked',
+        summary: this.componentName + ' unlinked',
+      });
     });
   }
 
   regenerateDataSource() {
-
-    this.datasourceService.regenerateDatasource(this.microserviceId).then((res) => {
-      this.messageService.add({ severity: 'success', detail: this.componentName + ' regenerated', summary: this.componentName + ' regenerated' });
-    });
+    this.datasourceService
+      .regenerateDatasource(this.microserviceId)
+      .then((res) => {
+        this.messageService.add({
+          severity: 'success',
+          detail: this.componentName + ' regenerated',
+          summary: this.componentName + ' regenerated',
+        });
+      });
   }
-
 
   override postSave(): void {
     this.getData({ id: this.microserviceId });

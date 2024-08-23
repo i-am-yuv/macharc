@@ -228,7 +228,7 @@ const routes: Routes = [
         component: DispatcherComponent,
         children: [
           { path: '', component: ActionsComponent },
-          { path: ':id', component: ActionsComponent }
+          { path: ':id', component: ActionsComponent },
         ],
       },
     ],
@@ -283,7 +283,7 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
-  }
+  },
 ];
 
 @NgModule({

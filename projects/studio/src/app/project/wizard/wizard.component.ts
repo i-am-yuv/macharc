@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
-import { GenericComponent } from '../../utils/genericcomponent';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MessageService } from '@splenta/vezo/src/public-api';
-import { ProjectService } from '../project.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MessageService } from '@splenta/vezo';
 import { LayoutService } from '../../layout/layout.service';
+import { GenericComponent } from '../../utils/genericcomponent';
+import { ProjectService } from '../project.service';
 
 @Component({
   selector: 'app-wizard',
   templateUrl: './wizard.component.html',
-  styleUrls: ['./wizard.component.scss']
+  styleUrls: ['./wizard.component.scss'],
 })
 export class WizardComponent extends GenericComponent {
   override form: FormGroup<any>;
@@ -18,7 +18,9 @@ export class WizardComponent extends GenericComponent {
   id: string | null = '';
   items = [
     {
-      label: 'Project', routerLink: '', icon: 'cog',
+      label: 'Project',
+      routerLink: '',
+      icon: 'cog',
       items: [
         { label: 'Overview', routerLink: '', icon: 'cog' },
         { label: 'API Endpoints', routerLink: '', icon: 'cog' },
@@ -27,24 +29,31 @@ export class WizardComponent extends GenericComponent {
         { label: 'Monetization', routerLink: '', icon: 'cog' },
         { label: 'Deployments', routerLink: '', icon: 'cog' },
         { label: 'Subscriptions', routerLink: '', icon: 'cog' },
-      ]
-    }
-  ]
+      ],
+    },
+  ];
   constructor(
     projectService: ProjectService,
     messageService: MessageService,
-    private layoutService : LayoutService,
+    private layoutService: LayoutService,
     private fb: FormBuilder,
-    private router: Router ,
-    private route: ActivatedRoute) {
+    private router: Router,
+    private route: ActivatedRoute
+  ) {
     super(projectService, messageService);
 
     this.form = this.fb.group({
       id: '',
-      projectName: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
-      projectCode: ['', [Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
-      projectDescription: [],
-      isdefault: [false]
+      projectName: [
+        '',
+        [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)],
+      ],
+      projectCode: [
+        '',
+        [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)],
+      ],
+      projectDescription: ['', Validators.required],
+      isdefault: [false],
     });
 
     this.id = this.route.snapshot.paramMap.get('id');
@@ -52,42 +61,55 @@ export class WizardComponent extends GenericComponent {
 
   ngOnInit() {
     if (this.id) {
-      this.getData({ id: this.id }, (res) => { this.form.patchValue({ ...res }) });
+      this.getData({ id: this.id }, (res) => {
+        this.form.patchValue({ ...res });
+      });
     }
-    this.layoutService.checkPadding(false);
-
+    // this.layoutService.checkPadding(false);
   }
 
   milestoneItems = [
     {
-      'name': 'Define Project'
+      name: 'Define Project',
+      link: '.',
     },
     {
-      'name': 'Create  Microservices'
+      name: 'Define Datasources',
+      link: '/builder/datasources',
     },
     {
-      'name': 'Define Services'
+      name: 'Create  Microservices',
+      link: '/builder/microservices',
     },
     {
-      'name': 'Create Frontend Applications'
+      name: 'Define Services',
+      link: '/builder/services',
     },
     {
-      'name': 'Define Prototypes'
+      name: 'Create Frontend Applications',
+      link: '/applications',
     },
     {
-      'name': 'Build Deploy'
-    }
-  ]
+      name: 'Preview Screens',
+      link: '/builder/screens',
+    },
+    {
+      name: 'Build Deploy',
+      link: '/releases',
+    },
+  ];
 
   labelStyle = {
-    'size':'16px',
-    'weight':'400',
-    'color':'#000000'
+    size: '16px',
+    weight: '400',
+    color: '#000000',
+  };
+
+  naviagateListingPage() {
+    this.router.navigate(['projects']);
   }
 
-  naviagateListingPage()
-  {
-    this.router.navigate(['projects']) ;
+  override postSave(data: any) {
+    this.naviagateListingPage();
   }
 }
-

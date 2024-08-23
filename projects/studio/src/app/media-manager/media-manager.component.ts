@@ -1,24 +1,23 @@
-import { HttpClient, HttpEventType } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { MessageService } from '@splenta/vezo/src/public-api';
-import { FormBuilder, FormGroup, MinLengthValidator, MinValidator, Validators } from '@angular/forms';
-import { GenericComponent } from '../utils/genericcomponent';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MessageService } from '@splenta/vezo';
+import { initializeApp } from 'firebase/app';
+import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
+import { environment } from '../../environments/environment';
 import { DataForm } from '../data-form/data-form';
 import { DataFormService } from '../data-form/data-form.service';
-import { MediaService } from './media.service';
-import { ActivatedRoute, Route, Router } from '@angular/router';
+import { LayoutService } from '../layout/layout.service';
+import { GenericComponent } from '../utils/genericcomponent';
 import { Asset, Folder } from './folder';
 import { GcpUploadService } from './gcp-upload.service';
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { environment } from '../../environments/environment';
-import { initializeApp } from 'firebase/app';
-import { LayoutService } from '../layout/layout.service';
-
+import { MediaService } from './media.service';
 
 @Component({
   selector: 'app-media-manager',
   templateUrl: './media-manager.component.html',
-  styleUrls: ['./media-manager.component.scss']
+  styleUrls: ['./media-manager.component.scss'],
 })
 export class MediaManagerComponent extends GenericComponent implements OnInit {
   data: DataForm[] = [];
@@ -32,23 +31,28 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
   allAssetByFolderId: Asset[] = [];
   filteredAssets: Asset[] = [];
   filteredAssetsGlobal: Asset[] = [];
-  currFilterListGlobal: Asset[]= [];
-
+  currFilterListGlobal: Asset[] = [];
 
   folderId: any;
   loading: boolean = false;
   visibleDeleteConfirmation: boolean = false;
-  activeFolder !: Folder;
+  activeFolder!: Folder;
   searchQuery: string = '';
   searchQueryGlobal: string = '';
   GlobalSearchLayout: boolean = false;
 
   private storage = getStorage(initializeApp(environment.firebaseConfig));
 
-
-  constructor(private http: HttpClient, private msgService: MessageService, private formService: DataFormService, private fb: FormBuilder,
-    private mediaService: MediaService, private route: ActivatedRoute, private router: Router,
-    private gcpUploadService: GcpUploadService, private layoutService : LayoutService
+  constructor(
+    private http: HttpClient,
+    private msgService: MessageService,
+    private formService: DataFormService,
+    private fb: FormBuilder,
+    private mediaService: MediaService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private gcpUploadService: GcpUploadService,
+    private layoutService: LayoutService
   ) {
     super(formService, msgService);
   }
@@ -58,7 +62,7 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
     this.layoutService.checkPadding(false);
     this.form = this.fb.group({
       id: '',
-      folderName: ['', Validators.required]
+      folderName: ['', Validators.required],
     });
     this.getAllFolders();
     if (this.folderId) {
@@ -67,21 +71,23 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
   }
 
   getAllFolders() {
-    this.mediaService.getAllFolders().then(
-      (res: any) => {
+    this.mediaService
+      .getAllFolders()
+      .then((res: any) => {
         if (res) {
           this.allFolders = res.content;
           // this.allFolders = [];
           if (this.allFolders.length > 0) {
-            this.allFolders.sort((a: any, b: any) => a.folderName.localeCompare(b.folderName));
+            this.allFolders.sort((a: any, b: any) =>
+              a.folderName.localeCompare(b.folderName)
+            );
             if (!this.folderId) {
               this.openFolderAssets(this.allFolders[0]);
               this.activeFolder = this.allFolders[0];
             }
             this.getAssetsGlobal();
           }
-        }
-        else {
+        } else {
           this.messageService.add({
             severity: 'info',
             summary: 'Info',
@@ -89,15 +95,15 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
             life: 3000,
           });
         }
-      }
-    ).catch((err: any) => {
-      this.messageService.add({
-        severity: 'info',
-        summary: 'Info',
-        detail: err.error.message,
-        life: 3000,
+      })
+      .catch((err: any) => {
+        this.messageService.add({
+          severity: 'info',
+          summary: 'Info',
+          detail: err.error.message,
+          life: 3000,
+        });
       });
-    })
   }
 
   getFolderAssets(folderId: any) {
@@ -105,15 +111,17 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
     this.filteredAssets = [];
 
     this.loading = true;
-    this.mediaService.getAssetsByFolderId(folderId).then(
-      (res: any) => {
+    this.mediaService
+      .getAssetsByFolderId(folderId)
+      .then((res: any) => {
         if (res) {
           this.allAssetByFolderId = res;
           // lasted asset should comes first so sort like that
-          this.allAssetByFolderId.sort((a: any, b: any) => b.updatedAt - a.updatedAt);
+          this.allAssetByFolderId.sort(
+            (a: any, b: any) => b.updatedAt - a.updatedAt
+          );
           this.loading = false;
-        }
-        else {
+        } else {
           this.loading = false;
           this.messageService.add({
             severity: 'info',
@@ -122,16 +130,16 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
             life: 3000,
           });
         }
-      }
-    ).catch((err: any) => {
-      this.loading = false;
-      this.messageService.add({
-        severity: 'info',
-        summary: 'Info',
-        detail: err.error.message,
-        life: 3000,
+      })
+      .catch((err: any) => {
+        this.loading = false;
+        this.messageService.add({
+          severity: 'info',
+          summary: 'Info',
+          detail: err.error.message,
+          life: 3000,
+        });
       });
-    })
   }
 
   triggerFileInput() {
@@ -148,30 +156,30 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
       const storageRef = ref(this.storage, 'images/' + file.name);
       this.loading = true;
       uploadBytes(storageRef, file)
-        .then(snapshot => {
+        .then((snapshot) => {
           // console.log('Uploaded a blob or file!', snapshot);
           this.loading = false;
           return getDownloadURL(storageRef);
         })
-        .then(downloadURL => {
+        .then((downloadURL) => {
           // console.log('File available at', downloadURL);
-          this.uploadImageToBackend(file, downloadURL)
+          this.uploadImageToBackend(file, downloadURL);
         })
-        .catch(error => {
+        .catch((error) => {
           console.error('Error uploading file', error);
           this.loading = false;
         });
     }
   }
 
-  asset !: Asset;
-  tempFolder !: Folder;
+  asset!: Asset;
+  tempFolder!: Folder;
 
   uploadImageToBackend(file: any, url: any) {
     this.folderId = this.route.snapshot.paramMap.get('id');
 
     this.tempFolder = {
-      id: this.folderId
+      id: this.folderId,
     };
 
     this.asset = {
@@ -180,11 +188,12 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
       url: url,
       folder: this.tempFolder,
       fileName: file.name,
-      uploadedTime: new Date()
+      uploadedTime: new Date(),
     };
 
-    this.mediaService.uploadAssets(this.asset).then(
-      (res: any) => {
+    this.mediaService
+      .uploadAssets(this.asset)
+      .then((res: any) => {
         if (res) {
           console.log(res);
           this.loading = false;
@@ -195,8 +204,7 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
             life: 3000,
           });
           this.getFolderAssets(this.folderId);
-        }
-        else {
+        } else {
           this.loading = false;
           this.messageService.add({
             severity: 'info',
@@ -205,17 +213,17 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
             life: 3000,
           });
         }
-      }
-    ).catch((err: any) => {
-      console.log(err);
-      this.loading = false;
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: err.error.message,
-        life: 3000,
+      })
+      .catch((err: any) => {
+        console.log(err);
+        this.loading = false;
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: err.error.message,
+          life: 3000,
+        });
       });
-    })
   }
 
   convertFileSizeToKB(file: any) {
@@ -228,14 +236,14 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
     let hash = 0;
     for (let i = 0; i < uuid.length; i++) {
       const char = uuid.charCodeAt(i);
-      hash = ((hash << 5) - hash) + char;
+      hash = (hash << 5) - hash + char;
       hash |= 0; // Convert to 32bit integer
     }
     return hash;
   }
 
   // Logic of Drag and drop image
-  isDragging !: boolean;
+  isDragging!: boolean;
   imageSrc: any;
 
   onDragOver(event: DragEvent): void {
@@ -262,16 +270,16 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
       const storageRef = ref(this.storage, 'images/' + file.name);
       this.loading = true;
       uploadBytes(storageRef, file)
-        .then(snapshot => {
+        .then((snapshot) => {
           console.log('Uploaded a blob or file!', snapshot);
           this.loading = false;
           return getDownloadURL(storageRef);
         })
-        .then(downloadURL => {
+        .then((downloadURL) => {
           // console.log('File available at', downloadURL);
-          this.uploadImageToBackend(file, downloadURL)
+          this.uploadImageToBackend(file, downloadURL);
         })
-        .catch(error => {
+        .catch((error) => {
           console.error('Error uploading file', error);
           this.loading = false;
         });
@@ -279,7 +287,12 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
   }
 
   private isValidFileType(file: File): boolean {
-    const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/svg+xml'];
+    const allowedTypes = [
+      'image/png',
+      'image/jpeg',
+      'image/jpg',
+      'image/svg+xml',
+    ];
     return allowedTypes.includes(file.type);
   }
 
@@ -308,7 +321,6 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
     //   });
   }
 
-
   isNavigationVisible: boolean = false;
   currentAssetId: any;
   onHoverStart(asset: any) {
@@ -325,17 +337,29 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
   }
 
   copyToClipbord(imageUrl: string) {
-
     if (navigator.clipboard) {
-      navigator.clipboard.writeText(imageUrl).then(() => {
-        this.msgService.add({ severity: 'success', summary: 'Copied', detail: 'URL path copied successfully.' });
-
-      }).catch(err => {
-        this.msgService.add({ severity: 'error', summary: 'Error', detail: 'Error occur while copying.' });
-
-      });
+      navigator.clipboard
+        .writeText(imageUrl)
+        .then(() => {
+          this.msgService.add({
+            severity: 'success',
+            summary: 'Copied',
+            detail: 'URL path copied successfully.',
+          });
+        })
+        .catch((err) => {
+          this.msgService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Error occur while copying.',
+          });
+        });
     } else {
-      this.msgService.add({ severity: 'error', summary: 'Error', detail: 'Something went wrong.' });
+      this.msgService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Something went wrong.',
+      });
     }
   }
 
@@ -348,8 +372,9 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
   override saveData() {
     if (this.form.value.id == null || this.form.value.id == '') {
       // New Folder will be created
-      this.mediaService.createFolder(this.form.value).then(
-        (res: any) => {
+      this.mediaService
+        .createFolder(this.form.value)
+        .then((res: any) => {
           if (res) {
             this.visible = false;
             this.getAllFolders();
@@ -359,8 +384,7 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
               detail: 'New folder added.',
               life: 3000,
             });
-          }
-          else {
+          } else {
             this.messageService.add({
               severity: 'info',
               summary: 'Info',
@@ -368,20 +392,20 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
               life: 3000,
             });
           }
-        }
-      ).catch((err: any) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Error occur while adding folder.',
-          life: 3000,
+        })
+        .catch((err: any) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Error occur while adding folder.',
+            life: 3000,
+          });
         });
-      })
-    }
-    else {
+    } else {
       // Update Folder
-      this.mediaService.updateFolder(this.form.value).then(
-        (res: any) => {
+      this.mediaService
+        .updateFolder(this.form.value)
+        .then((res: any) => {
           if (res) {
             this.visible = false;
             this.getAllFolders();
@@ -391,8 +415,7 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
               detail: 'Folder updated.',
               life: 3000,
             });
-          }
-          else {
+          } else {
             this.messageService.add({
               severity: 'info',
               summary: 'Info',
@@ -400,15 +423,15 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
               life: 3000,
             });
           }
-        }
-      ).catch((err: any) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Error occur while updating folder.',
-          life: 3000,
+        })
+        .catch((err: any) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Error occur while updating folder.',
+            life: 3000,
+          });
         });
-      })
     }
   }
 
@@ -417,12 +440,10 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
     this.visibleDeleteConfirmation = !this.visibleDeleteConfirmation;
   }
 
-
   getBg(clickedView: string) {
     if (clickedView === this.currentView) {
       return '#D9D9D9';
-    }
-    else {
+    } else {
       return '#F5F6F9';
     }
   }
@@ -438,8 +459,9 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
   }
 
   deleteAsset(asset: any) {
-    this.mediaService.deleteAsset(asset).then(
-      (res: any) => {
+    this.mediaService
+      .deleteAsset(asset)
+      .then((res: any) => {
         if (res) {
           console.log(res);
           this.loading = false;
@@ -450,8 +472,7 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
             life: 3000,
           });
           this.getFolderAssets(this.folderId);
-        }
-        else {
+        } else {
           this.loading = false;
           this.messageService.add({
             severity: 'info',
@@ -460,24 +481,24 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
             life: 3000,
           });
         }
-      }
-    ).catch((err: any) => {
-      console.log(err);
-      this.loading = false;
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: 'Something went wrong, Please try again!',
-        life: 3000,
+      })
+      .catch((err: any) => {
+        console.log(err);
+        this.loading = false;
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Something went wrong, Please try again!',
+          life: 3000,
+        });
       });
-    })
-
   }
 
   deleteFolderConfirmed() {
     if (this.activeFolder.id) {
-      this.mediaService.deleteFolder(this.activeFolder).then(
-        (res: any) => {
+      this.mediaService
+        .deleteFolder(this.activeFolder)
+        .then((res: any) => {
           if (res) {
             this.router.navigate(['/media-manager']);
             this.getAllFolders();
@@ -487,8 +508,7 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
               detail: 'Folder deleted.',
               life: 3000,
             });
-          }
-          else {
+          } else {
             this.messageService.add({
               severity: 'info',
               summary: 'Info',
@@ -496,21 +516,21 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
               life: 3000,
             });
           }
-        }
-      ).catch((err: any) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Error occur while deleting the folder.',
-          life: 3000,
+        })
+        .catch((err: any) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Error occur while deleting the folder.',
+            life: 3000,
+          });
         });
-      })
     }
   }
 
   searchAssets() {
     if (this.searchQuery) {
-      this.filteredAssets = this.allAssetByFolderId.filter(asset =>
+      this.filteredAssets = this.allAssetByFolderId.filter((asset) =>
         asset.fileName?.toLowerCase().includes(this.searchQuery.toLowerCase())
       );
     } else {
@@ -521,13 +541,12 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
   getAssetsGlobal() {
     let index: number;
     for (index = 0; index < this.allFolders.length; index++) {
-
-      this.mediaService.getAssetsByFolderId(this.allFolders[index]?.id).then(
-        (res: any) => {
+      this.mediaService
+        .getAssetsByFolderId(this.allFolders[index]?.id)
+        .then((res: any) => {
           if (res) {
             this.filteredAssetsGlobal = [...this.filteredAssetsGlobal, ...res];
-          }
-          else {
+          } else {
             this.messageService.add({
               severity: 'info',
               summary: 'Info',
@@ -535,20 +554,20 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
               life: 3000,
             });
           }
-        }
-      );
+        });
     }
   }
 
   searchAssetsGlobal() {
     if (this.searchQueryGlobal) {
-     // alert(this.filteredAssetsGlobal.length);
+      // alert(this.filteredAssetsGlobal.length);
       this.GlobalSearchLayout = true;
-      this.currFilterListGlobal = this.filteredAssetsGlobal.filter(asset =>
-        asset.fileName?.toLowerCase().includes(this.searchQueryGlobal.toLowerCase())
+      this.currFilterListGlobal = this.filteredAssetsGlobal.filter((asset) =>
+        asset.fileName
+          ?.toLowerCase()
+          .includes(this.searchQueryGlobal.toLowerCase())
       );
-    }
-    else {
+    } else {
       this.GlobalSearchLayout = false;
     }
     // if (this.searchQuery) {
@@ -563,10 +582,8 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
   getAssetList() {
     if (this.searchQuery) {
       return this.filteredAssets;
-    }
-    else {
+    } else {
       return this.allAssetByFolderId;
     }
   }
-
 }

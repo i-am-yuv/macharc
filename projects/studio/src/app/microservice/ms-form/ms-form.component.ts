@@ -1,7 +1,13 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  ValidationErrors,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService } from '@splenta/vezo/src/public-api';
+import { MessageService } from '@splenta/vezo';
 import { FunctionsUsingCSI, NgTerminal } from 'ng-terminal';
 import RSocketWebSocketClient from 'rsocket-websocket-client';
 import { ProjectService } from '../../project/project.service';
@@ -16,6 +22,7 @@ import {
 import { environment } from 'projects/studio/src/environments/environment';
 import { Payload, ReactiveSocket } from 'rsocket-types';
 import { Subject } from 'rxjs';
+import { Project } from '../../project/project';
 import { MicroserviceService } from '../microservice.service';
 
 @Component({
@@ -34,7 +41,10 @@ export class MsFormComponent
   packaging: any[] = ['Jar', 'War'];
   projects: any[] = [];
   loading: boolean = false;
-
+  activeProject: Project | undefined = {
+    id: '',
+    projectName: 'SELECT PROJECT',
+  };
   webSocketUrl = environment.webTerminal;
 
   constructor(
@@ -43,17 +53,24 @@ export class MsFormComponent
     messageService: MessageService,
     private projectService: ProjectService,
     private router: Router,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute
+  ) {
     super(msService, messageService);
     this.msId = this.route.snapshot.paramMap.get('id');
     this.form = this.fb.group({
       id: '',
-      microServiceCode: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
-      microServiceName: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
+      microServiceCode: [
+        '',
+        [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)],
+      ],
+      microServiceName: [
+        '',
+        [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)],
+      ],
       packageName: ['', [Validators.required, this.packageNameValidator]],
-      packaging: ['Jar' , Validators.required ],
+      packaging: ['Jar', Validators.required],
       portNumber: ['', [Validators.required, Validators.maxLength(5)]],
-      project: ['', [Validators.required]],
+      project: [''],
     });
   }
 
@@ -63,6 +80,12 @@ export class MsFormComponent
     }
     this.projectService.getAllData().then((res: any) => {
       this.projects = res.content;
+    });
+
+    // this.projectService.setActiveProject();
+    this.projectService.getActiveProject().subscribe((val) => {
+      this.activeProject = val;
+      console.log(this.activeProject);
     });
     // Code for web-terminal
 
@@ -139,7 +162,6 @@ export class MsFormComponent
     });
   }
 
-
   loadData(res: any): void {
     this.form.patchValue({ ...res });
   }
@@ -154,22 +176,9 @@ export class MsFormComponent
     this.form.get('packageName')?.updateValueAndValidity();
   }
 
-  // override postSave(data:any)
-  // {
-  //   this.msService.generateCode(data).then((res: any) => {
-  //     if (res) {
-  //       // this.messageService.add({
-  //       //   severity: 'success',
-  //       //   detail: this.componentName + ' created',
-  //       //   summary: this.componentName + ' created',
-  //       // });
-  //     }
-  //   });
-  // }
-
   override saveData() {
-    // this.preSave();
-    //this.form.value.collection = null ;// No collection for page
+    // default sending the active project
+    this.form.value.project = this.activeProject;
     const formData = this.form.value;
     if (!formData.id) {
       formData.id = null;
@@ -182,7 +191,7 @@ export class MsFormComponent
             summary: this.componentName + ' created',
           });
           this.getAllData();
-          // this.postSave(res);
+          this.router.navigate(['/builder/microservices']);
         }
       });
     } else {
@@ -195,31 +204,11 @@ export class MsFormComponent
             summary: this.componentName + ' updated',
           });
           this.getAllData();
-          // this.postSave(res);
+          this.router.navigate(['/builder/microservices']);
         }
       });
     }
   }
-  override postSave(data: any) {
-    this.msService.generateCode(data).then((res: any) => {
-      if (res) {
-        // this.messageService.add({
-        //   severity: 'success',
-        //   detail: this.componentName + ' created',
-        //   summary: this.componentName + ' created',
-        // });
-        console.log(res);
-      }
-    }).catch((err) => {
-      this.messageService.add({
-        severity: 'error',
-        detail: 'Error',
-        summary: 'Error while generating the code',
-      });
-    })
-  }
-
-  // Code added for web Terminal
 
   title = 'client';
   message = '';
@@ -319,9 +308,18 @@ export class MsFormComponent
     });
   }
 
-  generateDTO()
-  {
+  generateDTO() {
     // Code for generating the DTO Here
     console.log(this.form.value);
+  }
+
+  commitCode() {
+    this.msService.commitCode(this.msId).then(() => {
+      this.messageService.add({
+        severity: 'success',
+        detail: 'Code commited',
+        summary: 'Code commited successfully',
+      });
+    });
   }
 }

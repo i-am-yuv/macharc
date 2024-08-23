@@ -1,22 +1,28 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { MessageService } from '@splenta/vezo/src/public-api';
+import { MessageService } from '@splenta/vezo';
 import { environment } from '../../environments/environment';
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-
   apiurl: string = environment.apiurl;
 
-  constructor(private router: Router, private msg: MessageService, private http: HttpClient) { }
+  constructor(
+    private router: Router,
+    private msg: MessageService,
+    private http: HttpClient
+  ) {}
 
   redirectToLogin() {
     sessionStorage.clear();
-    this.msg.add({ severity: 'error', summary: 'Session Expired', detail: 'Session Expired, login again' });
+    this.msg.add({
+      severity: 'error',
+      summary: 'Session Expired',
+      detail: 'Session Expired, login again',
+    });
     this.router.navigate(['/login']);
   }
   redirectInvalid() {
@@ -24,13 +30,13 @@ export class AuthService {
     this.router.navigate(['/login']);
   }
   getUserName(): string {
-    const token = sessionStorage.getItem("token");
+    const token = sessionStorage.getItem('token');
     let jwt: any = atob(token!.split('.')[1]);
     jwt = JSON.parse(jwt);
     return jwt.sub;
   }
   getAuthStatus() {
-    const token = sessionStorage.getItem("token");
+    const token = sessionStorage.getItem('token');
     let status = false;
     if (token) status = true;
     return status;
@@ -42,7 +48,7 @@ export class AuthService {
   }
 
   getRoles() {
-    const token = sessionStorage.getItem("token");
+    const token = sessionStorage.getItem('token');
     let jwt: any = atob(token!.split('.')[1]);
     jwt = JSON.parse(jwt);
     // console.log(jwt.roles);
@@ -58,4 +64,8 @@ export class AuthService {
     return this.http.post<any>(url, data);
   }
 
+  getAuthToken() {
+    const token = sessionStorage.getItem('token');
+    return token;
+  }
 }
