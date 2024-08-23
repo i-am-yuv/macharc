@@ -17,7 +17,7 @@ import { BusinessLogicService } from '../business-logic/business-logic.service';
 import { DataFormService } from '../data-form/data-form.service';
 import { LayoutService } from '../layout/layout.service';
 import { GenericComponent } from '../utils/genericcomponent';
-import { Actions } from './action';
+import { Actions, MappedParamsObj } from './action';
 import { ActionService } from './action.service';
 import { Collection } from '../collection/collection';
 import { Endpoint } from '../collection/endpoints/endpoint';
@@ -29,6 +29,8 @@ import { FilterBuilder } from '../utils/FilterBuilder';
 import { MicroserviceService } from '../microservice/microservice.service';
 import { MicroService } from '../microservice/microservice';
 import { parseISO } from 'date-fns/parseISO';
+import { ScreenService } from '../screen/screen.service';
+import { PageParam, Screen } from '../screen/screen';
 
 function createDefinition() {
   return {
@@ -264,6 +266,7 @@ export class ActionsComponent extends GenericComponent implements OnInit {
   allFieldsByReqDto: Field[] = [];
   allMicroservice: MicroService[] = [];
   allPojos: [] = [];
+  allScreens: Screen[] = [];
 
   showConditionEditor: boolean = false;
   showModelsOptions: boolean = false;
@@ -305,6 +308,7 @@ export class ActionsComponent extends GenericComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private microserivce: MicroserviceService,
+    private screenService: ScreenService,
     private fieldsService: FieldService,
     private projectService: ProjectService,
     private endpointService: EndpointService
@@ -343,6 +347,21 @@ export class ActionsComponent extends GenericComponent implements OnInit {
       this.currentMicroservice = val;
       this.getActionsData();
     });
+
+    // Code to get All the screens by Microservices Id
+    const filterStr = FilterBuilder.equal('microService.id', this.currentMicroservice.id + '');
+    this.search = filterStr;
+    let pagination!: Pagination;
+
+    this.screenService
+      .getAllData(pagination, this.search)
+      .then((res: any) => {
+        this.allScreens = res.content;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
     this.layoutService.checkPadding(false);
 
     this.updateDefinitionJSON();
@@ -429,7 +448,7 @@ export class ActionsComponent extends GenericComponent implements OnInit {
 
   openCurrentAction(action: any) {
     // this.actionId = action.id;
-    // this.currentAction = action;
+    this.currentAction = action;
     this.router.navigate(['/actions/' + action.id]);
     setTimeout(() => {
       this.getActionContent();
@@ -486,16 +505,16 @@ export class ActionsComponent extends GenericComponent implements OnInit {
   // Sqd-desinger code same like services
 
   populateEditorFormsData() {
-    console.log( this.definition.properties) ;
-    if (this.definition.properties['collections'] =='' ) {
+    console.log(this.definition.properties);
+    if (this.definition.properties['collections'] == '') {
       this.selectedModels = [];
       this.finalListModels = [];
-      this.selectedParams = [{ dataType: '', varName: '' }] ;
-      this.selectedResOp = {} ;
-      this.resType = null ;
+      this.selectedParams = [{ dataType: '', varName: '' }];
+      this.selectedResOp = {};
+      this.resType = null;
     }
     else {
-      console.log('not empty') ;
+      console.log('not empty');
       if (this.definition.properties['collections']) {
         this.selectedModels = this.definition.properties['collections'];
         this.makeFieldListFromSelectedModel();
@@ -726,6 +745,7 @@ export class ActionsComponent extends GenericComponent implements OnInit {
   saveDataModel: any = {}; // This is Collection
   selectedResPojo: any;
   selectedPojoFields: Field[] = [];
+  currentScreenToNavigate !: Screen;
 
   selectedParams: InputParam[] | any = [{ dataType: '', varName: '' }];
 
@@ -737,11 +757,16 @@ export class ActionsComponent extends GenericComponent implements OnInit {
   loopFirstValue: any;
   loopOperator: any;
   loopSecondValue: any;
+
   loopStaticValue: any;
   resType: any;
   fetchDataSchedule: any;
   customJPAQuery: any;
   loopManualEntry: boolean = false;
+  navigateToManualEntry: boolean = false;
+  navigateToSecondValue: any;
+
+  navigateToMappedData: Collection[] = [];
 
 
   openConditionEditor(editor: any) {
@@ -1034,18 +1059,80 @@ export class ActionsComponent extends GenericComponent implements OnInit {
     console.log(this.finalListModels);
   }
 
-  // Fetch Data Code Start
+  // Navigate To Code Start
+
+  selectTheScreen(screen: Screen) {
+    this.currentScreenToNavigate = screen;
+    // console.log( this.currentScreenToNavigate) ;
+  }
+
+  finalMappedParamsList: MappedParamsObj[] = [];
+
+  mappedObjList :any 
   openNavigateEditor(editor: any) {
-    console.log(editor);
     this.navigateEditor = editor;
+    // Code for data population
+    if (editor.step.properties?.screen == null) {
+      console.log('New');
+      this.currentScreenToNavigate = {} ;
+      this.navigateToMappedData = [] ;
+      this.finalMappedParamsList = [] ;
+    }
+    else {
+      console.log('Old');
+      this.currentScreenToNavigate = editor.step.properties.screen ;
+      this.mappedObjList = editor.step.properties.mappedData;
+      this.finalMappedParamsList = editor.step.properties.mappedData ;
+      this.navigateToMappedData = [] ;
+      console.log(this.mappedObjList  ) ;
+      for (var i = 0; i < this.mappedObjList.length ; i++) {
+        var oneObj = this.mappedObjList[i];
+        this.navigateToMappedData.push( oneObj.mappedValue) ;
+      }
+    }
     this.navigatePopup = !this.navigatePopup;
   }
 
   saveNavigateData(editor: any) {
-    this.navigatePopup = !this.navigatePopup;
     console.log(editor);
+    this.saveNavigateInfo(editor.step, editor.context);
+    this.navigatePopup = !this.navigatePopup;
   }
 
+  isObjectEmpty(obj: any): boolean {
+  //  console.log(obj && Object.keys(obj).length === 0) ;
+    return obj && Object.keys(obj).length === 0;
+  }
+
+  public saveNavigateInfo(
+    sequence: any,
+    context: GlobalEditorContext | StepEditorContext
+  ) {
+    // sequence = sequence.find((item: any) => item.type === 'loop');
+    sequence.properties['screen'] = this.currentScreenToNavigate;
+    sequence.properties['mappedData'] = this.finalMappedParamsList;
+    context.notifyPropertiesChanged();
+  }
+
+  handleValueChangesNavigate(e: any, pageParam: PageParam) {
+    console.log(e);
+    if (e == 'manual') {
+      this.navigateToManualEntry = true;
+    } else {
+      console.log( this.finalMappedParamsList );      
+      const mappedObj = this.finalMappedParamsList.find((obj: any) => obj?.pageParam.id === pageParam.id);
+      if (mappedObj !== null && mappedObj !== undefined) {
+        mappedObj['mappedValue'] = e;
+      }
+      else {
+        var newObj = {
+          pageParam: pageParam,
+          mappedValue: e
+        }
+        this.finalMappedParamsList.push(newObj);
+      }
+    }
+  }
 
 
 
@@ -1053,7 +1140,6 @@ export class ActionsComponent extends GenericComponent implements OnInit {
   updateConditionsLoop(editor: any) {
     console.log(JSON.stringify(editor));
     this.saveInfoLoop(editor.step, editor.context);
-
     this.showLoopEditor = false;
   }
 

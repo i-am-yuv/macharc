@@ -10,4 +10,11 @@ export interface Screen {
     collection?: Collection;
     screenDefinition?: string;
     microService ?: any;
+    selectedParams ?: PageParam[] ;
+}
+
+export interface PageParam {
+    id?: string;
+    dataType?: string;
+    varName?: string ;
 }

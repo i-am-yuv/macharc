@@ -25,7 +25,7 @@ import { MicroService } from '../../microservice/microservice';
 import { MicroserviceService } from '../../microservice/microservice.service';
 import { FilterBuilder } from '../../utils/FilterBuilder';
 import { GenericComponent } from '../../utils/genericcomponent';
-import { Screen } from '../screen';
+import { PageParam, Screen } from '../screen';
 import { ScreenService } from '../screen.service';
 import { InputParam } from '../../business-logic/business-logic';
 import { ProjectService } from '../../project/project.service';
@@ -46,7 +46,7 @@ interface DraggableItem {
   children?: any[];
   icon?: any;
   id?: any;
-  navigateTo ?: any ;
+  navigateTo?: any;
 }
 @Component({
   selector: 'app-designer',
@@ -632,7 +632,7 @@ export class DesignerComponent
     private msgService: MessageService,
     private microserviceService: MicroserviceService,
     private applicationService: ApplicationService,
-    private projectService : ProjectService ,
+    private projectService: ProjectService,
     private renderer: Renderer2,
     private el: ElementRef,
     private mediaService: MediaService,
@@ -667,17 +667,18 @@ export class DesignerComponent
 
   getPageData() {
     this.loading = true;
-    this.getAllDataById(this.currentApplication.id);
+    this.getAllDataById(this.currentApplication.id); // This will fetch all the screen
+
     console.log('Project');
     this.projectService.setActiveProject();
-    this.projectService.getActiveProject().subscribe((val:any) => {
+    this.projectService.getActiveProject().subscribe((val: any) => {
       console.log(val);
       this.projectId = val?.id;
       if (this.projectId) {
         var filterStr = FilterBuilder.equal('project.id', this.projectId);
         this.search = filterStr;
-        var paginator !: Pagination ;
-        this.microserviceService.getAllData(paginator  , this.search).then((res: any) => {
+        var paginator !: Pagination;
+        this.microserviceService.getAllData(paginator, this.search).then((res: any) => {
           if (res) {
             this.microserviceItems = res.content;
             this.loading = false;
@@ -685,7 +686,7 @@ export class DesignerComponent
         });
       }
     });
-    
+
     this.applicationService.getAllData().then((res: any) => {
       if (res) {
         this.applicationItems = res.content;
@@ -703,6 +704,15 @@ export class DesignerComponent
 
   override editData(ds: any): void {
     super.editData(ds);
+    this.selectedParams = ds.selectedParams ;
+    if( this.selectedParams.length > 0 )
+    {
+      this.isParamvalue = "yes" ;
+    }
+    else{
+      this.isParamvalue = "no" ;
+    }
+    console.log(ds);
     this.getCollectionItems();
   }
 
@@ -734,7 +744,7 @@ export class DesignerComponent
   getPageContent() {
     this.loading = true;
     this.screenId = this.route.snapshot.paramMap.get('id');
-    // alert(this.screenId ) ;
+
     if (this.screenId !== 'null') {
       this.screenService
         .getData({ id: this.screenId })
@@ -1058,41 +1068,6 @@ export class DesignerComponent
       detail: 'Content pasted successfully.',
     });
     localStorage.removeItem('componentPage'); // Removing this for temporary purpose
-  }
-
-  override saveDataByApplication(applicationId: any) {
-    this.preSaveByApplication();
-
-    const formData = this.form.value;
-    formData.application = { ...formData.application, id: applicationId };
-
-    if (!formData.id) {
-      this.screenService.createPageData(formData).then((res: any) => {
-        if (res) {
-          this.visible = false;
-          this.messageService.add({
-            severity: 'success',
-            detail: this.componentName + ' created',
-            summary: this.componentName + ' created',
-          });
-          this.getAllDataById(applicationId);
-          this.postSaveByApplication(res);
-        }
-      });
-    } else {
-      this.screenService.updatePageData(formData).then((res: any) => {
-        if (res) {
-          this.visible = false;
-          this.messageService.add({
-            severity: 'success',
-            detail: this.componentName + ' updated',
-            summary: this.componentName + ' updated',
-          });
-          this.getAllDataById(applicationId);
-          this.postSaveByApplication(res);
-        }
-      });
-    }
   }
 
   pasteThisPageInside(afterObjectId: string) {
@@ -1504,8 +1479,62 @@ export class DesignerComponent
     this.selectedParams.push({});
   }
 
-  override preSaveByApplication() {
-    this.form.value['selectedParams'] = this.selectedParams;
-    // console.log(this.form.value);
+  allPageParams !: PageParam[];
+  async SaveByApplication(applicationId: any) {
+    this.allPageParams = [];
+    console.log(this.selectedParams.length);
+    
+    for (let index = 0; index < this.selectedParams.length; index++) {
+      try {
+        const pageParam = this.selectedParams[index];
+        const res = await this.screenService.createPageParams(pageParam);
+        console.log(res);
+        this.allPageParams.push(res);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  
+    if (this.allPageParams.length === this.selectedParams.length) {
+      console.log(this.allPageParams);
+      this.saveScreenByApplication(applicationId);
+    }
   }
+  
+  saveScreenByApplication(applicationId: any) {
+    this.form.value['selectedParams'] = this.allPageParams;
+    const formData = this.form.value;
+    formData.application = { ...formData.application, id: applicationId };
+  
+    console.log(formData);
+    this.search = '' ;
+    if (!formData.id) {
+      this.dataService.createData(formData).then((res: any) => {
+        if (res) {
+          this.visible = false;
+          this.messageService.add({
+            severity: 'success',
+            detail: this.componentName + ' created',
+            summary: this.componentName + ' created',
+          });
+          this.search = '' ;
+          this.getAllDataById(applicationId);
+        }
+      });
+    } else {
+      this.dataService.updateData(formData).then((res: any) => {
+        if (res) {
+          this.visible = false;
+          this.messageService.add({
+            severity: 'success',
+            detail: this.componentName + ' updated',
+            summary: this.componentName + ' updated',
+          });
+          this.search = '' ;
+          this.getAllDataById(applicationId);
+        }
+      });
+    }
+  }
+
 }
