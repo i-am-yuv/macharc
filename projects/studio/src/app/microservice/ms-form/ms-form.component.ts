@@ -175,6 +175,23 @@ export class MsFormComponent
   checkPackageName() {
     this.form.get('packageName')?.updateValueAndValidity();
   }
+  isModalOpen = false;
+  modalTitle = '';
+  modalButtonText = '';
+  modalType: 'success' | 'failure' = 'success';
+
+  openModal(type: 'success' | 'failure', title: string, btnText: string) {
+    this.modalTitle = title;
+    this.modalButtonText = btnText;
+    this.modalType = type;
+    this.isModalOpen = true;
+  }
+
+  closeModal() {
+    this.isModalOpen = false;
+    this.router.navigate(['/builder/microservices']);
+    // this.navigateListingPage();
+  }
 
   override saveData() {
     // default sending the active project
@@ -185,28 +202,50 @@ export class MsFormComponent
       this.msService.createMS(formData).then((res: any) => {
         if (res) {
           this.visible = false;
-          this.messageService.add({
-            severity: 'success',
-            detail: this.componentName + ' created',
-            summary: this.componentName + ' created',
-          });
+          // this.messageService.add({
+          //   severity: 'success',
+          //   detail: this.componentName + ' created',
+          //   summary: this.componentName + ' created',
+          // });
+          this.postSaveShowModal( this.componentName , 'createdSuccess' ) ;
           this.getAllData();
-          this.router.navigate(['/builder/microservices']);
         }
+      }).catch( (err)=>{
+        this.postSaveShowModal( this.componentName , 'createdError' ) ;
       });
     } else {
       this.msService.createMS(formData).then((res: any) => {
         if (res) {
           this.visible = false;
-          this.messageService.add({
-            severity: 'success',
-            detail: this.componentName + ' updated',
-            summary: this.componentName + ' updated',
-          });
+          // this.messageService.add({
+          //   severity: 'success',
+          //   detail: this.componentName + ' updated',
+          //   summary: this.componentName + ' updated',
+          // });
+          this.postSaveShowModal( this.componentName , 'updatedSuccess' ) ;
           this.getAllData();
-          this.router.navigate(['/builder/microservices']);
+          // this.router.navigate(['/builder/microservices']);
         }
+      }).catch( (err)=>{
+        this.postSaveShowModal( this.componentName , 'updatedError' ) ;
       });
+    }
+  }
+
+
+  override postSaveShowModal(res: any, resposeType: string) {
+    // you will open the model with the type       
+    if (resposeType == 'createdSuccess') {
+      this.openModal('success', res+' created','OK');    
+    } else if (resposeType == 'createdError') {
+      this.openModal('failure', res+' creation failed','OK');    
+
+    } else if (resposeType == 'updatedSuccess') {
+      this.openModal('success', res+' updated','OK');    
+
+    } else if (resposeType == 'updatedError') {
+      this.openModal('failure', res+' updation failed','OK');    
+
     }
   }
 

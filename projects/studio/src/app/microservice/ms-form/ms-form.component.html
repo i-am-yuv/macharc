@@ -135,4 +135,11 @@
   </form>
 </div>
 
+<app-modal
+  *ngIf="isModalOpen"
+  [title]="modalTitle"
+  [buttonText]="modalButtonText"
+  [type]="modalType"
+  (close)="closeModal()">
+</app-modal>
 <vezo-toast></vezo-toast>

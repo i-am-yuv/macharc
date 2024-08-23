@@ -145,8 +145,14 @@
       <error-message [controlName]="form.controls['packageName']"></error-message>
       <div>
         <div class="inline-block w-1/2 pr-4">
-          <vezo-inputnumber label="Port Number" formControlName="portNumber"></vezo-inputnumber>
-          <error-message [controlName]="form.controls['portNumber']"></error-message>
+          <vezo-inputnumber
+            label="Port Number"
+            [placeholder] = "'Enter Port Number'"
+            formControlName="portNumber"
+          ></vezo-inputnumber>
+          <error-message
+            [controlName]="form.controls['portNumber']"
+          ></error-message>
         </div>
         <div class="inline-block w-1/2">
           <vezo-select [items]="packaging" label="Packaging" formControlName="packaging"></vezo-select>
