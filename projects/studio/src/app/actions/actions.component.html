@@ -83,7 +83,7 @@ Old Action Code ends here.......................................................
   <!-- Right Panel of sqd-designer -->
   <div class="w-10/12  overflow-y-scroll p-3">
     <div *ngIf="this.actionId">
-      
+
       <div class="h-screen">
 
         <sqd-designer theme="light" [undoStackSize]="10" [definition]="definition"
@@ -153,12 +153,23 @@ Old Action Code ends here.......................................................
           <!-- hanlde types of steps and data to be gathered from user-->
           <h3 class="my-4 font-semibold">Config</h3>
 
+          <!-- Call Apis Code -->
+          <ng-container *ngIf="editor.step.type === 'callWebclient'">
+            <div class="mb-2" (click)="openAPIEditor(editor)">
+              <button class="bg-indigo-600 rounded text-white p-2">
+                select Condition
+              </button>
+            </div>
+          </ng-container>
+
+          <!-- Navigate To -->
           <ng-container *ngIf="editor.step.type === 'getDsData'">
             <button class="bg-indigo-600 rounded text-white p-2" (click)="openNavigateEditor(editor)">
               Configure
             </button>
           </ng-container>
 
+          <!-- If/else Code -->
           <ng-container *ngIf="editor.step.type === 'if'">
             <h3 class="my-2 font-semibold">Configure Conditions</h3>
             <div class="mb-2" (click)="openConditionEditor(editor)">
@@ -168,6 +179,7 @@ Old Action Code ends here.......................................................
             </div>
           </ng-container>
 
+          <!-- Loop Code -->
           <ng-container *ngIf="editor.step.type === 'loop'">
             <div class="mb-2" (click)="openLoopEditor(editor)">
               <button class="bg-indigo-600 rounded text-white p-2">
@@ -176,21 +188,14 @@ Old Action Code ends here.......................................................
             </div>
           </ng-container>
 
-          <ng-container *ngIf="editor.step.type === 'callWebclient'">
-            <div class="mb-2" (click)="openAPIEditor(editor)">
-              <button class="bg-indigo-600 rounded text-white p-2">
-                select Condition
-              </button>
-            </div>
-          </ng-container>
-
+          <!-- Save Data Code -->
           <ng-container *ngIf="editor.step.type === 'saveDsData'">
             <div class="mb-2" (click)="openSaveDataEditor(editor)">
               <button class="bg-indigo-600 rounded text-white p-2">Configure</button>
             </div>
           </ng-container>
 
-          <!-- this code is for Set response data -->
+          <!-- this code is for Set response data //  Not using this in action-->
           <ng-container *ngIf="editor.step.type === 'import'">
             <div class="mb-2" (click)="openSetResponseDataEditor(editor)">
               <button class="bg-indigo-600 rounded text-white p-2">Configure</button>
@@ -353,11 +358,60 @@ Old Action Code ends here.......................................................
   </ng-template>
 </vezo-modal>
 
-<!-- Model for Configure Fetch Data in the Step editor -->
+<!-- Model for Configure Navigate To Data in the Step editor -->
 <vezo-modal [(visible)]="navigatePopup">
   <ng-template vTemplate="header">Configure</ng-template>
   <ng-template vTemplate="content">
-    Navigate Logic here...
+    <!-- Navigate Logic here... -->
+    <p-dropdown [options]="allScreens" [(ngModel)]="currentScreenToNavigate" placeholder="Select Page"
+      optionLabel="screenName" [style]="{ width: '100%' }" (ngModelChange)="selectTheScreen($event)">
+    </p-dropdown>
+
+    <div *ngIf="isObjectEmpty(currentScreenToNavigate) == false "
+      class="mt-4">
+      <div class="flex justify-between items-center w-full">
+        <div class="w-1/2 text-lg text-gray-500">Required Page Parameter</div>
+        <div class="w-1/2  text-lg text-gray-500 flex justify-start items-center">Mapped Data</div>
+      </div>
+
+      <div class="mt-2">
+        <div *ngFor="let pageParam of currentScreenToNavigate.selectedParams ;  index as i">
+          <div class="flex justify-between items-center my-2 w-full">
+
+            <div class="text-lg w-1/2">{{pageParam.varName}} <span class="text-sm">({{pageParam.dataType}})</span></div>
+
+            <div class="w-1/2">
+              <!-- <p-dropdown [options]="this.finalListModels" [(ngModel)]="currentScreenToNavigate"
+                placeholder="Select Page" optionLabel="screenName" [style]="{ width: '100%' }" class="w-full"
+                (ngModelChange)="setValue">
+              </p-dropdown> -->
+
+              <p-dropdown *ngIf="this.navigateToManualEntry == false" [options]="getDropdownOptions()"
+                [(ngModel)]="this.navigateToMappedData[i]" placeholder="Choose Fields"
+                (onChange)="handleValueChangesNavigate($event.value , pageParam )" [group]="true" [showClear]="true">
+                <ng-template let-group pTemplate="group">
+                  <div class="flex gap-2 justify-start items-center">
+                    <img src="assets/collection_L.svg" style="width: 16px; height: auto" />
+                    <span>{{ group.label }}</span>
+                  </div>
+                </ng-template>
+              </p-dropdown>
+
+              <div *ngIf="this.navigateToManualEntry" class="border p-2 rounded flex justify-between items-center gap-1">
+                <input [(ngModel)]="this.navigateToSecondValue" placeholder="Enter URL manually" />
+                <div class="cursor-pointer" (click)="this.navigateToManualEntry = !this.navigateToManualEntry">
+                  X
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+          <hr>
+        </div>
+      </div>
+    </div>
+
   </ng-template>
   <ng-template vTemplate="footer">
     <div class="text-right">

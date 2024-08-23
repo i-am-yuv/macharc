@@ -704,6 +704,14 @@ export class DesignerComponent
 
   override editData(ds: any): void {
     super.editData(ds);
+    this.selectedParams = ds.selectedParams ;
+    if( this.selectedParams.length > 0 )
+    {
+      this.isParamvalue = "yes" ;
+    }
+    else{
+      this.isParamvalue = "no" ;
+    }
     this.getCollectionItems();
   }
 
