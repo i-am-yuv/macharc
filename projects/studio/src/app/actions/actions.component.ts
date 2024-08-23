@@ -347,6 +347,21 @@ export class ActionsComponent extends GenericComponent implements OnInit {
       this.currentMicroservice = val;
       this.getActionsData();
     });
+
+    // Code to get All the screens by Microservices Id
+    const filterStr = FilterBuilder.equal('microService.id', this.currentMicroservice.id + '');
+    this.search = filterStr;
+    let pagination!: Pagination;
+
+    this.screenService
+      .getAllData(pagination, this.search)
+      .then((res: any) => {
+        this.allScreens = res.content;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
     this.layoutService.checkPadding(false);
 
     this.updateDefinitionJSON();
@@ -1056,21 +1071,6 @@ export class ActionsComponent extends GenericComponent implements OnInit {
   mappedObjList :any 
   openNavigateEditor(editor: any) {
     this.navigateEditor = editor;
-    // Code to get All the screens by Microservices Id
-    const filterStr = FilterBuilder.equal('microService.id', this.currentMicroservice.id + '');
-    this.search = filterStr;
-    let pagination!: Pagination;
-
-    this.screenService
-      .getAllData(pagination, this.search)
-      .then((res: any) => {
-        this.allScreens = res.content;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
-    console.log(editor);
     // Code for data population
     if (editor.step.properties?.screen == null) {
       console.log('New');
