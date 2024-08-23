@@ -3,9 +3,13 @@
   <div class="flex justify-between items-center">
     <div class="grid grid-cols-12 gap-2 w-full bg-gray-100 border items-center">
       <div class="col-span-4 gap-4 p-2 ml-4" style="display: flex; justify-content: start; align-items: center">
-        <img src="assets/iconamoon_edit-thin.png" style="width: 18px; height: 18px" />
-        <img src="assets/rotate-ccw.png" style="width: 18px; height: 18px" />
-        <img src="assets/rotate-cw.png" style="width: 18px; height: 18px" />
+        <!-- <img src="assets/iconamoon_edit-thin.png" style="width: 18px; height: 18px" /> -->
+        <div class="flex gap-2 justify-center items-center cursor-pointer" [routerLink]="'/applications'">
+          <vezo-icon icon="arrowUturnLeft" className="w-4 h-4" style="color: #2e2e2e"></vezo-icon>
+          <div class="mt-1" style="font-size: 14px; font-weight: 400; color: #6d6d6d">
+            Back
+          </div>
+        </div>
       </div>
       <div class="col-span-3">
         <div class="flex gap-4" style="justify-content: center; align-items: center">
@@ -56,12 +60,12 @@
       <div class="col-span-5 p-2">
         <div class="flex justify-center items-center">
           <div class="flex w-full">
-            <div class="flex-1 gap-2 flex justify-center items-center cursor-pointer" (click)="addData()">
+            <!-- <div class="flex-1 gap-2 flex justify-center items-center cursor-pointer" (click)="addData()">
               <img src="assets/icons8_plus.png" style="width: 18px" />
               <div style="font-size: 14px; font-weight: 400; color: #6d6d6d">
                 Add Page
               </div>
-            </div>
+            </div> -->
             <div class="flex-1 gap-2 flex justify-center items-center">
               <div style="font-size: 14px; font-weight: 400; color: #6d6d6d">
                 Preview
@@ -83,17 +87,9 @@
 
               <!-- <img src="assets/elementsClose.svg" style="width: 12px" /> -->
             </div>
-            <!-- <div class="flex-1 gap-2 flex justify-center items-center">
-              <div style="font-size: 14px; font-weight: 400; color: #6d6d6d">
-                Deploy
-              </div>
-              <img src="assets/elementsClose.svg" style="width: 12px" />
-            </div> -->
-            <div class="flex-1 gap-2 flex justify-center items-center cursor-pointer" [routerLink]="'/applications'">
-              <vezo-icon icon="arrowUturnLeft" className="w-4 h-4" style="color: #2e2e2e"></vezo-icon>
-              <div class="mt-1" style="font-size: 14px; font-weight: 400; color: #6d6d6d">
-                Back
-              </div>
+            <div class="flex gap-2 justify-center items-center mr-4">
+              <img src="assets/rotate-ccw.png" style="width: 18px; height: 18px" />
+              <img src="assets/rotate-cw.png" style="width: 18px; height: 18px" />
             </div>
           </div>
         </div>
@@ -103,7 +99,7 @@
 
   <!-- top bar with microservie, screen , Save and Back button -->
   <div class="flex justify-start">
-    <div class="flex place-items-center gap-2" style="width: 15%; background-color: #c7d2fe; height: 38px">
+    <div class="flex place-items-center gap-6" style="width: 15%; background-color: #c7d2fe; height: 38px">
       <div class="ml-2">
         <vezo-icon *ngIf="currListView == true" [icon]="'chevronLeft'" className="cursor-pointer w-4 h-4"
           style="color: black" (click)="currListView = false"></vezo-icon>
@@ -111,8 +107,14 @@
           style="color: black" (click)="currListView = true"></vezo-icon>
       </div>
 
-      <div style="font-size: 14px; font-weight: 400; color: #000000">
+      <!-- <div style="font-size: 14px; font-weight: 400; color: #000000">
         LIST OF PAGES
+      </div> -->
+      <div class="gap-2 flex justify-center items-center cursor-pointer" (click)="addData()">
+        <img src="assets/icons8_plus.png" style="width: 18px" />
+        <div style="font-size: 14px; font-weight: 400; color: #6d6d6d">
+          Add Page
+        </div>
       </div>
     </div>
     <div style="width: 85%">
@@ -852,8 +854,8 @@
 
       <div class="mt-4 flex justify-start gap-4 items-center">
         <div class="text-lg text-gray-600">Add Page Variables</div>
-        <p-selectButton [options]="paramsOptions" [(ngModel)]="isParamvalue" optionLabel="label" optionValue="value"
-          ></p-selectButton>
+        <p-selectButton [options]="paramsOptions" [(ngModel)]="isParamvalue" optionLabel="label"
+          optionValue="value"></p-selectButton>
       </div>
 
       <div *ngIf="isParamvalue == 'yes'">

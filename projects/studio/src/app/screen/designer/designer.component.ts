@@ -712,6 +712,7 @@ export class DesignerComponent
     else{
       this.isParamvalue = "no" ;
     }
+    console.log(ds);
     this.getCollectionItems();
   }
 
