@@ -92,5 +92,22 @@
 	  }
 	  
 }
+
+::ng-deep {
+	.custom-dropdown .p-dropdown-label {
+	  display: block;
+	  white-space: nowrap;
+	  overflow: hidden;
+	  text-overflow: ellipsis;
+	}
+  
+	.custom-dropdown .p-dropdown {
+	  width: 100%;
+	}
+	
+	.custom-dropdown .p-dropdown-label-container {
+	  width: 100%;
+	}
+  }
   
   

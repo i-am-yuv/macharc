@@ -36,7 +36,7 @@
             <div class="text-right p-2 col-span-3">
                 <vezo-button icon="plus" label="Add Field" className="mr-2" (click)="addData()"
                     *ngIf="!visible"></vezo-button>
-                <vezo-button  label="Generate DTO" className="mr-2"
+                <vezo-button label="Generate DTO" className="mr-2"
                     (click)="this.showGenerateDtoModel = !this.showGenerateDtoModel "></vezo-button>
                 <vezo-button icon="cursorArrowRays" label="Generate Code" className="mr-2"
                     (click)="generateCode()"></vezo-button>
@@ -243,8 +243,26 @@
     <ng-template vTemplate="header">DTO Configuration</ng-template>
     <ng-template vTemplate="content">
 
-        <p-multiSelect [options]="this.data" [(ngModel)]="dtoSelectedFields" optionLabel="fieldName" optionValue="id"  placeholder="Select fields for DTO" [style]="{ width: '100%' }" class="w-full">
-        </p-multiSelect>
+        <div>
+            <p-selectButton [options]="dtoTypes" [(ngModel)]="currentDTO" optionLabel="label" optionValue="value">
+            </p-selectButton>
+        </div>
+
+        <!-- Code for Request DTO creation -->
+
+        <div *ngIf="this.currentDTO === 'RequestDTO'" class="mt-8">
+            <p-multiSelect [options]="this.data" [(ngModel)]="dtoSelectedFields" optionLabel="fieldName"
+                optionValue="id" placeholder="Select fields for DTO" [style]="{ width: '100%' }" class="w-full">
+            </p-multiSelect>
+        </div>
+
+        <!-- Code for Response DTO creation -->
+
+        <div *ngIf="this.currentDTO === 'ResponseDTO'"  class="mt-8">
+            <p-multiSelect [options]="this.data" [(ngModel)]="dtoSelectedFields" optionLabel="fieldName"
+                optionValue="id" placeholder="Select fields for DTO" [style]="{ width: '100%' }" class="w-full">
+            </p-multiSelect>
+        </div>
 
     </ng-template>
     <ng-template vTemplate="footer">

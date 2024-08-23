@@ -51,7 +51,6 @@
             <input [(ngModel)]="this.childWidth" style="width: 45px" />
             <span> px</span>
           </div>
-
         </div>
       </div>
       <div class="col-span-5 p-2">
@@ -74,7 +73,7 @@
                     d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-1.605.42-3.113 1.157-4.418" />
                 </svg>
               </div>
-              <div (click)="openMobilePreview()" class="border border-gray-400 rounded p-2">
+              <div (click)="openMobilePreview()" class="border border-gray-400 rounded p-2 cursor-pointer">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1"
                   stroke="currentColor" class="w-5">
                   <path stroke-linecap="round" stroke-linejoin="round"
@@ -84,12 +83,12 @@
 
               <!-- <img src="assets/elementsClose.svg" style="width: 12px" /> -->
             </div>
-            <div class="flex-1 gap-2 flex justify-center items-center">
+            <!-- <div class="flex-1 gap-2 flex justify-center items-center">
               <div style="font-size: 14px; font-weight: 400; color: #6d6d6d">
                 Deploy
               </div>
               <img src="assets/elementsClose.svg" style="width: 12px" />
-            </div>
+            </div> -->
             <div class="flex-1 gap-2 flex justify-center items-center cursor-pointer" [routerLink]="'/applications'">
               <vezo-icon icon="arrowUturnLeft" className="w-4 h-4" style="color: #2e2e2e"></vezo-icon>
               <div class="mt-1" style="font-size: 14px; font-weight: 400; color: #6d6d6d">
@@ -161,8 +160,8 @@
     <div *ngIf="this.currListView == true" style="width: 15%; background-color: #ffffff; overflow: auto"
       class="p-2 divide-y border-r border-indigo-100">
       <div *ngFor="let item of getDataSorted()">
-        <div class="cursor-pointer px-1" (mouseenter)="hoverPage('enter' , item)"
-          (mouseleave)="hoverPage('exit' , item)" [ngClass]="{ 'bg-indigo-200': this.screenId == item.id }">
+        <div class="cursor-pointer px-1" (mouseenter)="hoverPage('enter', item)" (mouseleave)="hoverPage('exit', item)"
+          [ngClass]="{ 'bg-indigo-200': this.screenId == item.id }">
           <div class="flex justify-between items-center">
             <div (click)="openNewPage(item)" class="my-2" style="
                 font-size: 12px;
@@ -206,7 +205,7 @@
               <img src="assets/remove_circle_outline.svg" style="height: 24px; width: 24px" />
             </button>
           </div>
-          <div>Zoom: {{ zoom * 100 | number : "1.2-2" }}%</div>
+          <div>Zoom: {{ zoom * 100 | number: "1.2-2" }}%</div>
         </div>
         <div id="downloadable-div" [class.horizontal]="layout.dndHorizontal" [dndHorizontal]="layout.dndHorizontal"
           (dndDrop)="onDrop($event, draggableListRight)"
@@ -222,7 +221,9 @@
             <div
               class="draggable-item border border-dashed border-indigo-300 cursor-pointer relative overflow-x: auto;">
               <ng-container *ngIf="item.name === 'grid'">
-                <div (dndDrop)="onDrop($event, item.children)" class="name gap-{{ item.data.gap }} grid grid-cols-{{item.data.columns}}
+                <div (dndDrop)="onDrop($event, item.children)" class="name gap-{{ item.data.gap }} grid grid-cols-{{
+                    item.data.columns
+                  }}
                             justify-{{ item.data.alignment }} items-{{
                     item.data.vAlignment
                   }}" [ngClass]="{
@@ -540,7 +541,7 @@
       </div>
       <div [ngClass]="{
           'w-4/12 overflow-y-scroll': this.rightPanelExpanded == true
-        }" class="h-[600px]" style="position: -webkit-sticky; position: sticky; top: 0; " #stickyDiv>
+        }" class="h-[600px]" style="position: -webkit-sticky; position: sticky; top: 0" #stickyDiv>
         <div *ngIf="this.rightPanelExpanded">
           <div class="flex justify-end align-top">
             <div class="w-1/12">
@@ -775,8 +776,8 @@
                     ">
                     <app-properties [fields]="fields" [forms]="forms" [props]="activeItem" [collections]="collections"
                       (deleteProp)="deleteActiveItem($event)" (getCollectionFields)="getFields($event)"
-                      [comingFromPage]="true"[ImageURL]="this.imageURL"
-                      (assetModelOpen)="checkImageModelClicked($event)" ></app-properties>
+                      [comingFromPage]="true" [ImageURL]="this.imageURL"
+                      (assetModelOpen)="checkImageModelClicked($event)"></app-properties>
                   </div>
                   <div *ngIf="
                       this.activeItem.name == 'form' ||
@@ -841,20 +842,49 @@
 <vezo-modal [(visible)]="visible">
   <ng-template vTemplate="header">Page</ng-template>
   <ng-template vTemplate="content">
-    <form [formGroup]="form">
-      <!-- <vezo-select
-        optionLabel="applicationName"
-        [items]="applicationItems"
-        formControlName="application"
-        label="Application"
-      ></vezo-select> -->
-      <vezo-select optionLabel="microServiceName" [items]="microserviceItems" formControlName="microService"
-        label="Microservice" (ngModelChange)="getCollectionItems()"></vezo-select>
-      <!-- <vezo-select optionLabel="collectionName" [items]="collectionItems" formControlName="collection"
-                label="Collection"></vezo-select> -->
-      <vezo-input label="Page Name" formControlName="screenName"></vezo-input>
-      <error-message [controlName]="form.controls['screenName']"></error-message>
-    </form>
+    <div style="height: 65vh; overflow-y:auto">
+      <form [formGroup]="form">
+        <vezo-select optionLabel="microServiceName" [items]="microserviceItems" formControlName="microService"
+          label="Microservice" (ngModelChange)="getCollectionItems()"></vezo-select>
+        <vezo-input label="Page Name" formControlName="screenName"></vezo-input>
+        <error-message [controlName]="form.controls['screenName']"></error-message>
+      </form>
+
+      <div class="mt-4 flex justify-start gap-4 items-center">
+        <div class="text-lg text-gray-600">Add Page Variables</div>
+        <p-selectButton [options]="paramsOptions" [(ngModel)]="isParamvalue" optionLabel="label" optionValue="value"
+          ></p-selectButton>
+      </div>
+
+      <div *ngIf="isParamvalue == 'yes'">
+        <div class="flex gap-4 justify-start items-center mt-4"
+          *ngFor="let selectedParam of selectedParams ; index as i">
+
+          <div class="flex" style="flex-direction: column;">
+            <label>Param Name</label>
+            <input type="text" pInputText placeholder="Param Variable Name" [(ngModel)]="selectedParam.varName" />
+          </div>
+
+          <div>
+            <!-- First Selecting Datatype or Model -->
+            <label>Param Datatype</label>
+
+            <p-dropdown [options]="dataTypes" [(ngModel)]="selectedParam.dataType" placeholder="Select"
+              optionLabel="label" optionValue="name" [style]="{ width: '100%' }">
+            </p-dropdown>
+          </div>
+
+          <div class="mt-4">
+            <vezo-icon icon="trash" (click)="deleteThisParams(i)"
+              className="w-6 h-6 text-red-400 cursor-pointer"></vezo-icon>
+          </div>
+
+        </div>
+        <div class="text-right mt-2">
+          <vezo-button label="Add More" (click)="addParam()"></vezo-button>
+        </div>
+      </div>
+    </div>
   </ng-template>
   <ng-template vTemplate="footer">
     <div class="text-right">
@@ -882,34 +912,56 @@
 <vezo-modal [(visible)]="this.selectAssetModel">
   <ng-template vTemplate="header">
     <div class="flex justify-between items-center">
-      <div class="flex justify-start items-center gap-2"
-        style="background-color: #FFFFFF; border-width: 1px; border-color: #E9E9FB; height: 32px; width: auto; border-radius: 4px;">
-        <img src="assets/image_search.png" class="ml-1" style="width: 24px; height: 24px;" />
+      <div class="flex justify-start items-center gap-2" style="
+          background-color: #ffffff;
+          border-width: 1px;
+          border-color: #e9e9fb;
+          height: 32px;
+          width: auto;
+          border-radius: 4px;
+        ">
+        <img src="assets/image_search.png" class="ml-1" style="width: 24px; height: 24px" />
         <input type="text" placeholder="Search..." [(ngModel)]="searchQuery" (input)="searchAssets()" class="mr-2"
-          style="border: none !important; height: 25px !important; width: auto;" />
+          style="border: none !important; height: 25px !important; width: auto" />
       </div>
     </div>
   </ng-template>
   <ng-template vTemplate="content">
     <!-- Code for the Grid View Assets -->
-    <div style="height:400px ; overflow-y: scroll;">
-      <div class="flex flex-wrap gap-4 p-5" style="justify-items: start; background-color: #EEF2FF;">
+    <div style="height: 400px; overflow-y: scroll">
+      <div class="flex flex-wrap gap-4 p-5" style="justify-items: start; background-color: #eef2ff">
         <div *ngFor="let asset of getAssetList(); let i = index">
-          <div style="background-color: #FFFFFF; width: 100px; height:160px ; border-radius: 8px;" class="p-3">
-            <div class="flex justify-center items-center p-4"
-              style="width: auto; height: 80px; border-radius: 8px; border-width: 1px; border-color:#000000;">
-              <img [src]="asset.url" style="width:70px; height: auto" alt="Image" />
+          <div style="
+              background-color: #ffffff;
+              width: 100px;
+              height: 160px;
+              border-radius: 8px;
+            " class="p-3">
+            <div class="flex justify-center items-center p-4" style="
+                width: auto;
+                height: 80px;
+                border-radius: 8px;
+                border-width: 1px;
+                border-color: #000000;
+              ">
+              <img [src]="asset.url" style="width: 70px; height: auto" alt="Image" />
             </div>
-            <div class="flex justify-between items-center mt-2" style="flex-wrap: wrap-reverse;">
-              <div style="display: flex; flex-direction: column;" class="gap-1">
+            <div class="flex justify-between items-center mt-2" style="flex-wrap: wrap-reverse">
+              <div style="display: flex; flex-direction: column" class="gap-1">
                 <div class="flex justify-between items-center gap-2 w-auto">
-                  <div class="file-name" style="font-size: 12px; font-weight: 500; color: #4F46E5;">
-                    {{asset.fileName}}
+                  <div class="file-name" style="font-size: 12px; font-weight: 500; color: #4f46e5">
+                    {{ asset.fileName }}
                   </div>
                 </div>
                 <div class="flex justify-center items-center mt-2 cursor-pointer">
-                  <div class="w-full text-center flex justify-center items-center" (click)="sendThisAsset(asset)"
-                    style="height: 24px; background-color: #C7222a; border-radius: 6px; color:#FFFFFF; font-size: 12px; font-weight: 500;">
+                  <div class="w-full text-center flex justify-center items-center" (click)="sendThisAsset(asset)" style="
+                      height: 24px;
+                      background-color: #c7222a;
+                      border-radius: 6px;
+                      color: #ffffff;
+                      font-size: 12px;
+                      font-weight: 500;
+                    ">
                     Select
                   </div>
                 </div>
@@ -918,9 +970,11 @@
           </div>
         </div>
         <div *ngIf="this.getAssetList().length <= 0" class="flex justify-center items-center w-full"
-          style="flex-direction: column; height: 90%;">
+          style="flex-direction: column; height: 90%">
           <div class="text-center">
-            <p style="font-size: 16px; font-weight: 500; color: #888888;">No Asset Found!</p>
+            <p style="font-size: 16px; font-weight: 500; color: #888888">
+              No Asset Found!
+            </p>
           </div>
         </div>
       </div>

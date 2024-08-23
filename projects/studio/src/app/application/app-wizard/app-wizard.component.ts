@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService } from '@splenta/vezo/src/public-api';
+import { MessageService } from '@splenta/vezo';
 import { ApplicationService } from '../../application/application.service';
-import { GenericComponent } from '../../utils/genericcomponent';
 import { LayoutService } from '../../layout/layout.service';
+import { GenericComponent } from '../../utils/genericcomponent';
 
 @Component({
   selector: 'app-app-wizard',
   templateUrl: './app-wizard.component.html',
-  styleUrls: ['./app-wizard.component.scss']
+  styleUrls: ['./app-wizard.component.scss'],
 })
 export class AppWizardComponent extends GenericComponent {
   override form: FormGroup<any>;
@@ -21,7 +21,9 @@ export class AppWizardComponent extends GenericComponent {
   id: string | null = '';
   items = [
     {
-      label: 'Application', routerLink: '', icon: 'cog',
+      label: 'Application',
+      routerLink: '',
+      icon: 'cog',
       items: [
         { label: 'Overview', routerLink: '', icon: 'cog' },
         { label: 'API Endpoints', routerLink: '', icon: 'cog' },
@@ -30,32 +32,32 @@ export class AppWizardComponent extends GenericComponent {
         { label: 'Monetization', routerLink: '', icon: 'cog' },
         { label: 'Deployments', routerLink: '', icon: 'cog' },
         { label: 'Subscriptions', routerLink: '', icon: 'cog' },
-      ]
-    }
-  ]
+      ],
+    },
+  ];
 
   milestoneItems = [
     {
-      'name': 'Applications',
-      'routes': '/applications'
+      name: 'Applications',
+      routes: '/applications',
     },
     {
-      'name': 'Pages',
-      'routes': '/builder/screens/designer/null'
+      name: 'Pages',
+      routes: '/builder/screens/designer/null',
     },
     {
-      'name': 'Components',
-      'routes': '/builder/forms/designer/null'
+      name: 'Components',
+      routes: '/builder/forms/designer/null',
     },
     {
-      'name': 'Actions',
-      'routes': '/actions'
+      name: 'Actions',
+      routes: '/actions',
     },
     {
-      'name': 'Build and Deploy',
-      'routes': '/releases'
-    }
-  ]
+      name: 'Build and Deploy',
+      routes: '/releases',
+    },
+  ];
 
   constructor(
     applicationService: ApplicationService,
@@ -63,14 +65,24 @@ export class AppWizardComponent extends GenericComponent {
     private fb: FormBuilder,
     private router: Router,
     private layoutService: LayoutService,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute
+  ) {
     super(applicationService, messageService);
 
     this.form = this.fb.group({
       id: '',
-      applicationName: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
-      applicationCode: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
-      applicationDescription: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]]
+      applicationName: [
+        '',
+        [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)],
+      ],
+      applicationCode: [
+        '',
+        [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)],
+      ],
+      applicationDescription: [
+        '',
+        [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)],
+      ],
       // backendApiUrl: ['', [Validators.required,Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]]
     });
 
@@ -79,13 +91,15 @@ export class AppWizardComponent extends GenericComponent {
 
   ngOnInit() {
     if (this.id) {
-      this.getData({ id: this.id }, (res) => { this.form.patchValue({ ...res }) });
+      this.getData({ id: this.id }, (res) => {
+        this.form.patchValue({ ...res });
+      });
     }
     this.layoutService.checkPadding(false);
   }
 
   labelStyle = {
-    'size': '16px',
+  'size': '16px',
     'weight': '400',
     'color': '#000000'
   }
@@ -112,10 +126,6 @@ export class AppWizardComponent extends GenericComponent {
     this.isModalOpen = false;
     this.naviagateListingPage();
   }
-
-  // override postSave(data: any) { 
-  //   this.openModal('success');    
-  // }
 
   override postSaveShowModal(res: any, resposeType: string) {
     // you will open the model with the type       

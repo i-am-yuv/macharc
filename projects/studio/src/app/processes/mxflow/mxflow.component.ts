@@ -19,7 +19,7 @@ import {
   xmlUtils,
   type CellStyle,
 } from '@maxgraph/core';
-import { MessageService } from '@splenta/vezo/src/public-api';
+import { MessageService } from '@splenta/vezo';
 import { BusinessLogicService } from '../../business-logic/business-logic.service';
 import { ScreenService } from '../../screen/screen.service';
 import { Process } from '../process';

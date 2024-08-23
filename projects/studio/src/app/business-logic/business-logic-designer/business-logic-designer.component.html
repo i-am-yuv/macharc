@@ -138,7 +138,6 @@
 </div>
 </div> -->
 
-
 <div class="h-screen">
   <h2 class="text-lg mb-4">{{ wf.workflowName }}</h2>
   <sqd-designer theme="light" [undoStackSize]="10" [definition]="definition"
@@ -161,17 +160,13 @@
       </button>
     </div>
 
-    <!-- <input [(ngModel)]="editor.definition.properties.collections"
-      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-      (input)="
-        updateProperty(
-          editor.definition.properties,
-          'collections',
-          $event,
-          editor.context
-        )
-      " /> -->
+    <h3 class="my-4 font-semibold">Input Parameters</h3>
 
+    <div class="mb-2" (click)="openParamsPopup(editor)">
+      <button class="bg-indigo-600 rounded text-white p-2">
+        Confgure Params
+      </button>
+    </div>
     <p class="my-2 text-slate-400">Please select from the popup.</p>
 
     <!-- <h3 class="my-4 font-semibold">Declarations</h3>
@@ -189,6 +184,9 @@
       "
     ></textarea> -->
 
+    <div class="mt-8">
+      <hr>
+    </div>
     <vezo-button (click)="saveDefinition()" label="Save" className="my-4 float-right"></vezo-button>
     <vezo-button (click)="reloadDefinitionClicked()" label="Clear"
       className="m-4 bg-slate-50 float-right"></vezo-button>
@@ -208,10 +206,8 @@
     <!-- hanlde types of steps and data to be gathered from user-->
     <h3 class="my-4 font-semibold">Config</h3>
 
-
     <ng-container *ngIf="editor.step.type === 'getDsData'">
-      <button class="bg-indigo-600 rounded text-white p-2"
-        (click)="this.showFetchDataPopup = !this.showFetchDataPopup ">
+      <button class="bg-indigo-600 rounded text-white p-2" (click)="openFetchDataEditor(editor)">
         Configure
       </button>
     </ng-container>
@@ -233,7 +229,6 @@
       </div>
     </ng-container>
 
-
     <ng-container *ngIf="editor.step.type === 'callWebclient'">
       <div class="mb-2" (click)="openAPIEditor(editor)">
         <button class="bg-indigo-600 rounded text-white p-2">
@@ -244,13 +239,20 @@
 
     <ng-container *ngIf="editor.step.type === 'saveDsData'">
       <div class="mb-2" (click)="openSaveDataEditor(editor)">
-        <button class="bg-indigo-600 rounded text-white p-2">
-          Configure
-        </button>
+        <button class="bg-indigo-600 rounded text-white p-2">Configure</button>
       </div>
     </ng-container>
 
-    <p href="" target="_blank" class="text-blue-400 mt-2">Refer docs on how to configure steps</p>
+    <!-- this code is for Set response data -->
+    <ng-container *ngIf="editor.step.type === 'import'">
+      <div class="mb-2" (click)="openSetResponseDataEditor(editor)">
+        <button class="bg-indigo-600 rounded text-white p-2">Configure</button>
+      </div>
+    </ng-container>
+
+    <p href="" target="_blank" class="text-blue-400 mt-2">
+      Refer docs on how to configure steps
+    </p>
 
     <h3 class="my-4 font-semibold">Schedule</h3>
     <input type="number" [value]="editor.step.properties.velocity"
@@ -265,9 +267,12 @@
       " />
     <p class="my-2 text-slate-400">Enter time delay to execute in seconds</p>
 
+    <div class="mt-8">
+      <hr>
+    </div>
+    
     <vezo-button (click)="saveDefinition()" label="Save" className="my-4 float-right"></vezo-button>
     <vezo-button (click)="reloadDefinitionClicked()" label="Reload" className="m-4 float-right"></vezo-button>
-
   </div>
 </ng-template>
 
@@ -278,21 +283,57 @@
 <br />
 <vezo-button (click)="reloadDefinitionClicked()" label="Reload definition" className="my-4"></vezo-button>
 <br />
-<!-- <vezo-select
-  [(ngModel)]="returnType"
-  [items]="returnType"
-  optionLabel="label"
-  optionValue="name"
-></vezo-select> -->
-<!-- 
-<p-multiSelect [options]="this.data" [(ngModel)]="this.selectedModels" optionLabel="collectionName"
-  placeholder="Select Models">
-</p-multiSelect> -->
+
+<!-- All Model PopUp Code Starts from here ----------------------------------------------------------->
 
 <!-- All the model used for Configuration Code starts here-->
+<vezo-modal [(visible)]="showParamsOptions">
+  <ng-template vTemplate="header">Select Models</ng-template>
+  <ng-template vTemplate="content">
+    <div style="height: 60vh; overflow-y:auto">
+      <div class="flex gap-4 justify-start items-center mt-4" *ngFor="let selectedParam of selectedParams ; index as i">
 
+        <div class="flex" style="flex-direction: column;">
+          <label>Param Name</label>
+          <input type="text" pInputText placeholder="Param Variable Name" [(ngModel)]="selectedParam.varName" />
+        </div>
 
+        <div>
+          <!-- First Selecting Datatype or Model -->
+          <label>Param Datatype</label>
 
+          <p-dropdown [options]="dataTypes" [(ngModel)]="selectedParam.dataType" placeholder="Select"
+            optionLabel="label" optionValue="name" [style]="{ width: '100%' }">
+          </p-dropdown>
+        </div>
+
+        <ng-container *ngIf="selectedParam.dataType == 'Model'">
+          <div>
+            <label>Param Model</label>
+            <p-dropdown label="Param Model" [options]="this.allModels" [(ngModel)]="selectedParam.model"
+              optionLabel="collectionName" placeholder="Select Model" [style]="{ width: '100%' }">
+            </p-dropdown>
+          </div>
+        </ng-container>
+
+        <div class="mt-4">
+          <vezo-icon icon="trash" (click)="deleteThisParams(i)"
+            className="w-6 h-6 text-red-400 cursor-pointer"></vezo-icon>
+        </div>
+
+      </div>
+      <div class="text-right mt-2">
+        <vezo-button label="Add More" (click)="addParam()"></vezo-button>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template vTemplate="footer">
+    <div class="text-right">
+      <vezo-button label="Save" [disabled]="this.selectedParams === null"
+        (click)="saveParams(this.paramsEditor)"></vezo-button>
+    </div>
+  </ng-template>
+</vezo-modal>
 <!-- Model for Select Models in the global editor -->
 <vezo-modal [(visible)]="showModelsOptions">
   <ng-template vTemplate="header">Select Models</ng-template>
@@ -309,25 +350,28 @@
       optionValue="label" [style]="{ width: '100%' }">
     </p-dropdown>
 
-    <div class="mt-4"
-      *ngIf="this.resType !==null && this.resType !== undefined && this.resType !== '' && this.resType !== 'void' ">
+    <div class="mt-4" *ngIf="
+        this.resType !== null &&
+        this.resType !== undefined &&
+        this.resType !== '' &&
+        this.resType !== 'void'
+      ">
       <p-dropdown [options]="this.allPojos" [(ngModel)]="this.selectedResOp" optionLabel="collectionName"
         placeholder="Select Pojo" [showClear]="true" [style]="{ width: '100%' }" class="w-full"></p-dropdown>
     </div>
 
-
     <h3 class="my-2 font-semibold">Schedule</h3>
-
     <p-calendar [(ngModel)]="selectedDate" placeholder="Select Date" [showTime]="true" [hourFormat]="'12'"></p-calendar>
 
     <p class="my-2 text-slate-400">Enter time delay to execute in seconds</p>
-
   </ng-template>
   <ng-template vTemplate="footer">
     <div class="text-right">
-      <vezo-button label="Save"
-        [disabled]="((this.selectedModels === null) || (this.resType === null) || (this.resType !== 'void' && this.selectedResOp === null ) ) "
-        (click)="saveModels(this.ModelEditor)"></vezo-button>
+      <vezo-button label="Save" [disabled]="
+          this.selectedModels === null ||
+          this.resType === null ||
+          (this.resType !== 'void' && this.selectedResOp === null)
+        " (click)="saveModels(this.ModelEditor)"></vezo-button>
     </div>
   </ng-template>
 </vezo-modal>
@@ -336,14 +380,21 @@
 <vezo-modal [(visible)]="showFetchDataPopup">
   <ng-template vTemplate="header">Configure</ng-template>
   <ng-template vTemplate="content">
-
     <p-dropdown [options]="this.selectedModels" [(ngModel)]="this.currentModel" optionLabel="collectionName"
-      placeholder="Choose the Model" [style]="{ width: '100%' }" class="w-full"> </p-dropdown>
+      placeholder="Choose the Model" [style]="{ width: '100%' }" class="w-full">
+    </p-dropdown>
 
     <div class="mt-4">
       <p-dropdown [options]="this.operations" [(ngModel)]="this.selectedOperation" (change)="onSelectionChange($event)"
-        optionLabel="name" optionValue="label" placeholder="Choose the Model" [style]="{ width: '100%' }"
-        class="w-full"> </p-dropdown>
+        optionLabel="name" optionValue="label" placeholder="Choose the operations" [style]="{ width: '100%' }"
+        class="w-full">
+      </p-dropdown>
+    </div>
+
+    <div class="mt-4" *ngIf="this.selectedOperation == 'FindById'">
+      <p-dropdown [options]="this.selectedParams" [(ngModel)]="this.paramsForFetchData" optionLabel="varName"
+        placeholder="Choose the Parameter" [style]="{ width: '100%' }" class="w-full">
+      </p-dropdown>
     </div>
 
     <div *ngIf="this.selectedOperation === 'CustomJpaQuery'">
@@ -359,11 +410,10 @@
       <p-calendar [(ngModel)]="fetchDataSchedule" placeholder="Schedule" [showTime]="true"
         [hourFormat]="'12'"></p-calendar>
     </div>
-
   </ng-template>
   <ng-template vTemplate="footer">
     <div class="text-right">
-      <vezo-button label="Save" (click)="saveFetchData(this.ModelEditor)"></vezo-button>
+      <vezo-button label="Save" (click)="saveFetchData(this.fetchDataEditor)"></vezo-button>
     </div>
   </ng-template>
 </vezo-modal>
@@ -372,58 +422,60 @@
 <vezo-modal [(visible)]="showConditionEditor">
   <ng-template vTemplate="header">Conditions</ng-template>
   <ng-template vTemplate="content">
-    <div style="height: 400px; overflow-y: auto;">
-      <!-- New Code -->
+    <div style="height: 400px; overflow-y: auto">
       <div>
         <div class="condition-builder">
           <div *ngFor="let group of conditionGroups; let groupIndex = index"
-            class="p-2 flex justify-center items-center" style="flex-direction: column;">
-
+            class="p-2 flex justify-center items-center" style="flex-direction: column">
             <div class="condition-group w-full">
-              <div *ngFor="let condition of group.conditions; let conditionIndex = index" class="condition">
-
+              <div *ngFor="
+                  let condition of group.conditions;
+                  let conditionIndex = index
+                " class="condition">
                 <div class="flex justify-between items-center gap-4">
-
-                  <p-dropdown [options]="this.fieldArrays" [(ngModel)]="condition.firstValue" optionLabel="fieldName"
-                    optionValue="fieldName" placeholder="Choose Fields" [showClear]="true" [style]="{ width: '100%' }"
-                    class="w-full">
-
-                    <!-- Custom Template for Selected Item -->
-                    <ng-template pTemplate="selectedItem" let-selectedOption>
-                      <span>{{ truncateField(selectedOption.fieldName) }}</span>
+                  <p-dropdown [options]="this.finalListModels" [(ngModel)]="condition.firstValue"
+                    placeholder="Choose Fields" [group]="true" class="w-full custom-dropdown">
+                    <ng-template let-group pTemplate="group">
+                      <div class="flex gap-2 justify-start items-center">
+                        <img src="assets/collection_L.svg" style="width: 16px; height: auto" />
+                        <span>{{ group.label }}</span>
+                      </div>
                     </ng-template>
-
                   </p-dropdown>
 
                   <p-dropdown [options]="this.operators" [(ngModel)]="condition.operator" optionLabel="label"
                     optionValue="name">
                   </p-dropdown>
 
-                  <!-- <p-dropdown [options]="this.fieldArrays" [(ngModel)]="condition.secondValue" placeholder="Choose Fields"
-                [showClear]="true">
-              </p-dropdown> -->
-
                   <div *ngIf="!condition.manualEntry">
-                    <!-- <p-dropdown [options]="getDropdownOptions()" [(ngModel)]="condition.secondValue"
-                      optionLabel="fieldName" optionValue="fieldName" placeholder="Choose Fields"
-                      (onChange)="handleSecondValueChange(condition, $event.value)" [showClear]="true"></p-dropdown> -->
-
                     <p-dropdown [options]="getDropdownOptions()" [(ngModel)]="condition.secondValue"
-                      optionLabel="fieldName" optionValue="fieldName" placeholder="Choose Fields" [showClear]="true"
-                      (onChange)="handleSecondValueChange(condition, $event.value)">
-
-                      <!-- Custom Template for Selected Item -->
-                      <ng-template pTemplate="selectedItem" let-selectedOption>
-                        <span>{{ truncateField(selectedOption.fieldName) }}</span>
+                      placeholder="Choose Fields" [group]="true" class="w-full custom-dropdown" (onChange)="
+                        handleSecondValueChange(condition, $event.value)
+                      ">
+                      <ng-template let-group pTemplate="group">
+                        <div class="flex gap-2 justify-start items-center">
+                          <img src="assets/collection_L.svg" style="width: 16px; height: auto" />
+                          <span>{{ group.label }}</span>
+                        </div>
                       </ng-template>
-
                     </p-dropdown>
 
+                    <!-- <p-dropdown [options]="this.finalListModels" [(ngModel)]="condition.firstValue"
+                      placeholder="Choose Fields" [group]="true" class="w-full  custom-dropdown">
+                      <ng-template let-group pTemplate="group">
+                        <div class="flex gap-2 justify-start items-center">
+                          <img src="assets/collection_L.svg" style="width: 16px; height: auto" />
+                          <span>{{ group.label }}</span>
+                        </div>
+                      </ng-template>
+                    </p-dropdown> -->
                   </div>
                   <div *ngIf="condition.manualEntry">
                     <div class="border p-2 rounded flex justify-between items-center gap-1">
-                      <input [(ngModel)]="condition.secondValue" placeholder="Enter value manually" />
-                      <div class="cursor-pointer" (click)="condition.manualEntry = !condition.manualEntry">X</div>
+                      <input [(ngModel)]="condition.manualEntryValue" placeholder="Enter value manually" />
+                      <div class="cursor-pointer" (click)="condition.manualEntry = !condition.manualEntry">
+                        X
+                      </div>
                     </div>
                   </div>
 
@@ -432,15 +484,20 @@
                 </div>
 
                 <div *ngIf="conditionIndex < group.conditions.length - 1">
-                  <select [(ngModel)]="condition.connector" class="p-2">
-                    <option value="AND">AND</option>
-                    <option value="OR">OR</option>
-                  </select>
-                  <!-- <p-toggleButton [(ngModel)]="condition.connector" onLabel="AND" offLabel="OR"></p-toggleButton> -->
+                  <div class="border rounded px-2 py-1">
+                    <select [(ngModel)]="condition.connector" class="px-2 py-1">
+                      <option value="AND">AND</option>
+                      <option value="OR">OR</option>
+                    </select>
+                  </div>
+                  <!-- <p-dropdown [options]="this.connector" [(ngModel)]="condition.connector" 
+                    optionLabel="name" optionValue="name">
+                  </p-dropdown> -->
+                  <!-- <p-toggleButton [(ngModel)]="condition.connector" onLabel="AND" offLabel="OR" (ngModelChange)="conditionChangeCall(condition.connector)" ></p-toggleButton> -->
                 </div>
               </div>
 
-              <div class="flex justify-center items-center" style="margin-top:16px;">
+              <div class="flex justify-center items-center" style="margin-top: 16px">
                 <!-- <button (click)="addCondition(groupIndex)" style="margin-bottom: 0.5rem;">Add Condition</button> -->
                 <button (click)="addCondition(groupIndex)" class="bg-indigo-600 rounded text-white p-2">
                   Add Condition
@@ -449,15 +506,19 @@
             </div>
 
             <div *ngIf="groupIndex < conditionGroups.length - 1">
-              <div style="margin-top:20px;">
+              <!-- <div >
                 <select [(ngModel)]="group.connector" class="p-2">
                   <option value="AND">AND</option>
                   <option value="OR">OR</option>
                 </select>
-                <!-- <p-toggleButton [(ngModel)]="group.connector" onLabel="AND" offLabel="OR"></p-toggleButton> -->
+              </div> -->
+              <div class="border rounded px-2 py-1" style="margin-top: 20px">
+                <select [(ngModel)]="group.connector" class="px-2 py-1">
+                  <option value="AND">AND</option>
+                  <option value="OR">OR</option>
+                </select>
               </div>
             </div>
-
           </div>
           <div class="add-options">
             <div>
@@ -476,14 +537,12 @@
           </div>
           <!-- <button (click)="saveConditions()">Save</button> -->
         </div>
-
-
       </div>
     </div>
   </ng-template>
   <ng-template vTemplate="footer">
     <div class="text-right">
-      <vezo-button label="Save" (click)="updateIfConditions(this.ModelEditor)"></vezo-button>
+      <vezo-button label="Save" (click)="updateIfConditions(this.conditionEditor)"></vezo-button>
     </div>
   </ng-template>
 </vezo-modal>
@@ -492,9 +551,8 @@
 <vezo-modal [(visible)]="showLoopEditor">
   <ng-template vTemplate="header">Configure Condition</ng-template>
   <ng-template vTemplate="content">
-    <div style="height: 300px; overflow-y: auto;">
+    <div style="height: 300px; overflow-y: auto">
       <div class="flex gap-4 w-full justify-between items-center">
-
         <!-- <p-dropdown [options]="this.fieldArrays" [(ngModel)]="this.loopFirstValue" placeholder="Choose Fields"
           optionLabel="fieldName" [showClear]="true" [style]="{ width: '100%' }" class="w-full">
         </p-dropdown> -->
@@ -503,46 +561,39 @@
           [group]="true">
           <ng-template let-group pTemplate="group">
             <div class="flex gap-2 justify-start items-center">
-              <img src="assets/collection_L.svg" style="width: 16px; height:auto">
+              <img src="assets/collection_L.svg" style="width: 16px; height: auto" />
               <span>{{ group.label }}</span>
             </div>
           </ng-template>
         </p-dropdown>
 
-        <p-dropdown [options]="this.operators" [(ngModel)]="this.loopOperator">
-        </p-dropdown>
+        <p-dropdown [options]="this.operators" [(ngModel)]="this.loopOperator" optionLabel="label"></p-dropdown>
 
-        <div class="w-full py-2 border border-rounded flex justify-between items-center"
-          style="flex-direction: column;">
-          <!-- <p-dropdown
-            *ngIf="this.loopStaticValue == null || this.loopStaticValue =='' || this.loopStaticValue == undefined "
-            [options]="this.fieldArrays" [(ngModel)]="this.loopSecondValue" placeholder="Choose Fields"
-            optionLabel="fieldName" [showClear]="true">
-          </p-dropdown> -->
-          <p-dropdown
-            *ngIf="this.loopStaticValue == null || this.loopStaticValue =='' || this.loopStaticValue == undefined "
-            [options]="this.finalListModels" [(ngModel)]="this.loopSecondValue" placeholder="Choose Fields"
-            [group]="true">
+        <div class="w-full flex justify-between items-center">
+          <p-dropdown *ngIf="this.loopManualEntry == false" [options]="getDropdownOptions()"
+            [(ngModel)]="this.loopSecondValue" placeholder="Choose Fields" (onChange)="handleValueChanges($event.value)"
+            [group]="true" [showClear]="true">
             <ng-template let-group pTemplate="group">
               <div class="flex gap-2 justify-start items-center">
-                <img src="assets/collection_L.svg" style="width: 16px; height:auto">
+                <img src="assets/collection_L.svg" style="width: 16px; height: auto" />
                 <span>{{ group.label }}</span>
               </div>
             </ng-template>
           </p-dropdown>
 
-          <div *ngIf="this.loopSecondValue == null && (this.loopStaticValue == '' || this.loopStaticValue == null ) ">OR
+          <div *ngIf="this.loopManualEntry" class="border p-2 rounded flex justify-between items-center gap-1">
+            <input [(ngModel)]="this.loopStaticValue" placeholder="Enter value manually" />
+            <div class="cursor-pointer" (click)="this.loopManualEntry = !this.loopManualEntry">
+              X
+            </div>
           </div>
-          <vezo-input [(ngModel)]="this.loopStaticValue" *ngIf="this.loopSecondValue == null" className="w-full"
-            [placeholder]="'Enter Value'"></vezo-input>
         </div>
-
       </div>
     </div>
   </ng-template>
   <ng-template vTemplate="footer">
     <div class="text-right">
-      <vezo-button label="Save" (click)="updateConditionsLoop(this.ModelEditor)"></vezo-button>
+      <vezo-button label="Save" (click)="updateConditionsLoop(this.loopEditor)"></vezo-button>
     </div>
   </ng-template>
 </vezo-modal>
@@ -551,23 +602,41 @@
 <vezo-modal [(visible)]="showAPIEditor">
   <ng-template vTemplate="header">Configuration</ng-template>
   <ng-template vTemplate="content">
-    <div style="height: 300px; overflow-y: auto;">
+    <div style="height: 60vh; overflow-y:scroll">
       <div class="flex gap-4 w-full justify-start items-center">
-
-        <p-dropdown [options]="this.allMicroservice" [(ngModel)]="this.msSelected" placeholder="Select Microserive"
-          [showClear]="true" [style]="{ width: '100%' }" class="w-full" optionLabel="microServiceName">
+        <p-dropdown [options]="this.allModels" [(ngModel)]="this.modelSelectedAPI" placeholder="Select Model"
+          [style]="{ width: '100%' }" class="w-full" optionLabel="collectionName"
+          (ngModelChange)="getTheReqDtos(this.modelSelectedAPI)">
         </p-dropdown>
 
-        <p-dropdown [options]="this.fieldArrays" [(ngModel)]="this.loopFirstValue" placeholder="Select API"
-          [showClear]="true" [style]="{ width: '100%' }" class="w-full">
+        <p-dropdown *ngIf="this.modelSelectedAPI !== null" [options]="this.allEndpointsByModel"
+          [(ngModel)]="currentEndpointByModel" placeholder="Select Endpoint" [style]="{ width: '100%' }" class="w-full"
+          optionLabel="endpointName" (ngModelChange)="endpointChange(this.currentEndpointByModel)">
         </p-dropdown>
+      </div>
 
+      <div *ngFor="let reqDtoField of allFieldsByReqDto; index as i">
+        <div class="flex mt-8 w-full gap-4 justify-between mx-4 items-center">
+          <div class="w-1/2">{{ reqDtoField.fieldName }}</div>
+          <div class="w-1/2 flex justify-start">
+            <p-dropdown [options]="this.finalListModels" [(ngModel)]="selectedModelForDtoField[i]" (ngModelChange)="
+                modelSelectedForReqDto(reqDtoField, selectedModelForDtoField[i])
+              " placeholder="Choose Model Field" [group]="true">
+              <ng-template let-group pTemplate="group">
+                <div class="flex gap-2 justify-start items-center">
+                  <img src="assets/collection_L.svg" style="width: 16px; height: auto" />
+                  <span>{{ group.label }}</span>
+                </div>
+              </ng-template>
+            </p-dropdown>
+          </div>
+        </div>
       </div>
     </div>
   </ng-template>
   <ng-template vTemplate="footer">
     <div class="text-right">
-      <vezo-button label="Save" (click)="updateApiEditor(this.ModelEditor)"></vezo-button>
+      <vezo-button label="Save" (click)="updateApiEditor(this.apiEditor)"></vezo-button>
     </div>
   </ng-template>
 </vezo-modal>
@@ -576,7 +645,7 @@
 <vezo-modal [(visible)]="showSaveDataEditor">
   <ng-template vTemplate="header">Configuration</ng-template>
   <ng-template vTemplate="content">
-    <div style="height: 300px; overflow-y: auto;">
+    <div style="height: 300px; overflow-y: auto">
       <div class="flex gap-4 w-full justify-start items-center">
         <p-dropdown [options]="this.selectedModels" [(ngModel)]="this.saveDataModel" placeholder="Select Model"
           [showClear]="true" [style]="{ width: '80%' }" class="w-full" optionLabel="collectionName">
@@ -586,8 +655,49 @@
   </ng-template>
   <ng-template vTemplate="footer">
     <div class="text-right">
-      <vezo-button label="Save" [disabled]="this.saveDataModel==null"
-        (click)="updateSaveDataEditor(this.ModelEditor)"></vezo-button>
+      <vezo-button label="Save" [disabled]="this.saveDataModel == null"
+        (click)="updateSaveDataEditor(this.saveDataEditor)"></vezo-button>
+    </div>
+  </ng-template>
+</vezo-modal>
+
+<!-- Model for Set Response Data-->
+<vezo-modal [(visible)]="showSetResponseDataEditor">
+  <ng-template vTemplate="header">Comfigure Set Response Data</ng-template>
+  <ng-template vTemplate="content">
+    <div style="height: 60vh; overflow-y:auto">
+      <p-dropdown [options]="this.allPojos" [(ngModel)]="this.selectedResPojo" placeholder="Select Pojo"
+        [showClear]="true" [style]="{ width: '100%' }" class="w-full" optionLabel="collectionName"
+        (ngModelChange)="getPojoFields(this.selectedResPojo)">
+      </p-dropdown>
+
+      <div *ngIf="this.selectedResPojo && this.selectedResPojo !== {}">
+        <div *ngFor="let pojoField of selectedPojoFields; index as i">
+          <div class="flex mt-8 w-full gap-4 justify-between mx-4 items-center">
+            <div class="w-1/2">{{ pojoField.fieldName }}</div>
+            <div class="w-1/2 flex justify-start">
+              <p-dropdown [options]="this.finalListModels" [(ngModel)]="selectedModelForsetResField[i]" (ngModelChange)="
+                modelSelectedForSetResData(
+                  pojoField,
+                  selectedModelForsetResField
+                )
+              " placeholder="Choose Model Field" [group]="true">
+                <ng-template let-group pTemplate="group">
+                  <div class="flex gap-2 justify-start items-center">
+                    <img src="assets/collection_L.svg" style="width: 16px; height: auto" />
+                    <span>{{ group.label }}</span>
+                  </div>
+                </ng-template>
+              </p-dropdown>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template vTemplate="footer">
+    <div class="text-right">
+      <vezo-button label="Save" (click)="updateSetResDataEditor(this.setResDataEditor)"></vezo-button>
     </div>
   </ng-template>
 </vezo-modal>

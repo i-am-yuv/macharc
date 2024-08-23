@@ -1,25 +1,34 @@
-import { Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
-import { DndDropEvent, DropEffect, EffectAllowed } from 'ngx-drag-drop';
-import { ScreenService } from '../screen.service';
+import {
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  Renderer2,
+  ViewChild,
+} from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Screen } from '../screen';
-import { FieldService } from '../../fields/field.service';
-import { FilterBuilder } from '../../utils/FilterBuilder';
-import { Field } from '../../fields/field';
-import { MessageService } from '@splenta/vezo/src/public-api';
+import { MessageService, Pagination } from '@splenta/vezo';
+import { DndDropEvent, DropEffect, EffectAllowed } from 'ngx-drag-drop';
+import { Application } from '../../application/application';
+import { ApplicationService } from '../../application/application.service';
 import { Collection } from '../../collection/collection';
 import { CollectionService } from '../../collection/collection.service';
-import { DataFormService } from '../../data-form/data-form.service';
 import { DataForm } from '../../data-form/data-form';
-import { GenericComponent } from '../../utils/genericcomponent';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MicroService } from '../../microservice/microservice';
-import { Application } from '../../application/application';
-import { MicroserviceService } from '../../microservice/microservice.service';
-import { ApplicationService } from '../../application/application.service';
-import { MediaService } from '../../media-manager/media.service';
-import { Asset, Folder } from '../../media-manager/folder';
+import { DataFormService } from '../../data-form/data-form.service';
+import { Field } from '../../fields/field';
+import { FieldService } from '../../fields/field.service';
 import { LayoutService } from '../../layout/layout.service';
+import { Asset, Folder } from '../../media-manager/folder';
+import { MediaService } from '../../media-manager/media.service';
+import { MicroService } from '../../microservice/microservice';
+import { MicroserviceService } from '../../microservice/microservice.service';
+import { FilterBuilder } from '../../utils/FilterBuilder';
+import { GenericComponent } from '../../utils/genericcomponent';
+import { Screen } from '../screen';
+import { ScreenService } from '../screen.service';
+import { InputParam } from '../../business-logic/business-logic';
+import { ProjectService } from '../../project/project.service';
 
 interface DropzoneLayout {
   container: string;
@@ -34,18 +43,21 @@ interface DraggableItem {
   handle: boolean;
   data?: any;
   mappedData?: any;
-  children?: any[],
+  children?: any[];
   icon?: any;
   id?: any;
+  navigateTo ?: any ;
 }
 @Component({
   selector: 'app-designer',
   templateUrl: './designer.component.html',
-  styleUrls: ['./designer.component.scss']
+  styleUrls: ['./designer.component.scss'],
 })
-export class DesignerComponent extends GenericComponent implements OnInit , OnDestroy {
-
-  @ViewChild('PagePreviewComponent', { static: false }) PagePreviewComponent !: ElementRef;
+export class DesignerComponent
+  extends GenericComponent
+  implements OnInit, OnDestroy {
+  @ViewChild('PagePreviewComponent', { static: false })
+  PagePreviewComponent!: ElementRef;
 
   form!: FormGroup<any>;
   data: Screen[] = [];
@@ -67,14 +79,26 @@ export class DesignerComponent extends GenericComponent implements OnInit , OnDe
       name: 'heading',
       content: 'Text',
       data: {
-        text: 'Text', fontSize: '14', fontWeight: '400', fontColor: '#000000', alignment: 'start', vAlignment: 'start',
-        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
+        text: 'Text',
+        fontSize: '14',
+        fontWeight: '400',
+        fontColor: '#000000',
+        alignment: 'start',
+        vAlignment: 'start',
+        mt: '0',
+        mb: '0',
+        ml: '0',
+        mr: '0',
+        pt: '0',
+        pb: '0',
+        pl: '0',
+        pr: '0',
       },
       mappedData: {},
       effectAllowed: 'copy',
       disable: false,
       handle: false,
-      icon: 'assets/textField.svg'
+      icon: 'assets/textField.svg',
     },
     {
       name: 'input',
@@ -83,11 +107,30 @@ export class DesignerComponent extends GenericComponent implements OnInit , OnDe
       disable: false,
       handle: false,
       data: {
-        label: 'Input Label', placeholder: 'Placeholder', labelFont: '14', labelWeight: '400', labelColor: '#000000', fontSize: '14', fontWeight: '400', fontColor: '#000000', fieldHeight: '35', fieldRadius: '4', bgColor: '#f1f3f6', borderColor: '#f1f3f6', borderWidth: '1',
-        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
+        label: 'Input Label',
+        placeholder: 'Placeholder',
+        labelFont: '14',
+        labelWeight: '400',
+        labelColor: '#000000',
+        fontSize: '14',
+        fontWeight: '400',
+        fontColor: '#000000',
+        fieldHeight: '35',
+        fieldRadius: '4',
+        bgColor: '#f1f3f6',
+        borderColor: '#f1f3f6',
+        borderWidth: '1',
+        mt: '0',
+        mb: '0',
+        ml: '0',
+        mr: '0',
+        pt: '0',
+        pb: '0',
+        pl: '0',
+        pr: '0',
       },
-      mappedData: {}, // this will consist of the data that is mapped 
-      icon: 'assets/button.svg'
+      mappedData: {}, // this will consist of the data that is mapped
+      icon: 'assets/button.svg',
     },
     {
       name: 'dropdown',
@@ -96,11 +139,27 @@ export class DesignerComponent extends GenericComponent implements OnInit , OnDe
       disable: false,
       handle: false,
       data: {
-        label: 'Input Label', placeholder: 'Placeholder', labelFont: '14', labelWeight: '400', labelColor: '#000000', fieldHeight: '35', fieldRadius: '4', bgColor: '#f1f3f6', borderColor: '#f1f3f6', borderWidth: '1',
-        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
+        label: 'Input Label',
+        placeholder: 'Placeholder',
+        labelFont: '14',
+        labelWeight: '400',
+        labelColor: '#000000',
+        fieldHeight: '35',
+        fieldRadius: '4',
+        bgColor: '#f1f3f6',
+        borderColor: '#f1f3f6',
+        borderWidth: '1',
+        mt: '0',
+        mb: '0',
+        ml: '0',
+        mr: '0',
+        pt: '0',
+        pb: '0',
+        pl: '0',
+        pr: '0',
       },
       mappedData: {},
-      icon: 'assets/button.svg'
+      icon: 'assets/button.svg',
     },
     {
       name: 'textarea',
@@ -109,11 +168,27 @@ export class DesignerComponent extends GenericComponent implements OnInit , OnDe
       disable: false,
       handle: false,
       data: {
-        label: 'Input Label', placeholder: 'Placeholder', labelFont: '14', labelWeight: '400', labelColor: '#000000', fieldHeight: '50', bgColor: '#f1f3f6', borderColor: '#f1f3f6', borderWidth: '1', borderRadius: '4',
-        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
+        label: 'Input Label',
+        placeholder: 'Placeholder',
+        labelFont: '14',
+        labelWeight: '400',
+        labelColor: '#000000',
+        fieldHeight: '50',
+        bgColor: '#f1f3f6',
+        borderColor: '#f1f3f6',
+        borderWidth: '1',
+        borderRadius: '4',
+        mt: '0',
+        mb: '0',
+        ml: '0',
+        mr: '0',
+        pt: '0',
+        pb: '0',
+        pl: '0',
+        pr: '0',
       },
       mappedData: {},
-      icon: 'assets/textField.svg'
+      icon: 'assets/textField.svg',
     },
     {
       name: 'button',
@@ -122,13 +197,26 @@ export class DesignerComponent extends GenericComponent implements OnInit , OnDe
       disable: false,
       handle: true,
       data: {
-        text: 'Input Label', fontSize: '12', fontWeight: '600', fontColor: '#4338ca',
-        bgColor: '#e0e7ff', borderColor: '#c7d2fe', borderWidth: '1', borderRadius: '4', width: '100', height: '35',
-        btnAlignment: 'center', textAlignment: 'center',
-        mt: '0', mb: '0', ml: '0', mr: '0', navigateTo: ''
+        text: 'Input Label',
+        fontSize: '12',
+        fontWeight: '600',
+        fontColor: '#4338ca',
+        bgColor: '#e0e7ff',
+        borderColor: '#c7d2fe',
+        borderWidth: '1',
+        borderRadius: '4',
+        width: '100',
+        height: '35',
+        btnAlignment: 'center',
+        textAlignment: 'center',
+        mt: '0',
+        mb: '0',
+        ml: '0',
+        mr: '0',
+        navigateTo: '',
       },
       mappedData: {},
-      icon: 'assets/button.svg'
+      icon: 'assets/button.svg',
     },
     {
       name: 'checkbox',
@@ -137,11 +225,22 @@ export class DesignerComponent extends GenericComponent implements OnInit , OnDe
       disable: false,
       handle: false,
       data: {
-        label: 'Input Label', labelFont: '14', labelWeight: '400', labelColor: '#000000',
-        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0', alignment: 'start'
+        label: 'Input Label',
+        labelFont: '14',
+        labelWeight: '400',
+        labelColor: '#000000',
+        mt: '0',
+        mb: '0',
+        ml: '0',
+        mr: '0',
+        pt: '0',
+        pb: '0',
+        pl: '0',
+        pr: '0',
+        alignment: 'start',
       },
       mappedData: {},
-      icon: 'assets/checkBox.svg'
+      icon: 'assets/checkBox.svg',
     },
     {
       name: 'radio',
@@ -150,12 +249,22 @@ export class DesignerComponent extends GenericComponent implements OnInit , OnDe
       disable: false,
       handle: false,
       data: {
-        label: 'Input Label', labelFont: '14', labelWeight: '400', labelColor: '#000000', alignment: 'start',
-        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
+        label: 'Input Label',
+        labelFont: '14',
+        labelWeight: '400',
+        labelColor: '#000000',
+        alignment: 'start',
+        mt: '0',
+        mb: '0',
+        ml: '0',
+        mr: '0',
+        pt: '0',
+        pb: '0',
+        pl: '0',
+        pr: '0',
       },
       mappedData: {},
-      icon: 'assets/Radio-button_N.svg'
-
+      icon: 'assets/Radio-button_N.svg',
     },
     {
       name: 'switch',
@@ -164,11 +273,22 @@ export class DesignerComponent extends GenericComponent implements OnInit , OnDe
       disable: false,
       handle: false,
       data: {
-        label: 'Input Label', labelFont: '14', labelWeight: '400', labelColor: '#000000',
-        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0', alignment: 'start'
+        label: 'Input Label',
+        labelFont: '14',
+        labelWeight: '400',
+        labelColor: '#000000',
+        mt: '0',
+        mb: '0',
+        ml: '0',
+        mr: '0',
+        pt: '0',
+        pb: '0',
+        pl: '0',
+        pr: '0',
+        alignment: 'start',
       },
       mappedData: {},
-      icon: 'assets/toggleOn.svg'
+      icon: 'assets/toggleOn.svg',
     },
     {
       name: 'image',
@@ -177,11 +297,21 @@ export class DesignerComponent extends GenericComponent implements OnInit , OnDe
       disable: false,
       handle: false,
       data: {
-        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0', alignment: 'start',
-        width: '200', height: '100', url: 'https://primefaces.org/cdn/primeng/images/galleria/galleria10.jpg'
+        mt: '0',
+        mb: '0',
+        ml: '0',
+        mr: '0',
+        pt: '0',
+        pb: '0',
+        pl: '0',
+        pr: '0',
+        alignment: 'start',
+        width: '200',
+        height: '100',
+        url: 'https://primefaces.org/cdn/primeng/images/galleria/galleria10.jpg',
       },
       mappedData: {},
-      icon: 'assets/image.svg'
+      icon: 'assets/image.svg',
     },
     {
       name: 'video',
@@ -190,11 +320,20 @@ export class DesignerComponent extends GenericComponent implements OnInit , OnDe
       disable: false,
       handle: false,
       data: {
-        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0', alignment: 'start',
-        width: '200', url: 'https://elementor.com/wp-content/uploads/2023/09/02_MainVideo_1066_600_1-1.mp4'
+        mt: '0',
+        mb: '0',
+        ml: '0',
+        mr: '0',
+        pt: '0',
+        pb: '0',
+        pl: '0',
+        pr: '0',
+        alignment: 'start',
+        width: '200',
+        url: 'https://elementor.com/wp-content/uploads/2023/09/02_MainVideo_1066_600_1-1.mp4',
       },
       mappedData: {},
-      icon: 'assets/ph_video-light.svg'
+      icon: 'assets/ph_video-light.svg',
     },
     {
       name: 'accordion',
@@ -204,7 +343,7 @@ export class DesignerComponent extends GenericComponent implements OnInit , OnDe
       disable: false,
       handle: false,
       children: [],
-      icon: 'assets/textField.svg'
+      icon: 'assets/textField.svg',
     },
     {
       name: 'form',
@@ -215,7 +354,7 @@ export class DesignerComponent extends GenericComponent implements OnInit , OnDe
       disable: false,
       handle: false,
       children: [],
-      icon: 'assets/bitcoin-icons_grid-outline.svg'
+      icon: 'assets/bitcoin-icons_grid-outline.svg',
     },
     {
       name: 'table',
@@ -224,39 +363,48 @@ export class DesignerComponent extends GenericComponent implements OnInit , OnDe
       disable: false,
       handle: false,
       data: {
-        actions: [{
-          label: 'Edit',
-          icon: 'pencil'
-        }, {
-          label: 'Delete',
-          icon: 'trash'
-        }],
+        actions: [
+          {
+            label: 'Edit',
+            icon: 'pencil',
+          },
+          {
+            label: 'Delete',
+            icon: 'trash',
+          },
+        ],
         caption: 'Table Heading',
         cols: [
           {
             heading: 'Code',
             field: 'code',
             sortable: true,
-            filterable: true
-          }, {
+            filterable: true,
+          },
+          {
             heading: 'Name',
             field: 'name',
             sortable: true,
-            filterable: true
-          }],
-        rows: [{
-          code: 1,
-          name: 'Name 1'
-        }, {
-          code: 2,
-          name: 'Name 2'
-        }, {
-          code: 3,
-          name: 'Name 3'
-        }]
+            filterable: true,
+          },
+        ],
+        rows: [
+          {
+            code: 1,
+            name: 'Name 1',
+          },
+          {
+            code: 2,
+            name: 'Name 2',
+          },
+          {
+            code: 3,
+            name: 'Name 3',
+          },
+        ],
       },
-      icon: 'assets/Line 45.svg'
-    }
+      icon: 'assets/Line 45.svg',
+    },
   ];
 
   // Layout Elements
@@ -265,59 +413,107 @@ export class DesignerComponent extends GenericComponent implements OnInit , OnDe
       name: 'container',
       content: 'Container',
       data: {
-        width: '100', height: '100', bgColor: '#f1f3f6', gap: '0', columns: '2', alignment: 'start', vAlignment: 'center',
-        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0', bgImage: '', borderWidth: '0', borderColor: '#FFFFFF', borderRadius: '0'
-        , shadow: 'none'
+        width: '100',
+        height: '100',
+        bgColor: '#f1f3f6',
+        gap: '0',
+        columns: '2',
+        alignment: 'start',
+        vAlignment: 'center',
+        mt: '0',
+        mb: '0',
+        ml: '0',
+        mr: '0',
+        pt: '0',
+        pb: '0',
+        pl: '0',
+        pr: '0',
+        bgImage: '',
+        borderWidth: '0',
+        borderColor: '#FFFFFF',
+        borderRadius: '0',
+        shadow: 'none',
       },
       mappedData: {},
       effectAllowed: 'copy',
       disable: false,
       handle: false,
       children: [],
-      icon: 'assets/button.svg'
+      icon: 'assets/button.svg',
     },
     {
       name: 'grid',
       content: 'Grid',
       data: {
-        columns: 2, gap: '4', mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0',
-        alignment: 'start', vAlignment: 'start',
+        columns: 2,
+        gap: '4',
+        mt: '0',
+        mb: '0',
+        ml: '0',
+        mr: '0',
+        pt: '0',
+        pb: '0',
+        pl: '0',
+        pr: '0',
+        alignment: 'start',
+        vAlignment: 'start',
       },
       mappedData: {},
       effectAllowed: 'copy',
       disable: false,
       handle: false,
       children: [],
-      icon: 'assets/bitcoin-icons_grid-outline.svg'
-
+      icon: 'assets/bitcoin-icons_grid-outline.svg',
     },
     {
       name: 'row',
       content: 'Row',
       data: {
-        width: 'auto', height: 'auto', gap: '0', alignment: 'start', vAlignment: 'center',
-        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
+        width: 'auto',
+        height: 'auto',
+        gap: '0',
+        alignment: 'start',
+        vAlignment: 'center',
+        mt: '0',
+        mb: '0',
+        ml: '0',
+        mr: '0',
+        pt: '0',
+        pb: '0',
+        pl: '0',
+        pr: '0',
       },
       mappedData: {},
       effectAllowed: 'copy',
       disable: false,
       handle: false,
       children: [],
-      icon: 'assets/row_N.svg'
+      icon: 'assets/row_N.svg',
     },
     {
       name: 'column',
       content: 'Column',
       data: {
-        width: 'auto', height: 'auto', alignment: 'center', vAlignment: 'center', gap: '0',
-        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0'
+        width: 'auto',
+        height: 'auto',
+        alignment: 'center',
+        vAlignment: 'center',
+        gap: '0',
+        mt: '0',
+        mb: '0',
+        ml: '0',
+        mr: '0',
+        pt: '0',
+        pb: '0',
+        pl: '0',
+        pr: '0',
       },
       mappedData: {},
       effectAllowed: 'copy',
       disable: false,
       handle: false,
       children: [],
-      icon: 'assets/columnIcon.svg'
+      icon: 'assets/columnIcon.svg',
     },
     {
       name: 'divider',
@@ -326,12 +522,22 @@ export class DesignerComponent extends GenericComponent implements OnInit , OnDe
       disable: false,
       handle: false,
       data: {
-        mt: '0', mb: '0', ml: '0', mr: '0', pt: '0', pb: '0', pl: '0', pr: '0', alignment: 'start', width: '1', height: '10',
-        bgcolor: '#000000'
+        mt: '0',
+        mb: '0',
+        ml: '0',
+        mr: '0',
+        pt: '0',
+        pb: '0',
+        pl: '0',
+        pr: '0',
+        alignment: 'start',
+        width: '1',
+        height: '10',
+        bgcolor: '#000000',
       },
       mappedData: {},
-      icon: 'assets/Line 45.svg'
-    }
+      icon: 'assets/Line 45.svg',
+    },
   ];
 
   // Page Elements
@@ -343,17 +549,29 @@ export class DesignerComponent extends GenericComponent implements OnInit , OnDe
       disable: false,
       handle: false,
       data: {
-        mt: '0', mb: '0', ml: '0', mr: '0', pt: '20', pb: '20', pl: '20', pr: '20', imageAlignment: 'start', titleAlignment: 'start', descAlignment: 'start',
-        width: '200', imageUrl: 'https://primefaces.org/cdn/primeng/images/card-ng.jpg', imageWidth: '100', title: ' Card title', desc: 'Card Description',
-        bgColor: '#f1f3f6'
+        mt: '0',
+        mb: '0',
+        ml: '0',
+        mr: '0',
+        pt: '20',
+        pb: '20',
+        pl: '20',
+        pr: '20',
+        imageAlignment: 'start',
+        titleAlignment: 'start',
+        descAlignment: 'start',
+        width: '200',
+        imageUrl: 'https://primefaces.org/cdn/primeng/images/card-ng.jpg',
+        imageWidth: '100',
+        title: ' Card title',
+        desc: 'Card Description',
+        bgColor: '#f1f3f6',
       },
-      icon: 'assets/solar_card-2-outline.svg'
-    }
+      icon: 'assets/solar_card-2-outline.svg',
+    },
   ];
 
-
-  draggableListRight: DraggableItem[] = [
-  ];
+  draggableListRight: DraggableItem[] = [];
 
   screenData: Screen = {};
   virtualElementsExpand: boolean = true;
@@ -375,10 +593,13 @@ export class DesignerComponent extends GenericComponent implements OnInit , OnDe
   rightPanelExpanded: boolean = true;
   widgetTree: any[] = [];
 
-  currentScreenView: string = 'assets/circum_mobile-1.png';// Mobile View
+  currentScreenView: string = 'assets/circum_mobile-1.png'; // Mobile View
   mutiScreenView: boolean = false;
 
   collectionId: string | null | undefined = '';
+  projectId: string | null | undefined = '';
+  selectedParams: InputParam[] | any = [{ dataType: '', varName: '' }];
+
   searchQuery: string = '';
 
   collectionItems: Collection[] = [];
@@ -386,6 +607,18 @@ export class DesignerComponent extends GenericComponent implements OnInit , OnDe
   microserviceItems: MicroService[] = [];
   applicationItems: Application[] = [];
   currentApplication: Application = {};
+
+  paramsOptions: any[] = [{ label: 'Yes', value: 'yes' }, { label: 'No', value: 'no' }];
+  isParamvalue: string = 'no';
+
+  dataTypes = [
+    { name: 'String', label: 'String' },
+    { name: 'Integer', label: 'int' },
+    { name: 'BigDecimal', label: 'Decimal' },
+    { name: 'Long', label: 'Long' },
+    { name: 'UUID', label: 'UUID' },
+    // { name: 'Model', label: 'Model' },
+  ];
 
   constructor(
     private screenService: ScreenService,
@@ -399,14 +632,19 @@ export class DesignerComponent extends GenericComponent implements OnInit , OnDe
     private msgService: MessageService,
     private microserviceService: MicroserviceService,
     private applicationService: ApplicationService,
-    private renderer: Renderer2, private el: ElementRef,
+    private projectService : ProjectService ,
+    private renderer: Renderer2,
+    private el: ElementRef,
     private mediaService: MediaService,
     private layoutService: LayoutService
   ) {
     super(screenService, messageService);
     this.form = this.fb.group({
       id: '',
-      screenName: ['', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
+      screenName: [
+        '',
+        [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)],
+      ],
       screenCode: ['', [Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
       screenDescription: [],
       screenDefinition: [],
@@ -414,7 +652,7 @@ export class DesignerComponent extends GenericComponent implements OnInit , OnDe
       microService: [],
       application: [],
       process: [],
-    })
+    });
   }
   public ngOnInit() {
     this.layoutService.checkPadding(false);
@@ -430,23 +668,37 @@ export class DesignerComponent extends GenericComponent implements OnInit , OnDe
   getPageData() {
     this.loading = true;
     this.getAllDataById(this.currentApplication.id);
-    this.loading = false;
-
-    this.microserviceService.getAllData().then((res: any) => {
-      if (res) {
-        this.microserviceItems = res.content;
+    console.log('Project');
+    this.projectService.setActiveProject();
+    this.projectService.getActiveProject().subscribe((val:any) => {
+      console.log(val);
+      this.projectId = val?.id;
+      if (this.projectId) {
+        var filterStr = FilterBuilder.equal('project.id', this.projectId);
+        this.search = filterStr;
+        var paginator !: Pagination ;
+        this.microserviceService.getAllData(paginator  , this.search).then((res: any) => {
+          if (res) {
+            this.microserviceItems = res.content;
+            this.loading = false;
+          }
+        });
       }
-    })
+    });
+    
     this.applicationService.getAllData().then((res: any) => {
       if (res) {
         this.applicationItems = res.content;
       }
-    })
+    });
+
     this.getPageContent();
   }
 
   getDataSorted() {
-    return this.data.sort((a: any, b: any) => a.screenName.localeCompare(b.screenName));
+    return this.data.sort((a: any, b: any) =>
+      a.screenName.localeCompare(b.screenName)
+    );
   }
 
   override editData(ds: any): void {
@@ -455,7 +707,6 @@ export class DesignerComponent extends GenericComponent implements OnInit , OnDe
   }
 
   deleteThisPage(item: any) {
-
     this.activeItem = null;
     this.screenId = null;
     this.router.navigate(['/builder/screens/designer/' + null]);
@@ -469,12 +720,15 @@ export class DesignerComponent extends GenericComponent implements OnInit , OnDe
 
   getCollectionItems() {
     // this.form.patchValue({ collection: null });
-    var filterStr = FilterBuilder.equal('microService.id', this.form.value.microService.id);
+    var filterStr = FilterBuilder.equal(
+      'microService.id',
+      this.form.value.microService.id
+    );
     this.collectionService.getAllData(undefined, filterStr).then((res: any) => {
       if (res) {
         this.collectionItems = res.content;
       }
-    })
+    });
   }
 
   getPageContent() {
@@ -482,42 +736,48 @@ export class DesignerComponent extends GenericComponent implements OnInit , OnDe
     this.screenId = this.route.snapshot.paramMap.get('id');
     // alert(this.screenId ) ;
     if (this.screenId !== 'null') {
-      this.screenService.getData({ id: this.screenId }).then((res: any) => {
-        // console.log(res);
-        this.screenData = res;
-        if (res.screenDefinition) {
-          this.draggableListRight = JSON.parse(res.screenDefinition);
-          this.widgetTree = this.draggableListRight;
-        }
-        else {
-          this.draggableListRight = [];
-          this.widgetTree = this.draggableListRight;
-        }
-        if (this.screenData) {
-          var filterStr = FilterBuilder.equal('collection.id', this.screenData?.collection?.id!);
-          this.fieldService.getAllData(undefined, filterStr).then((res: any) => {
-            this.fields = res.content;
-          });
-          this.collectionService.getAllData().then((res: any) => {
-            this.collections = res.content;
-          });
-          this.formsService.getAllData().then((res: any) => {
-            this.forms = res.content;
-          })
-        }
-        this.loading = false;
-      }).catch(error => {
-        this.loading = false;
-        console.error('Error fetching data:', error);
-        this.activeItem = null;
-        this.screenId = null;
-        this.router.navigate(['/builder/screens/designer/' + null])
-      });
-    }
-    else {
+      this.screenService
+        .getData({ id: this.screenId })
+        .then((res: any) => {
+          // console.log(res);
+          this.screenData = res;
+          if (res.screenDefinition) {
+            this.draggableListRight = JSON.parse(res.screenDefinition);
+            this.widgetTree = this.draggableListRight;
+          } else {
+            this.draggableListRight = [];
+            this.widgetTree = this.draggableListRight;
+          }
+          if (this.screenData) {
+            var filterStr = FilterBuilder.equal(
+              'collection.id',
+              this.screenData?.collection?.id!
+            );
+            this.fieldService
+              .getAllData(undefined, filterStr)
+              .then((res: any) => {
+                this.fields = res.content;
+              });
+            this.collectionService.getAllData().then((res: any) => {
+              this.collections = res.content;
+            });
+            this.formsService.getAllData().then((res: any) => {
+              this.forms = res.content;
+            });
+          }
+          this.loading = false;
+        })
+        .catch((error) => {
+          this.loading = false;
+          console.error('Error fetching data:', error);
+          this.activeItem = null;
+          this.screenId = null;
+          this.router.navigate(['/builder/screens/designer/' + null]);
+        });
+    } else {
       this.activeItem = null;
       this.screenId = null;
-      this.router.navigate(['/builder/screens/designer/' + null])
+      this.router.navigate(['/builder/screens/designer/' + null]);
       console.log('no active page found');
       this.loading = false;
     }
@@ -553,7 +813,10 @@ export class DesignerComponent extends GenericComponent implements OnInit , OnDe
 
       // Ensure event.data is an object and has no previous id
       if (event.data && typeof event.data === 'object') {
-        const newItem = { ...event.data, id: Math.floor(Math.random() * 1000000) };
+        const newItem = {
+          ...event.data,
+          id: Math.floor(Math.random() * 1000000),
+        };
         list.splice(index, 0, newItem);
         this.activeItem = newItem;
       } else {
@@ -565,19 +828,34 @@ export class DesignerComponent extends GenericComponent implements OnInit , OnDe
   saveDefinition() {
     this.screenData.screenDefinition = JSON.stringify(this.draggableListRight);
     this.screenService.updateData(this.screenData).then((res: any) => {
-      this.msgService.add({ severity: 'success', summary: 'Updated', detail: 'Definition updated' });
-    })
+      this.msgService.add({
+        severity: 'success',
+        summary: 'Updated',
+        detail: 'Definition updated',
+      });
+    });
   }
 
   generateComponent() {
     this.loading = true;
-    this.screenService.generateComponent(this.screenData).then((res: any) => {
-      this.loading = false;
-      this.msgService.add({ severity: 'success', summary: 'Generated', detail: 'Code Generated' });
-    }).catch(e => {
-      this.msgService.add({ severity: 'error', summary: 'Error Generating', detail: 'Sorry, there was an error generating the screen' });
-      this.loading = false;
-    })
+    this.screenService
+      .generateComponent(this.screenData)
+      .then((res: any) => {
+        this.loading = false;
+        this.msgService.add({
+          severity: 'success',
+          summary: 'Generated',
+          detail: 'Code Generated',
+        });
+      })
+      .catch((e) => {
+        this.msgService.add({
+          severity: 'error',
+          summary: 'Error Generating',
+          detail: 'Sorry, there was an error generating the screen',
+        });
+        this.loading = false;
+      });
   }
 
   deleteActiveItem(val: boolean) {
@@ -599,7 +877,7 @@ export class DesignerComponent extends GenericComponent implements OnInit , OnDe
     };
     // Start the search and deletion process
     if (!findAndDelete(this.draggableListRight)) {
-      console.warn("Active item not found for deletion");
+      console.warn('Active item not found for deletion');
     }
   }
 
@@ -646,11 +924,8 @@ export class DesignerComponent extends GenericComponent implements OnInit , OnDe
     this.mutiScreenView = false;
     if (screenName == 'mobile') {
       this.childWidth = 360;
-    }
-    else if (screenName == 'tablet') {
+    } else if (screenName == 'tablet') {
       this.childWidth = 1024;
-
-
     } else if (screenName == 'desktop') {
       this.childWidth = 1440;
     }
@@ -678,25 +953,33 @@ export class DesignerComponent extends GenericComponent implements OnInit , OnDe
       this.filteredDraggableListLeftLE = [...this.draggableListLeftLE];
       this.filteredDraggableListLeftPE = [...this.draggableListLeftPE];
     } else {
-      this.filteredDraggableListLeftVE = this.filterList(this.draggableListLeftVE);
-      this.filteredDraggableListLeftLE = this.filterList(this.draggableListLeftLE);
-      this.filteredDraggableListLeftPE = this.filterList(this.draggableListLeftPE);
+      this.filteredDraggableListLeftVE = this.filterList(
+        this.draggableListLeftVE
+      );
+      this.filteredDraggableListLeftLE = this.filterList(
+        this.draggableListLeftLE
+      );
+      this.filteredDraggableListLeftPE = this.filterList(
+        this.draggableListLeftPE
+      );
     }
   }
 
-
   filterList(list: DraggableItem[]): DraggableItem[] {
-    return list.filter(item =>
+    return list.filter((item) =>
       item.content.toLowerCase().includes(this.searchValue.toLowerCase())
     );
   }
 
-  getList(originalList: DraggableItem[], filteredList: DraggableItem[]): DraggableItem[] {
+  getList(
+    originalList: DraggableItem[],
+    filteredList: DraggableItem[]
+  ): DraggableItem[] {
     return this.searchValue.trim() === '' ? originalList : filteredList;
   }
 
   //---------- Zoom and Screen Resize code from here -------------------//
-  @ViewChild('parent') parent !: ElementRef;
+  @ViewChild('parent') parent!: ElementRef;
 
   //childHeight = 500;
   childWidth = 700; // giving default width as 700 to our component
@@ -708,7 +991,7 @@ export class DesignerComponent extends GenericComponent implements OnInit , OnDe
       // height:'auto'+50,
       width: `${this.childWidth ? this.childWidth : 700}px`,
       transform: `scale(${this.zoom})`,
-      transformOrigin: 'top center'
+      transformOrigin: 'top center',
     };
   }
 
@@ -733,24 +1016,25 @@ export class DesignerComponent extends GenericComponent implements OnInit , OnDe
     }
   }
 
-
   // Code for copy Page ---------------------------------------------------
   // List that is Visible on the canvas
-  copiedCanvas: DraggableItem[] = [
-  ];
+  copiedCanvas: DraggableItem[] = [];
 
   copyThisPage(oldList: any) {
     this.copiedCanvas = oldList;
     var copiedContent = JSON.stringify(this.copiedCanvas);
     localStorage.setItem('componentPage', copiedContent);
-    this.msgService.add({ severity: 'success', summary: 'Copied', detail: 'Content Copied successfully.' });
+    this.msgService.add({
+      severity: 'success',
+      summary: 'Copied',
+      detail: 'Content Copied successfully.',
+    });
   }
 
   checkPageAvailable() {
     if (localStorage.getItem('componentPage') != null) {
       return true;
-    }
-    else {
+    } else {
       return false;
     }
   }
@@ -768,8 +1052,47 @@ export class DesignerComponent extends GenericComponent implements OnInit , OnDe
     this.widgetTree = this.draggableListRight;
 
     // console.log('after pasting');
-    this.msgService.add({ severity: 'success', summary: 'Paste', detail: 'Content pasted successfully.' });
+    this.msgService.add({
+      severity: 'success',
+      summary: 'Paste',
+      detail: 'Content pasted successfully.',
+    });
     localStorage.removeItem('componentPage'); // Removing this for temporary purpose
+  }
+
+  override saveDataByApplication(applicationId: any) {
+    this.preSaveByApplication();
+
+    const formData = this.form.value;
+    formData.application = { ...formData.application, id: applicationId };
+
+    if (!formData.id) {
+      this.screenService.createPageData(formData).then((res: any) => {
+        if (res) {
+          this.visible = false;
+          this.messageService.add({
+            severity: 'success',
+            detail: this.componentName + ' created',
+            summary: this.componentName + ' created',
+          });
+          this.getAllDataById(applicationId);
+          this.postSaveByApplication(res);
+        }
+      });
+    } else {
+      this.screenService.updatePageData(formData).then((res: any) => {
+        if (res) {
+          this.visible = false;
+          this.messageService.add({
+            severity: 'success',
+            detail: this.componentName + ' updated',
+            summary: this.componentName + ' updated',
+          });
+          this.getAllDataById(applicationId);
+          this.postSaveByApplication(res);
+        }
+      });
+    }
   }
 
   pasteThisPageInside(afterObjectId: string) {
@@ -777,25 +1100,44 @@ export class DesignerComponent extends GenericComponent implements OnInit , OnDe
     this.copiedList = JSON.parse(this.copiedResult);
     this.copiedList = this.assignUniqueIds(this.copiedList);
 
-    const found = this.insertAfterId(this.draggableListRight, afterObjectId, this.copiedList);
+    const found = this.insertAfterId(
+      this.draggableListRight,
+      afterObjectId,
+      this.copiedList
+    );
 
     if (!found) {
-      this.draggableListRight = [...this.draggableListRight, ...this.copiedList];
+      this.draggableListRight = [
+        ...this.draggableListRight,
+        ...this.copiedList,
+      ];
     }
 
     this.widgetTree = this.draggableListRight;
-    this.messageService.add({ severity: 'success', summary: 'Paste', detail: 'Content pasted successfully.' });
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Paste',
+      detail: 'Content pasted successfully.',
+    });
     localStorage.removeItem('componentPage');
   }
 
   // Recursive function to find and insert copied list after specific ID
-  insertAfterId(list: any[], afterObjectId: string, copiedList: any[]): boolean {
+  insertAfterId(
+    list: any[],
+    afterObjectId: string,
+    copiedList: any[]
+  ): boolean {
     for (let i = 0; i < list.length; i++) {
       if (list[i].id === afterObjectId) {
         list.splice(i + 1, 0, ...copiedList);
         return true;
       } else if (list[i].children && list[i].children.length > 0) {
-        const found = this.insertAfterId(list[i].children, afterObjectId, copiedList);
+        const found = this.insertAfterId(
+          list[i].children,
+          afterObjectId,
+          copiedList
+        );
         if (found) {
           return true;
         }
@@ -806,7 +1148,7 @@ export class DesignerComponent extends GenericComponent implements OnInit , OnDe
 
   // Method to assign unique IDs recursively
   assignUniqueIds(list: any[]): any[] {
-    return list.map(item => {
+    return list.map((item) => {
       const newItem = { ...item, id: this.generateUniqueId() };
       if (newItem.children && newItem.children.length > 0) {
         newItem.children = this.assignUniqueIds(newItem.children);
@@ -842,16 +1184,16 @@ export class DesignerComponent extends GenericComponent implements OnInit , OnDe
     // Duplicate component must have different id and form name
     this.visible = true;
     this.duplicateObj = {
-      'id': '',
-      'screenName': '',
-      'screenCode': ds.screenCode,
-      'screenDescription': ds.screenDescription,
-      'screenDefinition': ds.screenDefinition,
-      'collection': ds.collection,
-      'microService': ds.microService,
-      'application': ds.application,
-      'process': ds.process
-    }
+      id: '',
+      screenName: '',
+      screenCode: ds.screenCode,
+      screenDescription: ds.screenDescription,
+      screenDefinition: ds.screenDefinition,
+      collection: ds.collection,
+      microService: ds.microService,
+      application: ds.application,
+      process: ds.process,
+    };
 
     this.form.patchValue({ ...this.duplicateObj });
   }
@@ -946,7 +1288,6 @@ export class DesignerComponent extends GenericComponent implements OnInit , OnDe
 
   private previewWindow: Window | null = null;
 
-
   previewInWeb() {
     // const manContent = document.querySelector('app-page-preview')?.innerHTML;
     // const manStyles = Array.from(document.styleSheets)
@@ -1014,11 +1355,14 @@ export class DesignerComponent extends GenericComponent implements OnInit , OnDe
     }
   }
 
-   // Call this method whenever the content changes
-   updatePreviewContent() {
+  // Call this method whenever the content changes
+  updatePreviewContent() {
     const manContent = document.querySelector('app-page-preview')?.innerHTML;
     if (this.previewWindow) {
-      this.previewWindow.postMessage({ type: 'UPDATE_CONTENT', content: manContent }, '*');
+      this.previewWindow.postMessage(
+        { type: 'UPDATE_CONTENT', content: manContent },
+        '*'
+      );
     }
   }
 
@@ -1030,23 +1374,31 @@ export class DesignerComponent extends GenericComponent implements OnInit , OnDe
 
   openMobilePreview() {
     if (!this.screenId) {
-      this.msgService.add({ severity: 'info', summary: 'Info', detail: 'No Page Found.' });
+      this.msgService.add({
+        severity: 'info',
+        summary: 'Info',
+        detail: 'No Page Found.',
+      });
       return;
     }
     const div = this.el.nativeElement.querySelector('#downloadable-div');
     if (div == null) {
-      this.msgService.add({ severity: 'info', summary: 'Info', detail: 'No Preview available for an empty page.' });
+      this.msgService.add({
+        severity: 'info',
+        summary: 'Info',
+        detail: 'No Preview available for an empty page.',
+      });
       return;
     }
-    this.router.navigate(['/builder/mobile-preview']);
+
+    this.router.navigate([`/builder/mobile-preview/${this.screenId}`]);
   }
 
   currentPage: any;
   hoverPage(action: string, page: any) {
     if (action == 'enter') {
       this.currentPage = page;
-    }
-    else {
+    } else {
       this.currentPage = null;
     }
   }
@@ -1058,13 +1410,13 @@ export class DesignerComponent extends GenericComponent implements OnInit , OnDe
 
   getAllFolders() {
     this.loading = true;
-    this.mediaService.getAllFolders().then(
-      (res: any) => {
+    this.mediaService
+      .getAllFolders()
+      .then((res: any) => {
         if (res) {
           this.allFolders = res.content;
           this.getAssetsGlobal();
-        }
-        else {
+        } else {
           this.loading = false;
           this.messageService.add({
             severity: 'info',
@@ -1073,28 +1425,27 @@ export class DesignerComponent extends GenericComponent implements OnInit , OnDe
             life: 3000,
           });
         }
-      }
-    ).catch((err: any) => {
-      this.loading = false;
-      this.messageService.add({
-        severity: 'info',
-        summary: 'Info',
-        detail: err.error.message,
-        life: 3000,
+      })
+      .catch((err: any) => {
+        this.loading = false;
+        this.messageService.add({
+          severity: 'info',
+          summary: 'Info',
+          detail: err.error.message,
+          life: 3000,
+        });
       });
-    })
   }
 
   getAssetsGlobal() {
     let index: number;
     for (index = 0; index < this.allFolders.length; index++) {
-
-      this.mediaService.getAssetsByFolderId(this.allFolders[index]?.id).then(
-        (res: any) => {
+      this.mediaService
+        .getAssetsByFolderId(this.allFolders[index]?.id)
+        .then((res: any) => {
           if (res) {
             this.allAssets = [...this.allAssets, ...res];
-          }
-          else {
+          } else {
             this.loading = false;
             this.messageService.add({
               severity: 'info',
@@ -1103,8 +1454,7 @@ export class DesignerComponent extends GenericComponent implements OnInit , OnDe
               life: 3000,
             });
           }
-        }
-      );
+        });
     }
     this.loading = false;
   }
@@ -1112,11 +1462,10 @@ export class DesignerComponent extends GenericComponent implements OnInit , OnDe
   filteredAssets: Asset[] = [];
   searchAssets() {
     if (this.searchQuery) {
-      this.filteredAssets = this.allAssets.filter(asset =>
+      this.filteredAssets = this.allAssets.filter((asset) =>
         asset.fileName?.toLowerCase().includes(this.searchQuery.toLowerCase())
       );
-    }
-    else {
+    } else {
       this.filteredAssets = this.allAssets;
     }
   }
@@ -1138,9 +1487,25 @@ export class DesignerComponent extends GenericComponent implements OnInit , OnDe
       this.draggableListRight = JSON.parse(screenDefination);
       setTimeout(() => {
         this.previewInWeb();
-       }, 2000);
+      }, 2000);
     }
-
   }
 
+  deleteThisParams(index: any) {
+    console.log(index);
+    if (index >= 0 && index < this.selectedParams.length) {
+      this.selectedParams.splice(index, 1);
+    } else {
+      console.error('Index out of bounds');
+    }
+  }
+
+  addParam() {
+    this.selectedParams.push({});
+  }
+
+  override preSaveByApplication() {
+    this.form.value['selectedParams'] = this.selectedParams;
+    // console.log(this.form.value);
+  }
 }

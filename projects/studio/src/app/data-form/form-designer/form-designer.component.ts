@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService } from '@splenta/vezo/src/public-api';
+import { MessageService } from '@splenta/vezo';
 import { DndDropEvent, DropEffect, EffectAllowed } from 'ngx-drag-drop';
 import { Application } from '../../application/application';
 import { ApplicationService } from '../../application/application.service';
@@ -43,7 +43,7 @@ interface DraggableItem {
 })
 export class FormDesignerComponent extends GenericComponent implements OnInit {
   form!: FormGroup<any>;
-  data:DataForm[]=[];
+  data: DataForm[] = [];
   componentName: string = 'Component';
 
   loading: boolean = false;

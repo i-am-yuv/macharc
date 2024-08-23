@@ -22,8 +22,14 @@ export class CollectionService extends GenericService {
     return res;
   }
 
-  async generateDTO(collectionId: string, payload: any) {
-    var url = this.apiurl + '/generate-dto/collection/'+encodeURIComponent(collectionId)+ '/generate';
+  async generateRequestDTO(collectionId: string, payload: any) {
+    var url = this.apiurl + '/generate-dtoRequest/collection/'+encodeURIComponent(collectionId)+ '/generateRequest';
+    const res = await lastValueFrom(this.http.post<any>(url , payload));
+    return res;
+  }
+
+  async generateResponseDTO(collectionId: string, payload: any) {
+    var url = this.apiurl + '/generate-dtoResponse/collection/'+encodeURIComponent(collectionId)+ '/generateResponse';
     const res = await lastValueFrom(this.http.post<any>(url , payload));
     return res;
   }

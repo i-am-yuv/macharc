@@ -1,4 +1,5 @@
 import { BusinessLogic } from '../../business-logic/business-logic';
+import { Collection, RequestDto, ResponseDto } from '../collection';
 
 export interface Endpoint {
   id?: string;
@@ -9,10 +10,13 @@ export interface Endpoint {
   returnType?: string;
   // Stored as json
   pathVariables?: string;
-  api: boolean;
-  webclient: boolean;
-  webhook: boolean;
-  requestJson: string;
-  responseJson: string;
-  workflow: BusinessLogic;
+  api?: boolean;
+  webclient?: boolean;
+  webhook?: boolean;
+  requestJson?: string;
+  responseJson?: string;
+  collection?: Collection;
+  workflow?: BusinessLogic;
+  requestDto?: RequestDto;
+  responseDto?: ResponseDto;
 }

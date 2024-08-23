@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService, Pagination } from '@splenta/vezo/src/public-api';
+import { MessageService, Pagination } from '@splenta/vezo';
 import { ProjectService } from '../project/project.service';
 import { FilterBuilder } from '../utils/FilterBuilder';
 import { GenericComponent } from '../utils/genericcomponent';
@@ -120,5 +120,11 @@ export class MicroserviceComponent extends GenericComponent implements OnInit {
 
   getRouterLink() {
     this.router.navigate(['/builder/microservices/create']);
+  }
+
+  goToActions( ms : any )
+  {
+    this.micrService.setActiveMicroservice(ms);
+    this.router.navigate(['/actions/null']);
   }
 }

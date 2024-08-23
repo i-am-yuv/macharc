@@ -1,72 +1,104 @@
 <h2 class="text-lg mb-4">Settings</h2>
 <div class="bg-white py-16">
-    <table class="w-2/3">
-        <tr>
-            <td class="p-4 pt-0 text-right">
-                Gitserver URL:
-            </td>
-            <td class="p-4 pt-0">
-                <vezo-input label="" placeholder="Enter URL"></vezo-input>
-            </td>
-        </tr>
-        <tr>
-            <td class="p-4 pt-0 text-right">
-                Gitserver Username:
-            </td>
-            <td class="p-4 pt-0">
-                <vezo-input label="" placeholder="Enter Username"></vezo-input>
-            </td>
-        </tr>
-        <tr>
-            <td class="p-4 pt-0 text-right">
-                Gitserver Password:
-            </td>
-            <td class="p-4 pt-0">
-                <vezo-input type="password" label="" placeholder="Enter Password"></vezo-input>
-            </td>
-        </tr>
-        <tr>
-            <td class="p-4 pt-0 text-right">
-                Gitserver Access Token:
-            </td>
-            <td class="p-4 pt-0">
-                <vezo-input label="" placeholder="Enter Token"></vezo-input>
-            </td>
-        </tr>
+  <table class="w-2/3">
+    <tr>
+      <td class="p-4 pt-0 text-right">Gitserver URL:</td>
+      <td class="p-4 pt-0">
+        <vezo-input
+          label=""
+          [(ngModel)]="data[getSetting('GITSERVER_URL')]['value']"
+          placeholder="Enter URL"
+          *ngIf="getSetting('GITSERVER_URL') > -1"
+        ></vezo-input>
+      </td>
+    </tr>
+    <tr>
+      <td class="p-4 pt-0 text-right">Gitserver Username:</td>
+      <td class="p-4 pt-0">
+        <vezo-input
+          label=""
+          [(ngModel)]="data[getSetting('GITSERVER_UN')]['value']"
+          placeholder="Enter Username"
+          *ngIf="getSetting('GITSERVER_UN') > -1"
+        ></vezo-input>
+      </td>
+    </tr>
+    <tr>
+      <td class="p-4 pt-0 text-right">Gitserver Password:</td>
+      <td class="p-4 pt-0">
+        <vezo-input
+          label=""
+          [(ngModel)]="data[getSetting('GITSERVER_PWD')]['value']"
+          placeholder="Enter Password"
+          *ngIf="getSetting('GITSERVER_PWD') > -1"
+        ></vezo-input>
+      </td>
+    </tr>
+    <tr>
+      <td class="p-4 pt-0 text-right">Gitserver Access Token:</td>
+      <td class="p-4 pt-0">
+        <vezo-input
+          label=""
+          [(ngModel)]="data[getSetting('GITSERVER_ACCESS_TOKEN')]['value']"
+          placeholder="Enter Token"
+          *ngIf="getSetting('GITSERVER_ACCESS_TOKEN') > -1"
+        ></vezo-input>
+      </td>
+    </tr>
 
-        <tr>
-            <td class="p-4 pt-0 text-right">
-                Gitserver Group:
-            </td>
-            <td class="p-4 pt-0">
-                <vezo-input label="" placeholder="Enter Group Name"></vezo-input>
-            </td>
-        </tr>
-        <tr>
-            <td class="p-4 pt-0 text-right">
-                Microservice Backend Output Directory:
-            </td>
-            <td class="p-4 pt-0">
-                <vezo-input label="" placeholder="Enter Absolute Path"></vezo-input>
-            </td>
-        </tr>
-        <tr>
-            <td class="p-4 pt-0 text-right">
-                Microservice Backend Output Directory:
-            </td>
-            <td class="p-4 pt-0">
-                <vezo-input label="" placeholder="Enter Absolute Path"></vezo-input>
-            </td>
-        </tr>
-        <tr>
-            <td class="p-4 pt-0 text-right">
-
-            </td>
-            <td class="p-4 pt-0 w-2/3 text-right">
-                <vezo-button label="Save" (click)="saveData()"></vezo-button>
-            </td>
-        </tr>
-    </table>
+    <tr>
+      <td class="p-4 pt-0 text-right">
+        Microservice Backend Output Directory:
+      </td>
+      <td class="p-4 pt-0">
+        <vezo-input
+          label=""
+          [(ngModel)]="data[getSetting('BACKEND_OUT_DIR')]['value']"
+          placeholder="Enter Absolute Path"
+          *ngIf="getSetting('BACKEND_OUT_DIR') > -1"
+        ></vezo-input>
+      </td>
+    </tr>
+    <tr>
+      <td class="p-4 pt-0 text-right">Frontend Web Output Directory:</td>
+      <td class="p-4 pt-0">
+        <vezo-input
+          label=""
+          [(ngModel)]="data[getSetting('WEB_OUT_DIR')]['value']"
+          placeholder="Enter Absolute Path"
+          *ngIf="getSetting('WEB_OUT_DIR') > -1"
+        ></vezo-input>
+      </td>
+    </tr>
+    <tr>
+      <td class="p-4 pt-0 text-right">Frontend Mobile Output Directory:</td>
+      <td class="p-4 pt-0">
+        <vezo-input
+          label=""
+          [(ngModel)]="data[getSetting('MOBILE_OUT_DIR')]['value']"
+          placeholder="Enter Absolute Path"
+          *ngIf="getSetting('MOBILE_OUT_DIR') > -1"
+        ></vezo-input>
+      </td>
+    </tr>
+    <tr>
+      <td class="p-4 pt-0 text-right">Gateway URL:</td>
+      <td class="p-4 pt-0">
+        <vezo-input
+          label=""
+          [(ngModel)]="data[getSetting('GATEWAY_URL')]['value']"
+          placeholder="Enter URL"
+          *ngIf="getSetting('GATEWAY_URL') > -1"
+        ></vezo-input>
+      </td>
+    </tr>
+    <tr>
+      <td class="p-4 pt-0 text-right"></td>
+      <td class="p-4 pt-0 w-2/3 text-right">
+        <vezo-button label="Save" (click)="saveAllData()"></vezo-button>
+      </td>
+    </tr>
+  </table>
 </div>
 
 <vezo-toast></vezo-toast>

@@ -104,7 +104,7 @@ const routes: Routes = [
               { path: ':id', component: MicroserviceComponent },
             ],
           },
-          { path: 'mobile-preview', component: MobilePreviewComponent },
+          { path: 'mobile-preview/:pageId', component: MobilePreviewComponent },
           { path: 'datasources/:id', component: MsDatasourceComponent },
           { path: 'collections', component: CollectionComponent },
           { path: 'collections/endpoints/:id', component: EndpointsComponent },
@@ -209,7 +209,7 @@ const routes: Routes = [
   },
   // { path: 'actions', component: ActionsComponent },
   {
-    path: 'actions',
+    path: 'actions/:id',
     // component: LayoutComponent,
     children: [
       {
@@ -217,7 +217,6 @@ const routes: Routes = [
         component: DispatcherComponent,
         children: [
           { path: '', component: ActionsComponent },
-          { path: ':id', component: ActionsComponent }
         ],
       },
     ],
@@ -272,7 +271,7 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
-  }
+  },
 ];
 
 @NgModule({

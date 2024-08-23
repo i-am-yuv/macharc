@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Pagination } from '@splenta/vezo/src/public-api';
+import { Pagination } from '@splenta/vezo';
 import { lastValueFrom } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { FilterBuilder } from './FilterBuilder';

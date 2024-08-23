@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { MessageService } from '@splenta/vezo/src/public-api';
+import { MessageService, Pagination } from '@splenta/vezo';
 import { BusinessLogic } from '../../business-logic/business-logic';
 import { BusinessLogicService } from '../../business-logic/business-logic.service';
 import { Datasource } from '../../datasource/datasource';
 import { DatasourceService } from '../../datasource/datasource.service';
 import { FilterBuilder } from '../../utils/FilterBuilder';
 import { GenericComponent } from '../../utils/genericcomponent';
-import { Collection } from '../collection';
+import { Collection, RequestDto, ResponseDto } from '../collection';
 import { CollectionService } from '../collection.service';
 import { Endpoint } from './endpoint';
 import { EndpointService } from './endpoint.service';
@@ -27,12 +27,13 @@ export class EndpointsComponent extends GenericComponent implements OnInit {
   getEpColor(type: any) {
     const colors = [
       { type: 'GET', color: 'green' },
-      { type: 'POST', color: 'orange' },
+      { type: 'POST', color: 'blue' },
       { type: 'PUT', color: 'purple' },
       { type: 'PATCH', color: 'yellow' },
       { type: 'DELETE', color: 'red' },
     ];
 
+    //console.log(colors.find((t) => t.type === type)?.color);
     return colors.find((t) => t.type === type)?.color;
   }
 
@@ -43,6 +44,9 @@ export class EndpointsComponent extends GenericComponent implements OnInit {
   collection: Collection = {};
   services: BusinessLogic[] = [];
   datasources: Datasource[] = [];
+  searchByMicroservice!: string;
+
+  defaultValue: string = 'Rahul Kumar'; // Default value
 
   returnTypes: any[] = [
     { label: 'Void', value: 'void' },
@@ -66,9 +70,12 @@ export class EndpointsComponent extends GenericComponent implements OnInit {
   pathVariables: PathVariable[] = [];
   collections: Collection[] = [];
 
+  requestDto: RequestDto[] = [];
+  responseDto: ResponseDto[] = [];
+
   constructor(
     messageService: MessageService,
-    endpointService: EndpointService,
+    private endpointService: EndpointService,
     private workflowService: BusinessLogicService,
     private fb: FormBuilder,
     private collectionService: CollectionService,
@@ -84,39 +91,67 @@ export class EndpointsComponent extends GenericComponent implements OnInit {
       endpointPath: [''],
       endPointType: [''],
       description: [''],
-      returnType: [''],
+      // returnType: [''],
       pathVariables: [''],
       workflow: [''],
       crud: [false],
-      datasource: [''],
       webclient: [''],
       webhook: [''],
       api: [''],
-      pojo: [''],
+      requestDto: [''],
+      // responseDto:[''],
       collection: [''],
       requestJson: [''],
       responseJson: [''],
     });
   }
+
   ngOnInit(): void {
     if (this.collectionId) {
       this.collectionService.getData({ id: this.collectionId }).then((res) => {
         this.collection = res;
+
+        // this.currentRequestDto =   ;
+        this.requestDto.push(this.collection?.requestDto!);
+        this.responseDto.push(this.collection?.responseDto!);
+
+        console.log(this.collection);
+
+        // Now that we already got the Collection
+        this.getAllServicesByMicroservices();
+        this.getEndPointsByCollectionId();
       });
     }
-    var filterStr = FilterBuilder.equal('collection.id', this.collectionId!);
-    this.search = filterStr;
-    this.getAllData();
-    // TODO: Filter by microservice
-    this.workflowService.getAllData().then((res: any) => {
-      this.services = res.content;
-    });
+
     this.datasourceService.getAllData().then((res: any) => {
       this.datasources = res.content;
     });
     this.collectionService.getAllData().then((res: any) => {
       this.collections = res.content;
     });
+  }
+
+  getAllServicesByMicroservices() {
+    //getting the services by microservice
+    var filterStrService = FilterBuilder.equal(
+      'microService.id',
+      this.collection.microService?.id!
+    );
+    this.searchByMicroservice = filterStrService;
+    var pagination!: Pagination;
+    this.workflowService
+      .getAllData(pagination, this.searchByMicroservice)
+      .then((res: any) => {
+        this.services = res.content;
+      });
+  }
+
+  getEndPointsByCollectionId() {
+    this.endpointService
+      .getAllEndpointsByCollection(this.collection.id)
+      .then((res: any) => {
+        this.data = res;
+      });
   }
 
   getPathVariables(ep: Endpoint) {
@@ -146,10 +181,29 @@ export class EndpointsComponent extends GenericComponent implements OnInit {
 
   override preSave(): void {
     this.form.patchValue({ collection: { id: this.collectionId } });
+    if (
+      this.form.value.endPointType == 'GET' ||
+      this.form.value.endPointType == 'DELETE'
+    ) {
+      this.form.value.requestDto = null;
+    }
     this.activeEp = this.form.value;
-    // this.form.patchValue({ pathVariables: JSON.stringify(this.pathVariables) });
   }
   addPathVariable() {
     this.pathVariables.push({ variableName: '', variableType: '' });
+  }
+
+  saveCustomData() {
+    if (this.form.value.returnType == 'collection') {
+      this.saveData();
+    } else {
+      this.form.value.responseDto = null;
+      console.log(this.form.value);
+      this.saveData();
+    }
+  }
+
+  override postSave(data: any) {
+    this.getEndPointsByCollectionId();
   }
 }
