@@ -46,7 +46,7 @@ export class DatasourceFormComponent
       ],
       dbUrl: [''],
       dbHost: ['localhost'],
-      dbPort: [''],
+      dbPort: ['',[Validators.required,Validators.maxLength(5)]],
       dbDatabaseName: [''],
       username: [''],
       password: [''],

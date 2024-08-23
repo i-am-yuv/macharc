@@ -96,10 +96,11 @@
             ></error-message>
           </div>
           <div class="mr-4">
-            <vezo-input
+            <vezo-inputnumber
               label="Datasource Port"
+              [placeholder] = "'Enter Port Number'"
               formControlName="dbPort"
-            ></vezo-input>
+            ></vezo-inputnumber>
             <error-message
               [controlName]="form.controls['dbPort']"
             ></error-message>

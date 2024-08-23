@@ -99,6 +99,7 @@ import { Properties2Component } from './screen/properties2/properties2.component
 import { TemplatesComponent } from './screen/templates/templates.component';
 import { SettingsComponent } from './settings/settings.component';
 import { ContenteditableValueAccessor } from './utils/constenteditable.directive';
+import { ModalComponent } from './modal/modal.component';
 
 
 @NgModule({
@@ -155,6 +156,7 @@ import { ContenteditableValueAccessor } from './utils/constenteditable.directive
     MobilePreviewComponent,
     PagePreviewComponent,
     NestedPreviewComponent,
+    ModalComponent
   ],
   imports: [
     BrowserModule,

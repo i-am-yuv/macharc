@@ -1,5 +1,5 @@
-<vezo-toast></vezo-toast>
-<!-- New Application Creation Page -->
+<!-- <vezo-toast></vezo-toast>
+ New Application Creation Page -->
 
 <div class="flex justify-end items-center" style="height: 60px; width: auto;">
     <div class="mr-4">
@@ -109,3 +109,12 @@
         </div>
     </div>
 </div>
+
+
+<app-modal
+  *ngIf="isModalOpen"
+  [title]="modalTitle"
+  [buttonText]="modalButtonText"
+  [type]="modalType"
+  (close)="closeModal()">
+</app-modal>

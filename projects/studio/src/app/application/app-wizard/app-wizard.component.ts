@@ -15,6 +15,9 @@ export class AppWizardComponent extends GenericComponent {
   override form: FormGroup<any>;
   override data: any[] = [];
   override componentName: string = 'Application';
+
+  popupModelVisiblility: boolean = false;
+
   id: string | null = '';
   items = [
     {
@@ -96,16 +99,49 @@ export class AppWizardComponent extends GenericComponent {
   }
 
   labelStyle = {
-    size: '16px',
-    weight: '400',
-    color: '#000000',
-  };
+  'size': '16px',
+    'weight': '400',
+    'color': '#000000'
+  }
 
   naviagateListingPage() {
     this.router.navigate(['applications']);
   }
+  closeModelPopup() {
+    this.popupModelVisiblility = false;
+  }
+  isModalOpen = false;
+  modalTitle = '';
+  modalButtonText = '';
+  modalType: 'success' | 'failure' = 'success';
 
-  override postSave(data: any) {
+  openModal(type: 'success' | 'failure', title: string, btnText: string) {
+    this.modalTitle = title;
+    this.modalButtonText = btnText;
+    this.modalType = type;
+    this.isModalOpen = true;
+  }
+
+  closeModal() {
+    this.isModalOpen = false;
     this.naviagateListingPage();
   }
+
+  override postSaveShowModal(res: any, resposeType: string) {
+    // you will open the model with the type       
+    if (resposeType == 'createdSuccess') {
+      this.openModal('success', res+' created','OK');    
+    } else if (resposeType == 'createdError') {
+      this.openModal('failure', res+' creation failed','OK');    
+
+    } else if (resposeType == 'updatedSuccess') {
+      this.openModal('success', res+' updated','OK');    
+
+    } else if (resposeType == 'updatedError') {
+      this.openModal('failure', res+' updation failed','OK');    
+
+    }
+  }
+
+
 }

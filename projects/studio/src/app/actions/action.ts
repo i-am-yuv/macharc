@@ -1,4 +1,5 @@
 import { MicroService } from "../microservice/microservice";
+import { PageParam } from "../screen/screen";
 
 export class Actions {
     id ?: string;
@@ -15,4 +16,9 @@ export class ActionTask {
     expression ?: string ;
     taskDefinition ?: string ;
     action ?: Actions ;
+}
+
+export class MappedParamsObj {
+    pageParam ?: PageParam ;
+    mappedValue ?: any ;
 }
