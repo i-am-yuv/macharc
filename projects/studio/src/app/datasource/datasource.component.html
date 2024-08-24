@@ -1,58 +1,64 @@
-<vezo-table [data]="data" [pageData]="pageData" (pageDataChange)="getAllData()">
-  <ng-template vTemplate="caption">
-    <div class="flex place-items-center">
-      <div class="title">DATA SOURCES</div>
-      <div class="flex-grow"></div>
-      <div class="w-72 pr-4">
-        <vezo-input
-          label=""
-          placeholder="Filter"
-          className="bg-white"
-        ></vezo-input>
+<div class="p-4">
+  <vezo-table
+    [data]="data"
+    [pageData]="pageData"
+    (pageDataChange)="getAllData()"
+  >
+    <ng-template vTemplate="caption">
+      <div class="flex place-items-center">
+        <vezo-icon icon="circleStack" className="mr-3"></vezo-icon>
+        <div class="title">DATA SOURCES</div>
+        <div class="flex-grow"></div>
+        <div class="w-72 pr-4">
+          <vezo-input
+            label=""
+            placeholder="Filter"
+            className="bg-white"
+          ></vezo-input>
+        </div>
+        <div class="text-right">
+          <vezo-button
+            label="Add New"
+            icon="plus"
+            [routerLink]="['/datasources/list']"
+          ></vezo-button>
+          <!-- <vezo-button label="Add New" icon="plus" (click)="addData()"></vezo-button> -->
+          <!-- <vezo-button label="Filter" icon="funnel" className="bg-green-100"></vezo-button> -->
+        </div>
       </div>
-      <div class="text-right">
-        <vezo-button
-          label="Add New"
-          icon="plus"
-          [routerLink]="['/datasources/list']"
-        ></vezo-button>
-        <!-- <vezo-button label="Add New" icon="plus" (click)="addData()"></vezo-button> -->
-        <!-- <vezo-button label="Filter" icon="funnel" className="bg-green-100"></vezo-button> -->
-      </div>
-    </div>
-  </ng-template>
-  <ng-template vTemplate="header">
-    <tr>
-      <!-- <th class="w-4"><input type="checkbox" class="w-4 h-4" /></th> -->
-      <th>Data Source Name</th>
-      <th>Datasource Type</th>
-      <th>Datasource URL</th>
-      <th [width]="100">Actions</th>
-    </tr>
-  </ng-template>
-  <ng-template vTemplate="body">
-    <tr *ngFor="let ds of data">
-      <!-- <td><input type="checkbox" class="w-4 h-4" /></td> -->
-      <td>{{ ds.dataSourceName }}</td>
-      <td>{{ ds.dbType }}</td>
-      <td>{{ ds.dbUrl }}</td>
-      <td>
-        <vezo-icon
-          icon="pencil"
-          [routerLink]="['/datasources/edit/' + ds.id]"
-          className="mr-5 w-4 h-4 text-indigo-400 cursor-pointer"
-        ></vezo-icon>
-        <!-- <vezo-icon icon="pencil" (click)="editData(ds)" className="mr-5 w-4 h-4 text-indigo-400 cursor-pointer"></vezo-icon> -->
-        <vezo-icon
-          icon="trash"
-          (click)="deleteData(ds)"
-          className="w-4 h-4 text-red-400 cursor-pointer"
-        ></vezo-icon>
-      </td>
-    </tr>
-  </ng-template>
-</vezo-table>
-
+    </ng-template>
+    <ng-template vTemplate="header">
+      <tr>
+        <!-- <th class="w-4"><input type="checkbox" class="w-4 h-4" /></th> -->
+        <th>Data Source Name</th>
+        <th>Datasource Type</th>
+        <th>Datasource URL</th>
+        <th [width]="100">Actions</th>
+      </tr>
+    </ng-template>
+    <ng-template vTemplate="body">
+      <tr *ngFor="let ds of data">
+        <!-- <td><input type="checkbox" class="w-4 h-4" /></td> -->
+        <td>{{ ds.dataSourceName }}</td>
+        <td>{{ ds.dbType }}</td>
+        <td>{{ ds.dbUrl }}</td>
+        <td>
+          <vezo-icon
+            icon="pencil"
+            [routerLink]="['/datasources/edit/' + ds.id]"
+            className="mr-5 w-4 h-4 text-indigo-400 cursor-pointer"
+          ></vezo-icon>
+          <!-- <vezo-icon icon="pencil" (click)="editData(ds)" className="mr-5 w-4 h-4 text-indigo-400 cursor-pointer"></vezo-icon> -->
+          <vezo-icon
+            icon="trash"
+            (click)="deleteData(ds)"
+            className="w-4 h-4 text-red-400 cursor-pointer"
+          ></vezo-icon>
+        </td>
+      </tr>
+    </ng-template>
+  </vezo-table>
+</div>
 <vezo-modal [(visible)]="visible">
   <ng-template vTemplate="header">Data Source</ng-template>
   <ng-template vTemplate="content">
@@ -98,7 +104,7 @@
           <div class="mr-4">
             <vezo-inputnumber
               label="Datasource Port"
-              [placeholder] = "'Enter Port Number'"
+              [placeholder]="'Enter Port Number'"
               formControlName="dbPort"
             ></vezo-inputnumber>
             <error-message

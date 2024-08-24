@@ -54,6 +54,13 @@ export class FieldsComponent extends GenericComponent implements OnInit {
   currentDTO: any;
 
   dtoSelectedFields: [] = [];
+  relationShipTypes: any[] = [
+    'OneToMany',
+    'ManyToOne',
+    'OneToOne',
+    'ManyToMany',
+  ];
+  microserviceId: string | undefined;
 
   constructor(
     private fb: FormBuilder,
@@ -61,7 +68,7 @@ export class FieldsComponent extends GenericComponent implements OnInit {
     private collectionService: CollectionService,
     private msgService: MessageService,
     messageService: MessageService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) {
     super(fieldService, messageService);
     this.collectionId = this.route.snapshot.paramMap.get('id');
@@ -94,6 +101,7 @@ export class FieldsComponent extends GenericComponent implements OnInit {
       });
       this.collectionService.getData({ id: this.collectionId }).then((res) => {
         this.collection = res;
+        this.microserviceId = this.collection.microService?.id;
       });
     }
     this.setDefaultDTO();

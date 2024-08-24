@@ -1,276 +1,413 @@
 <div class="grid grid-cols-12 border min-h-full bg-white">
-    <div class="col-span-3 border-r">
-
-        <div class="p-4 border-b">
-            <h2 class="text-lg">Collection
-            </h2>
-        </div>
-
-        <div class="p-4">
-            <div><label>Collection Name</label></div>
-            <div>
-                <span class="text-indigo-400 text-lg"> {{ collection.collectionName }}</span>
-            </div>
-        </div>
-        <div class="p-4">
-            <div><label>Microservice</label></div>
-            <div>
-                <span class="text-indigo-400 text-lg"> {{ collection.microService?.microServiceName }}</span>
-            </div>
-        </div>
-
-        <div class="p-4">
-
-            <div routerLink="/builder/collections/endpoints/{{ collection.id }}">
-                <span class="bg-indigo-500 hover:bg-indigo-700 cursor-pointer text-white px-3 py-1 text-xs rounded-xl">
-                    View
-                    Endpoints</span>
-            </div>
-        </div>
+  <div class="col-span-3 border-r">
+    <div class="p-4 border-b flex place-items-center">
+      <vezo-icon
+        icon="arrowLeft"
+        className="mr-4 w-4 h-4 cursor-pointer"
+        [routerLink]="['/builder/collections/' + microserviceId]"
+      ></vezo-icon>
+      <h2 class="text-lg">Collection</h2>
     </div>
-    <div class="col-span-9">
-        <div class="grid grid-cols-4 border-b justify-center items-center">
-            <div class="p-4 col-span-1">
-                <h2 class="text-lg">Fields</h2>
-            </div>
-            <div class="text-right p-2 col-span-3">
-                <vezo-button icon="plus" label="Add Field" className="mr-2" (click)="addData()"
-                    *ngIf="!visible"></vezo-button>
-                <vezo-button label="Generate DTO" className="mr-2"
-                    (click)="this.showGenerateDtoModel = !this.showGenerateDtoModel "></vezo-button>
-                <vezo-button icon="cursorArrowRays" label="Generate Code" className="mr-2"
-                    (click)="generateCode()"></vezo-button>
-                <vezo-button label="Generate from Table" icon="cursorArrowRipple"
-                    className="bg-indigo-700 hover:bg-indigo-900 text-white"
-                    (click)="generateFromTable()"></vezo-button>
-            </div>
-        </div>
-        <vezo-table [data]="data" *ngIf="!visible">
-            <ng-template vTemplate="header">
-                <tr>
-                    <th class="w-4"><input type="checkbox" class="w-4 h-4" /></th>
-                    <th>Field Name</th>
-                    <th> Data Type</th>
-                    <th [width]="150">Actions</th>
-                </tr>
-            </ng-template>
-            <ng-template vTemplate="body">
-                <tr *ngFor="let ds of data">
-                    <td><input type="checkbox" class="w-4 h-4" /></td>
-                    <td>{{ ds.fieldName }}</td>
-                    <td>{{ ds.dataType }}</td>
-                    <td>
-                        <vezo-icon icon="pencil" (click)="editData(ds)"
-                            className="mr-5 w-4 h-4 text-indigo-400 cursor-pointer"></vezo-icon>
-                        <vezo-icon icon="trash" (click)="deleteData(ds)"
-                            className="w-4 h-4 text-red-400 cursor-pointer"></vezo-icon>
-                    </td>
-                </tr>
-            </ng-template>
-        </vezo-table>
 
-        <div class="p-4" *ngIf="visible">
-            <form [formGroup]="form">
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <vezo-input label="Field Name" formControlName="fieldName"></vezo-input>
-                        <error-message [controlName]="form.controls['fieldName']"></error-message>
-                    </div>
-                    <div>
+    <div class="p-4">
+      <div><label>Collection Name</label></div>
+      <div>
+        <span class="text-indigo-400 text-lg">
+          {{ collection.collectionName }}</span
+        >
+      </div>
+    </div>
+    <div class="p-4">
+      <div><label>Microservice</label></div>
+      <div>
+        <span class="text-indigo-400 text-lg">
+          {{ collection.microService?.microServiceName }}</span
+        >
+      </div>
+    </div>
+
+    <div class="p-4">
+      <div routerLink="/builder/collections/endpoints/{{ collection.id }}">
+        <span
+          class="bg-indigo-500 hover:bg-indigo-700 cursor-pointer text-white px-3 py-1 text-xs rounded-xl"
+        >
+          View Endpoints</span
+        >
+      </div>
+    </div>
+  </div>
+  <div class="col-span-9">
+    <div class="grid grid-cols-4 border-b justify-center items-center">
+      <div class="p-4 col-span-1">
+        <h2 class="text-lg">Fields</h2>
+      </div>
+      <div class="text-right p-2 col-span-3">
+        <vezo-button
+          icon="plus"
+          label="Add Field"
+          className="mr-2"
+          (click)="addData()"
+          *ngIf="!visible"
+        ></vezo-button>
+        <vezo-button
+          label="Generate DTO"
+          className="mr-2"
+          (click)="this.showGenerateDtoModel = !this.showGenerateDtoModel"
+        ></vezo-button>
+        <vezo-button
+          icon="cursorArrowRays"
+          label="Generate Code"
+          className="mr-2"
+          (click)="generateCode()"
+        ></vezo-button>
+        <vezo-button
+          label="Generate from Table"
+          icon="cursorArrowRipple"
+          className="bg-indigo-700 hover:bg-indigo-900 text-white"
+          (click)="generateFromTable()"
+        ></vezo-button>
+      </div>
+    </div>
+    <vezo-table [data]="data" *ngIf="!visible">
+      <ng-template vTemplate="header">
+        <tr>
+          <th class="w-4"><input type="checkbox" class="w-4 h-4" /></th>
+          <th>Field Name</th>
+          <th>Data Type</th>
+          <th [width]="150">Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template vTemplate="body">
+        <tr *ngFor="let ds of data">
+          <td><input type="checkbox" class="w-4 h-4" /></td>
+          <td>{{ ds.fieldName }}</td>
+          <td>{{ ds.dataType }}</td>
+          <td>
+            <vezo-icon
+              icon="pencil"
+              (click)="editData(ds)"
+              className="mr-5 w-4 h-4 text-indigo-400 cursor-pointer"
+            ></vezo-icon>
+            <vezo-icon
+              icon="trash"
+              (click)="deleteData(ds)"
+              className="w-4 h-4 text-red-400 cursor-pointer"
+            ></vezo-icon>
+          </td>
+        </tr>
+      </ng-template>
+    </vezo-table>
+
+    <div class="p-4" *ngIf="visible">
+      <form [formGroup]="form">
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <vezo-input
+              label="Field Name"
+              formControlName="fieldName"
+            ></vezo-input>
+            <error-message
+              [controlName]="form.controls['fieldName']"
+            ></error-message>
+          </div>
+          <!-- <div>
                         <vezo-select label="Datatype" optionLabel="label" optionValue="value" formControlName="dataType"
                             [items]="dataTypes"></vezo-select>
                         <error-message [controlName]="form.controls['dataType']"></error-message>
-                    </div>
-                </div>
-                <div>
-                    <vezo-select label="Validation" formControlName="validation" [items]="validations"
-                        optionLabel="label" optionValue="value"></vezo-select>
-                    <error-message [controlName]="form.controls['validation']"></error-message>
-                </div>
-                <div>
-                    <vezo-input label="Pattern" formControlName="pattern"
-                        *ngIf="form.controls['validation'].value?.value === 'Pattern'"
-                        placeholder="Enter Regex Pattern"></vezo-input>
-                    <error-message [controlName]="form.controls['pattern']"></error-message>
-                </div>
-                {{ form.controls['validation'].value?.value }}
-                <div class="my-2">
-                    <label>Field Type</label>
-                </div>
-                <div class="grid grid-cols-2 mb-8 gap-4">
-                    <div (click)="setFieldType('String')" [ngClass]="{'bg-cyan-100': form.value.fieldType ==='String'}"
-                        class="bg-white hover:bg-indigo-50 cursor-pointer shadow-md grid grid-cols-5 justify-content items-center p-2">
-                        <div class="col-span-1">
-                            <vezo-icon icon="pencilSquare" className="w-8 h-8 text-red-400"
-                                strokeWidth="0.5"></vezo-icon>
-                        </div>
-                        <div class="col-span-4">
-                            <h3 class="font-semibold">Text</h3>
-                            <p>Short text like name or single line of information</p>
-                        </div>
+                    </div> -->
+          <!-- </div>
+        <div> -->
+          <vezo-select
+            label="Validation"
+            formControlName="validation"
+            [items]="validations"
+            optionLabel="label"
+            optionValue="value"
+            className="mt-1"
+          ></vezo-select>
+          <error-message
+            [controlName]="form.controls['validation']"
+          ></error-message>
+        </div>
+        <div>
+          <vezo-textarea
+            label="Pattern"
+            formControlName="pattern"
+            *ngIf="form.controls['validation'].value === 'Pattern'"
+            placeholder="Enter Regex Pattern"
+          ></vezo-textarea>
+          <error-message
+            [controlName]="form.controls['pattern']"
+          ></error-message>
+        </div>
+        {{ form.controls["validation"].value?.value }}
+        <div class="my-2">
+          <label>Field Type</label>
+        </div>
+        <div class="grid grid-cols-2 mb-8 gap-4">
+          <div
+            (click)="setFieldType('String')"
+            [ngClass]="{ 'bg-cyan-100': form.value.fieldType === 'String' }"
+            class="bg-white hover:bg-indigo-50 cursor-pointer shadow-md grid grid-cols-5 justify-content items-center p-2"
+          >
+            <div class="col-span-1">
+              <vezo-icon
+                icon="pencilSquare"
+                className="w-8 h-8 text-red-400"
+                strokeWidth="0.5"
+              ></vezo-icon>
+            </div>
+            <div class="col-span-4">
+              <h3 class="font-semibold">Text</h3>
+              <p>Short text like name or single line of information</p>
+            </div>
+          </div>
+          <div
+            (click)="setFieldType('Text')"
+            [ngClass]="{ 'bg-cyan-100': form.value.fieldType === 'Text' }"
+            class="bg-white hover:bg-indigo-50 cursor-pointer shadow-md grid grid-cols-5 justify-content items-center p-2"
+          >
+            <div class="col-span-1">
+              <vezo-icon
+                icon="documentText"
+                className="w-8 h-8 text-purple-400"
+                strokeWidth="0.5"
+              ></vezo-icon>
+            </div>
+            <div class="col-span-4">
+              <h3 class="font-semibold">Long Text</h3>
+              <p>
+                Long text or paragraph like description or narration of
+                information
+              </p>
+            </div>
+          </div>
 
-                    </div>
-                    <div (click)="setFieldType('Text')" [ngClass]="{'bg-cyan-100': form.value.fieldType ==='Text'}"
-                        class="bg-white  hover:bg-indigo-50 cursor-pointer shadow-md grid grid-cols-5 justify-content items-center p-2">
-                        <div class="col-span-1">
-                            <vezo-icon icon="documentText" className="w-8 h-8 text-purple-400"
-                                strokeWidth="0.5"></vezo-icon>
-                        </div>
-                        <div class="col-span-4">
-                            <h3 class="font-semibold">Long Text</h3>
-                            <p>Long text or paragraph like description or narration of information</p>
-                        </div>
+          <div
+            (click)="setFieldType('Email')"
+            [ngClass]="{ 'bg-cyan-100': form.value.fieldType === 'Email' }"
+            class="bg-white hover:bg-indigo-50 cursor-pointer shadow-md grid grid-cols-5 justify-content items-center p-2"
+          >
+            <div class="col-span-1">
+              <vezo-icon
+                icon="envelope"
+                className="w-8 h-8 text-green-500"
+                strokeWidth="0.5"
+              ></vezo-icon>
+            </div>
+            <div class="col-span-4">
+              <h3 class="font-semibold">Email</h3>
+              <p>Email field with email validation</p>
+            </div>
+          </div>
+          <div
+            (click)="setFieldType('Password')"
+            [ngClass]="{ 'bg-cyan-100': form.value.fieldType === 'Password' }"
+            class="bg-white hover:bg-indigo-50 cursor-pointer shadow-md grid grid-cols-5 justify-content items-center p-2"
+          >
+            <div class="col-span-1">
+              <vezo-icon
+                icon="ellipsisHorizontal"
+                className="w-8 h-8"
+                strokeWidth="0.5"
+              ></vezo-icon>
+            </div>
+            <div class="col-span-4">
+              <h3 class="font-semibold">Password</h3>
+              <p>Password field with strong encryption</p>
+            </div>
+          </div>
 
-                    </div>
+          <div
+            (click)="setFieldType('Date')"
+            [ngClass]="{ 'bg-cyan-100': form.value.fieldType === 'Date' }"
+            class="bg-white hover:bg-indigo-50 cursor-pointer shadow-md grid grid-cols-5 justify-content items-center p-2"
+          >
+            <div class="col-span-1">
+              <vezo-icon
+                icon="calendar"
+                className="w-8 h-8 text-red-400"
+                strokeWidth="0.5"
+              ></vezo-icon>
+            </div>
+            <div class="col-span-4">
+              <h3 class="font-semibold">Date</h3>
+              <p>A single Date field</p>
+            </div>
+          </div>
+          <div
+            (click)="setFieldType('Number')"
+            [ngClass]="{ 'bg-cyan-100': form.value.fieldType === 'Number' }"
+            class="bg-white hover:bg-indigo-50 cursor-pointer shadow-md grid grid-cols-5 justify-content items-center p-2"
+          >
+            <div class="col-span-1">
+              <vezo-icon
+                icon="chevronUpDown"
+                className="w-8 h-8 text-blue-400"
+                strokeWidth="1.5"
+              ></vezo-icon>
+            </div>
+            <div class="col-span-4">
+              <h3 class="font-semibold">Number</h3>
+              <p>Numeric data with or without decimals</p>
+            </div>
+          </div>
 
-                    <div (click)="setFieldType('Email')" [ngClass]="{'bg-cyan-100': form.value.fieldType ==='Email'}"
-                        class="bg-white hover:bg-indigo-50 cursor-pointer shadow-md grid grid-cols-5 justify-content items-center p-2">
-                        <div class="col-span-1">
-                            <vezo-icon icon="envelope" className="w-8 h-8 text-green-500" strokeWidth="0.5"></vezo-icon>
-                        </div>
-                        <div class="col-span-4">
-                            <h3 class="font-semibold">Email</h3>
-                            <p>Email field with email validation</p>
-                        </div>
+          <div
+            (click)="setFieldType('List')"
+            [ngClass]="{ 'bg-cyan-100': form.value.fieldType === 'List' }"
+            class="bg-white hover:bg-indigo-50 cursor-pointer shadow-md grid grid-cols-5 justify-content items-center p-2"
+          >
+            <div class="col-span-1">
+              <vezo-icon
+                icon="queueList"
+                className="w-8 h-8 text-blue-700"
+                strokeWidth="0.5"
+              ></vezo-icon>
+            </div>
+            <div class="col-span-4">
+              <h3 class="font-semibold">List</h3>
+              <p>List of data of information</p>
+            </div>
+          </div>
 
-                    </div>
-                    <div (click)="setFieldType('Password')"
-                        [ngClass]="{'bg-cyan-100': form.value.fieldType ==='Password'}"
-                        class="bg-white hover:bg-indigo-50 cursor-pointer shadow-md grid grid-cols-5 justify-content items-center p-2">
-                        <div class="col-span-1">
-                            <vezo-icon icon="ellipsisHorizontal" className="w-8 h-8" strokeWidth="0.5"></vezo-icon>
-                        </div>
-                        <div class="col-span-4">
-                            <h3 class="font-semibold">Password</h3>
-                            <p>Password field with strong encryption</p>
-                        </div>
+          <div
+            (click)="setFieldType('Media')"
+            [ngClass]="{ 'bg-cyan-100': form.value.fieldType === 'Media' }"
+            class="bg-white hover:bg-indigo-50 cursor-pointer shadow-md grid grid-cols-5 justify-content items-center p-2"
+          >
+            <div class="col-span-1">
+              <vezo-icon
+                icon="photo"
+                className="w-8 h-8 text-green-500"
+                strokeWidth="0.5"
+              ></vezo-icon>
+            </div>
+            <div class="col-span-4">
+              <h3 class="font-semibold">Media</h3>
+              <p>
+                Pictures, videos or any other visual and document file format
+              </p>
+            </div>
+          </div>
+          <div
+            (click)="setFieldType('Boolean')"
+            [ngClass]="{ 'bg-cyan-100': form.value.fieldType === 'Boolean' }"
+            class="bg-white hover:bg-indigo-50 cursor-pointer shadow-md grid grid-cols-5 justify-content items-center p-2"
+          >
+            <div class="col-span-1">
+              <vezo-icon
+                icon="arrowsRightLeft"
+                className="w-8 h-8 text-purple-400"
+                strokeWidth="1"
+              ></vezo-icon>
+            </div>
+            <div class="col-span-4">
+              <h3 class="font-semibold">Boolean</h3>
+              <p>Yes or No information</p>
+            </div>
+          </div>
 
-                    </div>
+          <div
+            (click)="setFieldType('Relation')"
+            [ngClass]="{ 'bg-cyan-100': form.value.fieldType === 'Relation' }"
+            class="bg-white hover:bg-indigo-50 cursor-pointer shadow-md grid grid-cols-5 justify-content items-center p-2"
+          >
+            <div class="col-span-1">
+              <vezo-icon
+                icon="link"
+                className="w-8 h-8 text-orange-400"
+                strokeWidth="1"
+              ></vezo-icon>
+            </div>
+            <div class="col-span-4">
+              <h3 class="font-semibold">Relation</h3>
+              <p>Associated Model mapping</p>
+            </div>
+          </div>
 
-                    <div (click)="setFieldType('Date')" [ngClass]="{'bg-cyan-100': form.value.fieldType ==='Date'}"
-                        class="bg-white hover:bg-indigo-50 cursor-pointer shadow-md grid grid-cols-5 justify-content items-center p-2">
-                        <div class="col-span-1">
-                            <vezo-icon icon="calendar" className="w-8 h-8 text-red-400" strokeWidth="0.5"></vezo-icon>
-                        </div>
-                        <div class="col-span-4">
-                            <h3 class="font-semibold">Date</h3>
-                            <p>A single Date field</p>
-                        </div>
-
-                    </div>
-                    <div (click)="setFieldType('Number')" [ngClass]="{'bg-cyan-100': form.value.fieldType ==='Number'}"
-                        class="bg-white hover:bg-indigo-50 cursor-pointer shadow-md grid grid-cols-5 justify-content items-center p-2">
-                        <div class="col-span-1">
-                            <vezo-icon icon="chevronUpDown" className="w-8 h-8 text-blue-400"
-                                strokeWidth="1.5"></vezo-icon>
-                        </div>
-                        <div class="col-span-4">
-                            <h3 class="font-semibold">Number</h3>
-                            <p>Numeric data with or without decimals</p>
-                        </div>
-
-                    </div>
-
-                    <div (click)="setFieldType('List')" [ngClass]="{'bg-cyan-100': form.value.fieldType ==='List'}"
-                        class="bg-white hover:bg-indigo-50 cursor-pointer shadow-md grid grid-cols-5 justify-content items-center p-2">
-                        <div class="col-span-1">
-                            <vezo-icon icon="queueList" className="w-8 h-8 text-blue-700" strokeWidth="0.5"></vezo-icon>
-                        </div>
-                        <div class="col-span-4">
-                            <h3 class="font-semibold">List</h3>
-                            <p>List of data of information</p>
-                        </div>
-
-                    </div>
-
-
-                    <div (click)="setFieldType('Media')" [ngClass]="{'bg-cyan-100': form.value.fieldType ==='Media'}"
-                        class="bg-white hover:bg-indigo-50 cursor-pointer shadow-md grid grid-cols-5 justify-content items-center p-2">
-                        <div class="col-span-1">
-                            <vezo-icon icon="photo" className="w-8 h-8 text-green-500" strokeWidth="0.5"></vezo-icon>
-                        </div>
-                        <div class="col-span-4">
-                            <h3 class="font-semibold">Media</h3>
-                            <p>Pictures, videos or any other visual and document file format</p>
-                        </div>
-
-                    </div>
-                    <div (click)="setFieldType('Boolean')"
-                        [ngClass]="{'bg-cyan-100': form.value.fieldType ==='Boolean'}"
-                        class="bg-white hover:bg-indigo-50 cursor-pointer shadow-md grid grid-cols-5 justify-content items-center p-2">
-                        <div class="col-span-1">
-                            <vezo-icon icon="arrowsRightLeft" className="w-8 h-8 text-purple-400"
-                                strokeWidth="1"></vezo-icon>
-                        </div>
-                        <div class="col-span-4">
-                            <h3 class="font-semibold">Boolean</h3>
-                            <p>Yes or No information</p>
-                        </div>
-
-                    </div>
-
-                    <div (click)="setFieldType('Relation')"
-                        [ngClass]="{'bg-cyan-100': form.value.fieldType ==='Relation'}"
-                        class="bg-white hover:bg-indigo-50 cursor-pointer shadow-md grid grid-cols-5 justify-content items-center p-2">
-                        <div class="col-span-1">
-                            <vezo-icon icon="link" className="w-8 h-8 text-orange-400" strokeWidth="1"></vezo-icon>
-                        </div>
-                        <div class="col-span-4">
-                            <h3 class="font-semibold">Relation</h3>
-                            <p>Collection of associated information</p>
-                        </div>
-
-                    </div>
-
-                    <div></div>
-                    <div *ngIf="form.value.fieldType==='Relation'">
-                        <vezo-select formControlName="foreignKey" [items]="collections" optionLabel="collectionName"
-                            placeholder="Select related collection"></vezo-select>
-                    </div>
-                </div>
-
-                <div class=" text-right">
-                    <vezo-button label="Cancel" (click)="visible=false" className="mr-2"></vezo-button>
-                    <vezo-button label="Save" [disabled]="!form.valid" (click)="saveData()"></vezo-button>
-                </div>
-            </form>
+          <div *ngIf="form.value.fieldType === 'Relation'">
+            <vezo-select
+              formControlName="relationShipType"
+              [items]="relationShipTypes"
+              placeholder="Select relationship type"
+            ></vezo-select>
+          </div>
+          <div *ngIf="form.value.fieldType === 'Relation'">
+            <vezo-select
+              formControlName="foreignKey"
+              [items]="collections"
+              optionLabel="collectionName"
+              placeholder="Select related collection"
+            ></vezo-select>
+          </div>
         </div>
 
+        <div class="text-right">
+          <vezo-button
+            label="Cancel"
+            (click)="visible = false"
+            className="mr-2"
+          ></vezo-button>
+          <vezo-button
+            label="Save"
+            [disabled]="!form.valid"
+            (click)="saveData()"
+          ></vezo-button>
+        </div>
+      </form>
     </div>
+  </div>
 </div>
 
 <vezo-modal [(visible)]="this.showGenerateDtoModel">
-    <ng-template vTemplate="header">DTO Configuration</ng-template>
-    <ng-template vTemplate="content">
+  <ng-template vTemplate="header">DTO Configuration</ng-template>
+  <ng-template vTemplate="content">
+    <div>
+      <p-selectButton
+        [options]="dtoTypes"
+        [(ngModel)]="currentDTO"
+        optionLabel="label"
+        optionValue="value"
+      >
+      </p-selectButton>
+    </div>
 
-        <div>
-            <p-selectButton [options]="dtoTypes" [(ngModel)]="currentDTO" optionLabel="label" optionValue="value">
-            </p-selectButton>
-        </div>
+    <!-- Code for Request DTO creation -->
 
-        <!-- Code for Request DTO creation -->
+    <div *ngIf="this.currentDTO === 'RequestDTO'" class="mt-8">
+      <p-multiSelect
+        [options]="this.data"
+        [(ngModel)]="dtoSelectedFields"
+        optionLabel="fieldName"
+        optionValue="id"
+        placeholder="Select fields for DTO"
+        [style]="{ width: '100%' }"
+        class="w-full"
+      >
+      </p-multiSelect>
+    </div>
 
-        <div *ngIf="this.currentDTO === 'RequestDTO'" class="mt-8">
-            <p-multiSelect [options]="this.data" [(ngModel)]="dtoSelectedFields" optionLabel="fieldName"
-                optionValue="id" placeholder="Select fields for DTO" [style]="{ width: '100%' }" class="w-full">
-            </p-multiSelect>
-        </div>
+    <!-- Code for Response DTO creation -->
 
-        <!-- Code for Response DTO creation -->
-
-        <div *ngIf="this.currentDTO === 'ResponseDTO'"  class="mt-8">
-            <p-multiSelect [options]="this.data" [(ngModel)]="dtoSelectedFields" optionLabel="fieldName"
-                optionValue="id" placeholder="Select fields for DTO" [style]="{ width: '100%' }" class="w-full">
-            </p-multiSelect>
-        </div>
-
-    </ng-template>
-    <ng-template vTemplate="footer">
-        <div class="text-right">
-            <vezo-button label="Generate" (click)="generateDTO()"></vezo-button>
-        </div>
-    </ng-template>
+    <div *ngIf="this.currentDTO === 'ResponseDTO'" class="mt-8">
+      <p-multiSelect
+        [options]="this.data"
+        [(ngModel)]="dtoSelectedFields"
+        optionLabel="fieldName"
+        optionValue="id"
+        placeholder="Select fields for DTO"
+        [style]="{ width: '100%' }"
+        class="w-full"
+      >
+      </p-multiSelect>
+    </div>
+  </ng-template>
+  <ng-template vTemplate="footer">
+    <div class="text-right">
+      <vezo-button label="Generate" (click)="generateDTO()"></vezo-button>
+    </div>
+  </ng-template>
 </vezo-modal>
-
 
 <vezo-toast></vezo-toast>
