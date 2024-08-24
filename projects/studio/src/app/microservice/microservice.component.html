@@ -1,5 +1,5 @@
 <div class="p-4">
-  <div class="md:flex space-y-4 md:space-y-0 place-items-center mb-2">
+  <div class="md:flex space-y-4 md:space-y-0 place-items-center mb-4">
     <img
       src="assets/microservice_L.svg"
       class="mr-3"
@@ -25,7 +25,7 @@
       <vezo-button
         label="Add New Microservice"
         icon="plus"
-        className=""
+        className="mt-4 lg:mt-0"
         (click)="getRouterLink()"
       ></vezo-button>
 
@@ -46,9 +46,9 @@
       </p>
     </div>
     <div
-      class="md:grid md:space-y-0 space-y-4 lg:grid-cols-4 md:grid-cols-2 gap-4"
+      class="md:grid md:space-y-0 space-y-4 lg:grid-cols-4 md:grid-cols-2 gap-8"
     >
-      <vezo-card className="bg-white" *ngFor="let ms of data">
+      <vezo-card className="bg-white mb-8" *ngFor="let ms of data">
         <ng-template vTemplate="media">
           <div
             class="grid grid-cols-12 items-center justify-content bg-indigo-50 hover:bg-indigo-100"

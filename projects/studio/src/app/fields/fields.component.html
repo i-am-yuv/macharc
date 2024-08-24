@@ -6,11 +6,11 @@
         className="mr-4 w-4 h-4 cursor-pointer"
         [routerLink]="['/builder/collections/' + microserviceId]"
       ></vezo-icon>
-      <h2 class="text-lg">Collection</h2>
+      <h2 class="text-lg">Model</h2>
     </div>
 
     <div class="p-4">
-      <div><label>Collection Name</label></div>
+      <div><label>Model Name</label></div>
       <div>
         <span class="text-indigo-400 text-lg">
           {{ collection.collectionName }}</span
@@ -73,6 +73,7 @@
         <tr>
           <th class="w-4"><input type="checkbox" class="w-4 h-4" /></th>
           <th>Field Name</th>
+          <th>Property Name</th>
           <th>Data Type</th>
           <th [width]="150">Actions</th>
         </tr>
@@ -81,6 +82,7 @@
         <tr *ngFor="let ds of data">
           <td><input type="checkbox" class="w-4 h-4" /></td>
           <td>{{ ds.fieldName }}</td>
+          <td>{{ ds.propertyName }}</td>
           <td>{{ ds.dataType }}</td>
           <td>
             <vezo-icon

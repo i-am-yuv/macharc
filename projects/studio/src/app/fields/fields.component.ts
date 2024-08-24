@@ -79,12 +79,13 @@ export class FieldsComponent extends GenericComponent implements OnInit {
         '',
         [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)],
       ],
-      dataType: ['', [Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
+      // dataType: ['', [Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
       fieldType: [''],
       validation: [''],
       pattern: [''],
       collection: [],
       foreignKey: [],
+      relationShipType: '',
     });
   }
   override preSave(): void {
@@ -136,7 +137,7 @@ export class FieldsComponent extends GenericComponent implements OnInit {
           this.msgService.add({
             severity: 'success',
             summary: 'Generated',
-            detail: 'All apis created',
+            detail: 'Model Generated',
           });
           this.getAllData();
         });
