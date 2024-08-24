@@ -12,6 +12,7 @@ import { MessageService, Pagination } from '@splenta/vezo';
 import { DndDropEvent, DropEffect, EffectAllowed } from 'ngx-drag-drop';
 import { Application } from '../../application/application';
 import { ApplicationService } from '../../application/application.service';
+import { InputParam } from '../../business-logic/business-logic';
 import { Collection } from '../../collection/collection';
 import { CollectionService } from '../../collection/collection.service';
 import { DataForm } from '../../data-form/data-form';
@@ -23,12 +24,11 @@ import { Asset, Folder } from '../../media-manager/folder';
 import { MediaService } from '../../media-manager/media.service';
 import { MicroService } from '../../microservice/microservice';
 import { MicroserviceService } from '../../microservice/microservice.service';
+import { ProjectService } from '../../project/project.service';
 import { FilterBuilder } from '../../utils/FilterBuilder';
 import { GenericComponent } from '../../utils/genericcomponent';
 import { PageParam, Screen } from '../screen';
 import { ScreenService } from '../screen.service';
-import { InputParam } from '../../business-logic/business-logic';
-import { ProjectService } from '../../project/project.service';
 
 interface DropzoneLayout {
   container: string;
@@ -55,7 +55,8 @@ interface DraggableItem {
 })
 export class DesignerComponent
   extends GenericComponent
-  implements OnInit, OnDestroy {
+  implements OnInit, OnDestroy
+{
   @ViewChild('PagePreviewComponent', { static: false })
   PagePreviewComponent!: ElementRef;
 
@@ -608,7 +609,10 @@ export class DesignerComponent
   applicationItems: Application[] = [];
   currentApplication: Application = {};
 
-  paramsOptions: any[] = [{ label: 'Yes', value: 'yes' }, { label: 'No', value: 'no' }];
+  paramsOptions: any[] = [
+    { label: 'Yes', value: 'yes' },
+    { label: 'No', value: 'no' },
+  ];
   isParamvalue: string = 'no';
 
   dataTypes = [
@@ -636,7 +640,7 @@ export class DesignerComponent
     private renderer: Renderer2,
     private el: ElementRef,
     private mediaService: MediaService,
-    private layoutService: LayoutService
+    private layoutService: LayoutService,
   ) {
     super(screenService, messageService);
     this.form = this.fb.group({
@@ -669,21 +673,21 @@ export class DesignerComponent
     this.loading = true;
     this.getAllDataById(this.currentApplication.id); // This will fetch all the screen
 
-    console.log('Project');
     this.projectService.setActiveProject();
     this.projectService.getActiveProject().subscribe((val: any) => {
-      console.log(val);
       this.projectId = val?.id;
       if (this.projectId) {
         var filterStr = FilterBuilder.equal('project.id', this.projectId);
         this.search = filterStr;
-        var paginator !: Pagination;
-        this.microserviceService.getAllData(paginator, this.search).then((res: any) => {
-          if (res) {
-            this.microserviceItems = res.content;
-            this.loading = false;
-          }
-        });
+        var paginator!: Pagination;
+        this.microserviceService
+          .getAllData(paginator, this.search)
+          .then((res: any) => {
+            if (res) {
+              this.microserviceItems = res.content;
+              this.loading = false;
+            }
+          });
       }
     });
 
@@ -698,19 +702,17 @@ export class DesignerComponent
 
   getDataSorted() {
     return this.data.sort((a: any, b: any) =>
-      a.screenName.localeCompare(b.screenName)
+      a.screenName.localeCompare(b.screenName),
     );
   }
 
   override editData(ds: any): void {
     super.editData(ds);
-    this.selectedParams = ds.selectedParams ;
-    if( this.selectedParams.length > 0 )
-    {
-      this.isParamvalue = "yes" ;
-    }
-    else{
-      this.isParamvalue = "no" ;
+    this.selectedParams = ds.selectedParams;
+    if (this.selectedParams.length > 0) {
+      this.isParamvalue = 'yes';
+    } else {
+      this.isParamvalue = 'no';
     }
     console.log(ds);
     this.getCollectionItems();
@@ -719,11 +721,11 @@ export class DesignerComponent
   deleteThisPage(item: any) {
     this.activeItem = null;
     this.screenId = null;
-    this.router.navigate(['/builder/screens/designer/' + null]);
+    this.router.navigate(['/builder/screens/designer']);
     this.deleteDataByApplication(item, this.currentApplication.id);
     this.activeItem = null;
     this.screenId = null;
-    this.router.navigate(['/builder/screens/designer/' + null]);
+    this.router.navigate(['/builder/screens/designer']);
     this.activeData = null;
     this.visibleDeleteConfirmation = false;
   }
@@ -732,7 +734,7 @@ export class DesignerComponent
     // this.form.patchValue({ collection: null });
     var filterStr = FilterBuilder.equal(
       'microService.id',
-      this.form.value.microService.id
+      this.form.value.microService.id,
     );
     this.collectionService.getAllData(undefined, filterStr).then((res: any) => {
       if (res) {
@@ -745,7 +747,7 @@ export class DesignerComponent
     this.loading = true;
     this.screenId = this.route.snapshot.paramMap.get('id');
 
-    if (this.screenId !== 'null') {
+    if (this.screenId !== null) {
       this.screenService
         .getData({ id: this.screenId })
         .then((res: any) => {
@@ -761,7 +763,7 @@ export class DesignerComponent
           if (this.screenData) {
             var filterStr = FilterBuilder.equal(
               'collection.id',
-              this.screenData?.collection?.id!
+              this.screenData?.collection?.id!,
             );
             this.fieldService
               .getAllData(undefined, filterStr)
@@ -787,8 +789,7 @@ export class DesignerComponent
     } else {
       this.activeItem = null;
       this.screenId = null;
-      this.router.navigate(['/builder/screens/designer/' + null]);
-      console.log('no active page found');
+      // this.router.navigate(['/builder/screens/designer/' + null]);
       this.loading = false;
     }
     this.activeItem = null;
@@ -964,26 +965,26 @@ export class DesignerComponent
       this.filteredDraggableListLeftPE = [...this.draggableListLeftPE];
     } else {
       this.filteredDraggableListLeftVE = this.filterList(
-        this.draggableListLeftVE
+        this.draggableListLeftVE,
       );
       this.filteredDraggableListLeftLE = this.filterList(
-        this.draggableListLeftLE
+        this.draggableListLeftLE,
       );
       this.filteredDraggableListLeftPE = this.filterList(
-        this.draggableListLeftPE
+        this.draggableListLeftPE,
       );
     }
   }
 
   filterList(list: DraggableItem[]): DraggableItem[] {
     return list.filter((item) =>
-      item.content.toLowerCase().includes(this.searchValue.toLowerCase())
+      item.content.toLowerCase().includes(this.searchValue.toLowerCase()),
     );
   }
 
   getList(
     originalList: DraggableItem[],
-    filteredList: DraggableItem[]
+    filteredList: DraggableItem[],
   ): DraggableItem[] {
     return this.searchValue.trim() === '' ? originalList : filteredList;
   }
@@ -1078,7 +1079,7 @@ export class DesignerComponent
     const found = this.insertAfterId(
       this.draggableListRight,
       afterObjectId,
-      this.copiedList
+      this.copiedList,
     );
 
     if (!found) {
@@ -1101,7 +1102,7 @@ export class DesignerComponent
   insertAfterId(
     list: any[],
     afterObjectId: string,
-    copiedList: any[]
+    copiedList: any[],
   ): boolean {
     for (let i = 0; i < list.length; i++) {
       if (list[i].id === afterObjectId) {
@@ -1111,7 +1112,7 @@ export class DesignerComponent
         const found = this.insertAfterId(
           list[i].children,
           afterObjectId,
-          copiedList
+          copiedList,
         );
         if (found) {
           return true;
@@ -1336,7 +1337,7 @@ export class DesignerComponent
     if (this.previewWindow) {
       this.previewWindow.postMessage(
         { type: 'UPDATE_CONTENT', content: manContent },
-        '*'
+        '*',
       );
     }
   }
@@ -1345,6 +1346,28 @@ export class DesignerComponent
     if (this.previewWindow) {
       this.previewWindow.close();
     }
+  }
+
+  openWebPreview() {
+    if (!this.screenId) {
+      this.msgService.add({
+        severity: 'info',
+        summary: 'Info',
+        detail: 'No Page Found.',
+      });
+      return;
+    }
+    const div = this.el.nativeElement.querySelector('#downloadable-div');
+    if (div == null) {
+      this.msgService.add({
+        severity: 'info',
+        summary: 'Info',
+        detail: 'No Preview available for an empty page.',
+      });
+      return;
+    }
+
+    this.router.navigate([`/builder/web-preview/${this.screenId}`]);
   }
 
   openMobilePreview() {
@@ -1438,7 +1461,7 @@ export class DesignerComponent
   searchAssets() {
     if (this.searchQuery) {
       this.filteredAssets = this.allAssets.filter((asset) =>
-        asset.fileName?.toLowerCase().includes(this.searchQuery.toLowerCase())
+        asset.fileName?.toLowerCase().includes(this.searchQuery.toLowerCase()),
       );
     } else {
       this.filteredAssets = this.allAssets;
@@ -1479,11 +1502,11 @@ export class DesignerComponent
     this.selectedParams.push({});
   }
 
-  allPageParams !: PageParam[];
+  allPageParams!: PageParam[];
   async SaveByApplication(applicationId: any) {
     this.allPageParams = [];
     console.log(this.selectedParams.length);
-    
+
     for (let index = 0; index < this.selectedParams.length; index++) {
       try {
         const pageParam = this.selectedParams[index];
@@ -1494,20 +1517,20 @@ export class DesignerComponent
         console.log(err);
       }
     }
-  
+
     if (this.allPageParams.length === this.selectedParams.length) {
       console.log(this.allPageParams);
       this.saveScreenByApplication(applicationId);
     }
   }
-  
+
   saveScreenByApplication(applicationId: any) {
     this.form.value['selectedParams'] = this.allPageParams;
     const formData = this.form.value;
     formData.application = { ...formData.application, id: applicationId };
-  
+
     console.log(formData);
-    this.search = '' ;
+    this.search = '';
     if (!formData.id) {
       this.dataService.createData(formData).then((res: any) => {
         if (res) {
@@ -1517,7 +1540,7 @@ export class DesignerComponent
             detail: this.componentName + ' created',
             summary: this.componentName + ' created',
           });
-          this.search = '' ;
+          this.search = '';
           this.getAllDataById(applicationId);
         }
       });
@@ -1530,11 +1553,10 @@ export class DesignerComponent
             detail: this.componentName + ' updated',
             summary: this.componentName + ' updated',
           });
-          this.search = '' ;
+          this.search = '';
           this.getAllDataById(applicationId);
         }
       });
     }
   }
-
 }

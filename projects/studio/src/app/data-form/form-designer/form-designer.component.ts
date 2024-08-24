@@ -1,4 +1,10 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from '@splenta/vezo';
@@ -556,7 +562,7 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
     private microserviceService: MicroserviceService,
     private applicationService: ApplicationService,
     private mediaService: MediaService,
-    private layoutService: LayoutService
+    private layoutService: LayoutService,
   ) {
     super(formService, messageService);
 
@@ -607,7 +613,6 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
   getComponentData() {
     this.loading = true;
     this.getAllDataById(this.currentApplication.id);
-    console.log(this.data);
     this.loading = false;
 
     this.microserviceService.getAllData().then((res: any) => {
@@ -637,7 +642,7 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
 
     if (this.data) {
       return this.data.sort((a: any, b: any) =>
-        a?.formName.localeCompare(b?.formName)
+        a?.formName.localeCompare(b?.formName),
       );
     } else {
       return [];
@@ -667,7 +672,7 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
     // Old Code
     this.loading = true;
     this.formId = this.route.snapshot.paramMap.get('id');
-    if (this.formId !== 'null') {
+    if (this.formId !== null) {
       this.formService
         .getData({ id: this.formId })
         .then((res: any) => {
@@ -683,7 +688,7 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
           if (this.formData) {
             var filterStr = FilterBuilder.equal(
               'collection.id',
-              this.formData?.collection?.id!
+              this.formData?.collection?.id!,
             );
             this.fieldService
               .getAllData(undefined, filterStr)
@@ -701,12 +706,12 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
           console.error('Error fetching data:', error);
           this.activeItem = null;
           this.formId = null;
-          this.router.navigate(['/builder/forms/designer/' + null]);
+          this.router.navigate(['/builder/forms/designer']);
         });
     } else {
       this.activeItem = null;
       this.formId = null;
-      this.router.navigate(['/builder/forms/designer/' + null]);
+      // this.router.navigate(['/builder/forms/designer/' + null]);
       console.log('no active component found');
       this.loading = false;
     }
@@ -964,26 +969,26 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
       this.filteredDraggableListLeftPE = [...this.draggableListLeftPE];
     } else {
       this.filteredDraggableListLeftVE = this.filterList(
-        this.draggableListLeftVE
+        this.draggableListLeftVE,
       );
       this.filteredDraggableListLeftLE = this.filterList(
-        this.draggableListLeftLE
+        this.draggableListLeftLE,
       );
       this.filteredDraggableListLeftPE = this.filterList(
-        this.draggableListLeftPE
+        this.draggableListLeftPE,
       );
     }
   }
 
   filterList(list: DraggableItem[]): DraggableItem[] {
     return list.filter((item) =>
-      item.name.toLowerCase().includes(this.searchValue.toLowerCase())
+      item.name.toLowerCase().includes(this.searchValue.toLowerCase()),
     );
   }
 
   getList(
     originalList: DraggableItem[],
-    filteredList: DraggableItem[]
+    filteredList: DraggableItem[],
   ): DraggableItem[] {
     return this.searchValue.trim() === '' ? originalList : filteredList;
   }
@@ -991,17 +996,21 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
   //---------- Zoom and Screen Resize code from here----------------------------------------------------//
   @ViewChild('parent') parent!: ElementRef;
 
-  //childHeight = 500;
+  @ViewChild('dndContainer') dndContainer!: ElementRef;
+
+  @ViewChild('dndList') dndList!: ElementRef;
+
+  childHeight = 650;
   childWidth = 700; // giving default width as 700 to our component
   zoom = 1;
 
   get childStyles() {
     return {
-      // height: `${this.childHeight}px`,
+      height: `${this.childHeight}px`,
       // height:'auto'+50,
-      width: `${this.childWidth ? this.childWidth : 700}px`,
+      // width: `${this.childWidth ? this.childWidth : 700}px`,
       transform: `scale(${this.zoom})`,
-      transformOrigin: 'top center',
+      transformOrigin: 'top left',
     };
   }
 
@@ -1019,8 +1028,16 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
 
   updateChildStyles() {
     if (this.parent) {
+      this.dndList.nativeElement.style.width =
+        this.dndContainer.nativeElement.offsetWidth;
       this.parent.nativeElement.scrollTo(0, 0); // Reset scroll position to top-left
     }
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    console.log(this.dndContainer.nativeElement.offsetWidth);
+    // this.dndList.nativeElement.style.width = event.target.innerWidth;
   }
 
   // Code for copy component ---------------------------------------------------
@@ -1075,7 +1092,7 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
     const found = this.insertAfterId(
       this.draggableListRight,
       afterObjectId,
-      this.copiedList
+      this.copiedList,
     );
 
     if (!found) {
@@ -1098,7 +1115,7 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
   insertAfterId(
     list: any[],
     afterObjectId: string,
-    copiedList: any[]
+    copiedList: any[],
   ): boolean {
     for (let i = 0; i < list.length; i++) {
       if (list[i].id === afterObjectId) {
@@ -1108,7 +1125,7 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
         const found = this.insertAfterId(
           list[i].children,
           afterObjectId,
-          copiedList
+          copiedList,
         );
         if (found) {
           return true;
@@ -1159,7 +1176,7 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
     this.form.patchValue({ collection: null });
     var filterStr = FilterBuilder.equal(
       'microService.id',
-      this.form.value.microService.id
+      this.form.value.microService.id,
     );
     this.collectionService.getAllData(undefined, filterStr).then((res: any) => {
       if (res) {
@@ -1182,7 +1199,7 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
   searchAssets() {
     if (this.searchQuery) {
       this.filteredAssets = this.allAssets.filter((asset) =>
-        asset.fileName?.toLowerCase().includes(this.searchQuery.toLowerCase())
+        asset.fileName?.toLowerCase().includes(this.searchQuery.toLowerCase()),
       );
     } else {
       this.filteredAssets = this.allAssets;

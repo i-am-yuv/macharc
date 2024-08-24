@@ -22,14 +22,14 @@
               <div class="ml-2 flex-grow">Pages</div>
               <vezo-icon icon="arrowRight" className="w-4"></vezo-icon>
             </li>
-            <!-- <li
+            <li
               class="flex place-items-center cursor-pointer"
               [routerLink]="['/actions']"
             >
               <vezo-icon icon="cog6Tooth" className="w-4"></vezo-icon>
               <div class="ml-2 flex-grow">Actions</div>
               <vezo-icon icon="arrowRight" className="w-4"></vezo-icon>
-            </li> -->
+            </li>
             <li
               class="flex place-items-center cursor-pointer"
               (click)="goToApplicationComponents(application)"
@@ -44,7 +44,8 @@
           <vezo-button
             icon="cpuChip"
             className="bg-blue-500 hover:bg-blue-600 text-white mr-2"
-            label="MANAGE" (click)="manageApplication( application)"
+            label="MANAGE"
+            (click)="manageApplication(application)"
           ></vezo-button>
           <!-- <vezo-button icon="star" className="bg-blue-700 hover:bg-blue-900 text-white"
                         label="Set Default"></vezo-button> -->
