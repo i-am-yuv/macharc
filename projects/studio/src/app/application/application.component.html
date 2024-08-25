@@ -29,7 +29,7 @@
             </li>
             <li
               class="flex place-items-center cursor-pointer"
-              [routerLink]="['/actions']"
+              (click)="goToApplicationActions(application)"
             >
               <vezo-icon icon="cog6Tooth" className="w-4"></vezo-icon>
               <div class="ml-2 flex-grow">Actions</div>

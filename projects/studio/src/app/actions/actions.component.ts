@@ -13,6 +13,8 @@ import {
   StepsConfiguration,
   ToolboxConfiguration,
 } from 'sequential-workflow-designer';
+import { Application } from '../application/application';
+import { ApplicationService } from '../application/application.service';
 import {
   CollectionObj,
   Condition,
@@ -22,6 +24,7 @@ import {
 } from '../business-logic/business-logic';
 import { BusinessLogicService } from '../business-logic/business-logic.service';
 import { Collection } from '../collection/collection';
+import { CollectionService } from '../collection/collection.service';
 import { Endpoint } from '../collection/endpoints/endpoint';
 import { EndpointService } from '../collection/endpoints/endpoint.service';
 import { DataFormService } from '../data-form/data-form.service';
@@ -219,7 +222,6 @@ export class ActionsComponent extends GenericComponent implements OnInit {
   actionId: any;
   currentAction: Actions = {};
   actionData: Actions = {};
-  currentMicroservice: MicroService = {};
 
   private designer?: Designer;
   projectId: any;
@@ -298,6 +300,9 @@ export class ActionsComponent extends GenericComponent implements OnInit {
     iconUrlProvider: (componentType, type) => `./assets/${type}.svg`,
     validator: () => true,
   };
+  currentApplication: Application = {};
+  requestDto: any;
+  responseDto: any;
 
   constructor(
     private businessLogicService: BusinessLogicService,
@@ -313,6 +318,9 @@ export class ActionsComponent extends GenericComponent implements OnInit {
     private fieldsService: FieldService,
     private projectService: ProjectService,
     private endpointService: EndpointService,
+    private applicationService: ApplicationService,
+    private collectionService: CollectionService,
+    private screensService: ScreenService,
   ) {
     super(actionService, msgService);
     this.getAllMicroSerivices();
@@ -320,7 +328,7 @@ export class ActionsComponent extends GenericComponent implements OnInit {
       id: '',
       actionName: ['', Validators.required],
       actionType: ['', Validators.required],
-      microService: [''],
+      application: [{}],
       actionTasks: [''],
     });
   }
@@ -328,6 +336,7 @@ export class ActionsComponent extends GenericComponent implements OnInit {
   getAllMicroSerivices() {
     this.projectService.getActiveProject().subscribe((val) => {
       this.projectId = val?.id;
+      console.log('val is' + JSON.stringify(val));
       if (this.projectId) {
         var filterStr = FilterBuilder.equal('project.id', this.projectId);
         this.search = filterStr;
@@ -341,33 +350,18 @@ export class ActionsComponent extends GenericComponent implements OnInit {
   }
 
   public ngOnInit() {
-    //   this.actionId = this.route.snapshot.paramMap.get('id');
+    this.actionId = this.route.snapshot.paramMap.get('id');
 
-    this.microserivce.getActiveMicroservice().subscribe((val: any) => {
-      this.currentMicroservice = val;
-      this.getActionsData();
+    this.applicationService.getActiveApplication().subscribe((app: any) => {
+      this.currentApplication = app;
+      this.getAllActions(app);
+      this.getAllScreens(app);
     });
-
-    // Code to get All the screens by Microservices Id
-    const filterStr = FilterBuilder.equal(
-      'microService.id',
-      this.currentMicroservice.id + '',
-    );
-    this.search = filterStr;
-    let pagination!: Pagination;
-
-    this.screenService
-      .getAllData(pagination, this.search)
-      .then((res: any) => {
-        this.allScreens = res.content;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
+    if (this.actionId) {
+      this.getActionContent();
+    }
     this.layoutService.checkPadding(false);
 
-    this.updateDefinitionJSON();
     // this.businessLogicService.getData({ id: this.wfId }).then((res: any) => {
     //   if (res) {
     //     this.wf = res;
@@ -383,53 +377,33 @@ export class ActionsComponent extends GenericComponent implements OnInit {
     // });
   }
 
-  getActionsData() {
-    this.actionService
-      .getAllActionsByMsId(this.currentMicroservice.id)
-      .then((res) => {
-        this.data = res;
-        this.getActionContent();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-
   getActionContent() {
     this.actionId = this.route.snapshot.paramMap.get('id');
+    console.log('called ' + this.actionId);
+    if (this.actionId !== null) {
+      this.actionService.getData({ id: this.actionId }).then((res: any) => {
+        this.currentAction = res;
+        this.dataDef = res.taskDefinition;
+        console.log(this.dataDef);
 
-    if (this.actionId !== 'null') {
-      this.actionService
-        .getData({ id: this.actionId })
-        .then((res: any) => {
-          this.currentAction = res;
-          this.dataDef = res.taskDefinition;
-          console.log(this.dataDef);
-
-          if (
-            this.dataDef !== null &&
-            this.dataDef !== undefined &&
-            this.dataDef !== 'null'
-          ) {
-            console.log('Working');
-            this.definition = JSON.parse(this.dataDef);
-            this.updateDefinitionJSON();
-            this.populateEditorFormsData();
-          } else {
-            console.log('Not working');
-            // this.definition = JSON.parse(this.dataDef!);
-            this.definition = createDefinition();
-            this.updateDefinitionJSON();
-            this.populateEditorFormsData();
-          }
-          this.getAllModels();
-          this.getAllPojos();
-        })
-        .catch((error) => {
-          console.error('Error fetching data:', error);
-          this.currentAction = {};
-          this.actionId = null;
-        });
+        if (
+          this.dataDef !== null &&
+          this.dataDef !== undefined &&
+          this.dataDef !== '' &&
+          this.dataDef !== 'null'
+        ) {
+          console.log('Working');
+          this.definition = JSON.parse(this.dataDef);
+          this.updateDefinitionJSON();
+          this.populateEditorFormsData();
+        } else {
+          console.log('Not working');
+          // this.definition = JSON.parse(this.dataDef!);
+          this.definition = createDefinition();
+          this.updateDefinitionJSON();
+          this.populateEditorFormsData();
+        }
+      });
     } else {
       this.currentAction = {};
       this.actionId = null;
@@ -452,10 +426,10 @@ export class ActionsComponent extends GenericComponent implements OnInit {
   openCurrentAction(action: any) {
     // this.actionId = action.id;
     this.currentAction = action;
-    this.router.navigate(['/actions/' + action.id]);
-    setTimeout(() => {
-      this.getActionContent();
-    }, 1000);
+    this.router.navigate(['/builder/actions/designer/' + action.id]);
+    // setTimeout(() => {
+    //   this.getActionContent();
+    // }, 1000);
   }
 
   getThisAction(actionId: any) {
@@ -492,15 +466,15 @@ export class ActionsComponent extends GenericComponent implements OnInit {
   }
 
   override preSave() {
-    if (this.currentMicroservice !== null) {
-      this.form.value.microService = this.currentMicroservice;
+    if (this.currentApplication !== null) {
+      this.form.value.application = this.currentApplication;
     } else {
-      this.form.value.microService = null;
+      this.form.value.application = null;
     }
   }
 
   override postSave() {
-    this.getActionsData();
+    this.getAllActions(this.currentApplication);
   }
 
   // Sqd-desinger code same like services
@@ -597,6 +571,44 @@ export class ActionsComponent extends GenericComponent implements OnInit {
     };
   }
 
+  navigateTo(
+    id: null,
+    type: string,
+    name: string,
+    properties: any | undefined,
+  ) {
+    return {
+      id,
+      componentType: 'task',
+      type,
+      name,
+      properties: properties || {
+        link: '',
+        screen: {},
+        target: '_self',
+      },
+    };
+  }
+
+  createNotification(
+    id: null,
+    type: string,
+    name: string,
+    properties: any | undefined,
+  ) {
+    return {
+      id,
+      componentType: 'task',
+      type,
+      name,
+      properties: properties || {
+        message: '',
+        type: '',
+        details: '',
+      },
+    };
+  }
+
   createSaveDataTaskStep(
     id: null,
     type: string,
@@ -642,7 +654,7 @@ export class ActionsComponent extends GenericComponent implements OnInit {
         schedule: 0,
         model: name,
         queryType: '',
-        customQuery: 'null',
+        customQuery: null,
       },
     };
   }
@@ -693,10 +705,18 @@ export class ActionsComponent extends GenericComponent implements OnInit {
       steps: [
         // this.createImportStep(null, 'import', 'Import Models', null),
         this.createTaskStepAPI(null, 'callWebclient', 'Call API', null),
-        this.createFetchDataStep(null, 'getDsData', 'Navigate To', null),
+
+        this.createSaveDataTaskStep(
+          null,
+          'saveToVariable',
+          'Assign to variable',
+          null,
+        ),
+        this.navigateTo(null, 'navigateTo', 'Navigate To', null),
         this.createIfStep(null, [], []),
         this.createContainerStep(null, []),
-        this.createSaveDataTaskStep(null, 'saveDsData', 'Save data', null),
+        this.createNotification(null, 'notification', 'Notification', null),
+        // this.createSaveDataTaskStep(null, 'saveDsData', 'Save data', null),
         // this.createSetResponseDataStep(
         //   null,
         //   'import',
@@ -708,7 +728,7 @@ export class ActionsComponent extends GenericComponent implements OnInit {
   }
 
   saveDefinition() {
-    console.log(this.currentAction);
+    // console.log(this.currentAction);
     this.currentAction.taskDefinition = this.definitionJSON;
     console.log(this.currentAction);
     this.actionService.updateData(this.currentAction).then((res: any) => {
@@ -752,6 +772,7 @@ export class ActionsComponent extends GenericComponent implements OnInit {
   selectedParams: InputParam[] | any = [{ dataType: '', varName: '' }];
 
   modelSelectedAPI: any;
+  selectedMicroserviceAPI: any;
   currentEndpointByModel: any;
   selectedModelForDtoField: Field[] = [];
   selectedModelForsetResField: Field[] = [];
@@ -871,7 +892,7 @@ export class ActionsComponent extends GenericComponent implements OnInit {
         if (currDefination.id == editor.step.id) {
           console.log(currDefination);
           this.modelSelectedAPI = currDefination.properties['collection'];
-          this.getTheReqDtos(this.modelSelectedAPI);
+          this.getTheDtos(this.modelSelectedAPI);
 
           this.currentEndpointByModel = currDefination.properties['endpoint'];
           this.endpointChange(this.currentEndpointByModel);
@@ -945,9 +966,40 @@ export class ActionsComponent extends GenericComponent implements OnInit {
     // to handle this by partha
   }
 
+  getAllScreens(app: Application) {
+    const filterStr = FilterBuilder.equal('application.id', app.id + '');
+    this.search = filterStr;
+    let pagination!: Pagination;
+
+    this.screenService
+      .getAllData(pagination, this.search)
+      .then((res: any) => {
+        this.allScreens = res.content;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  getAllActions(app: Application) {
+    // Code to get All the screens by Application Id
+    const filterStr = FilterBuilder.equal('application.id', app.id + '');
+    this.search = filterStr;
+    let pagination!: Pagination;
+
+    this.actionService
+      .getAllData(pagination, this.search)
+      .then((res: any) => {
+        this.data = res.content;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   getAllModels() {
     this.businessLogicService
-      .getModelsByMicroserivce(this.currentAction.microService?.id!)
+      .getModelsByMicroserivce(this.selectedMicroserviceAPI?.id!)
       .then((res: any) => {
         this.allModels = res;
       })
@@ -1066,8 +1118,9 @@ export class ActionsComponent extends GenericComponent implements OnInit {
   mappedObjList: any;
   openNavigateEditor(editor: any) {
     this.navigateEditor = editor;
+    console.log(editor.step.properties?.screen);
     // Code for data population
-    if (editor.step.properties?.screen == null) {
+    if (editor.step.properties?.screen) {
       console.log('New');
       this.currentScreenToNavigate = {};
       this.navigateToMappedData = [];
@@ -1353,8 +1406,16 @@ export class ActionsComponent extends GenericComponent implements OnInit {
     return fieldName;
   }
 
-  getTheReqDtos(selectedModel: Collection) {
+  getTheDtos(selectedModel: Collection) {
     console.log('firstCall');
+    this.requestDto = {};
+    this.responseDto = {};
+    this.collectionService.getRequestDto(selectedModel.id).then((res: any) => {
+      this.requestDto = res;
+    });
+    this.collectionService.getResponseDto(selectedModel.id).then((res: any) => {
+      this.responseDto = res;
+    });
     this.endpointService
       .getAllEndpointsByCollection(selectedModel.id)
       .then((res: any) => {

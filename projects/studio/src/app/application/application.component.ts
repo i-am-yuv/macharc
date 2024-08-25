@@ -49,10 +49,13 @@ export class ApplicationComponent extends GenericComponent {
 
   goToApplicationComponents(application: any) {
     this.applicationService.setActiveApplication(application);
-    this.router.navigate(['/builder/forms/designer']);
+    this.router.navigate(['/builder/components/designer']);
   }
 
-  goToApplicationActions() {}
+  goToApplicationActions(application: any) {
+    this.applicationService.setActiveApplication(application);
+    this.router.navigate(['/builder/actions/designer']);
+  }
 
   manageApplication(application: any) {
     this.applicationService.setActiveApplication(application);

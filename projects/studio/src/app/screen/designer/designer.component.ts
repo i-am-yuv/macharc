@@ -1002,7 +1002,7 @@ export class DesignerComponent
       // height:'auto'+50,
       width: `${this.childWidth ? this.childWidth : 700}px`,
       transform: `scale(${this.zoom})`,
-      transformOrigin: 'top center',
+      transformOrigin: 'top left',
     };
   }
 

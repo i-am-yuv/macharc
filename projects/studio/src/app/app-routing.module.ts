@@ -214,7 +214,7 @@ const routes: Routes = [
   },
   // { path: 'actions', component: ActionsComponent },
   {
-    path: 'actions',
+    path: 'builder/actions/designer',
     // component: LayoutComponent,
     children: [
       {

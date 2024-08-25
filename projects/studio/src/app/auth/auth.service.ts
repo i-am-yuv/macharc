@@ -13,11 +13,11 @@ export class AuthService {
   constructor(
     private router: Router,
     private msg: MessageService,
-    private http: HttpClient
+    private http: HttpClient,
   ) {}
 
   redirectToLogin() {
-    sessionStorage.clear();
+    localStorage.clear();
     this.msg.add({
       severity: 'error',
       summary: 'Session Expired',
@@ -26,24 +26,24 @@ export class AuthService {
     this.router.navigate(['/login']);
   }
   redirectInvalid() {
-    sessionStorage.clear();
+    localStorage.clear();
     this.router.navigate(['/login']);
   }
   getUserName(): string {
-    const token = sessionStorage.getItem('token');
+    const token = localStorage.getItem('token');
     let jwt: any = atob(token!.split('.')[1]);
     jwt = JSON.parse(jwt);
     return jwt.sub;
   }
   getAuthStatus() {
-    const token = sessionStorage.getItem('token');
+    const token = localStorage.getItem('token');
     let status = false;
     if (token) status = true;
     return status;
   }
 
   getRoles() {
-    const token = sessionStorage.getItem('token');
+    const token = localStorage.getItem('token');
     let jwt: any = atob(token!.split('.')[1]);
     jwt = JSON.parse(jwt);
     // console.log(jwt.roles);
@@ -52,15 +52,15 @@ export class AuthService {
 
   renewRefreshToken() {
     var url = this.apiurl + '/auth/refreshtoken';
-    sessionStorage.setItem('token', '');
-    const refreshtoken = sessionStorage.getItem('refreshToken');
+    localStorage.setItem('token', '');
+    const refreshtoken = localStorage.getItem('refreshToken');
     var data = { refreshToken: refreshtoken };
     // const refreshdata = await lastValueFrom(this.http.post<any>(url, data));
     return this.http.post<any>(url, data);
   }
 
   getAuthToken() {
-    const token = sessionStorage.getItem('token');
+    const token = localStorage.getItem('token');
     return token;
   }
 }
