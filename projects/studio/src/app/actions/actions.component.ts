@@ -766,6 +766,8 @@ export class ActionsComponent extends GenericComponent implements OnInit {
   modelSelectedAPI: any;
   currentEndpointByModel: any;
   selectedModelForDtoField: Field[] = [];
+  manualEntryAPIStates: boolean[] = []; 
+
   selectedModelForsetResField: Field[] = [];
   paramsForFetchData: any;
   loopFirstValue: any;
@@ -781,6 +783,7 @@ export class ActionsComponent extends GenericComponent implements OnInit {
   navigateToSecondValue: any;
 
   navigateToMappedData: Collection[] = [];
+  manualEntryStates: boolean[] = []; 
 
 
   openConditionEditor(editor: any) {
@@ -1091,6 +1094,7 @@ export class ActionsComponent extends GenericComponent implements OnInit {
       this.currentScreenToNavigate = {};
       this.navigateToMappedData = [];
       this.finalMappedParamsList = [];
+      this.manualEntryStates = [];
     }
     else {
       console.log('Old');
@@ -1102,6 +1106,13 @@ export class ActionsComponent extends GenericComponent implements OnInit {
       for (var i = 0; i < this.mappedObjList.length; i++) {
         var oneObj = this.mappedObjList[i];
         this.navigateToMappedData.push(oneObj.mappedValue);
+        if( oneObj.mappedValue?.id == null )
+        {
+          this.manualEntryStates[i] = true;
+        }
+        else{
+          this.manualEntryStates[i] = false;
+        }
       }
     }
     this.navigatePopup = !this.navigatePopup;
@@ -1128,42 +1139,39 @@ export class ActionsComponent extends GenericComponent implements OnInit {
     context.notifyPropertiesChanged();
   }
 
-  handleValueChangesNavigate(e: any, pageParam: PageParam) {
+  handleValueChangesNavigate(e: any, pageParam: PageParam, index: number) {
     console.log(e);
-    if (e == 'manual') {
-      this.navigateToManualEntry = true;
+    if (e === 'manual') {
+      this.manualEntryStates[index] = true;
     } else {
-      console.log(this.finalMappedParamsList);
+      this.manualEntryStates[index] = false;
       const mappedObj = this.finalMappedParamsList.find((obj: any) => obj?.pageParam.id === pageParam.id);
-      if (mappedObj !== null && mappedObj !== undefined) {
+      if (mappedObj) {
         mappedObj['mappedValue'] = e;
-      }
-      else {
-        var newObj = {
+      } else {
+        this.finalMappedParamsList.push({
           pageParam: pageParam,
-          mappedValue: e
-        }
-        this.finalMappedParamsList.push(newObj);
+          mappedValue: e,
+        });
       }
     }
   }
 
 
-  handleManualValueChangesNavigate(e: any, pageParam: PageParam) {
-    console.log(e);
-   
-      console.log(this.finalMappedParamsList);
-      const mappedObj = this.finalMappedParamsList.find((obj: any) => obj?.pageParam.id === pageParam.id);
-      if (mappedObj !== null && mappedObj !== undefined) {
-        mappedObj['mappedValue'] = e;
-      }
-      else {
-        var newObj = {
-          pageParam: pageParam,
-          mappedValue: e
-        }
-        this.finalMappedParamsList.push(newObj);
-      }
+  handleManualValueChangesNavigate(e: any, pageParam: PageParam, index: number) {
+    const mappedObj = this.finalMappedParamsList.find((obj: any) => obj?.pageParam.id === pageParam.id);
+    if (mappedObj) {
+      mappedObj['mappedValue'] = e;
+    } else {
+      this.finalMappedParamsList.push({
+        pageParam: pageParam,
+        mappedValue: e,
+      });
+    }
+  }
+
+  toggleManualEntry(index: number) {
+    this.manualEntryStates[index] = !this.manualEntryStates[index];
   }
 
   // Loop Code Start

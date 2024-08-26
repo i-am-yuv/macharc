@@ -367,15 +367,14 @@ Old Action Code ends here.......................................................
       optionLabel="screenName" [style]="{ width: '100%' }" (ngModelChange)="selectTheScreen($event)">
     </p-dropdown>
 
-    <div *ngIf="isObjectEmpty(currentScreenToNavigate) == false "
-      class="mt-4">
+    <div *ngIf="isObjectEmpty(currentScreenToNavigate) == false " class="mt-4">
       <div class="flex justify-between items-center w-full">
         <div class="w-1/2 text-lg text-gray-500">Required Page Parameter</div>
         <div class="w-1/2  text-lg text-gray-500 flex justify-start items-center">Mapped Data</div>
       </div>
 
       <div class="mt-2">
-        <div *ngFor="let pageParam of currentScreenToNavigate.selectedParams ;  index as i">
+        <!-- <div *ngFor="let pageParam of currentScreenToNavigate.selectedParams ;  index as i">
           <div class="flex justify-between items-center my-2 w-full">
 
             <div class="text-lg w-1/2">{{pageParam.varName}} <span class="text-sm">({{pageParam.dataType}})</span></div>
@@ -403,7 +402,39 @@ Old Action Code ends here.......................................................
 
           </div>
           <hr>
+        </div> -->
+
+        <div *ngFor="let pageParam of currentScreenToNavigate.selectedParams; index as i">
+          <div class="flex justify-between items-center my-2 w-full">
+            <div class="text-lg w-1/2">
+              {{pageParam.varName}} <span class="text-sm">({{pageParam.dataType}})</span>
+            </div>
+
+            <div class="w-1/2">
+              <p-dropdown *ngIf="!manualEntryStates[i]" [options]="getDropdownOptions()"
+                [(ngModel)]="navigateToMappedData[i]" placeholder="Choose Fields"
+                (onChange)="handleValueChangesNavigate($event.value, pageParam, i)" [group]="true" [showClear]="true">
+                <ng-template let-group pTemplate="group">
+                  <div class="flex gap-2 justify-start items-center">
+                    <img src="assets/collection_L.svg" style="width: 16px; height: auto" />
+                    <span>{{ group.label }}</span>
+                  </div>
+                </ng-template>
+              </p-dropdown>
+
+              <div *ngIf="manualEntryStates[i]" class="border p-2 rounded flex justify-between items-center gap-1">
+                <input [(ngModel)]="navigateToMappedData[i]"
+                  (ngModelChange)="handleManualValueChangesNavigate($event, pageParam, i)"
+                  placeholder="Enter URL manually" />
+                <div class="cursor-pointer" (click)="toggleManualEntry(i)">
+                  X
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr>
         </div>
+
       </div>
     </div>
 
