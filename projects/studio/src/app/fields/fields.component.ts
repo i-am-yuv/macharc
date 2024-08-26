@@ -72,7 +72,7 @@ export class FieldsComponent extends GenericComponent implements OnInit {
   ) {
     super(fieldService, messageService);
     this.collectionId = this.route.snapshot.paramMap.get('id');
-    // console.log(this.collectionId);
+
     this.form = this.fb.group({
       id: '',
       fieldName: [
@@ -168,7 +168,6 @@ export class FieldsComponent extends GenericComponent implements OnInit {
             this.showGenerateDtoModel = false;
           })
           .catch((err) => {
-            console.log('Inside Error');
             this.msgService.add({
               severity: 'success',
               summary: 'Success',
@@ -198,12 +197,10 @@ export class FieldsComponent extends GenericComponent implements OnInit {
               detail: 'Request DTO Generated',
             });
             this.getAllData();
-            console.log('Inside Success');
+
             this.showGenerateDtoModel = false;
           })
           .catch((err) => {
-            console.log('Inside Error');
-            console.log(err);
             this.msgService.add({
               severity: 'success',
               summary: 'Success',

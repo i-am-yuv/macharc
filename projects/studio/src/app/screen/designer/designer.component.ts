@@ -656,6 +656,7 @@ export class DesignerComponent
       microService: [],
       application: [],
       process: [],
+      enableAuth: [true],
     });
   }
   public ngOnInit() {
@@ -714,7 +715,7 @@ export class DesignerComponent
     } else {
       this.isParamvalue = 'no';
     }
-    console.log(ds);
+
     this.getCollectionItems();
   }
 
@@ -751,7 +752,6 @@ export class DesignerComponent
       this.screenService
         .getData({ id: this.screenId })
         .then((res: any) => {
-          // console.log(res);
           this.screenData = res;
           if (res.screenDefinition) {
             this.draggableListRight = JSON.parse(res.screenDefinition);
@@ -894,13 +894,12 @@ export class DesignerComponent
 
   handleClick(event: MouseEvent, item: any) {
     event.stopPropagation();
-    console.log(event);
-    console.log(item);
+
     this.activeItem = item;
   }
   handleClickForm(event: MouseEvent, child: any, item: any) {
     event.stopPropagation();
-    console.log(item);
+
     this.activeItem = item;
   }
 
@@ -945,7 +944,6 @@ export class DesignerComponent
 
   onItemReceived(item: any) {
     this.activeItem = item;
-    console.log('Item received from child:', item);
   }
 
   searchValue: string = '';
@@ -1062,7 +1060,6 @@ export class DesignerComponent
     this.draggableListRight = [...this.draggableListRight, ...this.copiedList];
     this.widgetTree = this.draggableListRight;
 
-    // console.log('after pasting');
     this.msgService.add({
       severity: 'success',
       summary: 'Paste',
@@ -1141,7 +1138,7 @@ export class DesignerComponent
   copySubList: any[] = []; // Initialize the list as empty
   onItemReceivedCopy(item: any) {
     //this.activeItem = item;
-    console.log(item);
+
     const newItem = { ...item, id: this.generateUniqueId() };
 
     this.copySubList = [];
@@ -1150,7 +1147,6 @@ export class DesignerComponent
   }
 
   onItemReceivedPaste(item: any) {
-    console.log(item);
     this.pasteThisPageInside(item.id);
   }
 
@@ -1265,35 +1261,6 @@ export class DesignerComponent
   private previewWindow: Window | null = null;
 
   previewInWeb() {
-    // const manContent = document.querySelector('app-page-preview')?.innerHTML;
-    // const manStyles = Array.from(document.styleSheets)
-    //   .map((sheet) => {
-    //     try {
-    //       return Array.from(sheet.cssRules || [])
-    //         .map((rule) => rule.cssText)
-    //         .join('');
-    //     } catch (e) {
-    //       console.warn('Could not read stylesheet:', sheet, e);
-    //       return '';
-    //     }
-    //   })
-    //   .join('');
-
-    // const newTab = window.open('', 'preview');
-    // if (newTab) {
-    //   newTab.document.write(`
-    //     <html>
-    //       <head>
-    //         <style>${manStyles}</style>
-    //       </head>
-    //       <body>${manContent}</body>
-    //     </html>
-    //   `);
-    //   newTab.document.close();
-    // } else {
-    //   console.error('Failed to open new tab');
-    // }
-
     const manContent = document.querySelector('app-page-preview')?.innerHTML;
     const manStyles = Array.from(document.styleSheets)
       .map((sheet) => {
@@ -1475,12 +1442,9 @@ export class DesignerComponent
   sendThisAsset(asset: any) {
     this.imageURL = asset.url;
     this.selectAssetModel = false;
-    console.log(this.imageURL);
   }
 
   renderNewPage(screenDefination: any) {
-    console.log('Rendering new page');
-    console.log(screenDefination);
     if (screenDefination !== null) {
       this.draggableListRight = JSON.parse(screenDefination);
       setTimeout(() => {
@@ -1490,7 +1454,6 @@ export class DesignerComponent
   }
 
   deleteThisParams(index: any) {
-    console.log(index);
     if (index >= 0 && index < this.selectedParams.length) {
       this.selectedParams.splice(index, 1);
     } else {
@@ -1505,21 +1468,17 @@ export class DesignerComponent
   allPageParams!: PageParam[];
   async SaveByApplication(applicationId: any) {
     this.allPageParams = [];
-    console.log(this.selectedParams.length);
 
     for (let index = 0; index < this.selectedParams.length; index++) {
       try {
         const pageParam = this.selectedParams[index];
         const res = await this.screenService.createPageParams(pageParam);
-        console.log(res);
+
         this.allPageParams.push(res);
-      } catch (err) {
-        console.log(err);
-      }
+      } catch (err) {}
     }
 
     if (this.allPageParams.length === this.selectedParams.length) {
-      console.log(this.allPageParams);
       this.saveScreenByApplication(applicationId);
     }
   }
@@ -1529,7 +1488,6 @@ export class DesignerComponent
     const formData = this.form.value;
     formData.application = { ...formData.application, id: applicationId };
 
-    console.log(formData);
     this.search = '';
     if (!formData.id) {
       this.dataService.createData(formData).then((res: any) => {

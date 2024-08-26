@@ -37,7 +37,7 @@ export class EndpointsComponent extends GenericComponent implements OnInit {
       { type: 'DELETE', color: 'red' },
     ];
 
-    //console.log(colors.find((t) => t.type === type)?.color);
+    //
     return colors.find((t) => t.type === type)?.color;
   }
 
@@ -118,8 +118,6 @@ export class EndpointsComponent extends GenericComponent implements OnInit {
         // this.currentRequestDto =   ;
         this.requestDto.push(this.collection?.requestDto!);
         this.responseDto.push(this.collection?.responseDto!);
-
-        console.log(this.collection);
 
         // Now that we already got the Collection
         this.getAllServicesByMicroservices();
@@ -206,7 +204,7 @@ export class EndpointsComponent extends GenericComponent implements OnInit {
       this.saveData();
     } else {
       this.form.value.responseDto = null;
-      console.log(this.form.value);
+
       this.saveData();
     }
   }

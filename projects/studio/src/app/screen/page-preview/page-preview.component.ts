@@ -35,8 +35,8 @@ export class PagePreviewComponent implements OnInit {
     });
   }
   // renderNewPage(screenDefination: any) {
-  //   console.log('Rendering new page');
-  //   console.log(screenDefination);
+  //
+  //
   //   if (screenDefination !== null && screenDefination !== undefined) {
   //     this.draggableListRight = JSON.parse(screenDefination);
   //     setTimeout(() => {

@@ -638,7 +638,6 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
 
   getDataSorted() {
     // return this.data;
-    // console.log(this.data['content']);
 
     if (this.data) {
       return this.data.sort((a: any, b: any) =>
@@ -676,7 +675,6 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
       this.formService
         .getData({ id: this.formId })
         .then((res: any) => {
-          console.log(res);
           this.formData = res;
           if (res.formDefinition) {
             this.draggableListRight = JSON.parse(res.formDefinition);
@@ -712,7 +710,7 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
       this.activeItem = null;
       this.formId = null;
       // this.router.navigate(['/builder/forms/designer/' + null]);
-      console.log('no active component found');
+
       this.loading = false;
     }
 
@@ -784,8 +782,6 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
   }
 
   saveDefinition() {
-    // console.log('after Saving');
-    // console.log( this.draggableListRight);
     this.formData.formDefinition = JSON.stringify(this.draggableListRight);
     this.formService.updateData(this.formData).then((res: any) => {
       this.messageService.add({
@@ -892,8 +888,7 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
 
   handleClick(event: MouseEvent, item: any) {
     event.stopPropagation();
-    // console.log(item);
-    // console.log(item.name);
+
     this.activeItem = item;
   }
 
@@ -933,13 +928,12 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
 
   onItemReceived(item: any) {
     this.activeItem = item;
-    console.log('Item received from child:', item);
   }
 
   copySubList: any[] = []; // Initialize the list as empty
   onItemReceivedCopy(item: any) {
     //this.activeItem = item;
-    console.log(item);
+
     const newItem = { ...item, id: this.generateUniqueId() };
 
     this.copySubList = [];
@@ -948,7 +942,6 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
   }
 
   onItemReceivedPaste(item: any) {
-    console.log(item);
     this.pasteThisComponentInside(item.id);
   }
 
@@ -1036,7 +1029,6 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
-    console.log(this.dndContainer.nativeElement.offsetWidth);
     // this.dndList.nativeElement.style.width = event.target.innerWidth;
   }
 
@@ -1075,7 +1067,6 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
     this.draggableListRight = [...this.draggableListRight, ...this.copiedList];
     this.widgetTree = this.draggableListRight;
 
-    // console.log('after pasting');
     this.messageService.add({
       severity: 'success',
       summary: 'Paste',
@@ -1213,6 +1204,5 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
   sendThisAsset(asset: any) {
     this.imageURL = asset.url;
     this.selectAssetModel = false;
-    console.log(this.imageURL);
   }
 }

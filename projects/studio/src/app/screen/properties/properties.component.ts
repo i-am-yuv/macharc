@@ -55,7 +55,7 @@ export class PropertiesComponent extends GenericComponent implements OnChanges {
     private router: Router,
     private cdRef: ChangeDetectorRef,
     private screenService: ScreenService,
-    private applicationService: ApplicationService
+    private applicationService: ApplicationService,
   ) {
     super(screenService, messageService);
     this.ImageURL = null;
@@ -103,7 +103,7 @@ export class PropertiesComponent extends GenericComponent implements OnChanges {
   }
   deleteColumn() {
     var indexToDelete = this.props.data.cols.findIndex(
-      (t: any) => t.field === this.column.field
+      (t: any) => t.field === this.column.field,
     );
     if (indexToDelete > 0) {
       this.props.data.cols.splice(indexToDelete, 1);
@@ -112,9 +112,8 @@ export class PropertiesComponent extends GenericComponent implements OnChanges {
   }
   addColumn() {
     var indexToUpdate = this.props.data.cols.findIndex(
-      (t: any) => t.field === this.column.field
+      (t: any) => t.field === this.column.field,
     );
-    console.log(this.column);
 
     if (!this.column.heading) {
       this.messageService.add({
@@ -146,7 +145,6 @@ export class PropertiesComponent extends GenericComponent implements OnChanges {
     this.props.children = JSON.parse(this.formData.formDefinition);
     this.props.data.formId = this.formData.id;
     this.props.data.formName = this.formData.formName;
-    console.log(this.props.data);
   }
   getFields() {
     this.getCollectionFields.emit(this.props.data.collection.id);
@@ -168,7 +166,6 @@ export class PropertiesComponent extends GenericComponent implements OnChanges {
       }
       item.mappedData[element] = '[isMapped]'; // Set the value
     }
-    console.log(item);
   }
 
   // Function to handle changes to the ngModel
@@ -205,7 +202,7 @@ export class PropertiesComponent extends GenericComponent implements OnChanges {
     this.actualImageReceived = null;
     this.handleInputChange(
       'https://primefaces.org/cdn/primeng/images/galleria/galleria10.jpg',
-      'url'
+      'url',
     );
   }
 
@@ -238,7 +235,5 @@ export class PropertiesComponent extends GenericComponent implements OnChanges {
     this.assetModelOpen.emit(true);
   }
 
-  check(datatest: any) {
-    console.log(datatest);
-  }
+  check(datatest: any) {}
 }

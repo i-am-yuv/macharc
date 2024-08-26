@@ -65,7 +65,7 @@ export class AppWizardComponent extends GenericComponent {
     private fb: FormBuilder,
     private router: Router,
     private layoutService: LayoutService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) {
     super(applicationService, messageService);
 
@@ -83,6 +83,7 @@ export class AppWizardComponent extends GenericComponent {
         '',
         [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)],
       ],
+      enableAuth: [true],
       // backendApiUrl: ['', [Validators.required,Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]]
     });
 
@@ -95,14 +96,19 @@ export class AppWizardComponent extends GenericComponent {
         this.form.patchValue({ ...res });
       });
     }
-    this.layoutService.checkPadding(false);
+    setTimeout(() => {
+      this.layoutService.checkPadding(false);
+    });
   }
 
-  labelStyle = {
-  'size': '16px',
-    'weight': '400',
-    'color': '#000000'
+  ngOnDestroy() {
+    this.layoutService.checkPadding(true);
   }
+  labelStyle = {
+    size: '16px',
+    weight: '400',
+    color: '#000000',
+  };
 
   naviagateListingPage() {
     this.router.navigate(['applications']);
@@ -128,20 +134,15 @@ export class AppWizardComponent extends GenericComponent {
   }
 
   override postSaveShowModal(res: any, resposeType: string) {
-    // you will open the model with the type       
+    // you will open the model with the type
     if (resposeType == 'createdSuccess') {
-      this.openModal('success', res+' created','OK');    
+      this.openModal('success', res + ' created', 'OK');
     } else if (resposeType == 'createdError') {
-      this.openModal('failure', res+' creation failed','OK');    
-
+      this.openModal('failure', res + ' creation failed', 'OK');
     } else if (resposeType == 'updatedSuccess') {
-      this.openModal('success', res+' updated','OK');    
-
+      this.openModal('success', res + ' updated', 'OK');
     } else if (resposeType == 'updatedError') {
-      this.openModal('failure', res+' updation failed','OK');    
-
+      this.openModal('failure', res + ' updation failed', 'OK');
     }
   }
-
-
 }

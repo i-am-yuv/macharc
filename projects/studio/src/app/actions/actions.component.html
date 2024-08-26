@@ -545,6 +545,39 @@ Old Action Code ends here.......................................................
       </div>
 
       <div class="mt-2">
+        <!-- <div *ngFor="let pageParam of currentScreenToNavigate.selectedParams ;  index as i">
+          <div class="flex justify-between items-center my-2 w-full">
+            <div class="text-lg w-1/2">
+              {{ pageParam.varName }}
+              <span class="text-sm">({{ pageParam.dataType }})</span>
+            </div>
+
+            <div class="w-1/2">
+              <p-dropdown *ngIf="this.navigateToManualEntry == false" [options]="getDropdownOptions()"
+                [(ngModel)]="this.navigateToMappedData[i]" placeholder="Choose Fields"
+                (onChange)="handleValueChangesNavigate($event.value , pageParam )" [group]="true" [showClear]="true">
+                <ng-template let-group pTemplate="group">
+                  <div class="flex gap-2 justify-start items-center">
+                    <img
+                      src="assets/collection_L.svg"
+                      style="width: 16px; height: auto"
+                    />
+                    <span>{{ group.label }}</span>
+                  </div>
+                </ng-template>
+              </p-dropdown>
+
+              <div *ngIf="this.navigateToManualEntry" class="border p-2 rounded flex justify-between items-center gap-1">
+                <input [(ngModel)]="this.navigateToMappedData[i]" (ngModelChange)="handleManualValueChangesNavigate($event , pageParam )" placeholder="Enter URL manually" />
+                <div class="cursor-pointer" (click)="this.navigateToManualEntry = !this.navigateToManualEntry">
+                  X
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr>
+        </div> -->
+
         <div
           *ngFor="
             let pageParam of currentScreenToNavigate.selectedParams;
@@ -558,17 +591,14 @@ Old Action Code ends here.......................................................
             </div>
 
             <div class="w-1/2">
-              <!-- <p-dropdown [options]="this.finalListModels" [(ngModel)]="currentScreenToNavigate"
-                placeholder="Select Page" optionLabel="screenName" [style]="{ width: '100%' }" class="w-full"
-                (ngModelChange)="setValue">
-              </p-dropdown> -->
-
               <p-dropdown
-                *ngIf="this.navigateToManualEntry == false"
+                *ngIf="!manualEntryStates[i]"
                 [options]="getDropdownOptions()"
-                [(ngModel)]="this.navigateToMappedData[i]"
+                [(ngModel)]="navigateToMappedData[i]"
                 placeholder="Choose Fields"
-                (onChange)="handleValueChangesNavigate($event.value, pageParam)"
+                (onChange)="
+                  handleValueChangesNavigate($event.value, pageParam, i)
+                "
                 [group]="true"
                 [showClear]="true"
               >
@@ -584,19 +614,17 @@ Old Action Code ends here.......................................................
               </p-dropdown>
 
               <div
-                *ngIf="this.navigateToManualEntry"
+                *ngIf="manualEntryStates[i]"
                 class="border p-2 rounded flex justify-between items-center gap-1"
               >
                 <input
-                  [(ngModel)]="this.navigateToSecondValue"
+                  [(ngModel)]="navigateToMappedData[i]"
+                  (ngModelChange)="
+                    handleManualValueChangesNavigate($event, pageParam, i)
+                  "
                   placeholder="Enter URL manually"
                 />
-                <div
-                  class="cursor-pointer"
-                  (click)="
-                    this.navigateToManualEntry = !this.navigateToManualEntry
-                  "
-                >
+                <div class="cursor-pointer" (click)="toggleManualEntry(i)">
                   X
                 </div>
               </div>
@@ -958,6 +986,61 @@ Old Action Code ends here.......................................................
           <div class="m-2 w-1/4">{{ param.fieldName }}</div>
           <div class="m-2 w-1/4">{{ param.fieldType }}</div>
           <div class="m-2 w-1/4">{{ param.propertyName }}</div>
+        </div>
+      </div>
+      <div *ngFor="let reqDtoField of allFieldsByReqDto; index as i">
+        <div class="flex mt-8 w-full gap-4 justify-between mx-4 items-center">
+          <div class="w-1/2">{{ reqDtoField.fieldName }}</div>
+          <!-- <div class="w-1/2 flex justify-start">
+            <p-dropdown [options]="this.finalListModels" [(ngModel)]="selectedModelForDtoField[i]" (ngModelChange)="
+                modelSelectedForReqDto(reqDtoField, selectedModelForDtoField[i])
+              " placeholder="Choose Model Field" [group]="true">
+              <ng-template let-group pTemplate="group">
+                <div class="flex gap-2 justify-start items-center">
+                  <img src="assets/collection_L.svg" style="width: 16px; height: auto" />
+                  <span>{{ group.label }}</span>
+                </div>
+              </ng-template>
+            </p-dropdown>
+          </div> -->
+
+          <div class="w-1/2">
+            <p-dropdown
+              *ngIf="!manualEntryAPIStates[i]"
+              [options]="getDropdownOptions()"
+              [(ngModel)]="selectedModelForDtoField[i]"
+              placeholder="Choose Fields"
+              (onChange)="handleValueChangesAPI($event.value, reqDtoField, i)"
+              [group]="true"
+              [showClear]="true"
+            >
+              <ng-template let-group pTemplate="group">
+                <div class="flex gap-2 justify-start items-center">
+                  <img
+                    src="assets/collection_L.svg"
+                    style="width: 16px; height: auto"
+                  />
+                  <span>{{ group.label }}</span>
+                </div>
+              </ng-template>
+            </p-dropdown>
+
+            <div
+              *ngIf="manualEntryAPIStates[i]"
+              class="border p-2 rounded flex justify-between items-center gap-1"
+            >
+              <input
+                [(ngModel)]="selectedModelForDtoField[i]"
+                (ngModelChange)="
+                  handleManualValueChangesAPI($event, reqDtoField, i)
+                "
+                placeholder="Enter URL manually"
+              />
+              <div class="cursor-pointer" (click)="toggleManualEntryAPI(i)">
+                X
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

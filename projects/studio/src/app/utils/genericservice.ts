@@ -57,7 +57,7 @@ export abstract class GenericService {
     search =
       FilterBuilder.equal('application.id', applicationId) +
       (search ? search : '');
-    // console.log(search);
+
     if (search) {
       params.push('filter=' + search);
     }

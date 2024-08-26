@@ -46,7 +46,7 @@ export class AuthService {
     const token = localStorage.getItem('token');
     let jwt: any = atob(token!.split('.')[1]);
     jwt = JSON.parse(jwt);
-    // console.log(jwt.roles);
+
     return jwt.roles;
   }
 

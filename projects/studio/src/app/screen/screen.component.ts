@@ -40,7 +40,7 @@ export class ScreenComponent extends GenericComponent implements OnInit {
     private collectionService: CollectionService,
     private fieldService: FieldService,
     private microserviceService: MicroserviceService,
-    private applicationService: ApplicationService
+    private applicationService: ApplicationService,
   ) {
     super(screenService, messageService);
     this.form = this.fb.group({
@@ -94,7 +94,7 @@ export class ScreenComponent extends GenericComponent implements OnInit {
     // this.form.patchValue({ collection: null });
     var filterStr = FilterBuilder.equal(
       'microService.id',
-      this.form.value.microService.id
+      this.form.value.microService.id,
     );
     this.collectionService.getAllData(undefined, filterStr).then((res: any) => {
       if (res) {
@@ -102,18 +102,13 @@ export class ScreenComponent extends GenericComponent implements OnInit {
       }
     });
   }
-  saveFormData() {
-    console.log(this.form.value);
-  }
+  saveFormData() {}
 
   override preSave(): void {
-    console.log(this.form.value);
     if (!this.form.value.collection) {
-      console.log('here');
       if (this.collection) {
         this.form.patchValue({ collection: this.collection });
       } else {
-        console.log('no collection');
       }
     }
   }
