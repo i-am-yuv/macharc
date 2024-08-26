@@ -17,7 +17,7 @@ export abstract class GenericComponent {
 
   abstract componentName: string;
 
-  search?: string;
+  search: string = '' ;
 
   pageData?: Pagination = {};
 

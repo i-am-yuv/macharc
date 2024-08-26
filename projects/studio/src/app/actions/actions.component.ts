@@ -1504,6 +1504,7 @@ export class ActionsComponent extends GenericComponent implements OnInit {
 
     this.fieldsService.getAllData(pagination, this.search).then((res: any) => {
       this.selectedPojoFields = res.content;
+      this.search = '' ;
     });
   }
 
