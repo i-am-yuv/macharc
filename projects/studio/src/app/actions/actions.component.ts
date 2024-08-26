@@ -402,10 +402,10 @@ export class ActionsComponent extends GenericComponent implements OnInit {
         .then((res: any) => {
           this.currentAction = res;
           this.dataDef = res.taskDefinition;
-          console.log(this.dataDef);
 
           if (this.dataDef !== null && this.dataDef !== undefined && this.dataDef !== 'null') {
             console.log('Working');
+            console.log(this.currentAction);
             this.definition = JSON.parse(this.dataDef);
             this.updateDefinitionJSON();
             this.populateEditorFormsData();
@@ -419,8 +419,6 @@ export class ActionsComponent extends GenericComponent implements OnInit {
           }
           this.getAllModels();
           this.getAllPojos();
-
-
         })
         .catch((error) => {
           console.error('Error fetching data:', error);
@@ -447,8 +445,8 @@ export class ActionsComponent extends GenericComponent implements OnInit {
   }
 
   openCurrentAction(action: any) {
-    // this.actionId = action.id;
     this.currentAction = action;
+    console.log(this.currentAction);
     this.router.navigate(['/actions/' + action.id]);
     setTimeout(() => {
       this.getActionContent();
@@ -709,8 +707,10 @@ export class ActionsComponent extends GenericComponent implements OnInit {
 
   saveDefinition() {
     console.log(this.currentAction);
+    if (this.currentAction.id == null) {
+      this.getActionContent();
+    }
     this.currentAction.taskDefinition = this.definitionJSON;
-    console.log(this.currentAction);
     this.actionService.updateData(this.currentAction).then((res: any) => {
       this.msgService.add({
         severity: 'success',
@@ -718,6 +718,20 @@ export class ActionsComponent extends GenericComponent implements OnInit {
         detail: 'Definition updated',
       });
     });
+  }
+
+  getCurrentAction() {
+    this.actionId = this.route.snapshot.paramMap.get('id');
+
+    if (this.actionId !== 'null') {
+      this.actionService
+        .getData({ id: this.actionId })
+        .then((res: any) => {
+          this.currentAction = res;
+          this.currentAction.taskDefinition = this.definitionJSON;
+        }
+        )
+    }
   }
 
   generateServiceCode() {
@@ -1068,26 +1082,26 @@ export class ActionsComponent extends GenericComponent implements OnInit {
 
   finalMappedParamsList: MappedParamsObj[] = [];
 
-  mappedObjList :any 
+  mappedObjList: any
   openNavigateEditor(editor: any) {
     this.navigateEditor = editor;
     // Code for data population
     if (editor.step.properties?.screen == null) {
       console.log('New');
-      this.currentScreenToNavigate = {} ;
-      this.navigateToMappedData = [] ;
-      this.finalMappedParamsList = [] ;
+      this.currentScreenToNavigate = {};
+      this.navigateToMappedData = [];
+      this.finalMappedParamsList = [];
     }
     else {
       console.log('Old');
-      this.currentScreenToNavigate = editor.step.properties.screen ;
+      this.currentScreenToNavigate = editor.step.properties.screen;
       this.mappedObjList = editor.step.properties.mappedData;
-      this.finalMappedParamsList = editor.step.properties.mappedData ;
-      this.navigateToMappedData = [] ;
-      console.log(this.mappedObjList  ) ;
-      for (var i = 0; i < this.mappedObjList.length ; i++) {
+      this.finalMappedParamsList = editor.step.properties.mappedData;
+      this.navigateToMappedData = [];
+      console.log(this.mappedObjList);
+      for (var i = 0; i < this.mappedObjList.length; i++) {
         var oneObj = this.mappedObjList[i];
-        this.navigateToMappedData.push( oneObj.mappedValue) ;
+        this.navigateToMappedData.push(oneObj.mappedValue);
       }
     }
     this.navigatePopup = !this.navigatePopup;
@@ -1100,7 +1114,7 @@ export class ActionsComponent extends GenericComponent implements OnInit {
   }
 
   isObjectEmpty(obj: any): boolean {
-  //  console.log(obj && Object.keys(obj).length === 0) ;
+    //  console.log(obj && Object.keys(obj).length === 0) ;
     return obj && Object.keys(obj).length === 0;
   }
 
@@ -1119,7 +1133,7 @@ export class ActionsComponent extends GenericComponent implements OnInit {
     if (e == 'manual') {
       this.navigateToManualEntry = true;
     } else {
-      console.log( this.finalMappedParamsList );      
+      console.log(this.finalMappedParamsList);
       const mappedObj = this.finalMappedParamsList.find((obj: any) => obj?.pageParam.id === pageParam.id);
       if (mappedObj !== null && mappedObj !== undefined) {
         mappedObj['mappedValue'] = e;
@@ -1135,6 +1149,22 @@ export class ActionsComponent extends GenericComponent implements OnInit {
   }
 
 
+  handleManualValueChangesNavigate(e: any, pageParam: PageParam) {
+    console.log(e);
+   
+      console.log(this.finalMappedParamsList);
+      const mappedObj = this.finalMappedParamsList.find((obj: any) => obj?.pageParam.id === pageParam.id);
+      if (mappedObj !== null && mappedObj !== undefined) {
+        mappedObj['mappedValue'] = e;
+      }
+      else {
+        var newObj = {
+          pageParam: pageParam,
+          mappedValue: e
+        }
+        this.finalMappedParamsList.push(newObj);
+      }
+  }
 
   // Loop Code Start
   updateConditionsLoop(editor: any) {
