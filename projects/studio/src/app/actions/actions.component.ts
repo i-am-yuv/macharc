@@ -880,7 +880,7 @@ export class ActionsComponent extends GenericComponent implements OnInit {
       this.allEndpointsByModel = [];
       this.allFieldsByReqDto = [];
       this.reqDtoModelMappedList = [];
-      // this.selectedModelForDtoField = [];
+      this.manualEntryStates = [] ;
     }
     else {
       console.log('Old');
@@ -898,6 +898,13 @@ export class ActionsComponent extends GenericComponent implements OnInit {
           this.selectedModelForDtoField = [];
           for (var j = 0; j < this.reqDtoModelMappedList.length; j++) {
             var newObj = this.reqDtoModelMappedList[j];
+            if( newObj.mappedModelField?.id  == null )
+            {
+              this.manualEntryAPIStates[j] = true ; 
+            }
+            else{
+              this.manualEntryAPIStates[j] = false ; 
+            }
             this.selectedModelForDtoField.push(newObj.mappedModelField);
           }
         }
@@ -1424,6 +1431,65 @@ export class ActionsComponent extends GenericComponent implements OnInit {
 
   addParam() {
     this.selectedParams.push({});
+  }
+
+  handleValueChangesAPI(e: any, reqDtoField: any, index: number) {
+    console.log(e);
+    if (e === 'manual') {
+      this.manualEntryAPIStates[index] = true;
+    } else {
+      this.manualEntryAPIStates[index] = false;
+      const mappedObj = this.reqDtoModelMappedList.find((obj: any) => obj?.reqDtoField.id === reqDtoField.id);
+      if (mappedObj) {
+        mappedObj['mappedModelField'] = e;
+      } else {
+        this.reqDtoModelMappedList.push({
+          reqDtoField: reqDtoField,
+          mappedModelField: e,
+        });
+
+        // this.currReqDtoModel = {
+        //   reqDtoField: reqDtoField,
+        //   mappedModelField: modelSelected,
+        // };
+  
+        // this.reqDtoModelMappedList.push(this.currReqDtoModel);
+      }
+    }
+  }
+
+  // modelSelectedForReqDto(reqDtoField: any, modelSelected: any) {
+  //  const existingIndex = this.reqDtoModelMappedList.findIndex(
+  //     (item: any) => item.reqDtoField.id === reqDtoField.id
+  //   );
+
+  //   if (existingIndex !== -1) {
+  //     this.reqDtoModelMappedList[existingIndex].mappedModelField =
+  //       modelSelected;
+  //   } else {
+  //     this.currReqDtoModel = {
+  //       reqDtoField: reqDtoField,
+  //       mappedModelField: modelSelected,
+  //     };
+
+  //     this.reqDtoModelMappedList.push(this.currReqDtoModel);
+  //   }
+  // }
+
+  handleManualValueChangesAPI(e: any, reqDtoField: any, index: number) {
+    const mappedObj = this.reqDtoModelMappedList.find((obj: any) => obj?.reqDtoField.id === reqDtoField.id);
+    if (mappedObj) {
+      mappedObj['mappedModelField'] = e;
+    } else {
+      this.reqDtoModelMappedList.push({
+        reqDtoField: reqDtoField,
+        mappedModelField: e,
+      });
+    }
+  }
+
+  toggleManualEntryAPI(index: number) {
+    this.manualEntryAPIStates[index] = !this.manualEntryAPIStates[index];
   }
 
   // Set Response Pojo Code start
