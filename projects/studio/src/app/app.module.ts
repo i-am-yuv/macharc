@@ -48,7 +48,7 @@ import { NgTerminalModule } from 'ng-terminal';
 import { NgChartsModule } from 'ng2-charts';
 import { NgxLoadingModule } from 'ngx-loading';
 import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
-import { NgxPanZoomModule } from 'ngx-panzoom';
+// import { NgxPanZoomModule } from 'ngx-panzoom';
 import { PrimeNGConfig } from 'primeng/api';
 import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
@@ -204,7 +204,7 @@ import { ContenteditableValueAccessor } from './utils/constenteditable.directive
     CalendarModule,
     SelectButtonModule,
     InputTextModule,
-    NgxPanZoomModule,
+    // NgxPanZoomModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [
