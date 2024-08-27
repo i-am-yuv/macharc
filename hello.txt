@@ -1,5 +1,0 @@
-Your global Angular CLI version (15.2.11) is greater than your local version (15.0.4). The local Angular CLI version is used.
-
-To disable this warning use "ng config -g cli.warnings.versionMismatch false".
-? Port 4200 is already in use.
-Would you like to use a different port? (Y/n) [46D[46C

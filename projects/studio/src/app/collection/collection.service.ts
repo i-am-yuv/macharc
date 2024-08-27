@@ -87,4 +87,17 @@ export class CollectionService extends GenericService {
     const res = await lastValueFrom(this.http.get<any>(url));
     return res;
   }
+
+  async getReqDto(collectionId: any) {
+    var url = this.apiurl + '/collection/getRequestDto/'+encodeURIComponent(collectionId);
+    const res = await lastValueFrom(this.http.get<any>(url));
+    return res;
+  }
+  
+
+  async getResDto(collectionId: any) {
+    var url = this.apiurl + '/collection/getResponseDto/'+encodeURIComponent(collectionId);
+    const res = await lastValueFrom(this.http.get<any>(url));
+    return res;
+  }
 }
