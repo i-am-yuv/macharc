@@ -46,7 +46,7 @@ export class MsFormComponent
     projectName: 'SELECT PROJECT',
   };
   webSocketUrl = environment.webTerminal;
-
+  packageName = '';
   constructor(
     private fb: FormBuilder,
     private msService: MicroserviceService,
@@ -67,7 +67,7 @@ export class MsFormComponent
         '',
         [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)],
       ],
-      packageName: ['', [Validators.required, this.packageNameValidator]],
+      packageName: [''],
       packaging: ['Jar', Validators.required],
       portNumber: ['', [Validators.required, Validators.maxLength(5)]],
       project: [''],
@@ -164,6 +164,7 @@ export class MsFormComponent
 
   loadData(res: any): void {
     this.form.patchValue({ ...res });
+    this.getPackageName();
   }
 
   packageNameValidator(control: AbstractControl): ValidationErrors | null {
@@ -175,6 +176,24 @@ export class MsFormComponent
   checkPackageName() {
     this.form.get('packageName')?.updateValueAndValidity();
   }
+
+  getPackageName() {
+    this.packageName =
+      this.reverseSubdomain(this.activeProject?.domainName!) +
+      '.' +
+      this.form.controls['microServiceName'].value
+        .toLowerCase()
+        .replace(' ', '');
+
+    this.form.patchValue({ packageName: this.packageName });
+  }
+
+  reverseSubdomain(domain: string): string {
+    const parts = domain.split('.');
+    const reversedParts = parts.reverse();
+    return reversedParts.join('.');
+  }
+
   isModalOpen = false;
   modalTitle = '';
   modalButtonText = '';
@@ -197,6 +216,7 @@ export class MsFormComponent
     // default sending the active project
     this.form.value.project = this.activeProject;
     const formData = this.form.value;
+    console.log(formData);
     if (!formData.id) {
       formData.id = null;
       this.msService

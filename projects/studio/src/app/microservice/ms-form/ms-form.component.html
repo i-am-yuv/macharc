@@ -48,8 +48,9 @@
     <div class="mt-2 flex justify-between items-center w-full gap-4">
       <div class="inline-block w-1/2">
         <vezo-input
-          label="Microserive Name"
+          label="Microservice Name"
           formControlName="microServiceName"
+          (ngModelChange)="getPackageName()"
         ></vezo-input>
         <error-message
           [controlName]="form.controls['microServiceName']"
@@ -66,8 +67,8 @@
       </div>
     </div>
 
-    <div class="mt-2">
-      <vezo-input
+    <div class="mt-4 mb-2">
+      <!-- <vezo-input
         label="Package Name"
         formControlName="packageName"
         [placeholder]="'com.example.demo'"
@@ -78,7 +79,9 @@
       ></error-message>
       <div *ngIf="form.get('packageName')?.invalid">
         <small class="text-red-600">Use format: com.example.demo</small>
-      </div>
+       
+      </div>-->
+      Package Name: {{ packageName }}
     </div>
 
     <div class="flex justify-between items-start gap-4">

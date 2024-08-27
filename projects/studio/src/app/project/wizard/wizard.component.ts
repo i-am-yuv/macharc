@@ -42,6 +42,9 @@ export class WizardComponent extends GenericComponent {
   ) {
     super(projectService, messageService);
 
+    const domainRegex =
+      /^(?!www\.)(?!.*(?:http|https):\/\/)(?:[a-zA-Z0-9-]{1,63}\.)[a-zA-Z]{2,6}(?:\.[a-zA-Z]{2,6})?$|^(?!www\.)(?!.*(?:http|https):\/\/)(?:[a-zA-Z0-9-]{1,63}\.)[a-zA-Z0-9-]{1,63}\.[a-zA-Z]{2,6}(?:\.[a-zA-Z]{2,6})?$/;
+
     this.form = this.fb.group({
       id: '',
       projectName: [
@@ -52,6 +55,7 @@ export class WizardComponent extends GenericComponent {
         '',
         [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)],
       ],
+      domainName: ['', [Validators.required, Validators.pattern(domainRegex)]],
       projectDescription: ['', Validators.required],
       isdefault: [false],
     });

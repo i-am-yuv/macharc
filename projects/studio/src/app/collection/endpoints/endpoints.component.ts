@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { MessageService, Pagination } from '@splenta/vezo';
 import { BusinessLogic } from '../../business-logic/business-logic';
@@ -43,7 +43,7 @@ export class EndpointsComponent extends GenericComponent implements OnInit {
 
   form: FormGroup<any>;
   data: any[] = [];
-  componentName: string = '';
+  componentName: string = 'Endpoint';
   collectionId: string | null;
   collection: Collection = {};
   services: BusinessLogic[] = [];
@@ -69,10 +69,10 @@ export class EndpointsComponent extends GenericComponent implements OnInit {
     { label: 'Date', value: 'Date' },
     { label: 'Decimal', value: 'BigDecimal' },
     { label: 'Boolean', value: 'boolean' },
-    { label: 'Collection', value: 'collection' },
+    { label: 'Model', value: 'collection' },
   ];
   httpMethods: any[] = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
-  pathVariables: PathVariable[] = [];
+  // pathVariables: PathVariable[] = [{ variableName: '', variableType: '' }];
   collections: Collection[] = [];
 
   requestDto: RequestDto[] = [];
@@ -92,12 +92,13 @@ export class EndpointsComponent extends GenericComponent implements OnInit {
     this.collectionId = this.route.snapshot.paramMap.get('id');
     this.form = this.fb.group({
       id: '',
-      endpointName: [''],
-      endpointPath: [''],
-      endPointType: [''],
+      endpointName: ['', Validators.required],
+      endpointPath: ['', Validators.required],
+      endPointType: ['', Validators.required],
       description: [''],
+      datasource: [''],
       // returnType: [''],
-      pathVariables: [''],
+      pathVariables: this.fb.array([this.createPathVariable()]),
       workflow: [''],
       crud: [false],
       webclient: [''],
@@ -108,7 +109,12 @@ export class EndpointsComponent extends GenericComponent implements OnInit {
       collection: [''],
       requestJson: [''],
       responseJson: [''],
+      apiType: ['webclient'],
     });
+  }
+
+  get pathVariables(): FormArray {
+    return this.form.get('pathVariables') as FormArray;
   }
 
   ngOnInit(): void {
@@ -128,7 +134,8 @@ export class EndpointsComponent extends GenericComponent implements OnInit {
       });
     }
 
-    this.datasourceService.getAllData().then((res: any) => {
+    const filterStr = FilterBuilder.equal('dbType', 'API');
+    this.datasourceService.getAllData(undefined, filterStr).then((res: any) => {
       this.datasources = res.content;
     });
     this.collectionService.getAllData().then((res: any) => {
@@ -152,11 +159,14 @@ export class EndpointsComponent extends GenericComponent implements OnInit {
   }
 
   getEndPointsByCollectionId() {
-    var filterStr = FilterBuilder.equal('collection.id', this.collectionId ? this.collectionId : '');
+    var filterStr = FilterBuilder.equal(
+      'collection.id',
+      this.collectionId ? this.collectionId : '',
+    );
     this.search = filterStr;
-    var pagination !: Pagination ;
+    var pagination!: Pagination;
     this.endpointService
-      .getAllData(pagination , this.search)
+      .getAllData(pagination, this.search)
       .then((res: any) => {
         this.data = res.content;
         var crudep = this.data.find((t) => t.crud === true);
@@ -166,19 +176,45 @@ export class EndpointsComponent extends GenericComponent implements OnInit {
       });
   }
 
-  getPathVariables(ep: Endpoint) {
-    this.activeEp = ep;
-    var filterStr = FilterBuilder.equal('endpoint.id', ep.id!);
-    this.pathVariableService
-      .getAllData(undefined, filterStr)
-      .then((res: any) => {
-        this.pathVariables = res.content;
-      });
+  // getPathVariables(ep: Endpoint) {
+  //   this.activeEp = ep;
+  //   var filterStr = FilterBuilder.equal('endpoint.id', ep.id!);
+  //   this.pathVariableService
+  //     .getAllData(undefined, filterStr)
+  //     .then((res: any) => {
+  //       if (res.content.length > 0) {
+  //         this.pathVariables = res.content;
+  //       }
+  //     });
+  // }
+  createPathVariable() {
+    return this.fb.group({
+      id: '',
+      variableName: '',
+      variableType: '',
+    });
+  }
+  editCustomEndpoint(ep: Endpoint) {
+    this.form.patchValue({ ...ep });
+    this.updateFormArray(ep.pathVariables);
   }
 
-  editCustomEndpoint(ep: Endpoint) {
-    this.editData(ep);
-    this.getPathVariables(ep);
+  updateFormArray(newValues: any[]) {
+    const formArray = this.form.get('pathVariables') as FormArray;
+
+    // Clear the existing form array
+    formArray.clear();
+
+    // Add new form groups based on the newValues
+    newValues.forEach((value) => {
+      formArray.push(
+        this.fb.group({
+          id: [value.id],
+          variableName: [value.variableName],
+          variableType: [value.variableType],
+        }),
+      );
+    });
   }
   savePathVariable(pv: PathVariable) {
     pv.endpoint = this.activeEp;
@@ -190,7 +226,16 @@ export class EndpointsComponent extends GenericComponent implements OnInit {
       });
     });
   }
-
+  deletePathVariable(pv: PathVariable, index: number) {
+    this.pathVariableService.deleteData(pv).then((res: any) => {
+      this.pathVariables.removeAt(index);
+      this.messageService.add({
+        severity: 'success',
+        detail: 'Path variable deleted',
+        summary: 'Success',
+      });
+    });
+  }
   override preSave(): void {
     this.form.patchValue({ collection: { id: this.collectionId } });
     if (
@@ -202,12 +247,16 @@ export class EndpointsComponent extends GenericComponent implements OnInit {
     this.activeEp = this.form.value;
   }
   addPathVariable() {
-    this.pathVariables.push({ variableName: '', variableType: '' });
+    const pathVariable = this.form.get('pathVariables') as FormArray;
+    pathVariable.push(this.createPathVariable());
   }
 
   saveCustomData() {
     if (this.form.value.returnType == 'collection') {
-      var filterStr = FilterBuilder.equal('collection.id', this.collectionId ? this.collectionId : '');
+      var filterStr = FilterBuilder.equal(
+        'collection.id',
+        this.collectionId ? this.collectionId : '',
+      );
       this.search = filterStr;
       this.saveData();
     } else {
