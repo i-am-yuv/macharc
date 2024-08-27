@@ -83,7 +83,7 @@ export class QueryBuilderComponent extends GenericComponent implements OnInit {
     messageService: MessageService,
     reportQueryService: ReportQueryService,
     private collectionService: CollectionService,
-    private fieldService: FieldService
+    private fieldService: FieldService,
   ) {
     super(reportQueryService, messageService);
     this.form = this.fb.group({
@@ -158,7 +158,6 @@ export class QueryBuilderComponent extends GenericComponent implements OnInit {
         queryString: this.reportQuery,
         queryDefinition: JSON.stringify(this.queryDefinition),
       });
-      console.log(this.form.value);
 
       if (this.form.value.id) {
         this.saveData();
@@ -171,7 +170,7 @@ export class QueryBuilderComponent extends GenericComponent implements OnInit {
       this.queryDefinition.primaryCollection = this.primaryCollection;
       var filterStr = FilterBuilder.equal(
         'collection.id',
-        this.primaryCollection.id
+        this.primaryCollection.id,
       );
       this.fieldService.getAllData(undefined, filterStr).then((res) => {
         this.dimensions = res.content;
@@ -186,21 +185,20 @@ export class QueryBuilderComponent extends GenericComponent implements OnInit {
     }
     if (this.queryDefinition.dimensions) {
       this.queryDefinition.dimensions.push(
-        this.dimension.split(/\.?(?=[A-Z])/).join('_')
+        this.dimension.split(/\.?(?=[A-Z])/).join('_'),
       );
-      console.log(this.queryDefinition);
+
       this.queryBuilder();
     }
   }
 
   addMeasure() {
-    console.log(this.measure);
     if (!this.queryDefinition.measures) {
       this.queryDefinition['measures'] = [];
     }
     if (this.queryDefinition.measures) {
       this.queryDefinition.measures.push(this.measure);
-      console.log(this.queryDefinition);
+
       this.queryBuilder();
     }
   }
@@ -208,16 +206,16 @@ export class QueryBuilderComponent extends GenericComponent implements OnInit {
   deleteMeasure(m: any) {
     this.queryDefinition.measures?.splice(
       this.queryDefinition.measures?.findIndex(
-        (t: any) => t.measureName === m.measureName
+        (t: any) => t.measureName === m.measureName,
       ),
-      1
+      1,
     );
   }
 
   deleteDimension(m: any) {
     this.queryDefinition.dimensions?.splice(
       this.queryDefinition.dimensions?.findIndex((t: any) => t === m),
-      1
+      1,
     );
   }
 
@@ -231,10 +229,9 @@ export class QueryBuilderComponent extends GenericComponent implements OnInit {
         filterCondition: '',
         filterOperator: undefined,
       });
-      console.log(this.queryDefinition);
+
       this.queryBuilder();
     }
-    console.log(this.queryDefinition);
   }
   addDynamicFilter() {
     if (!this.queryDefinition.dynamicFilters) {
@@ -246,7 +243,7 @@ export class QueryBuilderComponent extends GenericComponent implements OnInit {
         filterCondition: '',
         filterOperator: undefined,
       });
-      console.log(this.queryDefinition);
+
       this.queryBuilder();
     }
   }
@@ -255,9 +252,9 @@ export class QueryBuilderComponent extends GenericComponent implements OnInit {
     this.queryDefinition.staticFilters?.splice(
       this.queryDefinition.staticFilters?.findIndex(
         (t: any) =>
-          t.filterName === sf.filterName.split(/\.?(?=[A-Z])/).join('_')
+          t.filterName === sf.filterName.split(/\.?(?=[A-Z])/).join('_'),
       ),
-      1
+      1,
     );
   }
 
@@ -265,9 +262,9 @@ export class QueryBuilderComponent extends GenericComponent implements OnInit {
     this.queryDefinition.dynamicFilters?.splice(
       this.queryDefinition.dynamicFilters?.findIndex(
         (t: any) =>
-          t.filterName === df.filterName.split(/\.?(?=[A-Z])/).join('_')
+          t.filterName === df.filterName.split(/\.?(?=[A-Z])/).join('_'),
       ),
-      1
+      1,
     );
   }
   buildMeasures() {
@@ -288,6 +285,5 @@ export class QueryBuilderComponent extends GenericComponent implements OnInit {
       }
     });
     this.measures = msrs;
-    console.log(this.measures);
   }
 }

@@ -1,102 +1,152 @@
-<div class="bg-white p-4 my-4 flex place-items-center">
+<div class="bg-white px-4 flex place-items-center">
   <div class="mr-6">
-    <vezo-icon icon="arrowLeft" [routerLink]="['/builder/microservices/edit/' + microService.id]"
-      className="cursor-pointer"></vezo-icon>
+    <vezo-icon
+      icon="arrowLeft"
+      [routerLink]="['/builder/microservices/edit/' + microService.id]"
+      className="cursor-pointer"
+    ></vezo-icon>
   </div>
   <div>
     <h1 class="title">Microservice - {{ microService.microServiceName }}</h1>
   </div>
 </div>
-
-<vezo-table [data]="data" [pageData]="pageData" (pageDataChange)="getAllData()">
-  <ng-template vTemplate="caption">
-    <div class="flex place-items-center">
-      <div class="title">MODELS</div>
-      <div class="flex-grow"></div>
-      <div class="w-72 pr-4">
-        <!-- <vezo-input label="" placeholder="Filter" className="bg-white"></vezo-input> -->
-      </div>
-      <div class="text-right">
-        <!-- <vezo-button label="Add New Project" icon="plus"
+<div class="px-4">
+  <vezo-table
+    [data]="data"
+    [pageData]="pageData"
+    (pageDataChange)="getAllData()"
+  >
+    <ng-template vTemplate="caption">
+      <div class="flex place-items-center">
+        <div class="title">MODELS</div>
+        <div class="flex-grow"></div>
+        <div class="w-72 pr-4">
+          <!-- <vezo-input label="" placeholder="Filter" className="bg-white"></vezo-input> -->
+        </div>
+        <div class="text-right">
+          <!-- <vezo-button label="Add New Project" icon="plus"
                             className="bg-primary text-white hover:text-gray-700 mr-2"></vezo-button> -->
-        <vezo-button label="Add New Model" icon="plus" (click)="addData()"></vezo-button>
+          <vezo-button
+            label="Add New Model"
+            icon="plus"
+            (click)="addData()"
+          ></vezo-button>
+        </div>
       </div>
-    </div>
-  </ng-template>
-  <ng-template vTemplate="header">
-    <tr>
-      <th class="w-4"><input type="checkbox" class="w-4 h-4" /></th>
-      <th>Microservice</th>
-      <th>Collection Name</th>
-      <th>Custom Table Name</th>
-      <th>CRUD</th>
-      <th>Readonly</th>
-      <th [width]="150">Actions</th>
-    </tr>
-  </ng-template>
-  <ng-template vTemplate="body">
-    <tr>
-      <td></td>
-      <td>
-        <vezo-input label=""></vezo-input>
-      </td>
-      <td>
-        <vezo-input label=""></vezo-input>
-      </td>
-      <td>
-        <vezo-input label=""></vezo-input>
-      </td>
-      <td>
-        <vezo-switch label="" [(ngModel)]="crud"></vezo-switch>
-      </td>
-      <td>
-        <vezo-switch label=""></vezo-switch>
-      </td>
-      <td></td>
-    </tr>
-    <tr *ngFor="let ds of data">
-      <td><input type="checkbox" class="w-4 h-4" /></td>
-      <td>{{ ds.microService?.microServiceName }}</td>
-      <td>{{ ds.collectionName }}</td>
-      <td>{{ ds.customTableName }}</td>
-      <td>
-        <span *ngIf="ds.crud"><vezo-icon icon="checkCircle" className="text-green-500"></vezo-icon></span>
-      </td>
-      <td>
-        <span *ngIf="ds.readonly"><vezo-icon icon="checkCircle" className="text-green-500"></vezo-icon></span>
-      </td>
-      <td>
-        <vezo-icon icon="queueList" (click)="editFields(ds)"
-          className="mr-5 w-4 h-4 text-purple-400 cursor-pointer"></vezo-icon>
-        <vezo-icon icon="pencil" (click)="editData(ds)"
-          className="mr-5 w-4 h-4 text-indigo-400 cursor-pointer"></vezo-icon>
-        <vezo-icon icon="trash" (click)="deleteData(ds)" className="w-4 h-4 text-red-400 cursor-pointer"></vezo-icon>
-      </td>
-    </tr>
-  </ng-template>
-</vezo-table>
-
+    </ng-template>
+    <ng-template vTemplate="header">
+      <tr>
+        <th class="w-4"><input type="checkbox" class="w-4 h-4" /></th>
+        <th>Microservice</th>
+        <th>Model Name</th>
+        <th>Custom Table Name</th>
+        <th>CRUD</th>
+        <th>Readonly</th>
+        <th [width]="150">Actions</th>
+      </tr>
+    </ng-template>
+    <ng-template vTemplate="body">
+      <tr>
+        <td></td>
+        <td>
+          <vezo-input label=""></vezo-input>
+        </td>
+        <td>
+          <vezo-input label=""></vezo-input>
+        </td>
+        <td>
+          <vezo-input label=""></vezo-input>
+        </td>
+        <td>
+          <vezo-switch label="" [(ngModel)]="crud"></vezo-switch>
+        </td>
+        <td>
+          <vezo-switch label=""></vezo-switch>
+        </td>
+        <td></td>
+      </tr>
+      <tr *ngFor="let ds of data">
+        <td><input type="checkbox" class="w-4 h-4" /></td>
+        <td>{{ ds.microService?.microServiceName }}</td>
+        <td>{{ ds.collectionName }}</td>
+        <td>{{ ds.customTableName }}</td>
+        <td>
+          <span *ngIf="ds.crud"
+            ><vezo-icon
+              icon="checkCircle"
+              className="text-green-500"
+            ></vezo-icon
+          ></span>
+        </td>
+        <td>
+          <span *ngIf="ds.readonly"
+            ><vezo-icon
+              icon="checkCircle"
+              className="text-green-500"
+            ></vezo-icon
+          ></span>
+        </td>
+        <td>
+          <vezo-icon
+            icon="queueList"
+            (click)="editFields(ds)"
+            className="mr-5 w-4 h-4 text-purple-400 cursor-pointer"
+          ></vezo-icon>
+          <vezo-icon
+            icon="pencil"
+            (click)="editData(ds)"
+            className="mr-5 w-4 h-4 text-indigo-400 cursor-pointer"
+          ></vezo-icon>
+          <vezo-icon
+            icon="trash"
+            (click)="deleteData(ds)"
+            className="w-4 h-4 text-red-400 cursor-pointer"
+          ></vezo-icon>
+        </td>
+      </tr>
+    </ng-template>
+  </vezo-table>
+</div>
 <vezo-modal [(visible)]="visible">
-  <ng-template vTemplate="header">Collection</ng-template>
+  <ng-template vTemplate="header">Model</ng-template>
   <ng-template vTemplate="content">
     <form [formGroup]="form">
-      <vezo-select *ngIf="!this.microserviceId" optionLabel="microServiceName" [items]="microserviceItems" formControlName="microService"
-        label="Microservice Name"></vezo-select>
+      <vezo-select
+        *ngIf="!this.microserviceId"
+        optionLabel="microServiceName"
+        [items]="microserviceItems"
+        formControlName="microService"
+        label="Microservice Name"
+      ></vezo-select>
 
-      <vezo-select optionLabel="dataSourceName" [items]="this.microService?.datasources"
-         formControlName="dataSource" label="Datasource"></vezo-select>
+      <vezo-select
+        optionLabel="dataSourceName"
+        [items]="this.microService?.datasources"
+        formControlName="dataSource"
+        label="Datasource"
+      ></vezo-select>
       <div class="mt-2">
-        <vezo-input label="Collection Name" formControlName="collectionName"></vezo-input>
-        <error-message [controlName]="form.controls['collectionName']"></error-message>
+        <vezo-input
+          label="Model Name"
+          formControlName="collectionName"
+        ></vezo-input>
+        <error-message
+          [controlName]="form.controls['collectionName']"
+        ></error-message>
       </div>
       <div class="mt-2">
-        <vezo-select optionLabel="label" optionValue="value" [items]="collectionTypeItems"
-          formControlName="collectionKind" label="Collection Type"></vezo-select>
+        <vezo-select
+          optionLabel="label"
+          optionValue="value"
+          [items]="collectionTypeItems"
+          formControlName="collectionKind"
+          label="Model Type"
+        ></vezo-select>
       </div>
-      <!-- <div class="mt-2">
+      <div class="mt-2">
         <vezo-input label="Custom Table Name" formControlName="customTableName"></vezo-input>
         <error-message [controlName]="form.controls['customTableName']"></error-message>
-      </div> -->
+      </div>
 
       <!-- <vezo-radiobutton formControlName="collectionType" value="CRUD" name="crud"
                 label="Generate CRUD Endpoints"></vezo-radiobutton>
@@ -109,24 +159,31 @@
                 label="Generate Service Class for Business Logic"></vezo-checkbox>
             <vezo-checkbox formControlName="hasService" label="Consumes API"></vezo-checkbox> -->
       <div class="mt-2">
-        <vezo-checkbox formControlName="hasService" label="Generate Service Class"></vezo-checkbox>
+        <vezo-checkbox
+          formControlName="hasService"
+          label="Generate Service Class"
+        ></vezo-checkbox>
       </div>
     </form>
   </ng-template>
   <ng-template vTemplate="footer">
     <div class="text-right">
-      <vezo-button label="Save" [disabled]="!form.valid" (click)="saveData()"></vezo-button>
+      <vezo-button
+        label="Save"
+        [disabled]="!form.valid"
+        (click)="saveData()"
+      ></vezo-button>
     </div>
   </ng-template>
 </vezo-modal>
 
 <vezo-toast></vezo-toast>
 
-
 <app-modal
   *ngIf="isModalOpen"
   [title]="modalTitle"
   [buttonText]="modalButtonText"
   [type]="modalType"
-  (close)="closeModal()">
+  (close)="closeModal()"
+>
 </app-modal>

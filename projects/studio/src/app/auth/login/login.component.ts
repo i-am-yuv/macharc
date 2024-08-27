@@ -17,7 +17,7 @@ export class LoginComponent {
   constructor(
     private router: Router,
     private loginService: LoginService,
-    private message: MessageService
+    private message: MessageService,
   ) {}
 
   ngOnInit() {
@@ -35,8 +35,8 @@ export class LoginComponent {
       .doLogin(this.loginForm.value)
       .then((res) => {
         if (res) {
-          sessionStorage.setItem('token', res.jwt);
-          sessionStorage.setItem('refreshToken', res.refreshToken);
+          localStorage.setItem('token', res.jwt);
+          localStorage.setItem('refreshToken', res.refreshToken);
           this.router.navigate(['/']);
         } else {
           this.message.add({

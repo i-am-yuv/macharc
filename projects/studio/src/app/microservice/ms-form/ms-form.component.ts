@@ -53,7 +53,7 @@ export class MsFormComponent
     messageService: MessageService,
     private projectService: ProjectService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) {
     super(msService, messageService);
     this.msId = this.route.snapshot.paramMap.get('id');
@@ -199,53 +199,55 @@ export class MsFormComponent
     const formData = this.form.value;
     if (!formData.id) {
       formData.id = null;
-      this.msService.createMS(formData).then((res: any) => {
-        if (res) {
-          this.visible = false;
-          // this.messageService.add({
-          //   severity: 'success',
-          //   detail: this.componentName + ' created',
-          //   summary: this.componentName + ' created',
-          // });
-          this.postSaveShowModal( this.componentName , 'createdSuccess' ) ;
-          this.getAllData();
-        }
-      }).catch( (err)=>{
-        this.postSaveShowModal( this.componentName , 'createdError' ) ;
-      });
+      this.msService
+        .createMS(formData)
+        .then((res: any) => {
+          if (res) {
+            this.visible = false;
+            // this.messageService.add({
+            //   severity: 'success',
+            //   detail: this.componentName + ' created',
+            //   summary: this.componentName + ' created',
+            // });
+            this.postSaveShowModal(this.componentName, 'createdSuccess');
+            this.getAllData();
+          }
+        })
+        .catch((err) => {
+          this.postSaveShowModal(this.componentName, 'createdError');
+        });
     } else {
-      this.msService.createMS(formData).then((res: any) => {
-        if (res) {
-          this.visible = false;
-          // this.messageService.add({
-          //   severity: 'success',
-          //   detail: this.componentName + ' updated',
-          //   summary: this.componentName + ' updated',
-          // });
-          this.postSaveShowModal( this.componentName , 'updatedSuccess' ) ;
-          this.getAllData();
-          // this.router.navigate(['/builder/microservices']);
-        }
-      }).catch( (err)=>{
-        this.postSaveShowModal( this.componentName , 'updatedError' ) ;
-      });
+      this.msService
+        .createMS(formData)
+        .then((res: any) => {
+          if (res) {
+            this.visible = false;
+            // this.messageService.add({
+            //   severity: 'success',
+            //   detail: this.componentName + ' updated',
+            //   summary: this.componentName + ' updated',
+            // });
+            this.postSaveShowModal(this.componentName, 'updatedSuccess');
+            this.getAllData();
+            // this.router.navigate(['/builder/microservices']);
+          }
+        })
+        .catch((err) => {
+          this.postSaveShowModal(this.componentName, 'updatedError');
+        });
     }
   }
 
-
   override postSaveShowModal(res: any, resposeType: string) {
-    // you will open the model with the type       
+    // you will open the model with the type
     if (resposeType == 'createdSuccess') {
-      this.openModal('success', res+' created','OK');    
+      this.openModal('success', res + ' created', 'OK');
     } else if (resposeType == 'createdError') {
-      this.openModal('failure', res+' creation failed','OK');    
-
+      this.openModal('failure', res + ' creation failed', 'OK');
     } else if (resposeType == 'updatedSuccess') {
-      this.openModal('success', res+' updated','OK');    
-
+      this.openModal('success', res + ' updated', 'OK');
     } else if (resposeType == 'updatedError') {
-      this.openModal('failure', res+' updation failed','OK');    
-
+      this.openModal('failure', res + ' updation failed', 'OK');
     }
   }
 
@@ -263,8 +265,6 @@ export class MsFormComponent
   requestStream(data: any) {
     // return new Observable((observer) => {
     if (this.socket) {
-      console.log(data);
-
       this.socket
         .requestStream({
           data: data,
@@ -273,7 +273,6 @@ export class MsFormComponent
         })
         .subscribe({
           onNext: (payload: Payload<any, any>) => {
-            console.log(payload.data);
             this.addMessage(payload.data);
           },
           onComplete: () => console.log('complete'),
@@ -292,7 +291,6 @@ export class MsFormComponent
   }
 
   addMessage(newMessage: any) {
-    console.log('add message:' + JSON.stringify(newMessage));
     // write to xterm
     this.child.write(this.prompt + newMessage['message'] + '\n');
     this.messages = [...this.messages, newMessage];
@@ -324,7 +322,6 @@ export class MsFormComponent
     if (this.client) this.client.close();
   }
   sendMessage() {
-    console.log('sending message:' + this.message);
     this.sub.next(this.message);
     this.message = '';
   }
@@ -349,7 +346,6 @@ export class MsFormComponent
 
   generateDTO() {
     // Code for generating the DTO Here
-    console.log(this.form.value);
   }
 
   commitCode() {

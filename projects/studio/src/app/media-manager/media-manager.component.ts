@@ -52,7 +52,7 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private gcpUploadService: GcpUploadService,
-    private layoutService: LayoutService
+    private layoutService: LayoutService,
   ) {
     super(formService, msgService);
   }
@@ -79,7 +79,7 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
           // this.allFolders = [];
           if (this.allFolders.length > 0) {
             this.allFolders.sort((a: any, b: any) =>
-              a.folderName.localeCompare(b.folderName)
+              a.folderName.localeCompare(b.folderName),
             );
             if (!this.folderId) {
               this.openFolderAssets(this.allFolders[0]);
@@ -118,7 +118,7 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
           this.allAssetByFolderId = res;
           // lasted asset should comes first so sort like that
           this.allAssetByFolderId.sort(
-            (a: any, b: any) => b.updatedAt - a.updatedAt
+            (a: any, b: any) => b.updatedAt - a.updatedAt,
           );
           this.loading = false;
         } else {
@@ -157,12 +157,10 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
       this.loading = true;
       uploadBytes(storageRef, file)
         .then((snapshot) => {
-          // console.log('Uploaded a blob or file!', snapshot);
           this.loading = false;
           return getDownloadURL(storageRef);
         })
         .then((downloadURL) => {
-          // console.log('File available at', downloadURL);
           this.uploadImageToBackend(file, downloadURL);
         })
         .catch((error) => {
@@ -195,7 +193,6 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
       .uploadAssets(this.asset)
       .then((res: any) => {
         if (res) {
-          console.log(res);
           this.loading = false;
           this.messageService.add({
             severity: 'success',
@@ -215,7 +212,6 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
         }
       })
       .catch((err: any) => {
-        console.log(err);
         this.loading = false;
         this.messageService.add({
           severity: 'error',
@@ -271,12 +267,10 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
       this.loading = true;
       uploadBytes(storageRef, file)
         .then((snapshot) => {
-          console.log('Uploaded a blob or file!', snapshot);
           this.loading = false;
           return getDownloadURL(storageRef);
         })
         .then((downloadURL) => {
-          // console.log('File available at', downloadURL);
           this.uploadImageToBackend(file, downloadURL);
         })
         .catch((error) => {
@@ -314,7 +308,7 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
     // })
     //   .then(response => response.json())
     //   .then(data => {
-    //     console.log('Success:', data);
+    //
     //   })
     //   .catch(error => {
     //     console.error('Error:', error);
@@ -463,7 +457,6 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
       .deleteAsset(asset)
       .then((res: any) => {
         if (res) {
-          console.log(res);
           this.loading = false;
           this.messageService.add({
             severity: 'success',
@@ -483,7 +476,6 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
         }
       })
       .catch((err: any) => {
-        console.log(err);
         this.loading = false;
         this.messageService.add({
           severity: 'error',
@@ -531,7 +523,7 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
   searchAssets() {
     if (this.searchQuery) {
       this.filteredAssets = this.allAssetByFolderId.filter((asset) =>
-        asset.fileName?.toLowerCase().includes(this.searchQuery.toLowerCase())
+        asset.fileName?.toLowerCase().includes(this.searchQuery.toLowerCase()),
       );
     } else {
       this.filteredAssets = this.allAssetByFolderId;
@@ -565,7 +557,7 @@ export class MediaManagerComponent extends GenericComponent implements OnInit {
       this.currFilterListGlobal = this.filteredAssetsGlobal.filter((asset) =>
         asset.fileName
           ?.toLowerCase()
-          .includes(this.searchQueryGlobal.toLowerCase())
+          .includes(this.searchQueryGlobal.toLowerCase()),
       );
     } else {
       this.GlobalSearchLayout = false;

@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
-import { GenericService } from '../../utils/genericservice';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
+import { GenericService } from '../../utils/genericservice';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class EndpointService extends GenericService {
   override endpoint: string = 'endpoints';
@@ -14,7 +14,12 @@ export class EndpointService extends GenericService {
   }
 
   async getAllEndpointsByCollection(collectionId: any) {
-    var url = this.apiurl+'/'+this.endpoint+ '/getEndpoints/'+encodeURIComponent(collectionId);
+    var url =
+      this.apiurl +
+      '/' +
+      this.endpoint +
+      '/getEndpoints/' +
+      encodeURIComponent(collectionId);
     const res = await lastValueFrom(this.http.get<any>(url));
     return res;
   }

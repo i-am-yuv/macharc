@@ -56,6 +56,14 @@ export class FieldsComponent extends GenericComponent implements OnInit {
   dtoSelectedFieldsReq: Field[] = [];
   dtoSelectedFieldsRes: Field[] = [];
 
+  dtoSelectedFields: [] = [];
+  relationShipTypes: any[] = [
+    'OneToMany',
+    'ManyToOne',
+    'OneToOne',
+    'ManyToMany',
+  ];
+  microserviceId: string | undefined;
 
   constructor(
     private fb: FormBuilder,
@@ -68,19 +76,20 @@ export class FieldsComponent extends GenericComponent implements OnInit {
   ) {
     super(fieldService, messageService);
     this.collectionId = this.route.snapshot.paramMap.get('id');
-    // console.log(this.collectionId);
+
     this.form = this.fb.group({
       id: '',
       fieldName: [
         '',
         [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)],
       ],
-      dataType: ['', [Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
+      // dataType: ['', [Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
       fieldType: [''],
       validation: [''],
       pattern: [''],
       collection: [],
       foreignKey: [],
+      relationShipType: '',
     });
   }
   override preSave(): void {
@@ -97,6 +106,7 @@ export class FieldsComponent extends GenericComponent implements OnInit {
       });
       this.collectionService.getData({ id: this.collectionId }).then((res) => {
         this.collection = res;
+        this.microserviceId = this.collection.microService?.id;
       });
       this.getDtodata();
     }
@@ -132,7 +142,7 @@ export class FieldsComponent extends GenericComponent implements OnInit {
           this.msgService.add({
             severity: 'success',
             summary: 'Generated',
-            detail: 'All apis created',
+            detail: 'Model Generated',
           });
           this.getAllData();
         });
@@ -199,12 +209,10 @@ export class FieldsComponent extends GenericComponent implements OnInit {
               detail: 'Request DTO Generated',
             });
             this.getAllData();
-            console.log('Inside Success');
+
             this.showGenerateDtoModel = false;
           })
           .catch((err) => {
-            console.log('Inside Error');
-            console.log(err);
             this.msgService.add({
               severity: 'success',
               summary: 'Success',

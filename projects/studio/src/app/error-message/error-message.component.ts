@@ -4,45 +4,47 @@ import { AbstractControl, AbstractControlDirective } from '@angular/forms';
 @Component({
   selector: 'error-message',
   templateUrl: './error-message.component.html',
-  styleUrls: ['./error-message.component.scss']
+  styleUrls: ['./error-message.component.scss'],
 })
 export class ErrorMessageComponent {
   errorMsgList: any = [];
 
-  @Input() controlName!: AbstractControl | AbstractControlDirective
+  @Input() controlName!: AbstractControl | AbstractControlDirective;
 
   errorMessage: any = {
-    'required': (params: any) => 'This field is required',
+    required: (params: any) => 'This field is required',
     // 'maxlength': (params: any) => `Maximum ${params.requiredLength} characters are allowed`,
     // 'minlength': (params: any) => `Minimum ${params.requiredLength} characters are required`,
-    'maxlength': (params: any) => `Maximum required length for this field is ${params.requiredLength}`,
-    'minlength': (params: any) => `Minimum required length for this field is ${params.requiredLength}`,
-    'pattern': (params: any) => 'Invalid format',
-    'min': (params: any) => `Minimum amount should be ${params.min}`,
-    'max': (params: any) => `Maximum amount should be ${params.max}`,
-    'whitespace': (params: any) => 'White spaces are not allowed',
-    "alphaNumeric": (params: any) => 'Only alphabet and numbers are allowed.',
-    "digit": "Only digit are allowed",
-    'whitespacealpha': (params: any) => 'Only characters are allowed',
-    'email': (params: any) => 'Enter a valid email',
-    'confirmedValidator': (params: any) => 'Passwords are not matching',
+    maxlength: (params: any) =>
+      `Maximum required length for this field is ${params.requiredLength}`,
+    minlength: (params: any) =>
+      `Minimum required length for this field is ${params.requiredLength}`,
+    pattern: (params: any) => 'Invalid format',
+    min: (params: any) => `Minimum amount should be ${params.min}`,
+    max: (params: any) => `Maximum amount should be ${params.max}`,
+    whitespace: (params: any) => 'White spaces are not allowed',
+    alphaNumeric: (params: any) => 'Only alphabet and numbers are allowed.',
+    digit: 'Only digit are allowed',
+    whitespacealpha: (params: any) => 'Only characters are allowed',
+    email: (params: any) => 'Enter a valid email',
+    confirmedValidator: (params: any) => 'Passwords are not matching',
   };
-
 
   listErrors() {
     if (!this.controlName) return [];
     if (this.controlName.errors) {
       this.errorMsgList = [];
-      Object.keys(this.controlName.errors).map(error => {
-        // console.log(this.controlName.errors ?? [error]);
+      Object.keys(this.controlName.errors).map((error) => {
         if (this.controlName.errors) {
-          this.controlName.touched || this.controlName.dirty ?
-            this.errorMsgList.push(this.errorMessage[error](this.controlName.errors[error])) : '';
+          this.controlName.touched || this.controlName.dirty
+            ? this.errorMsgList.push(
+                this.errorMessage[error](this.controlName.errors[error]),
+              )
+            : '';
         }
       });
       return this.errorMsgList;
-    }
-    else {
+    } else {
       return [];
     }
   }

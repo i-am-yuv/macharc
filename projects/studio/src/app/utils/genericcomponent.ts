@@ -23,7 +23,7 @@ export abstract class GenericComponent {
 
   constructor(
     public dataService: GenericService,
-    public messageService: MessageService
+    public messageService: MessageService,
   ) {
     this.dataService = dataService;
     this.messageService = messageService;
@@ -78,57 +78,57 @@ export abstract class GenericComponent {
       if (callBack) callBack(res);
     });
   }
-  preSave() { }
-  preSaveByApplication() { }
+  preSave() {}
+  preSaveByApplication() {}
 
+  postSave(data: any) {}
 
-  postSave(data: any) { 
-  }
+  postSaveShowModal(data: any, resType: string) {}
 
-  postSaveShowModal(data:any , resType : string){
-  }
-
-  postSaveByApplication(data: any) { }
-
+  postSaveByApplication(data: any) {}
 
   saveData() {
     this.preSave();
     //this.form.value.collection = null ;// No collection for page
     const formData = this.form.value;
     if (!formData.id) {
-      this.dataService.createData(formData).then((res: any) => {
-        if (res) {
-          this.visible = false;
-          // this.messageService.add({
-          //   severity: 'success',
-          //   detail: this.componentName + ' created',
-          //   summary: this.componentName + ' created',
-          // });
-          this.getAllData();
-          this.postSave(res);
-          this.postSaveShowModal( this.componentName , 'createdSuccess' ) ;
-        }
-      }).catch( (err)=>{
-        this.postSaveShowModal( this.componentName , 'createdError' ) ;
-      });
+      this.dataService
+        .createData(formData)
+        .then((res: any) => {
+          if (res) {
+            this.visible = false;
+            // this.messageService.add({
+            //   severity: 'success',
+            //   detail: this.componentName + ' created',
+            //   summary: this.componentName + ' created',
+            // });
+            this.getAllData();
+            this.postSave(res);
+            this.postSaveShowModal(this.componentName, 'createdSuccess');
+          }
+        })
+        .catch((err) => {
+          this.postSaveShowModal(this.componentName, 'createdError');
+        });
     } else {
-      this.dataService.updateData(formData).then((res: any) => {
-        if (res) {
-          this.visible = false;
-          // this.messageService.add({
-          //   severity: 'success',
-          //   detail: this.componentName + ' updated',
-          //   summary: this.componentName + ' updated',
-          // });
-          this.getAllData();
-          this.postSave(res);
-          this.postSaveShowModal( this.componentName , 'updatedSuccess' ) ;
-        }
-      }).catch( 
-        (err)=>{
-          this.postSaveShowModal( this.componentName , 'updatedError' ) ;
-        }
-      ) ;
+      this.dataService
+        .updateData(formData)
+        .then((res: any) => {
+          if (res) {
+            this.visible = false;
+            // this.messageService.add({
+            //   severity: 'success',
+            //   detail: this.componentName + ' updated',
+            //   summary: this.componentName + ' updated',
+            // });
+            this.getAllData();
+            this.postSave(res);
+            this.postSaveShowModal(this.componentName, 'updatedSuccess');
+          }
+        })
+        .catch((err) => {
+          this.postSaveShowModal(this.componentName, 'updatedError');
+        });
     }
   }
 
@@ -139,41 +139,43 @@ export abstract class GenericComponent {
     formData.application = { ...formData.application, id: applicationId };
 
     if (!formData.id) {
-      this.dataService.createData(formData).then((res: any) => {
-        if (res) {
-          this.visible = false;
-          // this.messageService.add({
-          //   severity: 'success',
-          //   detail: this.componentName + ' created',
-          //   summary: this.componentName + ' created',
-          // });
-          this.getAllDataById(applicationId);
-          this.postSaveByApplication(res);
-          this.postSaveShowModal( this.componentName , 'createdSuccess' ) ;
-        }
-      }).catch( 
-        (err)=>{
-          this.postSaveShowModal( this.componentName , 'createdError' ) ;
-        }
-      ) ;
+      this.dataService
+        .createData(formData)
+        .then((res: any) => {
+          if (res) {
+            this.visible = false;
+            // this.messageService.add({
+            //   severity: 'success',
+            //   detail: this.componentName + ' created',
+            //   summary: this.componentName + ' created',
+            // });
+            this.getAllDataById(applicationId);
+            this.postSaveByApplication(res);
+            this.postSaveShowModal(this.componentName, 'createdSuccess');
+          }
+        })
+        .catch((err) => {
+          this.postSaveShowModal(this.componentName, 'createdError');
+        });
     } else {
-      this.dataService.updateData(formData).then((res: any) => {
-        if (res) {
-          this.visible = false;
-          // this.messageService.add({
-          //   severity: 'success',
-          //   detail: this.componentName + ' updated',
-          //   summary: this.componentName + ' updated',
-          // });
-          this.getAllDataById(applicationId);
-          this.postSaveByApplication(res);
-          this.postSaveShowModal( this.componentName , 'updatedSuccess' ) ;
-        }
-      }).catch( 
-        (err)=>{
-          this.postSaveShowModal( this.componentName , 'updatedError' ) ;
-        }
-      ) ;
+      this.dataService
+        .updateData(formData)
+        .then((res: any) => {
+          if (res) {
+            this.visible = false;
+            // this.messageService.add({
+            //   severity: 'success',
+            //   detail: this.componentName + ' updated',
+            //   summary: this.componentName + ' updated',
+            // });
+            this.getAllDataById(applicationId);
+            this.postSaveByApplication(res);
+            this.postSaveShowModal(this.componentName, 'updatedSuccess');
+          }
+        })
+        .catch((err) => {
+          this.postSaveShowModal(this.componentName, 'updatedError');
+        });
     }
   }
 

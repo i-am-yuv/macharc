@@ -41,13 +41,14 @@ import { ReleasesComponent } from './releases/releases.component';
 import { QueryBuilderComponent } from './reports/query-builder/query-builder.component';
 import { ReportDesignerComponent } from './reports/report-designer/report-designer.component';
 import { ReportsComponent } from './reports/reports.component';
+import { PagePreviewComponent } from './screen/page-preview/page-preview.component';
 import { TemplatesComponent } from './screen/templates/templates.component';
 import { SettingsComponent } from './settings/settings.component';
 
 const routes: Routes = [
   {
-  path: '',
-  component: LayoutComponent,
+    path: '',
+    component: LayoutComponent,
     canActivate: [AuthGuard],
     children: [
       { path: '', component: FrontComponent },
@@ -104,6 +105,7 @@ const routes: Routes = [
               { path: ':id', component: MicroserviceComponent },
             ],
           },
+          { path: 'web-preview/:pageId', component: PagePreviewComponent },
           { path: 'mobile-preview/:pageId', component: MobilePreviewComponent },
           { path: 'datasources/:id', component: MsDatasourceComponent },
           { path: 'collections', component: CollectionComponent },
@@ -197,19 +199,22 @@ const routes: Routes = [
     ],
   },
   {
-    path: 'builder/screens/designer/:id',
+    path: 'builder/screens/designer',
     // component: LayoutComponent,
     children: [
       {
         path: '',
         component: DispatcherComponent,
-        children: [{ path: '', component: DesignerComponent }],
+        children: [
+          { path: '', component: DesignerComponent },
+          { path: ':id', component: DesignerComponent },
+        ],
       },
     ],
   },
   // { path: 'actions', component: ActionsComponent },
   {
-    path: 'actions/:id',
+    path: 'builder/actions/designer',
     // component: LayoutComponent,
     children: [
       {
@@ -217,18 +222,22 @@ const routes: Routes = [
         component: DispatcherComponent,
         children: [
           { path: '', component: ActionsComponent },
+          { path: ':id', component: ActionsComponent },
         ],
       },
     ],
   },
   {
-    path: 'builder/forms/designer/:id',
+    path: 'builder/components/designer',
     // component: LayoutComponent, // Wants to open it in full screen with no left side bar
     children: [
       {
         path: '',
         component: DispatcherComponent,
-        children: [{ path: '', component: FormDesignerComponent }],
+        children: [
+          { path: '', component: FormDesignerComponent },
+          { path: ':id', component: FormDesignerComponent },
+        ],
       },
     ],
   },

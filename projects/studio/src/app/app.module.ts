@@ -48,6 +48,7 @@ import { NgTerminalModule } from 'ng-terminal';
 import { NgChartsModule } from 'ng2-charts';
 import { NgxLoadingModule } from 'ngx-loading';
 import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
+// import { NgxPanZoomModule } from 'ngx-panzoom';
 import { PrimeNGConfig } from 'primeng/api';
 import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
@@ -83,6 +84,7 @@ import { ApidocComponent } from './microservice/apidoc/apidoc.component';
 import { MsDatasourceComponent } from './microservice/ms-datasource/ms-datasource.component';
 import { MsFormComponent } from './microservice/ms-form/ms-form.component';
 import { MobilePreviewComponent } from './mobile-preview/mobile-preview.component';
+import { ModalComponent } from './modal/modal.component';
 import { NgFlutterComponent } from './ng-flutter/ng-flutter.component';
 import { MxflowComponent } from './processes/mxflow/mxflow.component';
 import { ProcessesComponent } from './processes/processes.component';
@@ -99,8 +101,6 @@ import { Properties2Component } from './screen/properties2/properties2.component
 import { TemplatesComponent } from './screen/templates/templates.component';
 import { SettingsComponent } from './settings/settings.component';
 import { ContenteditableValueAccessor } from './utils/constenteditable.directive';
-import { ModalComponent } from './modal/modal.component';
-
 
 @NgModule({
   declarations: [
@@ -156,7 +156,7 @@ import { ModalComponent } from './modal/modal.component';
     MobilePreviewComponent,
     PagePreviewComponent,
     NestedPreviewComponent,
-    ModalComponent
+    ModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -203,7 +203,8 @@ import { ModalComponent } from './modal/modal.component';
     DropdownModule,
     CalendarModule,
     SelectButtonModule,
-    InputTextModule
+    InputTextModule,
+    // NgxPanZoomModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [
@@ -216,7 +217,7 @@ import { ModalComponent } from './modal/modal.component';
   bootstrap: [AppComponent],
 })
 export class AppModule {
-  constructor(private primengConfig: PrimeNGConfig) { }
+  constructor(private primengConfig: PrimeNGConfig) {}
 
   ngOnInit() {
     this.primengConfig.ripple = true;

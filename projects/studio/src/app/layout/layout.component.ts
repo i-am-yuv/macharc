@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { filter } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
 import { Project } from '../project/project';
 import { ProjectService } from '../project/project.service';
@@ -114,7 +113,7 @@ export class LayoutComponent {
           icon: 'clipboard',
           routerLink: ['/builder/microservices'],
           image: 'assets/microservice_L.svg',
-        }
+        },
         // ,
         // {
         //   label: 'Datasources',
@@ -148,7 +147,7 @@ export class LayoutComponent {
           icon: 'clipboard',
           routerLink: ['/datasources'],
           image: 'assets/Database2.svg',
-        }
+        },
       ],
       showSubMenu: true,
     },
@@ -187,7 +186,7 @@ export class LayoutComponent {
           icon: 'clipboard',
           routerLink: ['/builder/reports'],
           image: 'assets/Reports_L.svg',
-        }
+        },
         // {
         //   label: 'Mobile Builder',
         //   icon: 'clipboard',
@@ -252,7 +251,7 @@ export class LayoutComponent {
     private route: ActivatedRoute,
     private authService: AuthService,
     private projectService: ProjectService,
-    private layoutService: LayoutService
+    private layoutService: LayoutService,
   ) {
     this.layoutService.sidebarVisibilityChange.subscribe((value) => {
       this.showSideBar = value;
@@ -269,12 +268,12 @@ export class LayoutComponent {
     this.projectService.getActiveProject().subscribe((val) => {
       this.activeProject = val;
     });
-    const savedMenuItemName = sessionStorage.getItem('menuItemName');
+    const savedMenuItemName = localStorage.getItem('menuItemName');
     if (savedMenuItemName) {
       this.menuView = savedMenuItemName;
     } else {
       this.menuView = 'menuItemsBackend';
-      sessionStorage.setItem('menuItemName', this.menuView);
+      localStorage.setItem('menuItemName', this.menuView);
     }
 
     this.layoutService.checkForPadding.subscribe(
@@ -283,12 +282,12 @@ export class LayoutComponent {
       },
       (err) => {
         this.giveDefaultPadding = true;
-      }
-    )
+      },
+    );
   }
 
   logout() {
-    sessionStorage.clear();
+    localStorage.clear();
     this.router.navigate(['/login']);
   }
   toggleSideBar() {
@@ -306,20 +305,19 @@ export class LayoutComponent {
       return this.menuItemsSettings;
     } else if (this.menuView == 'menuItemsDatasource') {
       return this.menuItemsDatasource;
-    }
-     else {
+    } else {
       return this.menuItems;
     }
   }
 
   selectMenuItem(menuItemName: string) {
     this.menuView = menuItemName;
-    sessionStorage.setItem('menuItemName', this.menuView);
+    localStorage.setItem('menuItemName', this.menuView);
   }
 
   resetMenuItems() {
     this.menuView = '';
-    sessionStorage.removeItem('menuItemName');
+    localStorage.removeItem('menuItemName');
   }
 
   // checkRoute(): void {

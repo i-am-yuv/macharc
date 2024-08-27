@@ -1,277 +1,388 @@
 <!-- This is the page we are rendering in new tab when the user click on the preview button in page -->
 
-<div *ngFor="let item of draggableListRight" [dndDraggable]="item">
+<div class="p-4">
+  <div class="flex place-items-center">
+    <vezo-icon
+      icon="arrowLeft"
+      className="mr-2 cursor-pointer"
+      [routerLink]="['/builder/screens/designer/' + screenId]"
+    ></vezo-icon>
+    <div class="text-xl">Page Preview</div>
+  </div>
+  <div class="text-sm text-gray-400">
+    This is a preview of the page that would be rendered on the application
+    without the layout. To view with layout please use test mode
+  </div>
+
+  <div *ngFor="let item of screenDefinition">
     <div class="relative overflow-x: auto;">
-        <ng-container *ngIf="item.name === 'grid'">
-            <div class="name gap-{{ item.data.gap }} grid grid-cols-{{
-        item.data.columns
-      }}
+      <ng-container *ngIf="item.name === 'grid'">
+        <div
+          class="name gap-{{ item.data.gap }} grid grid-cols-{{
+            item.data.columns
+          }}
                 justify-{{ item.data.alignment }} items-{{
-        item.data.vAlignment
-      }}" [ngClass]="{
-        'p-8':
-          !this.item.children || this.item.children.length === 0
-      }" [ngStyle]="{
-        'margin-top': item.data?.mt + 'px',
-        'margin-bottom': item.data?.mb + 'px',
-        'margin-left': item.data?.ml + 'px',
-        'margin-right': item.data?.mr + 'px',
-        'padding-top':
-          (item.children && item.children.length > 0
-            ? item.data?.pt
-            : 32) + 'px',
-        'padding-bottom':
-          (item.children && item.children.length > 0
-            ? item.data?.pb
-            : 32) + 'px',
-        'padding-left':
-          (item.children && item.children.length > 0
-            ? item.data?.pl
-            : 32) + 'px',
-        'padding-right':
-          (item.children && item.children.length > 0
-            ? item.data?.pr
-            : 32) + 'px'
-      }" dndDropzone dndEffectAllowed="copyMove">
-                <div *ngFor="let child of item.children" [dndDraggable]="child" class="name">
-                    <div>
-                        <!-- This line was not working in the case of nested grid -->
-                        <!-- <app-blocks [block]="child" ></app-blocks> -->
+            item.data.vAlignment
+          }}"
+          [ngClass]="{
+            'p-8': !this.item.children || this.item.children.length === 0
+          }"
+          [ngStyle]="{
+            'margin-top': item.data?.mt + 'px',
+            'margin-bottom': item.data?.mb + 'px',
+            'margin-left': item.data?.ml + 'px',
+            'margin-right': item.data?.mr + 'px',
+            'padding-top':
+              (item.children && item.children.length > 0 ? item.data?.pt : 32) +
+              'px',
+            'padding-bottom':
+              (item.children && item.children.length > 0 ? item.data?.pb : 32) +
+              'px',
+            'padding-left':
+              (item.children && item.children.length > 0 ? item.data?.pl : 32) +
+              'px',
+            'padding-right':
+              (item.children && item.children.length > 0 ? item.data?.pr : 32) +
+              'px'
+          }"
+          dndDropzone
+          dndEffectAllowed="copyMove"
+        >
+          <div
+            *ngFor="let child of item.children"
+            [dndDraggable]="child"
+            class="name"
+          >
+            <div>
+              <!-- This line was not working in the case of nested grid -->
+              <!-- <app-blocks [block]="child" ></app-blocks> -->
 
-                        <!-- Solution for nested grid -->
-                        <ng-container *ngIf="child.name === 'container'">
-                            <app-nested-preview [child]="child" [nestedElement]="'container'"></app-nested-preview>
-                        </ng-container>
-                        <ng-container *ngIf="child.name === 'row'">
-                            <app-nested-preview [child]="child" [nestedElement]="'row'"></app-nested-preview>
-                        </ng-container>
-                        <ng-container *ngIf="child.name === 'grid'">
-                            <app-nested-preview [child]="child" [nestedElement]="'grid'"></app-nested-preview>
-                        </ng-container>
-                        <ng-container *ngIf="child.name === 'column'">
-                            <app-nested-preview [child]="child" [nestedElement]="'column'"></app-nested-preview>
-                        </ng-container>
-                        <ng-container *ngIf="
-              child.name !== 'row' &&
-              child.name !== 'container' &&
-              child.name !== 'grid' &&
-              child.name !== 'column'
-            ">
-                            <app-blocks [block]="child"></app-blocks>
-                        </ng-container>
-                    </div>
-                </div>
+              <!-- Solution for nested grid -->
+              <ng-container *ngIf="child.name === 'container'">
+                <app-nested-preview
+                  [child]="child"
+                  [nestedElement]="'container'"
+                ></app-nested-preview>
+              </ng-container>
+              <ng-container *ngIf="child.name === 'row'">
+                <app-nested-preview
+                  [child]="child"
+                  [nestedElement]="'row'"
+                ></app-nested-preview>
+              </ng-container>
+              <ng-container *ngIf="child.name === 'grid'">
+                <app-nested-preview
+                  [child]="child"
+                  [nestedElement]="'grid'"
+                ></app-nested-preview>
+              </ng-container>
+              <ng-container *ngIf="child.name === 'column'">
+                <app-nested-preview
+                  [child]="child"
+                  [nestedElement]="'column'"
+                ></app-nested-preview>
+              </ng-container>
+              <ng-container
+                *ngIf="
+                  child.name !== 'row' &&
+                  child.name !== 'container' &&
+                  child.name !== 'grid' &&
+                  child.name !== 'column'
+                "
+              >
+                <app-blocks [block]="child"></app-blocks>
+              </ng-container>
             </div>
-        </ng-container>
-
-        <ng-container *ngIf="item.name === 'container'">
-            <div class="name gap-{{ item.data.gap }} grid grid-cols-{{
-        item.data.columns
-      }}  items-{{ item.data.vAlignment }} shadow-{{
-        item.data.shadow
-      }}" [ngStyle]="{
-        width: item.data?.width ? item.data?.width + 'px' : 'auto',
-        height: item.data?.height
-          ? item.data?.height + 'px'
-          : '100%',
-        'background-color': item.data?.bgColor,
-        'background-image': 'url(' + item.data?.bgImage + ')',
-        'background-size': 'cover',
-        'background-position': 'center',
-        'border-width': item.data.borderWidth + 'px',
-        'border-radius': item.data.borderRadius + 'px',
-        'border-color': item.data.borderColor,
-        'justify-items': item.data.alignment,
-        'margin-top': item.data?.mt + 'px',
-        'margin-bottom': item.data?.mb + 'px',
-        'margin-left': item.data?.ml + 'px',
-        'margin-right': item.data?.mr + 'px',
-        'padding-top': item.data?.pt + 'px',
-        'padding-bottom': item.data?.pb + 'px',
-        'padding-left': item.data?.pl + 'px',
-        'padding-right': item.data?.pr + 'px'
-      }" [ngClass]="{
-        'p-8':
-          !this.item.children || this.item.children.length === 0
-      }" dndDropzone dndEffectAllowed="copyMove">
-                <div *ngFor="let child of item.children" [dndDraggable]="child">
-                    <div>
-                        <!-- Because This line was not working in the case of nested grid -->
-                        <!-- <app-blocks [block]="child" ></app-blocks> -->
-
-                        <!-- Solution for nested grid -->
-                        <ng-container *ngIf="child.name === 'container'">
-                            <app-nested-preview [child]="child" [nestedElement]="'container'"></app-nested-preview>
-                        </ng-container>
-                        <ng-container *ngIf="child.name === 'row'">
-                            <app-nested-preview [child]="child" [nestedElement]="'row'"></app-nested-preview>
-                        </ng-container>
-                        <ng-container *ngIf="child.name === 'column'">
-                            <app-nested-preview [child]="child" [nestedElement]="'column'"></app-nested-preview>
-                        </ng-container>
-                        <ng-container *ngIf="child.name === 'grid'">
-                            <app-nested-preview [child]="child" [nestedElement]="'grid'"></app-nested-preview>
-                        </ng-container>
-                        <ng-container *ngIf="
-              child.name !== 'row' &&
-              child.name !== 'container' &&
-              child.name !== 'grid' &&
-              child.name !== 'column'
-            ">
-                            <app-blocks [block]="child"></app-blocks>
-                        </ng-container>
-                    </div>
-                </div>
-            </div>
-        </ng-container>
-
-        <ng-container *ngIf="item.name === 'row'">
-            <div class="name gap-{{ item.data.gap }} flex  items-{{
-        item.data.vAlignment
-      }}" [ngClass]="{
-        'p-8':
-          !this.item.children || this.item.children.length === 0
-      }" [ngStyle]="{
-        'margin-top': item.data.mt + 'px',
-        'margin-bottom': item.data.mb + 'px',
-        'margin-left': item.data.ml + 'px',
-        'margin-right': item.data.mr + 'px',
-        'padding-top':
-          (item.children && item.children.length > 0
-            ? item.data?.pt
-            : 32) + 'px',
-        'padding-bottom':
-          (item.children && item.children.length > 0
-            ? item.data?.pb
-            : 32) + 'px',
-        'padding-left':
-          (item.children && item.children.length > 0
-            ? item.data?.pl
-            : 32) + 'px',
-        'padding-right':
-          (item.children && item.children.length > 0
-            ? item.data?.pr
-            : 32) + 'px',
-        'justify-content': item.data.alignment
-      }" dndDropzone dndEffectAllowed="copyMove">
-                <div *ngFor="let child of item.children" [dndDraggable]="child" class="name">
-                    <div>
-                        <!-- Solution for nested grid -->
-                        <ng-container *ngIf="child.name === 'container'">
-                            <app-nested-preview [child]="child" [nestedElement]="'container'"></app-nested-preview>
-                        </ng-container>
-                        <ng-container *ngIf="child.name === 'row'">
-                            <app-nested-preview [child]="child" [nestedElement]="'row'"></app-nested-preview>
-                        </ng-container>
-                        <ng-container *ngIf="child.name === 'column'">
-                            <app-nested-preview [child]="child" [nestedElement]="'column'"></app-nested-preview>
-                        </ng-container>
-                        <ng-container *ngIf="child.name === 'grid'">
-                            <app-nested-preview [child]="child" [nestedElement]="'grid'"></app-nested-preview>
-                        </ng-container>
-                        <ng-container *ngIf="
-              child.name !== 'row' &&
-              child.name !== 'container' &&
-              child.name !== 'grid' &&
-              child.name !== 'column'
-            ">
-                            <app-blocks [block]="child"></app-blocks>
-                        </ng-container>
-                    </div>
-                </div>
-            </div>
-        </ng-container>
-
-        <ng-container *ngIf="item.name === 'column'">
-            <div class="name  gap-{{ item.data.gap }} flex flex-col justify-{{
-        item.data.alignment
-      }} items-{{ item.data.hAlignment }}" [ngClass]="{
-        'p-8':
-          !this.item.children || this.item.children.length === 0
-      }" [ngStyle]="{
-        'margin-top': item.data.mt + 'px',
-        'margin-bottom': item.data.mb + 'px',
-        'margin-left': item.data.ml + 'px',
-        'margin-right': item.data.mr + 'px',
-        'padding-top':
-          (item.children && item.children.length > 0
-            ? item.data?.pt
-            : 32) + 'px',
-        'padding-bottom':
-          (item.children && item.children.length > 0
-            ? item.data?.pb
-            : 32) + 'px',
-        'padding-left':
-          (item.children && item.children.length > 0
-            ? item.data?.pl
-            : 32) + 'px',
-        'padding-right':
-          (item.children && item.children.length > 0
-            ? item.data?.pr
-            : 32) + 'px'
-      }" dndDropzone dndEffectAllowed="copyMove" style="width: -webkit-fill-available">
-                <div *ngFor="let child of item.children" [dndDraggable]="child" class="name"
-                    style="width: -webkit-fill-available">
-                    <div>
-                        <!-- Solution for nested grid -->
-                        <ng-container *ngIf="child.name === 'column'">
-                            <app-nested-preview [child]="child" [nestedElement]="'column'"></app-nested-preview>
-                        </ng-container>
-                        <ng-container *ngIf="child.name === 'container'">''
-                            <app-nested-preview [child]="child" [nestedElement]="'container'"></app-nested-preview>
-                        </ng-container>
-                        <ng-container *ngIf="child.name === 'row'">
-                            <app-nested-preview [child]="child" [nestedElement]="'row'"></app-nested-preview>
-                        </ng-container>
-                        <ng-container *ngIf="child.name === 'grid'">
-                            <app-nested-preview [child]="child" [nestedElement]="'grid'"></app-nested-preview>
-                        </ng-container>
-                        <ng-container *ngIf="
-              child.name !== 'row' &&
-              child.name !== 'container' &&
-              child.name !== 'grid' &&
-              child.name !== 'column'
-            ">
-                            <app-blocks [block]="child"></app-blocks>
-                        </ng-container>
-                    </div>
-                </div>
-            </div>
-        </ng-container>
-
-        <ng-container *ngIf="item.name === 'form'">
-            <div class="name">
-                <div [ngClass]="{
-          'p-8':
-            !this.item.children || this.item.children.length === 0
-        }"></div>
-                <div *ngFor="let child of item.children" class="name">
-                    <ng-container *ngIf="child.name === 'container'">
-                        <app-nested-preview [child]="child" [nestedElement]="'container'" [isParentForm]="true"></app-nested-preview>
-                    </ng-container>
-                    <ng-container *ngIf="child.name === 'row'">
-                        <app-nested-preview [child]="child" [nestedElement]="'row'" [isParentForm]="true"></app-nested-preview>
-                    </ng-container>
-                    <ng-container *ngIf="child.name === 'grid'">
-                        <app-nested-preview [child]="child" [nestedElement]="'grid'" [isParentForm]="true"></app-nested-preview>
-                    </ng-container>
-                    <ng-container *ngIf="child.name === 'column'">
-                        <app-nested-preview [child]="child" [nestedElement]="'column'"></app-nested-preview>
-                    </ng-container>
-                    <ng-container *ngIf="
-            child.name !== 'row' &&
-            child.name !== 'container' &&
-            child.name !== 'grid' &&
-            child.name !== 'column'
-          ">
-                        <app-blocks [block]="child"></app-blocks>
-                    </ng-container>
-                </div>
-            </div>
-        </ng-container>
-
-        <div class="relative-container">
-            <app-blocks [block]="item" class="block-content"   (screenDefination)="renderNewPage($event)"></app-blocks>
+          </div>
         </div>
+      </ng-container>
+
+      <ng-container *ngIf="item.name === 'container'">
+        <div
+          class="name gap-{{ item.data.gap }} grid grid-cols-{{
+            item.data.columns
+          }}  items-{{ item.data.vAlignment }} shadow-{{ item.data.shadow }}"
+          [ngStyle]="{
+            width: item.data?.width ? item.data?.width + 'px' : 'auto',
+            height: item.data?.height ? item.data?.height + 'px' : '100%',
+            'background-color': item.data?.bgColor,
+            'background-image': 'url(' + item.data?.bgImage + ')',
+            'background-size': 'cover',
+            'background-position': 'center',
+            'border-width': item.data.borderWidth + 'px',
+            'border-radius': item.data.borderRadius + 'px',
+            'border-color': item.data.borderColor,
+            'justify-items': item.data.alignment,
+            'margin-top': item.data?.mt + 'px',
+            'margin-bottom': item.data?.mb + 'px',
+            'margin-left': item.data?.ml + 'px',
+            'margin-right': item.data?.mr + 'px',
+            'padding-top': item.data?.pt + 'px',
+            'padding-bottom': item.data?.pb + 'px',
+            'padding-left': item.data?.pl + 'px',
+            'padding-right': item.data?.pr + 'px'
+          }"
+          [ngClass]="{
+            'p-8': !this.item.children || this.item.children.length === 0
+          }"
+          dndDropzone
+          dndEffectAllowed="copyMove"
+        >
+          <div *ngFor="let child of item.children" [dndDraggable]="child">
+            <div>
+              <!-- Because This line was not working in the case of nested grid -->
+              <!-- <app-blocks [block]="child" ></app-blocks> -->
+
+              <!-- Solution for nested grid -->
+              <ng-container *ngIf="child.name === 'container'">
+                <app-nested-preview
+                  [child]="child"
+                  [nestedElement]="'container'"
+                ></app-nested-preview>
+              </ng-container>
+              <ng-container *ngIf="child.name === 'row'">
+                <app-nested-preview
+                  [child]="child"
+                  [nestedElement]="'row'"
+                ></app-nested-preview>
+              </ng-container>
+              <ng-container *ngIf="child.name === 'column'">
+                <app-nested-preview
+                  [child]="child"
+                  [nestedElement]="'column'"
+                ></app-nested-preview>
+              </ng-container>
+              <ng-container *ngIf="child.name === 'grid'">
+                <app-nested-preview
+                  [child]="child"
+                  [nestedElement]="'grid'"
+                ></app-nested-preview>
+              </ng-container>
+              <ng-container
+                *ngIf="
+                  child.name !== 'row' &&
+                  child.name !== 'container' &&
+                  child.name !== 'grid' &&
+                  child.name !== 'column'
+                "
+              >
+                <app-blocks [block]="child"></app-blocks>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="item.name === 'row'">
+        <div
+          class="name gap-{{ item.data.gap }} flex  items-{{
+            item.data.vAlignment
+          }}"
+          [ngClass]="{
+            'p-8': !this.item.children || this.item.children.length === 0
+          }"
+          [ngStyle]="{
+            'margin-top': item.data.mt + 'px',
+            'margin-bottom': item.data.mb + 'px',
+            'margin-left': item.data.ml + 'px',
+            'margin-right': item.data.mr + 'px',
+            'padding-top':
+              (item.children && item.children.length > 0 ? item.data?.pt : 32) +
+              'px',
+            'padding-bottom':
+              (item.children && item.children.length > 0 ? item.data?.pb : 32) +
+              'px',
+            'padding-left':
+              (item.children && item.children.length > 0 ? item.data?.pl : 32) +
+              'px',
+            'padding-right':
+              (item.children && item.children.length > 0 ? item.data?.pr : 32) +
+              'px',
+            'justify-content': item.data.alignment
+          }"
+          dndDropzone
+          dndEffectAllowed="copyMove"
+        >
+          <div
+            *ngFor="let child of item.children"
+            [dndDraggable]="child"
+            class="name"
+          >
+            <div>
+              <!-- Solution for nested grid -->
+              <ng-container *ngIf="child.name === 'container'">
+                <app-nested-preview
+                  [child]="child"
+                  [nestedElement]="'container'"
+                ></app-nested-preview>
+              </ng-container>
+              <ng-container *ngIf="child.name === 'row'">
+                <app-nested-preview
+                  [child]="child"
+                  [nestedElement]="'row'"
+                ></app-nested-preview>
+              </ng-container>
+              <ng-container *ngIf="child.name === 'column'">
+                <app-nested-preview
+                  [child]="child"
+                  [nestedElement]="'column'"
+                ></app-nested-preview>
+              </ng-container>
+              <ng-container *ngIf="child.name === 'grid'">
+                <app-nested-preview
+                  [child]="child"
+                  [nestedElement]="'grid'"
+                ></app-nested-preview>
+              </ng-container>
+              <ng-container
+                *ngIf="
+                  child.name !== 'row' &&
+                  child.name !== 'container' &&
+                  child.name !== 'grid' &&
+                  child.name !== 'column'
+                "
+              >
+                <app-blocks [block]="child"></app-blocks>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="item.name === 'column'">
+        <div
+          class="name  gap-{{ item.data.gap }} flex flex-col justify-{{
+            item.data.alignment
+          }} items-{{ item.data.hAlignment }}"
+          [ngClass]="{
+            'p-8': !this.item.children || this.item.children.length === 0
+          }"
+          [ngStyle]="{
+            'margin-top': item.data.mt + 'px',
+            'margin-bottom': item.data.mb + 'px',
+            'margin-left': item.data.ml + 'px',
+            'margin-right': item.data.mr + 'px',
+            'padding-top':
+              (item.children && item.children.length > 0 ? item.data?.pt : 32) +
+              'px',
+            'padding-bottom':
+              (item.children && item.children.length > 0 ? item.data?.pb : 32) +
+              'px',
+            'padding-left':
+              (item.children && item.children.length > 0 ? item.data?.pl : 32) +
+              'px',
+            'padding-right':
+              (item.children && item.children.length > 0 ? item.data?.pr : 32) +
+              'px'
+          }"
+          dndDropzone
+          dndEffectAllowed="copyMove"
+          style="width: -webkit-fill-available"
+        >
+          <div
+            *ngFor="let child of item.children"
+            [dndDraggable]="child"
+            class="name"
+            style="width: -webkit-fill-available"
+          >
+            <div>
+              <!-- Solution for nested grid -->
+              <ng-container *ngIf="child.name === 'column'">
+                <app-nested-preview
+                  [child]="child"
+                  [nestedElement]="'column'"
+                ></app-nested-preview>
+              </ng-container>
+              <ng-container *ngIf="child.name === 'container'"
+                >''
+                <app-nested-preview
+                  [child]="child"
+                  [nestedElement]="'container'"
+                ></app-nested-preview>
+              </ng-container>
+              <ng-container *ngIf="child.name === 'row'">
+                <app-nested-preview
+                  [child]="child"
+                  [nestedElement]="'row'"
+                ></app-nested-preview>
+              </ng-container>
+              <ng-container *ngIf="child.name === 'grid'">
+                <app-nested-preview
+                  [child]="child"
+                  [nestedElement]="'grid'"
+                ></app-nested-preview>
+              </ng-container>
+              <ng-container
+                *ngIf="
+                  child.name !== 'row' &&
+                  child.name !== 'container' &&
+                  child.name !== 'grid' &&
+                  child.name !== 'column'
+                "
+              >
+                <app-blocks [block]="child"></app-blocks>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="item.name === 'form'">
+        <div class="name">
+          <div
+            [ngClass]="{
+              'p-8': !this.item.children || this.item.children.length === 0
+            }"
+          ></div>
+          <div *ngFor="let child of item.children" class="name">
+            <ng-container *ngIf="child.name === 'container'">
+              <app-nested-preview
+                [child]="child"
+                [nestedElement]="'container'"
+                [isParentForm]="true"
+              ></app-nested-preview>
+            </ng-container>
+            <ng-container *ngIf="child.name === 'row'">
+              <app-nested-preview
+                [child]="child"
+                [nestedElement]="'row'"
+                [isParentForm]="true"
+              ></app-nested-preview>
+            </ng-container>
+            <ng-container *ngIf="child.name === 'grid'">
+              <app-nested-preview
+                [child]="child"
+                [nestedElement]="'grid'"
+                [isParentForm]="true"
+              ></app-nested-preview>
+            </ng-container>
+            <ng-container *ngIf="child.name === 'column'">
+              <app-nested-preview
+                [child]="child"
+                [nestedElement]="'column'"
+              ></app-nested-preview>
+            </ng-container>
+            <ng-container
+              *ngIf="
+                child.name !== 'row' &&
+                child.name !== 'container' &&
+                child.name !== 'grid' &&
+                child.name !== 'column'
+              "
+            >
+              <app-blocks [block]="child"></app-blocks>
+            </ng-container>
+          </div>
+        </div>
+      </ng-container>
+
+      <div class="relative-container">
+        <app-blocks
+          [block]="item"
+          class="block-content"
+          (screenDefination)="(screenDefinition)"
+        ></app-blocks>
+      </div>
     </div>
+  </div>
 </div>

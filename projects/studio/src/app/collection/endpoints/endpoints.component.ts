@@ -24,6 +24,10 @@ export class EndpointsComponent extends GenericComponent implements OnInit {
   requestJson = '';
   responseJson = '';
   activeEp: Endpoint | undefined;
+
+  hasCustomEndPoints: boolean = false;
+  hasCrudEndPoints: boolean = false;
+
   getEpColor(type: any) {
     const colors = [
       { type: 'GET', color: 'green' },
@@ -33,7 +37,7 @@ export class EndpointsComponent extends GenericComponent implements OnInit {
       { type: 'DELETE', color: 'red' },
     ];
 
-    //console.log(colors.find((t) => t.type === type)?.color);
+    //
     return colors.find((t) => t.type === type)?.color;
   }
 
@@ -82,7 +86,7 @@ export class EndpointsComponent extends GenericComponent implements OnInit {
     private collectionService: CollectionService,
     private datasourceService: DatasourceService,
     private pathVariableService: PathVariableService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) {
     super(endpointService, messageService);
     this.collectionId = this.route.snapshot.paramMap.get('id');
@@ -118,8 +122,6 @@ export class EndpointsComponent extends GenericComponent implements OnInit {
         this.requestDto.push(this.collection?.requestDto!);
         this.responseDto.push(this.collection?.responseDto!);
 
-        console.log(this.collection);
-
         // Now that we already got the Collection
         this.getAllServicesByMicroservices();
         this.getEndPointsByCollectionId();
@@ -138,7 +140,7 @@ export class EndpointsComponent extends GenericComponent implements OnInit {
     //getting the services by microservice
     var filterStrService = FilterBuilder.equal(
       'microService.id',
-      this.collection.microService?.id!
+      this.collection.microService?.id!,
     );
     this.searchByMicroservice = filterStrService;
     var pagination!: Pagination;
@@ -157,6 +159,10 @@ export class EndpointsComponent extends GenericComponent implements OnInit {
       .getAllData(pagination , this.search)
       .then((res: any) => {
         this.data = res.content;
+        var crudep = this.data.find((t) => t.crud === true);
+        if (crudep) this.hasCrudEndPoints = true;
+        var custep = this.data.find((t) => t.crud === false);
+        if (custep) this.hasCustomEndPoints = true;
       });
   }
 
@@ -206,9 +212,7 @@ export class EndpointsComponent extends GenericComponent implements OnInit {
       this.saveData();
     } else {
       this.form.value.responseDto = null;
-      console.log(this.form.value);
-      var filterStr = FilterBuilder.equal('collection.id', this.collectionId ? this.collectionId : '');
-      this.search = filterStr;
+
       this.saveData();
     }
   }

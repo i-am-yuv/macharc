@@ -38,7 +38,7 @@ export class WizardComponent extends GenericComponent {
     private layoutService: LayoutService,
     private fb: FormBuilder,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) {
     super(projectService, messageService);
 
@@ -75,7 +75,7 @@ export class WizardComponent extends GenericComponent {
     },
     {
       name: 'Define Datasources',
-      link: '/builder/datasources',
+      link: '/datasources',
     },
     {
       name: 'Create  Microservices',
@@ -90,11 +90,11 @@ export class WizardComponent extends GenericComponent {
       link: '/applications',
     },
     {
-      name: 'Preview Screens',
-      link: '/builder/screens',
+      name: 'Test Applications',
+      link: '/testing',
     },
     {
-      name: 'Build Deploy',
+      name: 'Build and Deploy',
       link: '/releases',
     },
   ];
@@ -119,18 +119,15 @@ export class WizardComponent extends GenericComponent {
   modalType: 'success' | 'failure' = 'success';
 
   override postSaveShowModal(res: any, resposeType: string) {
-    // you will open the model with the type       
+    // you will open the model with the type
     if (resposeType == 'createdSuccess') {
-      this.openModal('success', res+' created','OK');    
+      this.openModal('success', res + ' created', 'OK');
     } else if (resposeType == 'createdError') {
-      this.openModal('failure', res+' creation failed','OK');    
-
+      this.openModal('failure', res + ' creation failed', 'OK');
     } else if (resposeType == 'updatedSuccess') {
-      this.openModal('success', res+' updated','OK');    
-
+      this.openModal('success', res + ' updated', 'OK');
     } else if (resposeType == 'updatedError') {
-      this.openModal('failure', res+' updation failed','OK');    
-
+      this.openModal('failure', res + ' updation failed', 'OK');
     }
   }
 
@@ -142,7 +139,7 @@ export class WizardComponent extends GenericComponent {
   }
 
   closeModal() {
-    this.isModalOpen = false; 
-    this.naviagateListingPage() ;
+    this.isModalOpen = false;
+    this.naviagateListingPage();
   }
 }

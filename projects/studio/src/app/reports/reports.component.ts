@@ -34,7 +34,7 @@ export class ReportsComponent extends GenericComponent {
     private route: ActivatedRoute,
     private router: Router,
     private collectionService: CollectionService,
-    private microserviceService: MicroserviceService
+    private microserviceService: MicroserviceService,
   ) {
     super(reportService, messageService);
     this.form = this.fb.group({
@@ -69,9 +69,7 @@ export class ReportsComponent extends GenericComponent {
     }
   }
 
-  saveFormData() {
-    console.log(this.report.value);
-  }
+  saveFormData() {}
 
   designReport(scr: Report) {
     this.router.navigate(['/builder/reports/designer/' + scr.id]);
@@ -92,19 +90,15 @@ export class ReportsComponent extends GenericComponent {
     this.isModalOpen = false;
   }
   override postSaveShowModal(res: any, resposeType: string) {
-    // you will open the model with the type       
+    // you will open the model with the type
     if (resposeType == 'createdSuccess') {
-      this.openModal('success', res+' created','OK');    
+      this.openModal('success', res + ' created', 'OK');
     } else if (resposeType == 'createdError') {
-      this.openModal('failure', res+' creation failed','OK');    
-
+      this.openModal('failure', res + ' creation failed', 'OK');
     } else if (resposeType == 'updatedSuccess') {
-      this.openModal('success', res+' updated','OK');    
-
+      this.openModal('success', res + ' updated', 'OK');
     } else if (resposeType == 'updatedError') {
-      this.openModal('failure', res+' updation failed','OK');    
-
+      this.openModal('failure', res + ' updation failed', 'OK');
     }
   }
-
-} 
+}

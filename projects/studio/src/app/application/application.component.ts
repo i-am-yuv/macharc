@@ -20,7 +20,7 @@ export class ApplicationComponent extends GenericComponent {
     messageService: MessageService,
     private fb: FormBuilder,
     private applicationService: ApplicationService,
-    private router: Router
+    private router: Router,
   ) {
     super(dataService, messageService);
   }
@@ -44,15 +44,18 @@ export class ApplicationComponent extends GenericComponent {
   goToApplicationPages(application: any) {
     // [routerLink] = "['/builder/screens']"
     this.applicationService.setActiveApplication(application);
-    this.router.navigate(['/builder/screens/designer/null']);
+    this.router.navigate(['/builder/screens/designer']);
   }
 
   goToApplicationComponents(application: any) {
     this.applicationService.setActiveApplication(application);
-    this.router.navigate(['/builder/forms/designer/null']);
+    this.router.navigate(['/builder/components/designer']);
   }
 
-  goToApplicationActions() {}
+  goToApplicationActions(application: any) {
+    this.applicationService.setActiveApplication(application);
+    this.router.navigate(['/builder/actions/designer']);
+  }
 
   manageApplication(application: any) {
     this.applicationService.setActiveApplication(application);

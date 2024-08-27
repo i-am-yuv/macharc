@@ -42,7 +42,7 @@ export class MicroserviceComponent extends GenericComponent implements OnInit {
     private projectService: ProjectService,
     private route: ActivatedRoute,
     private router: Router,
-    private msgService: MessageService
+    private msgService: MessageService,
   ) {
     super(msService, messageService);
     // this.projectId = this.route.snapshot.paramMap.get('id');
@@ -65,7 +65,7 @@ export class MicroserviceComponent extends GenericComponent implements OnInit {
   ngOnInit(): void {
     this.projectService.getActiveProject().subscribe((val) => {
       // this.projectId = this.projectService.activeProject?.id;
-      console.log(val);
+
       this.projectId = val?.id;
       if (this.projectId) {
         var filterStr = FilterBuilder.equal('project.id', this.projectId);
@@ -99,31 +99,11 @@ export class MicroserviceComponent extends GenericComponent implements OnInit {
       });
   }
 
-  generateFrontend(ms: MicroService) {
-    this.loading = true;
-    this.micrService
-      .generateFrontendCode(ms)
-      .then((res: any) => {
-        if (res) {
-          this.msgService.add({
-            severity: 'success',
-            summary: 'Generated',
-            detail: 'Microservice Frontend created',
-          });
-        }
-        this.loading = false;
-      })
-      .catch((e) => {
-        this.loading = false;
-      });
-  }
-
   getRouterLink() {
     this.router.navigate(['/builder/microservices/create']);
   }
 
-  goToActions( ms : any )
-  {
+  goToActions(ms: any) {
     this.micrService.setActiveMicroservice(ms);
     this.router.navigate(['/actions/null']);
   }

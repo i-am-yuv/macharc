@@ -1,38 +1,42 @@
-import { Injectable } from '@angular/core';
-import { GenericService } from '../utils/genericservice';
-import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
+import { environment } from '../../environments/environment';
+import { GenericService } from '../utils/genericservice';
 import { Actions } from './action';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ActionService extends GenericService {
-  
   apiUrl = environment.apiurl;
 
   endpoint: string = 'actions';
 
-  constructor(http: HttpClient, private httpClient: HttpClient) {
+  constructor(
+    http: HttpClient,
+    private httpClient: HttpClient,
+  ) {
     super(http);
-  }    
- 
-  async getActionByActionId(actionId:any) {
-    var url = this.apiUrl + '/actions/'+ encodeURIComponent(actionId!); ;
+  }
+
+  async getActionByActionId(actionId: any) {
+    var url = this.apiUrl + '/actions/' + encodeURIComponent(actionId!);
     const result = await lastValueFrom(this.httpClient.get<any>(url));
     return result;
   }
-  
 
-  async getAllActionsByMsId(msId:any) {
-    var url = this.apiUrl + '/actions/getActionsByMicroService/'+ encodeURIComponent(msId!); ;
+  async getAllActionsByMsId(msId: any) {
+    var url =
+      this.apiUrl +
+      '/actions/getActionsByMicroService/' +
+      encodeURIComponent(msId!);
     const result = await lastValueFrom(this.httpClient.get<any>(url));
     return result;
   }
 
   async generateServiceCode(action: Actions) {
-    var url = this.apiurl + '/' + this.endpoint + '/generateServiceCode';
+    var url = this.apiurl + '/' + this.endpoint + '/generateActionCode';
     const res = await lastValueFrom(this.http.post<any>(url, action));
     return res;
   }

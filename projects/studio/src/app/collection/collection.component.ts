@@ -36,7 +36,7 @@ export class CollectionComponent extends GenericComponent implements OnInit {
     private collectService: CollectionService,
     private route: ActivatedRoute,
     private router: Router,
-    private microserviceService: MicroserviceService
+    private microserviceService: MicroserviceService,
   ) {
     super(collectionService, messageService);
     this.form = this.fb.group({
@@ -45,7 +45,7 @@ export class CollectionComponent extends GenericComponent implements OnInit {
         '',
         [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)],
       ],
-      // customTableName: [''],
+      customTableName: [''],
       collectionKind: ['', Validators.required],
       crud: [],
       readonly: [],
@@ -66,7 +66,7 @@ export class CollectionComponent extends GenericComponent implements OnInit {
         });
       var filterStr = FilterBuilder.equal(
         'microService.id',
-        this.microserviceId
+        this.microserviceId,
       );
       this.search = filterStr;
     }
@@ -80,14 +80,11 @@ export class CollectionComponent extends GenericComponent implements OnInit {
   }
 
   override preSave(): void {
-    console.log('this is form');
-    console.log(this.form.value);
     if (!this.form.value.microService && this.microserviceId) {
       this.form.value.microService = {
         id: '',
       };
       this.form.value.microService.id = this.microserviceId;
-      console.log(this.form.value.microService.id);
     }
   }
 
@@ -111,19 +108,15 @@ export class CollectionComponent extends GenericComponent implements OnInit {
     this.isModalOpen = false;
   }
   override postSaveShowModal(res: any, resposeType: string) {
-    // you will open the model with the type       
+    // you will open the model with the type
     if (resposeType == 'createdSuccess') {
-      this.openModal('success', res+' created','OK');    
+      this.openModal('success', res + ' created', 'OK');
     } else if (resposeType == 'createdError') {
-      this.openModal('failure', res+' creation failed','OK');    
-
+      this.openModal('failure', res + ' creation failed', 'OK');
     } else if (resposeType == 'updatedSuccess') {
-      this.openModal('success', res+' updated','OK');    
-
+      this.openModal('success', res + ' updated', 'OK');
     } else if (resposeType == 'updatedError') {
-      this.openModal('failure', res+' updation failed','OK');    
-
+      this.openModal('failure', res + ' updation failed', 'OK');
     }
   }
-
 }
