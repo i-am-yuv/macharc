@@ -64,9 +64,9 @@ export class OpenEditor {
     actions.showLoopEditor = !actions.showLoopEditor;
   }
 
-  static openModelsPopup(actions: ActionsComponent, editor: any) {
-    actions.showModelsOptions = !actions.showModelsOptions;
-    actions.ModelEditor = editor;
+  static openVariablesPopup(actions: ActionsComponent, editor: any) {
+    actions.showVariablesOptions = !actions.showVariablesOptions;
+    actions.VariablesEditor = editor;
   }
 
   static openParamsPopup(actions: ActionsComponent, editor: any) {
@@ -76,10 +76,12 @@ export class OpenEditor {
 
   static openAPIEditor(actions: ActionsComponent, editor: any) {
     // For New Entry Reseting the data
+    console.log('editor', editor);
     if (
       editor.step.properties.collection == '' &&
       editor.step.properties.endpoint == ''
     ) {
+      console.log('here1');
       actions.modelSelectedAPI = {};
       actions.currentEndpointByModel = {};
       actions.allEndpointsByModel = [];
@@ -87,28 +89,38 @@ export class OpenEditor {
       actions.reqDtoModelMappedList = [];
       actions.manualEntryStates = [];
     } else {
+      console.log('here');
       for (var i = 0; i < actions.definition.sequence.length; i++) {
         var currDefination = actions.definition.sequence[i];
+
         if (currDefination.id == editor.step.id) {
+          console.log('here');
+          actions.selectedMicroserviceAPI =
+            currDefination.properties['microServiceId'];
+          actions.getAllModels(
+            actions.allModels,
+            actions.selectedMicroserviceAPI,
+          );
           actions.modelSelectedAPI = currDefination.properties['collection'];
-          actions.getTheDtos(actions.modelSelectedAPI);
+          actions.getTheDtos(actions.modelSelectedAPI.id);
 
           actions.currentEndpointByModel =
             currDefination.properties['endpoint'];
-          actions.endpointChange(actions.currentEndpointByModel);
+          // actions.endpointChange(actions.currentEndpointByModel);
 
-          actions.reqDtoModelMappedList =
-            currDefination.properties['mappedData'];
-          actions.selectedModelForDtoField = [];
-          for (var j = 0; j < actions.reqDtoModelMappedList.length; j++) {
-            var newObj = actions.reqDtoModelMappedList[j];
-            if (newObj.mappedModelField?.id == null) {
-              actions.manualEntryAPIStates[j] = true;
-            } else {
-              actions.manualEntryAPIStates[j] = false;
-            }
-            actions.selectedModelForDtoField.push(newObj.mappedModelField);
-          }
+          actions.reqDtoModelMappedList = currDefination.properties[
+            'mappedData'
+          ] as any[];
+          // actions.selectedModelForDtoField = [];
+          // for (var j = 0; j < actions.reqDtoModelMappedList.length; j++) {
+          //   var newObj = actions.reqDtoModelMappedList[j];
+          //   if (newObj.mappedModelField?.id == null) {
+          //     actions.manualEntryAPIStates[j] = true;
+          //   } else {
+          //     actions.manualEntryAPIStates[j] = false;
+          //   }
+          //   actions.selectedModelForDtoField.push(newObj.mappedModelField);
+          // }
         }
       }
     }

@@ -76,4 +76,15 @@ export class CollectionService extends GenericService {
     const res = await lastValueFrom(this.http.get<any>(url));
     return res;
   }
+
+  async getAllFieldsByCollection(collectionId: any) {
+    var url =
+      this.apiurl +
+      '/' +
+      this.endpoint +
+      '/getFields/' +
+      encodeURIComponent(collectionId);
+    const res = await lastValueFrom(this.http.get<any>(url));
+    return res;
+  }
 }

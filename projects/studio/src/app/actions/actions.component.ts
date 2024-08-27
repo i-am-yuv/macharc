@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, Pagination } from '@splenta/vezo';
-import { parseISO } from 'date-fns/parseISO';
 import {
   Definition,
   Designer,
@@ -16,6 +15,7 @@ import {
 import { Application } from '../application/application';
 import { ApplicationService } from '../application/application.service';
 import {
+  ActionVariable,
   CollectionObj,
   Condition,
   InputParam,
@@ -78,11 +78,19 @@ export class ActionsComponent extends GenericComponent implements OnInit {
   ];
 
   dataTypes = [
-    { name: 'String', label: 'String' },
-    { name: 'Integer', label: 'int' },
-    { name: 'BigDecimal', label: 'Decimal' },
-    { name: 'Long', label: 'Long' },
-    { name: 'UUID', label: 'UUID' },
+    { name: 'string', label: 'String' },
+    { name: 'number', label: 'Number' },
+    { name: 'any', label: 'Any' },
+    { name: 'boolean', label: 'Boolean' },
+    { name: 'Model', label: 'Model' },
+    { name: 'Field', label: 'Field' },
+  ];
+
+  paramDataTypes = [
+    { name: 'string', label: 'String' },
+    { name: 'number', label: 'Number' },
+    { name: 'any', label: 'Any' },
+    { name: 'boolean', label: 'Boolean' },
     { name: 'Model', label: 'Model' },
   ];
 
@@ -108,15 +116,16 @@ export class ActionsComponent extends GenericComponent implements OnInit {
     { name: 'Custom JPA query', label: 'CustomJpaQuery' },
   ];
   activeConditions: any[] = [];
-  allModels: Collection[] = [];
+  allModels: any = {};
   allEndpointsByModel: Endpoint[] = [];
+  allFieldsByModel: Field[] = [];
   allFieldsByReqDto: Field[] = [];
   allMicroservice: MicroService[] = [];
   allPojos: [] = [];
   allScreens: Screen[] = [];
 
   showConditionEditor: boolean = false;
-  showModelsOptions: boolean = false;
+  showVariablesOptions: boolean = false;
   showParamsOptions: boolean = false;
   navigatePopup: boolean = false;
   showLoopEditor: boolean = false;
@@ -125,7 +134,7 @@ export class ActionsComponent extends GenericComponent implements OnInit {
   showSetResponseDataEditor: boolean = false;
 
   conditionEditor: any;
-  ModelEditor: any;
+  VariablesEditor: any;
   loopEditor: any;
   apiEditor: any;
   paramsEditor: any;
@@ -134,16 +143,14 @@ export class ActionsComponent extends GenericComponent implements OnInit {
   setResDataEditor: any;
   navigateEditor: any;
 
-  reqDtoModelMappedList: any;
+  reqDtoModelMappedList: any[] = [];
   currReqDtoModel!: reqDtoMappedModel;
 
   createDefinition() {
     return {
       properties: {
-        collections: [],
-        schedule: '24/08/2024',
-        // declarations: '',
-        returnType: 'void',
+        variables: '',
+        params: '',
       },
       sequence: [],
     };
@@ -176,9 +183,10 @@ export class ActionsComponent extends GenericComponent implements OnInit {
   currentScreenToNavigate!: Screen;
 
   selectedParams: InputParam[] | any = [{ dataType: '', varName: '' }];
+  selectedVariables: ActionVariable[] | any = [{ dataType: '', varName: '' }];
 
   modelSelectedAPI: any;
-  selectedMicroserviceAPI: any;
+  selectedMicroserviceAPI: any = {};
   currentEndpointByModel: any;
   selectedModelForDtoField: Field[] = [];
   manualEntryAPIStates: boolean[] = [];
@@ -306,39 +314,30 @@ export class ActionsComponent extends GenericComponent implements OnInit {
 
   // Load data from defintion
   populateEditorFormsData() {
-    if (this.definition.properties['collections'] == '') {
-      this.selectedModels = [];
-      this.finalListModels = [];
-      this.selectedParams = [{ dataType: '', varName: '' }];
-      this.selectedResOp = {};
-      this.resType = null;
+    if (this.definition.properties['variables'] == '') {
+      this.selectedVariables = [{ dataType: '', varName: '' }];
     } else {
-      if (this.definition.properties['collections']) {
-        this.selectedModels = this.definition.properties['collections'];
-        this.makeFieldListFromSelectedModel();
+      if (this.definition.properties['variables']) {
+        this.selectedVariables = this.definition.properties['variables'];
+        this.selectedVariables.forEach((e: any) => {
+          this.getAllModels(e, e.microServiceId);
+          this.getTheFields(e, e.modelId);
+        });
       } else {
-        this.selectedModels = [];
-        this.finalListModels = [];
+        this.selectedVariables = [{ dataType: '', varName: '' }];
       }
-      !this.definition.properties['returnType']
-        ? (this.resType = 'void')
-        : (this.resType = 'custom');
-
-      this.definition.properties['returnType']
-        ? (this.selectedResOp = this.definition.properties['returnType'])
-        : (this.selectedResOp = null);
-
-      if (this.definition.properties['schedule']) {
-        this.selectedDate = parseISO(
-          this.definition.properties['schedule'].toString(),
-        );
+    }
+    if (this.definition.properties['params'] == '') {
+      this.selectedParams = [{ dataType: '', varName: '' }];
+    } else {
+      if (this.definition.properties['params']) {
+        this.selectedParams = this.definition.properties['params'];
+        this.selectedParams.forEach((e: any) => {
+          this.getAllModels(e, e.microServiceId);
+        });
+      } else {
+        this.selectedParams = [{ dataType: '', varName: '' }];
       }
-
-      this.selectedParams = this.definition.properties['params']
-        ? this.definition.properties['params']
-        : [{ dataType: '', varName: '' }];
-
-      // TODO: Add other vatiables for step editor model forms
     }
   }
 
@@ -436,8 +435,8 @@ export class ActionsComponent extends GenericComponent implements OnInit {
     OpenEditor.openLoopEditor(this, editor);
   }
 
-  openModelsPopup(editor: any) {
-    OpenEditor.openModelsPopup(this, editor);
+  openVariablesPopup(editor: any) {
+    OpenEditor.openVariablesPopup(this, editor);
   }
 
   openParamsPopup(editor: any) {
@@ -469,8 +468,8 @@ export class ActionsComponent extends GenericComponent implements OnInit {
     DataHandler.getAllActions(this, app);
   }
 
-  getAllModels() {
-    DataHandler.getAllModels(this);
+  getAllModels(selectedVar: any, msId: string) {
+    DataHandler.getAllModels(this, selectedVar, msId);
   }
 
   getAllPojos() {
@@ -478,28 +477,50 @@ export class ActionsComponent extends GenericComponent implements OnInit {
   }
 
   // Save Models Code Start
-  saveModels(editor: any) {
-    this.updatePropertyCollection(
+  saveVariables(editor: any) {
+    this.selectedVariables.forEach((e: any) => {
+      delete e.microService;
+      delete e.allModels;
+      delete e.allFieldsByModel;
+    });
+
+    this.updatePropertyVariables(
       editor.definition.properties,
-      'collections',
-      this.selectedModels,
-      this.selectedParams,
+      'variables',
+      this.selectedVariables,
       editor.context,
     );
 
-    this.showModelsOptions = false;
+    this.showVariablesOptions = false;
   }
 
   saveParams(editor: any) {
-    this.updatePropertyCollection(
+    this.selectedParams.forEach((e: any) => {
+      delete e.microService;
+      delete e.allModels;
+    });
+    this.updatePropertyVariables(
       editor.definition.properties,
       'params',
-      this.selectedModels,
       this.selectedParams,
       editor.context,
     );
 
     this.showParamsOptions = false;
+  }
+
+  deleteThisVariable(index: any) {
+    //
+    if (index >= 0 && index < this.selectedVariables.length) {
+      this.selectedVariables.splice(index, 1);
+    } else {
+      console.error('Index out of bounds');
+    }
+  }
+
+  cleanUpVariable(variable: any) {
+    delete variable.allModels;
+    delete variable.allFieldsByModel;
   }
 
   deleteThisParams(index: any) {
@@ -527,6 +548,16 @@ export class ActionsComponent extends GenericComponent implements OnInit {
       properties['returnType'] = null;
     }
 
+    context.notifyPropertiesChanged();
+  }
+
+  updatePropertyVariables(
+    properties: Properties,
+    name: string,
+    selectedVariables: ActionVariable[],
+    context: GlobalEditorContext | StepEditorContext,
+  ) {
+    properties[name] = selectedVariables;
     context.notifyPropertiesChanged();
   }
 
@@ -801,6 +832,7 @@ export class ActionsComponent extends GenericComponent implements OnInit {
 
   // Call Api code start
   updateApiEditor(editor: any) {
+    console.log(this.requestDto);
     this.saveThisAPICall(editor.step, editor.context);
     this.showAPIEditor = false;
   }
@@ -810,7 +842,7 @@ export class ActionsComponent extends GenericComponent implements OnInit {
     context: GlobalEditorContext | StepEditorContext,
   ) {
     // sequence = sequence.find((item: any) => item.type === 'callWebclient');
-
+    sequence.properties['microServiceId'] = this.selectedMicroserviceAPI;
     sequence.properties['collection'] = this.modelSelectedAPI;
     sequence.properties['endpoint'] = this.currentEndpointByModel;
     sequence.properties['mappedData'] = this.reqDtoModelMappedList;
@@ -846,23 +878,32 @@ export class ActionsComponent extends GenericComponent implements OnInit {
     return fieldName;
   }
 
-  getTheDtos(selectedModel: Collection) {
+  getTheDtos(selectedModel: string) {
+    console.log(selectedModel);
     DataHandler.getTheDtos(this, selectedModel);
   }
 
-  endpointChange(endpoint: any) {
-    this.currentEndpointByModel = endpoint;
-    if (endpoint !== null) {
-      this.fieldsService
-        .getFieldsByRequestDto(endpoint.requestDto?.id)
-        .then((res: any) => {
-          this.allFieldsByReqDto = res;
-        });
-    }
+  getTheFields(selectedVar: any, selectedModelId: string) {
+    DataHandler.getTheFields(this, selectedVar, selectedModelId);
   }
+
+  // endpointChange(endpoint: any) {
+  //   this.currentEndpointByModel = endpoint;
+  //   if (endpoint !== null) {
+  //     this.fieldsService
+  //       .getFieldsByRequestDto(endpoint.requestDto?.id)
+  //       .then((res: any) => {
+  //         this.allFieldsByReqDto = res;
+  //       });
+  //   }
+  // }
 
   addParam() {
     this.selectedParams.push({});
+  }
+
+  addVariable() {
+    this.selectedVariables.push({});
   }
 
   handleValueChangesAPI(e: any, reqDtoField: any, index: number) {

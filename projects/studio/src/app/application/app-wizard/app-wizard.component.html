@@ -172,7 +172,16 @@
           "
         >
           <!-- <div class="flex justify-center items-center"><img src="assets/macharcLogo.png" style="width: 235px;"/></div> -->
-
+          <div class="text-right">
+            <vezo-button
+              label="Generate Mobile Frontend"
+              className="mr-2"
+            ></vezo-button>
+            <vezo-button
+              label="Generate Web Frontend"
+              (click)="generateWebFrontend()"
+            ></vezo-button>
+          </div>
           <div class="flex w-full" style="margin-top: 20px">
             <form
               [formGroup]="form"

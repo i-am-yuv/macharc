@@ -1,6 +1,6 @@
 import { Pagination } from '@splenta/vezo';
 import { Application } from '../application/application';
-import { Collection } from '../collection/collection';
+import { Field } from '../fields/field';
 import { FilterBuilder } from '../utils/FilterBuilder';
 import { ActionsComponent } from './actions.component';
 
@@ -129,11 +129,15 @@ export class DataHandler {
       .catch((err) => {});
   }
 
-  static getAllModels(actions: ActionsComponent) {
+  static getAllModels(
+    actions: ActionsComponent,
+    selectedVar: any,
+    msId: string,
+  ) {
     actions.businessLogicService
-      .getModelsByMicroserivce(actions.selectedMicroserviceAPI?.id!)
+      .getModelsByMicroserivce(msId!)
       .then((res: any) => {
-        actions.allModels = res;
+        selectedVar.allModels = res;
       })
       .catch((err) => {});
   }
@@ -147,23 +151,43 @@ export class DataHandler {
       .catch((err) => {});
   }
 
-  static getTheDtos(actions: ActionsComponent, selectedModel: Collection) {
+  static getTheDtos(actions: ActionsComponent, selectedModel: string) {
     actions.requestDto = {};
     actions.responseDto = {};
-    actions.collectionService
-      .getRequestDto(selectedModel.id)
-      .then((res: any) => {
-        actions.requestDto = res;
+
+    actions.collectionService.getRequestDto(selectedModel).then((res: any) => {
+      actions.requestDto = res;
+      res.fields.forEach((e: Field) => {
+        if (actions.reqDtoModelMappedList.length === 0) {
+          actions.reqDtoModelMappedList.push({ fieldId: e.id });
+        }
       });
-    actions.collectionService
-      .getResponseDto(selectedModel.id)
-      .then((res: any) => {
-        actions.responseDto = res;
-      });
+    });
+    actions.collectionService.getResponseDto(selectedModel).then((res: any) => {
+      actions.responseDto = res;
+    });
     actions.endpointService
-      .getAllEndpointsByCollection(selectedModel.id)
+      .getAllEndpointsByCollection(selectedModel)
       .then((res: any) => {
         actions.allEndpointsByModel = res;
       });
+  }
+
+  static getTheFields(
+    actions: ActionsComponent,
+    selectedVar: any,
+    selectedModelId: string,
+  ) {
+    var filterStr = FilterBuilder.equal('collection.id', selectedModelId);
+    var search = filterStr;
+
+    actions.fieldsService.getAllData(undefined, search).then((res: any) => {
+      selectedVar.allFieldsByModel = res.content;
+    });
+    // actions.collectionService
+    //   .getAllFieldsByCollection(selectedModel.id)
+    //   .then((res: any) => {
+    //     actions.allFieldsByModel = res;
+    //   });
   }
 }

@@ -58,9 +58,10 @@ export class AppWizardComponent extends GenericComponent {
       routes: '/releases',
     },
   ];
+  loading: boolean = false;
 
   constructor(
-    applicationService: ApplicationService,
+    public applicationService: ApplicationService,
     messageService: MessageService,
     private fb: FormBuilder,
     private router: Router,
@@ -144,5 +145,24 @@ export class AppWizardComponent extends GenericComponent {
     } else if (resposeType == 'updatedError') {
       this.openModal('failure', res + ' updation failed', 'OK');
     }
+  }
+
+  generateWebFrontend() {
+    this.loading = true;
+    this.applicationService
+      .generateFrontendCode(this.dataSingle)
+      .then((res: any) => {
+        if (res) {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Generated',
+            detail: 'Microservice Frontend created',
+          });
+        }
+        this.loading = false;
+      })
+      .catch((e) => {
+        this.loading = false;
+      });
   }
 }

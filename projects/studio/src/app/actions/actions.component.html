@@ -1,43 +1,3 @@
-<!-- Old Action Code Starts -------------------------------------------------------------
-
- <div id="wrapper" class="relative">
-    <div id="leftcard">
-        <div class="mx-auto py-4 border-b flex z-index[99] noselect place-items-center">
-            <div class="text-indigo-500 mr-6 w-8 h-8 rounded-full cursor-pointer bg-neutral-200 flex items-center justify-center"
-                routerLink="../">
-                <vezo-icon icon="arrowLeft" className="w-4 h-4"></vezo-icon>
-            </div>
-            <div class="heading">ACTIONS</div>
-            <div class="flex-grow"></div>
-            <div class="mr-4"><img src="assets/macharc_icon.svg" class="w-6" /></div>
-        </div>
-        <div id="blocklist">
-            <div *ngFor="let action of actions" class="blockelem create-flowy noselect">
-                <input type="hidden" name='blockelemtype' class="blockelemtype" [value]="action.type">
-                <div class="grabme">
-                    <img src="assets/grabme.svg">
-                </div>
-                <div class="blockin">
-                    <div class="blockico">
-                        <span></span>
-                        <img [src]="action.icon">
-                    </div>
-                    <div class="blocktext">
-                        <p class="blocktitle">{{ action.title }}</p>
-                        <p class="blockdesc">{{ action.description }}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <button (click)="getOutPut()">Output</button>
-    </div>
-</div>
-<div #canvas id="canvas" class="canvas"></div> 
-
-Old Action Code ends here............................................................... -->
-
-<!-- New code using sqd-designer -->
-
 <div class="flex" style="height: 100%">
   <!-- Left Panel -->
   <div class="w-2/12 border-r h-auto">
@@ -155,7 +115,7 @@ Old Action Code ends here.......................................................
 
           <h3 class="my-4 font-semibold">Variables</h3>
 
-          <div class="mb-2" (click)="openModelsPopup(editor)">
+          <div class="mb-2" (click)="openVariablesPopup(editor)">
             <button class="bg-indigo-600 rounded text-white p-2 w-full">
               Define Variables
             </button>
@@ -169,21 +129,6 @@ Old Action Code ends here.......................................................
             </button>
           </div>
           <p class="my-2 text-slate-400">Please select from the popup.</p>
-          <!-- <h3 class="my-4 font-semibold">Declarations</h3>
-          <textarea
-            [(ngModel)]="editor.definition.properties.declarations"
-            rows="6"
-            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            (input)="
-              updateProperty(
-                editor.definition.properties,
-                'declarations',
-                $event,
-                editor.context
-              )
-            "
-          ></textarea> -->
-
           <div class="mt-8">
             <hr />
           </div>
@@ -278,24 +223,6 @@ Old Action Code ends here.......................................................
             Refer docs on how to configure steps
           </p>
 
-          <!-- <h3 class="my-4 font-semibold">Schedule</h3>
-          <input
-            type="number"
-            [value]="editor.step.properties.velocity"
-            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            (input)="
-              updateProperty(
-                editor.step.properties,
-                'velocity',
-                $event,
-                editor.context
-              )
-            "
-          />
-          <p class="my-2 text-slate-400">
-            Enter time delay to execute in seconds
-          </p> -->
-
           <div class="mt-8">
             <hr />
           </div>
@@ -375,62 +302,191 @@ Old Action Code ends here.......................................................
 
 <!-- All Model PopUp Code For Sqd-Designer Starts from here ----------------------------------------------------------->
 
-<!-- All the model used for Configuration Code starts here-->
-<vezo-modal [(visible)]="showParamsOptions">
-  <ng-template vTemplate="header">Select Models</ng-template>
+<!-- Model for Declare Variables in the global editor -->
+<vezo-modal [(visible)]="showVariablesOptions">
+  <ng-template vTemplate="header">Declare Variables</ng-template>
   <ng-template vTemplate="content">
     <div style="height: 60vh; overflow-y: auto">
       <div
-        class="flex gap-4 justify-start items-center mt-4"
-        *ngFor="let selectedParam of selectedParams; index as i"
+        class="py-4 border-b"
+        *ngFor="let selectedVar of selectedVariables; index as i"
       >
-        <div class="flex" style="flex-direction: column">
-          <label>Param Name</label>
-          <input
-            type="text"
-            pInputText
-            placeholder="Param Variable Name"
-            [(ngModel)]="selectedParam.varName"
-          />
-        </div>
+        <div class="flex gap-4">
+          <div class="flex flex-col w-1/2" style="flex-direction: column">
+            <label class="mb-2">Variable Name</label>
+            <input
+              type="text"
+              pInputText
+              placeholder="Variable Name"
+              class="w-full"
+              [(ngModel)]="selectedVar.varName"
+            />
+          </div>
 
-        <div>
-          <!-- First Selecting Datatype or Model -->
-          <label>Param Datatype</label>
+          <div class="flex flex-col grow">
+            <!-- First Selecting Datatype or Model -->
+            <label class="mb-2">Variable Datatype</label>
 
-          <p-dropdown
-            [options]="dataTypes"
-            [(ngModel)]="selectedParam.dataType"
-            placeholder="Select"
-            optionLabel="label"
-            optionValue="name"
-            [style]="{ width: '100%' }"
-          >
-          </p-dropdown>
-        </div>
-
-        <ng-container *ngIf="selectedParam.dataType == 'Model'">
-          <div>
-            <label>Param Model</label>
             <p-dropdown
-              label="Param Model"
-              [options]="this.allModels"
-              [(ngModel)]="selectedParam.model"
-              optionLabel="collectionName"
-              placeholder="Select Model"
-              [style]="{ width: '100%' }"
+              [options]="dataTypes"
+              [(ngModel)]="selectedVar.dataType"
+              placeholder="Select"
+              optionLabel="label"
+              optionValue="name"
+              styleClass="w-full"
             >
             </p-dropdown>
           </div>
-        </ng-container>
-
-        <div class="mt-4">
-          <vezo-icon
-            icon="trash"
-            (click)="deleteThisParams(i)"
-            className="w-6 h-6 text-red-400 cursor-pointer"
-          ></vezo-icon>
+          <div class="mt-6">
+            <vezo-icon
+              icon="trash"
+              (click)="deleteThisVariable(i)"
+              className="w-6 h-6 text-red-400 cursor-pointer"
+            ></vezo-icon>
+          </div>
         </div>
+
+        <ng-container
+          *ngIf="
+            selectedVar.dataType == 'Model' || selectedVar.dataType == 'Field'
+          "
+        >
+          <div class="flex gap-4 mt-2">
+            <div class="flex flex-col w-1/3">
+              <label class="mb-2">Variable Interface / Struct</label>
+              <p-dropdown
+                [options]="this.allMicroservice"
+                [(ngModel)]="selectedVar.microServiceId"
+                placeholder="Select Microservice"
+                optionValue="id"
+                optionLabel="microServiceName"
+                styleClass="w-full"
+                (ngModelChange)="
+                  getAllModels(selectedVar, selectedVar.microServiceId)
+                "
+              >
+              </p-dropdown>
+            </div>
+            <div class="flex flex-col w-1/3">
+              <label class="mb-2">Model</label>
+              <p-dropdown
+                [options]="selectedVar.allModels"
+                [(ngModel)]="selectedVar.modelId"
+                placeholder="Select Model"
+                optionValue="id"
+                optionLabel="collectionName"
+                styleClass="w-full"
+                (ngModelChange)="getTheFields(selectedVar, selectedVar.modelId)"
+              ></p-dropdown>
+            </div>
+            <div
+              class="flex flex-col w-1/3"
+              *ngIf="selectedVar.dataType == 'Field'"
+            >
+              <label class="mb-2">Field</label>
+              <p-dropdown
+                [options]="selectedVar.allFieldsByModel"
+                [(ngModel)]="selectedVar.fieldId"
+                placeholder="Select Field"
+                styleClass="w-full"
+                optionValue="id"
+                optionLabel="fieldName"
+              >
+              </p-dropdown>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+      <div class="text-right mt-2">
+        <vezo-button label="Add More" (click)="addVariable()"></vezo-button>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template vTemplate="footer">
+    <div class="text-right">
+      <vezo-button
+        label="Save"
+        [disabled]="this.selectedVariables[0].datatype === ''"
+        (click)="saveVariables(this.VariablesEditor)"
+      ></vezo-button>
+    </div>
+  </ng-template>
+</vezo-modal>
+
+<!-- Configuring Action Params starts here-->
+<vezo-modal [(visible)]="showParamsOptions">
+  <ng-template vTemplate="header">Select Params</ng-template>
+  <ng-template vTemplate="content">
+    <div style="height: 60vh; overflow-y: auto">
+      <div
+        class="py-4 border-b"
+        *ngFor="let selectedParam of selectedParams; index as i"
+      >
+        <div class="flex gap-4">
+          <div class="flex flex-col w-1/2" style="flex-direction: column">
+            <label class="mb-2">Variable Name</label>
+            <input
+              type="text"
+              pInputText
+              placeholder="Param Name"
+              class="w-full"
+              [(ngModel)]="selectedParam.varName"
+            />
+          </div>
+
+          <div class="flex flex-col grow">
+            <!-- First Selecting Datatype or Model -->
+            <label class="mb-2">Param Datatype</label>
+
+            <p-dropdown
+              [options]="paramDataTypes"
+              [(ngModel)]="selectedParam.dataType"
+              placeholder="Select"
+              optionLabel="label"
+              optionValue="name"
+              styleClass="w-full"
+            >
+            </p-dropdown>
+          </div>
+          <div class="mt-6">
+            <vezo-icon
+              icon="trash"
+              (click)="deleteThisParams(i)"
+              className="w-6 h-6 text-red-400 cursor-pointer"
+            ></vezo-icon>
+          </div>
+        </div>
+
+        <ng-container *ngIf="selectedParam.dataType == 'Model'">
+          <div class="flex gap-4 mt-2">
+            <div class="flex flex-col w-1/3">
+              <label class="mb-2">Variable Interface / Struct</label>
+              <p-dropdown
+                [options]="this.allMicroservice"
+                [(ngModel)]="selectedParam.microServiceId"
+                placeholder="Select Microservice"
+                optionValue="id"
+                optionLabel="microServiceName"
+                styleClass="w-full"
+                (ngModelChange)="
+                  getAllModels(selectedParam, selectedParam.microServiceId)
+                "
+              >
+              </p-dropdown>
+            </div>
+            <div class="flex flex-col w-1/3">
+              <label class="mb-2">Model</label>
+              <p-dropdown
+                [options]="selectedParam.allModels"
+                [(ngModel)]="selectedParam.modelId"
+                placeholder="Select Model"
+                optionValue="id"
+                optionLabel="collectionName"
+                styleClass="w-full"
+              ></p-dropdown>
+            </div>
+          </div>
+        </ng-container>
       </div>
       <div class="text-right mt-2">
         <vezo-button label="Add More" (click)="addParam()"></vezo-button>
@@ -443,77 +499,6 @@ Old Action Code ends here.......................................................
         label="Save"
         [disabled]="this.selectedParams === null"
         (click)="saveParams(this.paramsEditor)"
-      ></vezo-button>
-    </div>
-  </ng-template>
-</vezo-modal>
-<!-- Model for Select Models in the global editor -->
-<vezo-modal [(visible)]="showModelsOptions">
-  <ng-template vTemplate="header">Select Models</ng-template>
-  <ng-template vTemplate="content">
-    <h3 class="my-2 font-semibold">Models</h3>
-    <p-multiSelect
-      [options]="this.allModels"
-      [(ngModel)]="this.selectedModels"
-      optionLabel="collectionName"
-      placeholder="Select Models"
-      [style]="{ width: '100%' }"
-    >
-    </p-multiSelect>
-
-    <h3 class="my-2 font-semibold">Response Output</h3>
-
-    <!-- First Selecting if Void or Custom -->
-    <p-dropdown
-      [options]="this.returnType"
-      [(ngModel)]="this.resType"
-      placeholder="Select"
-      optionLabel="name"
-      optionValue="label"
-      [style]="{ width: '100%' }"
-    >
-    </p-dropdown>
-
-    <div
-      class="mt-4"
-      *ngIf="
-        this.resType !== null &&
-        this.resType !== undefined &&
-        this.resType !== '' &&
-        this.resType !== 'void'
-      "
-    >
-      <p-dropdown
-        [options]="this.allPojos"
-        [(ngModel)]="this.selectedResOp"
-        optionLabel="collectionName"
-        placeholder="Select Pojo"
-        [showClear]="true"
-        [style]="{ width: '100%' }"
-        class="w-full"
-      ></p-dropdown>
-    </div>
-
-    <h3 class="my-2 font-semibold">Schedule</h3>
-    <p-calendar
-      [(ngModel)]="selectedDate"
-      placeholder="Select Date"
-      [showTime]="true"
-      [hourFormat]="'12'"
-    ></p-calendar>
-
-    <p class="my-2 text-slate-400">Enter time delay to execute in seconds</p>
-  </ng-template>
-  <ng-template vTemplate="footer">
-    <div class="text-right">
-      <vezo-button
-        label="Save"
-        [disabled]="
-          this.selectedModels === null ||
-          this.resType === null ||
-          (this.resType !== 'void' && this.selectedResOp === null)
-        "
-        (click)="saveModels(this.ModelEditor)"
       ></vezo-button>
     </div>
   </ng-template>
@@ -545,39 +530,6 @@ Old Action Code ends here.......................................................
       </div>
 
       <div class="mt-2">
-        <!-- <div *ngFor="let pageParam of currentScreenToNavigate.selectedParams ;  index as i">
-          <div class="flex justify-between items-center my-2 w-full">
-            <div class="text-lg w-1/2">
-              {{ pageParam.varName }}
-              <span class="text-sm">({{ pageParam.dataType }})</span>
-            </div>
-
-            <div class="w-1/2">
-              <p-dropdown *ngIf="this.navigateToManualEntry == false" [options]="getDropdownOptions()"
-                [(ngModel)]="this.navigateToMappedData[i]" placeholder="Choose Fields"
-                (onChange)="handleValueChangesNavigate($event.value , pageParam )" [group]="true" [showClear]="true">
-                <ng-template let-group pTemplate="group">
-                  <div class="flex gap-2 justify-start items-center">
-                    <img
-                      src="assets/collection_L.svg"
-                      style="width: 16px; height: auto"
-                    />
-                    <span>{{ group.label }}</span>
-                  </div>
-                </ng-template>
-              </p-dropdown>
-
-              <div *ngIf="this.navigateToManualEntry" class="border p-2 rounded flex justify-between items-center gap-1">
-                <input [(ngModel)]="this.navigateToMappedData[i]" (ngModelChange)="handleManualValueChangesNavigate($event , pageParam )" placeholder="Enter URL manually" />
-                <div class="cursor-pointer" (click)="this.navigateToManualEntry = !this.navigateToManualEntry">
-                  X
-                </div>
-              </div>
-            </div>
-          </div>
-          <hr>
-        </div> -->
-
         <div
           *ngFor="
             let pageParam of currentScreenToNavigate.selectedParams;
@@ -907,31 +859,32 @@ Old Action Code ends here.......................................................
   </ng-template>
 </vezo-modal>
 
-<!-- Model for Call API -->
+<!-- Modal for Call API -->
 <vezo-modal [(visible)]="showAPIEditor">
   <ng-template vTemplate="header">Configuration</ng-template>
   <ng-template vTemplate="content">
     <div class="w-full justify-start items-center h-[50vh] overflow-y-scroll">
       <label>Microservice</label>
       <p-dropdown
-        [options]="this.allMicroservice"
-        [(ngModel)]="this.selectedMicroserviceAPI"
+        [options]="allMicroservice"
+        [(ngModel)]="selectedMicroserviceAPI"
         placeholder="Select Microservice"
-        [style]="{ width: '100%' }"
         styleClass="w-full mb-4"
+        optionValue="id"
         optionLabel="microServiceName"
-        (ngModelChange)="getAllModels()"
+        (ngModelChange)="
+          getAllModels(this.allModels, this.selectedMicroserviceAPI)
+        "
       >
       </p-dropdown>
       <label>Model</label>
       <p-dropdown
-        [options]="this.allModels"
-        [(ngModel)]="this.modelSelectedAPI"
+        [options]="allModels?.allModels"
+        [(ngModel)]="modelSelectedAPI"
         placeholder="Select Model"
-        [style]="{ width: '100%' }"
         styleClass="w-full mb-4"
         optionLabel="collectionName"
-        (ngModelChange)="getTheDtos(this.modelSelectedAPI)"
+        (ngModelChange)="getTheDtos(modelSelectedAPI.id)"
       >
       </p-dropdown>
       <label>Endpoint</label>
@@ -939,7 +892,6 @@ Old Action Code ends here.......................................................
         [options]="this.allEndpointsByModel"
         [(ngModel)]="currentEndpointByModel"
         placeholder="Select Endpoint"
-        [style]="{ width: '100%' }"
         styleClass="w-full mb-4"
         optionLabel="endpointName"
       >
@@ -949,22 +901,29 @@ Old Action Code ends here.......................................................
         No Request Parameter defined for this model. Please defined the Request
         DTO
       </div>
-      <div *ngFor="let param of requestDto?.fields" class="my-4">
+      <div *ngFor="let param of requestDto?.fields; index as i" class="my-4">
         <div class="grid grid-cols-6">
           <div class="my-2">{{ param.fieldName }}</div>
           <div class="col-span-2">
             <p-dropdown
-              [options]="this.allModels"
-              [(ngModel)]="this.modelSelectedAPI"
+              [options]="selectedVariables"
+              [(ngModel)]="reqDtoModelMappedList[i].variable"
               placeholder="Select Variable"
-              [style]="{ width: '100%' }"
               styleClass="w-full mb-4"
-              optionLabel="collectionName"
+              optionValue="varName"
+              optionLabel="varName"
+              (ngModelChange)="
+                cleanUpVariable(reqDtoModelMappedList[i].variable)
+              "
             ></p-dropdown>
           </div>
           <div class="my-2 text-center">OR</div>
           <div class="mx-4">
-            <input pInputText placeholder="Enter Value Manually" />
+            <input
+              pInputText
+              [(ngModel)]="reqDtoModelMappedList[i].manualEntry"
+              placeholder="Enter Value Manually"
+            />
           </div>
         </div>
       </div>
@@ -986,61 +945,6 @@ Old Action Code ends here.......................................................
           <div class="m-2 w-1/4">{{ param.fieldName }}</div>
           <div class="m-2 w-1/4">{{ param.fieldType }}</div>
           <div class="m-2 w-1/4">{{ param.propertyName }}</div>
-        </div>
-      </div>
-      <div *ngFor="let reqDtoField of allFieldsByReqDto; index as i">
-        <div class="flex mt-8 w-full gap-4 justify-between mx-4 items-center">
-          <div class="w-1/2">{{ reqDtoField.fieldName }}</div>
-          <!-- <div class="w-1/2 flex justify-start">
-            <p-dropdown [options]="this.finalListModels" [(ngModel)]="selectedModelForDtoField[i]" (ngModelChange)="
-                modelSelectedForReqDto(reqDtoField, selectedModelForDtoField[i])
-              " placeholder="Choose Model Field" [group]="true">
-              <ng-template let-group pTemplate="group">
-                <div class="flex gap-2 justify-start items-center">
-                  <img src="assets/collection_L.svg" style="width: 16px; height: auto" />
-                  <span>{{ group.label }}</span>
-                </div>
-              </ng-template>
-            </p-dropdown>
-          </div> -->
-
-          <div class="w-1/2">
-            <p-dropdown
-              *ngIf="!manualEntryAPIStates[i]"
-              [options]="getDropdownOptions()"
-              [(ngModel)]="selectedModelForDtoField[i]"
-              placeholder="Choose Fields"
-              (onChange)="handleValueChangesAPI($event.value, reqDtoField, i)"
-              [group]="true"
-              [showClear]="true"
-            >
-              <ng-template let-group pTemplate="group">
-                <div class="flex gap-2 justify-start items-center">
-                  <img
-                    src="assets/collection_L.svg"
-                    style="width: 16px; height: auto"
-                  />
-                  <span>{{ group.label }}</span>
-                </div>
-              </ng-template>
-            </p-dropdown>
-
-            <div
-              *ngIf="manualEntryAPIStates[i]"
-              class="border p-2 rounded flex justify-between items-center gap-1"
-            >
-              <input
-                [(ngModel)]="selectedModelForDtoField[i]"
-                (ngModelChange)="
-                  handleManualValueChangesAPI($event, reqDtoField, i)
-                "
-                placeholder="Enter URL manually"
-              />
-              <div class="cursor-pointer" (click)="toggleManualEntryAPI(i)">
-                X
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>

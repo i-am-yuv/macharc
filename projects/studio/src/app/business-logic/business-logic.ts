@@ -62,3 +62,9 @@ export interface InputParam {
   varName?: string;
   model?: Collection;
 }
+
+export interface ActionVariable {
+  dataType?: string;
+  varName?: string;
+  model?: Collection;
+}
