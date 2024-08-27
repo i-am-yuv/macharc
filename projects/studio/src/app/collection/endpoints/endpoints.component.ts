@@ -45,6 +45,7 @@ export class EndpointsComponent extends GenericComponent implements OnInit {
   services: BusinessLogic[] = [];
   datasources: Datasource[] = [];
   searchByMicroservice!: string;
+  override search: string = '';
 
   defaultValue: string = 'Rahul Kumar'; // Default value
 
@@ -107,6 +108,8 @@ export class EndpointsComponent extends GenericComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.collectionId = this.route.snapshot.paramMap.get('id');
+
     if (this.collectionId) {
       this.collectionService.getData({ id: this.collectionId }).then((res) => {
         this.collection = res;
@@ -147,10 +150,13 @@ export class EndpointsComponent extends GenericComponent implements OnInit {
   }
 
   getEndPointsByCollectionId() {
+    var filterStr = FilterBuilder.equal('collection.id', this.collectionId ? this.collectionId : '');
+    this.search = filterStr;
+    var pagination !: Pagination ;
     this.endpointService
-      .getAllEndpointsByCollection(this.collection.id)
+      .getAllData(pagination , this.search)
       .then((res: any) => {
-        this.data = res;
+        this.data = res.content;
       });
   }
 
@@ -195,15 +201,15 @@ export class EndpointsComponent extends GenericComponent implements OnInit {
 
   saveCustomData() {
     if (this.form.value.returnType == 'collection') {
+      var filterStr = FilterBuilder.equal('collection.id', this.collectionId ? this.collectionId : '');
+      this.search = filterStr;
       this.saveData();
     } else {
       this.form.value.responseDto = null;
       console.log(this.form.value);
+      var filterStr = FilterBuilder.equal('collection.id', this.collectionId ? this.collectionId : '');
+      this.search = filterStr;
       this.saveData();
     }
-  }
-
-  override postSave(data: any) {
-    this.getEndPointsByCollectionId();
   }
 }
