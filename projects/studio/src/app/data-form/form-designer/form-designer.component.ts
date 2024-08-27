@@ -704,7 +704,7 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
           console.error('Error fetching data:', error);
           this.activeItem = null;
           this.formId = null;
-          this.router.navigate(['/builder/forms/designer']);
+          this.router.navigate(['/builder/components/designer']);
         });
     } else {
       this.activeItem = null;
@@ -719,7 +719,7 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
 
   openNewComponent(scr: any) {
     this.loading = true;
-    this.router.navigate(['/builder/forms/designer/' + scr.id]);
+    this.router.navigate(['/builder/components/designer/' + scr.id]);
     setTimeout(() => {
       this.getComponentContent();
     }, 1000);
@@ -1154,11 +1154,11 @@ export class FormDesignerComponent extends GenericComponent implements OnInit {
   deleteThisComponent(item: any) {
     this.activeItem = null;
     this.formId = null;
-    this.router.navigate(['/builder/forms/designer/' + null]);
+    this.router.navigate(['/buildercomponents/designer']);
     this.deleteDataByApplication(item, this.currentApplication.id);
     this.activeItem = null;
     this.formId = null;
-    this.router.navigate(['/builder/forms/designer/' + null]);
+    this.router.navigate(['/builder/components/designer']);
     this.activeData = null;
     this.visibleDeleteConfirmation = false;
   }
