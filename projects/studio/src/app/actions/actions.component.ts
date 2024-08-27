@@ -42,7 +42,7 @@ import { Actions, MappedParamsObj } from './action';
 import { ActionService } from './action.service';
 import { DataHandler } from './DataHandler';
 import { OpenEditor } from './OpenEditor';
-import { ToolBoxMethods } from './toolBoxMethods';
+import { ToolBoxMethods } from './ToolBoxMethods';
 
 export interface Action {
   type: string;
