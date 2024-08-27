@@ -42,7 +42,7 @@ export abstract class GenericService {
   async getAllDataByApplicationId(
     applicationId: any,
     pagination?: Pagination,
-    search?: string
+    search?: string,
   ) {
     var params = [];
     if (pagination?.pageNo) {
@@ -57,7 +57,7 @@ export abstract class GenericService {
     search =
       FilterBuilder.equal('application.id', applicationId) +
       (search ? search : '');
-    console.log(search);
+
     if (search) {
       params.push('filter=' + search);
     }

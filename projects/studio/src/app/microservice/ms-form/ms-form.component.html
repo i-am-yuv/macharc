@@ -6,9 +6,16 @@
       className="cursor-pointer"
     ></vezo-icon>
   </div>
-  <div class="flex justify-between items-center w-full">
+  <div class="flex justify-between items-center w-full pr-12">
     <h1 class="title">Microservice</h1>
     <div class="flex justify-end gap-4 items-center">
+      <div>
+        <vezo-button
+          icon="chevronRight"
+          [routerLink]="['/microservices/apidoc/' + msId]"
+          label="Api Documentation"
+        ></vezo-button>
+      </div>
       <div>
         <vezo-button
           icon="chevronRight"
@@ -105,8 +112,8 @@
     <div class="my-4">
       <div class="">
         <vezo-textarea
-          placeholder="Commit message"
-          label="Commit code"
+          placeholder="Enter commit message"
+          label="Code Commit Message"
         ></vezo-textarea>
       </div>
       <div class="my-4 text-right">
@@ -135,4 +142,12 @@
   </form>
 </div>
 
+<app-modal
+  *ngIf="isModalOpen"
+  [title]="modalTitle"
+  [buttonText]="modalButtonText"
+  [type]="modalType"
+  (close)="closeModal()"
+>
+</app-modal>
 <vezo-toast></vezo-toast>

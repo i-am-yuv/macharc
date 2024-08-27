@@ -66,7 +66,7 @@ export class MxflowComponent implements OnInit {
     private screenService: ScreenService,
     private workflowService: BusinessLogicService,
     private route: ActivatedRoute,
-    private msgService: MessageService
+    private msgService: MessageService,
   ) {}
   ngOnInit(): void {
     this.processId = this.route.snapshot.paramMap.get('id');
@@ -126,7 +126,7 @@ export class MxflowComponent implements OnInit {
     this.graph.getView().addListener(InternalEvent.REDO, listener);
     // this.graph.addListener(InternalEvent.UNDO, listener);
     // var redoListener = function (sender: any, evt: any) {
-    //   console.log('redo', evt)
+    //
     //   undoManager.redo();
     // }
     // this.graph.getDataModel().addListener(InternalEvent.UNDO, undoListener);
@@ -141,14 +141,14 @@ export class MxflowComponent implements OnInit {
       icon: any,
       w: any,
       h: any,
-      style: CellStyle
+      style: CellStyle,
     ) => {
       // const vertex = new Cell(null, new Geometry(0, 0, w, h), style);
       if (!label) label = '';
       const vertex = new Cell(
         label,
         new Geometry(0, 0, w, h),
-        <CellStyle>style
+        <CellStyle>style,
       );
       vertex.setVertex(true);
 
@@ -184,7 +184,7 @@ export class MxflowComponent implements OnInit {
         image: '/assets/gateway-parallel.svg',
         verticalLabelPosition: 'bottom',
         verticalAlign: 'top',
-      }
+      },
     );
     // @ts-ignore
     addVertex('gateway-xor', null, '/assets/gateway-xor.svg', 50, 50, {
@@ -219,7 +219,7 @@ export class MxflowComponent implements OnInit {
         image: '/assets/start-event-message.svg',
         verticalLabelPosition: 'bottom',
         verticalAlign: 'top',
-      }
+      },
     );
     // @ts-ignore
     addVertex('end-event', null, '/assets/end-event.svg', 50, 50, {
@@ -277,7 +277,7 @@ export class MxflowComponent implements OnInit {
     graph: any,
     toolbar: MaxToolbar,
     prototype: any,
-    image: any
+    image: any,
   ) {
     // Function that is executed when the image is dropped on
     // the graph. The cell argument points to the cell under
@@ -285,7 +285,7 @@ export class MxflowComponent implements OnInit {
     const funct = (graph: any, evt: any, cell: any) => {
       graph.stopEditing(false);
       graph.getDataModel().beginUpdate();
-      console.log(prototype);
+
       this.activeElement = prototype;
 
       const pt = graph.getPointForEvent(evt);
@@ -439,7 +439,7 @@ export class MxflowComponent implements OnInit {
         '  <xsl:output indent="yes"/>',
         '</xsl:stylesheet>',
       ].join('\n'),
-      'application/xml'
+      'application/xml',
     );
 
     var xsltProcessor = new XSLTProcessor();
@@ -483,7 +483,7 @@ export class MxflowComponent implements OnInit {
         }
         return value;
       },
-      4
+      4,
     );
   }
 
@@ -504,7 +504,7 @@ export class MxflowComponent implements OnInit {
             .map((item: any) => [item.name, item.value])
             .filter((t: any) => {
               return t[0] !== 'as';
-            })
+            }),
         );
 
         if (attrs.horizontal) {
@@ -524,7 +524,7 @@ export class MxflowComponent implements OnInit {
           yPos,
           width,
           height,
-          <CellStyle>attrs
+          <CellStyle>attrs,
         );
         if (cellAttrs.type) {
           c2['type'] = cellAttrs.type.value;
@@ -539,14 +539,14 @@ export class MxflowComponent implements OnInit {
         const edgeId = Number(cellAttrs.id.nodeValue);
         const source = Number(cellAttrs.source.nodeValue);
         const target = Number(cellAttrs.target.nodeValue);
-        //console.log(edgeId, graph.getDataModel().getCell(source), target);
+        //
         //graph.insertEdge(parent, null, null, graph.getDataModel().getCell(source), graph.getDataModel().getCell(target), <EdgeStyle>{ edgeStyle: 'orthogonalEdgeStyle', rounded: 0, orthogonalLoop: 1, jettySize: 'auto', html: 1 });
         graph.insertEdge(
           parent,
           edgeId,
           edgeName,
           graph.getDataModel().getCell(source),
-          graph.getDataModel().getCell(target)
+          graph.getDataModel().getCell(target),
         );
       }
     }

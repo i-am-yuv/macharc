@@ -24,4 +24,24 @@ export class ScreenService extends GenericService {
         const res = await lastValueFrom(this.httpClient.get<any>(url));
         return res;
     }
+
+    async createPageData(screenData: Screen) {
+        var url = this.apiurl + '/' + this.endpoint + '/pageParams';
+        const res = await lastValueFrom(this.httpClient.post<any>(url,screenData));
+        return res;
+    }
+
+    async updatePageData(screenData: Screen) {
+        var url = this.apiurl + '/' + this.endpoint + '/pageParams';
+        const res = await lastValueFrom(this.httpClient.put<any>(url,screenData));
+        return res;
+    }
+
+    async createPageParams(payload: any) {
+        var url = this.apiurl + '/pageParam';
+        const res = await lastValueFrom(this.httpClient.post<any>(url,payload));
+        return res;
+    }
+
+    
 }

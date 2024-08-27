@@ -3,24 +3,21 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 @Component({
   selector: 'app-widget-tree-node',
   templateUrl: './widget-tree-node.component.html',
-  styleUrls: ['./widget-tree-node.component.scss']
+  styleUrls: ['./widget-tree-node.component.scss'],
 })
 export class WidgetTreeNodeComponent implements OnInit {
-
   @Input() node: any;
   @Output() nodeClicked = new EventEmitter<any>();
   @Output() copyClicked = new EventEmitter<any>();
   @Output() pasteClicked = new EventEmitter<any>();
 
-
   isExpanded: boolean = false;
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   toggle(): void {
     // for form or component we wont be able to see the nested elements
-    if (this.hasChildren() && this.node.name!='form' ) {
+    if (this.hasChildren() && this.node.name != 'form') {
       this.isExpanded = !this.isExpanded;
     }
   }
@@ -36,13 +33,13 @@ export class WidgetTreeNodeComponent implements OnInit {
 
   copyClick(event: Event, node: any) {
     event.stopPropagation(); // Stop the event from bubbling up
-    // console.log( node);
+
     this.copyClicked.emit(node);
   }
 
   pasteClick(event: Event, node: any) {
     event.stopPropagation(); // Stop the event from bubbling up
-    // console.log( node);
+
     this.pasteClicked.emit(node);
   }
 
@@ -57,14 +54,15 @@ export class WidgetTreeNodeComponent implements OnInit {
   onChildPasteClicked(node: any) {
     this.pasteClicked.emit(node);
   }
-  
+
   checkComponentAvailable() {
-    if (localStorage.getItem('componentCopy') != null || localStorage.getItem('componentPage') != null) {
+    if (
+      localStorage.getItem('componentCopy') != null ||
+      localStorage.getItem('componentPage') != null
+    ) {
       return true;
-    }
-    else {
+    } else {
       return false;
     }
   }
-
 }

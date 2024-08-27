@@ -38,7 +38,7 @@ export class DataFormComponent extends GenericComponent {
     private router: Router,
     private collectionService: CollectionService,
     private microserviceService: MicroserviceService,
-    private applicationService: ApplicationService
+    private applicationService: ApplicationService,
   ) {
     super(formService, messageService);
     this.form = this.fb.group({
@@ -93,7 +93,7 @@ export class DataFormComponent extends GenericComponent {
     // this.form.patchValue({ collection: null });
     var filterStr = FilterBuilder.equal(
       'microService.id',
-      this.form.value.microService.id
+      this.form.value.microService.id,
     );
     this.collectionService.getAllData(undefined, filterStr).then((res: any) => {
       if (res) {
@@ -102,23 +102,14 @@ export class DataFormComponent extends GenericComponent {
     });
   }
 
-  findOut() {
-    console.log(this.collectionItems);
-    console.log(this.applicationItems);
-    console.log(this.microserviceItems);
-  }
-  saveFormData() {
-    console.log(this.form.value);
-  }
+  findOut() {}
+  saveFormData() {}
 
   override preSave(): void {
-    console.log(this.form.value);
     if (!this.form.value.collection) {
-      console.log('here');
       if (this.collection) {
         this.form.patchValue({ collection: this.collection });
       } else {
-        console.log('no collection');
       }
     }
   }
@@ -128,7 +119,6 @@ export class DataFormComponent extends GenericComponent {
 
   duplicateObj: any;
   duplicateData(ds: any) {
-    console.log(ds);
     this.visible = true;
     this.duplicateObj = {
       id: '',
@@ -143,6 +133,5 @@ export class DataFormComponent extends GenericComponent {
     };
 
     this.form.patchValue({ ...this.duplicateObj });
-    console.log(this.form.value);
   }
 }

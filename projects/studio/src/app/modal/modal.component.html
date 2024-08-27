@@ -1,0 +1,11 @@
+<div class="modal-overlay" (click)="closeModal()"></div>
+<div class="modal-container" [ngClass]="modalClass">
+  <div class="modal-header">
+    <img *ngIf="type === 'success'" src="assets/success.png" alt="Success" />
+    <img *ngIf="type === 'failure'" src="assets/alert_icon.png" alt="Failure" />
+    <h2>{{ title }}</h2>
+  </div>
+  <div class="modal-footer">
+    <button class="buttonTheme" (click)="closeModal()">{{ buttonText }}</button>
+  </div>
+</div>

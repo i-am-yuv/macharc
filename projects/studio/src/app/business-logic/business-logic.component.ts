@@ -29,7 +29,7 @@ export class BusinessLogicComponent extends GenericComponent implements OnInit {
     messageService: MessageService,
     private microserviceService: MicroserviceService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
   ) {
     super(wfService, messageService);
     this.microserviceId = this.route.snapshot.paramMap.get('id');
@@ -56,7 +56,7 @@ export class BusinessLogicComponent extends GenericComponent implements OnInit {
         });
       var filterStr = FilterBuilder.equal(
         'microService.id',
-        this.microserviceId
+        this.microserviceId,
       );
       this.search = filterStr;
     }
@@ -82,7 +82,33 @@ export class BusinessLogicComponent extends GenericComponent implements OnInit {
         id: '',
       };
       this.form.value.microService.id = this.microserviceId;
-      console.log(this.form.value.microService.id);
+    }
+  }
+  isModalOpen = false;
+  modalTitle = '';
+  modalButtonText = '';
+  modalType: 'success' | 'failure' = 'success';
+
+  openModal(type: 'success' | 'failure', title: string, btnText: string) {
+    this.modalTitle = title;
+    this.modalButtonText = btnText;
+    this.modalType = type;
+    this.isModalOpen = true;
+  }
+
+  closeModal() {
+    this.isModalOpen = false;
+  }
+  override postSaveShowModal(res: any, resposeType: string) {
+    // you will open the model with the type
+    if (resposeType == 'createdSuccess') {
+      this.openModal('success', res + ' created', 'OK');
+    } else if (resposeType == 'createdError') {
+      this.openModal('failure', res + ' creation failed', 'OK');
+    } else if (resposeType == 'updatedSuccess') {
+      this.openModal('success', res + ' updated', 'OK');
+    } else if (resposeType == 'updatedError') {
+      this.openModal('failure', res + ' updation failed', 'OK');
     }
   }
 }

@@ -28,7 +28,6 @@ import {
   BusinessLogic,
   CollectionObj,
   Condition,
-  ConditionGroup,
   InputParam,
   pojoMappedModel,
   reqDtoMappedModel,
@@ -138,7 +137,7 @@ export class BusinessLogicDesignerComponent
     private microserivce: MicroserviceService,
     private fieldsService: FieldService,
     private projectService: ProjectService,
-    private endpointService: EndpointService
+    private endpointService: EndpointService,
   ) {
     super(collectionService, msgService);
     this.getAllMicroSerivices();
@@ -153,7 +152,6 @@ export class BusinessLogicDesignerComponent
         var pagination!: Pagination;
         this.microserivce.getAllData(pagination, this.search).then((res) => {
           this.allMicroservice = res.content;
-          console.log(this.allMicroservice);
         });
       }
     });
@@ -189,7 +187,7 @@ export class BusinessLogicDesignerComponent
 
   public ngOnInit() {
     this.updateDefinitionJSON();
-    this.wfId = this.route.snapshot.paramMap.get('id');
+    this.wfId = this.route.snapshot.paramMap.get('id'); // Service ID
     this.businessLogicService.getData({ id: this.wfId }).then((res: any) => {
       if (res) {
         this.wf = res;
@@ -207,6 +205,7 @@ export class BusinessLogicDesignerComponent
   populateEditorFormsData() {
     if (this.definition.properties['collections']) {
       this.selectedModels = this.definition.properties['collections'];
+      this.makeFieldListFromSelectedModel();
     }
     !this.definition.properties['returnType']
       ? (this.resType = 'void')
@@ -218,7 +217,7 @@ export class BusinessLogicDesignerComponent
 
     if (this.definition.properties['schedule']) {
       this.selectedDate = parseISO(
-        this.definition.properties['schedule'].toString()
+        this.definition.properties['schedule'].toString(),
       );
     }
 
@@ -228,13 +227,11 @@ export class BusinessLogicDesignerComponent
   }
   public onDesignerReady(designer: Designer) {
     this.designer = designer;
-    // console.log('designer ready', this.designer);
   }
 
   public onDefinitionChanged(definition: Definition) {
     this.definition = definition;
     this.updateDefinitionJSON();
-    console.log('definition changed');
   }
 
   public updateName(step: Step, event: Event, context: StepEditorContext) {
@@ -246,7 +243,7 @@ export class BusinessLogicDesignerComponent
     properties: Properties,
     name: string,
     event: Event,
-    context: GlobalEditorContext | StepEditorContext
+    context: GlobalEditorContext | StepEditorContext,
   ) {
     properties[name] = (event.target as HTMLInputElement).value;
     context.notifyPropertiesChanged();
@@ -264,7 +261,7 @@ export class BusinessLogicDesignerComponent
     id: null,
     type: string,
     name: string,
-    properties: any | undefined
+    properties: any | undefined,
   ) {
     return {
       id,
@@ -283,7 +280,7 @@ export class BusinessLogicDesignerComponent
     id: null,
     type: string,
     name: string,
-    properties: any | undefined
+    properties: any | undefined,
   ) {
     return {
       id,
@@ -298,7 +295,7 @@ export class BusinessLogicDesignerComponent
     id: null,
     type: string,
     name: string,
-    properties: any | undefined
+    properties: any | undefined,
   ) {
     return {
       id,
@@ -313,7 +310,7 @@ export class BusinessLogicDesignerComponent
     id: null,
     type: string,
     name: string,
-    properties: any | undefined
+    properties: any | undefined,
   ) {
     return {
       id,
@@ -333,7 +330,7 @@ export class BusinessLogicDesignerComponent
     id: null,
     type: string,
     name: string,
-    properties: any | undefined
+    properties: any | undefined,
   ) {
     return {
       id,
@@ -383,7 +380,7 @@ export class BusinessLogicDesignerComponent
           null,
           'import',
           'Set Response Data',
-          null
+          null,
         ),
       ],
     };
@@ -413,12 +410,65 @@ export class BusinessLogicDesignerComponent
   }
 
   openConditionEditor(editor: any) {
-    this.showConditionEditor = !this.showConditionEditor;
+    // For New Entry Reseting the data
+    if (Object.keys(editor.step.properties).length === 0) {
+      this.conditionGroups = [
+        {
+          conditions: [
+            {
+              firstValue: '',
+              operator: '=',
+              secondValue: null,
+              manualEntry: false,
+            },
+          ],
+        },
+      ];
+    } else {
+      for (var i = 0; i < this.definition.sequence.length; i++) {
+        var currDefination = this.definition.sequence[i];
+        if (currDefination.id == editor.step.id) {
+          this.conditionGroups = currDefination.properties['conditionGroups'];
+        }
+      }
+    }
     this.conditionEditor = editor;
+    this.showConditionEditor = !this.showConditionEditor;
   }
+
   openLoopEditor(editor: any) {
-    this.showLoopEditor = !this.showLoopEditor;
+    if (Object.keys(editor.step.properties).length === 0) {
+      this.loopFirstValue = {};
+      this.loopOperator = {};
+      this.loopSecondValue = {};
+      this.loopStaticValue = null;
+    } else {
+      for (var i = 0; i < this.definition.sequence.length; i++) {
+        var currDefination = this.definition.sequence[i];
+        if (currDefination.id == editor.step.id) {
+          const logicGroup: any = currDefination.properties['conditionGroups'];
+
+          logicGroup.forEach((group: any) => {
+            // Loop through each condition within the group
+            group.conditions.forEach((condition: any) => {
+              this.loopFirstValue = condition.firstValue;
+              this.loopOperator = condition.operator;
+              if (condition.secondValue == 'manual') {
+                this.loopStaticValue = condition.manualEntryValue;
+                this.loopManualEntry = condition.manualEntry;
+                this.loopSecondValue = 'manual';
+              } else {
+                this.loopSecondValue = condition.secondValue;
+                this.loopStaticValue = null;
+                this.loopManualEntry = false;
+              }
+            });
+          });
+        }
+      }
+    }
     this.loopEditor = editor;
+    this.showLoopEditor = !this.showLoopEditor;
   }
 
   openModelsPopup(editor: any) {
@@ -432,18 +482,80 @@ export class BusinessLogicDesignerComponent
   }
 
   openAPIEditor(editor: any) {
-    this.showAPIEditor = !this.showAPIEditor;
+    // For New Entry Reseting the data
+    if (
+      editor.step.properties.collection == '' &&
+      editor.step.properties.endpoint == ''
+    ) {
+      this.modelSelectedAPI = {};
+      this.currentEndpointByModel = {};
+      this.allEndpointsByModel = [];
+      this.allFieldsByReqDto = [];
+      this.reqDtoModelMappedList = [];
+      // this.selectedModelForDtoField = [];
+    } else {
+      for (var i = 0; i < this.definition.sequence.length; i++) {
+        var currDefination = this.definition.sequence[i];
+        if (currDefination.id == editor.step.id) {
+          this.modelSelectedAPI = currDefination.properties['collection'];
+          this.getTheReqDtos(this.modelSelectedAPI);
+
+          this.currentEndpointByModel = currDefination.properties['endpoint'];
+          this.endpointChange(this.currentEndpointByModel);
+
+          this.reqDtoModelMappedList = currDefination.properties['mappedData'];
+          this.selectedModelForDtoField = [];
+          for (var j = 0; j < this.reqDtoModelMappedList.length; j++) {
+            var newObj = this.reqDtoModelMappedList[j];
+            this.selectedModelForDtoField.push(newObj.mappedModelField);
+          }
+        }
+      }
+    }
     this.apiEditor = editor;
+    this.showAPIEditor = !this.showAPIEditor;
   }
 
   openSaveDataEditor(editor: any) {
-    this.showSaveDataEditor = !this.showSaveDataEditor;
+    if (Object.keys(editor.step.properties).length === 0) {
+      this.saveDataModel = {};
+    } else {
+      for (var i = 0; i < this.definition.sequence.length; i++) {
+        var currDefination = this.definition.sequence[i];
+        if (currDefination.id == editor.step.id) {
+          this.saveDataModel = currDefination.properties['model'];
+        }
+      }
+    }
     this.saveDataEditor = editor;
+    this.showSaveDataEditor = !this.showSaveDataEditor;
   }
 
   openSetResponseDataEditor(editor: any) {
-    this.showSetResponseDataEditor = !this.showSetResponseDataEditor;
+    // For New Entry Reseting the data
+    if (Object.keys(editor.step.properties).length === 0) {
+      this.selectedResPojo = {};
+      this.pojoModelMappedList = [];
+      this.selectedPojoFields = [];
+    } else {
+      for (var i = 0; i < this.definition.sequence.length; i++) {
+        var currDefination = this.definition.sequence[i];
+
+        if (currDefination.id == editor.step.id) {
+          this.selectedResPojo = currDefination.properties['pojo'];
+          this.pojoModelMappedList = currDefination.properties['mappedData'];
+          this.getPojoFields(this.selectedResPojo);
+          this.selectedModelForsetResField = [];
+
+          for (var j = 0; j < this.pojoModelMappedList.length; j++) {
+            var newObj = this.pojoModelMappedList[j];
+            this.selectedModelForsetResField.push(newObj.mappedModelField);
+          }
+        }
+      }
+    }
     this.setResDataEditor = editor;
+    this.showSetResponseDataEditor = !this.showSetResponseDataEditor;
   }
 
   updateConditions() {
@@ -453,24 +565,24 @@ export class BusinessLogicDesignerComponent
   // New Code -------------------------------------------------------------------------------------------->
 
   selectedModels: Collection[] | any = [];
-  currentModel: Collection = {};
+  currentModel: any;
   msSelected: MicroService = {};
   selectedOperation: any;
   selectedResOp: Collection | any = {};
   selectedDate: any;
   fieldArrays: Field[] = [];
   finalListModels: CollectionObj[] = [];
-  saveDataModel: Collection = {};
-  selectedResPojo: Collection = {};
+  saveDataModel: any = {}; // This is Collection
+  selectedResPojo: any;
   selectedPojoFields: Field[] = [];
 
   selectedParams: InputParam[] | any = [{ dataType: '', varName: '' }];
 
-  modelSelectedAPI: Collection = {};
-  currentEndpointByModel: Endpoint = {};
-  selectedModelForDtoField: any = {};
-  selectedModelForsetResField: any = {};
-
+  modelSelectedAPI: any;
+  currentEndpointByModel: any;
+  selectedModelForDtoField: Field[] = [];
+  selectedModelForsetResField: Field[] = [];
+  paramsForFetchData: any;
   loopFirstValue: any;
   loopOperator: any;
   loopSecondValue: any;
@@ -486,9 +598,7 @@ export class BusinessLogicDesignerComponent
       .then((res: any) => {
         this.allModels = res;
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   }
 
   getAllPojos() {
@@ -497,9 +607,7 @@ export class BusinessLogicDesignerComponent
       .then((res: any) => {
         this.allPojos = res;
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   }
 
   // Save Models Code Start
@@ -509,7 +617,7 @@ export class BusinessLogicDesignerComponent
       'collections',
       this.selectedModels,
       this.selectedParams,
-      editor.context
+      editor.context,
     );
 
     this.showModelsOptions = false;
@@ -521,10 +629,18 @@ export class BusinessLogicDesignerComponent
       'params',
       this.selectedModels,
       this.selectedParams,
-      editor.context
+      editor.context,
     );
 
     this.showParamsOptions = false;
+  }
+
+  deleteThisParams(index: any) {
+    if (index >= 0 && index < this.selectedParams.length) {
+      this.selectedParams.splice(index, 1);
+    } else {
+      console.error('Index out of bounds');
+    }
   }
 
   public updatePropertyCollection(
@@ -532,7 +648,7 @@ export class BusinessLogicDesignerComponent
     name: string,
     selectedModels: any,
     selectedParams: InputParam[],
-    context: GlobalEditorContext | StepEditorContext
+    context: GlobalEditorContext | StepEditorContext,
   ) {
     properties[name] = selectedModels;
     properties['schedule'] = this.selectedDate;
@@ -543,12 +659,16 @@ export class BusinessLogicDesignerComponent
       properties['returnType'] = null;
     }
 
+    context.notifyPropertiesChanged();
+  }
+
+  makeFieldListFromSelectedModel() {
     this.fieldArrays = [];
     var i = 0;
     this.finalListModels = [];
     // Loop through selectedModels
-    for (let i = 0; i < selectedModels.length; i++) {
-      const model = selectedModels[i];
+    for (let i = 0; i < this.selectedModels.length; i++) {
+      const model = this.selectedModels[i];
       const filterStr = FilterBuilder.equal('collection.id', model.id + '');
       this.search = filterStr;
       let pagination!: Pagination;
@@ -573,35 +693,61 @@ export class BusinessLogicDesignerComponent
           this.finalListModels.push(collectionObj);
         });
     }
-    console.log(this.finalListModels);
-    context.notifyPropertiesChanged();
   }
 
   // Fetch Data Code Start
 
   openFetchDataEditor(editor: any) {
-    this.showFetchDataPopup = !this.showFetchDataPopup;
+    if (editor.step.properties.model?.id == null) {
+      this.currentModel = {};
+      this.selectedOperation = {};
+      this.paramsForFetchData = {};
+      this.customJPAQuery = {};
+      this.fetchDataSchedule = null;
+    } else {
+      for (var i = 0; i < this.definition.sequence.length; i++) {
+        var currDefination = this.definition.sequence[i];
+        if (currDefination.id == editor.step.id) {
+          this.currentModel = currDefination.properties['model'];
+          this.selectedOperation = currDefination.properties['queryType'];
+          this.paramsForFetchData = currDefination.properties['paramId'];
+          this.customJPAQuery = currDefination.properties['customQuery'];
+          this.fetchDataSchedule = parseISO(
+            currDefination.properties['schedule']?.toString()
+              ? currDefination.properties['schedule']?.toString()
+              : '',
+          );
+        }
+      }
+    }
     this.fetchDataEditor = editor;
+    this.showFetchDataPopup = !this.showFetchDataPopup;
   }
 
   saveFetchData(editor: any) {
     // this.sequence.find(item => item.type === "getDsData");
-    console.log(JSON.stringify(editor));
+
     this.saveInfoFetch(editor.step, editor.context);
   }
 
   public saveInfoFetch(
     sequence: any,
-    context: GlobalEditorContext | StepEditorContext
+    context: GlobalEditorContext | StepEditorContext,
   ) {
     // sequence = sequence.find((item: any) => item.type === 'getDsData');
     sequence.properties['model'] = this.currentModel;
     if (this.selectedOperation == 'CustomJpaQuery') {
       sequence.properties['queryType'] = this.selectedOperation;
       sequence.properties['customQuery'] = this.customJPAQuery;
+      sequence.properties['paramId'] = 'null';
+    } else if (this.selectedOperation == 'FindById') {
+      sequence.properties['queryType'] = this.selectedOperation;
+      sequence.properties['paramId'] = this.paramsForFetchData;
+      sequence.properties['customQuery'] = 'null';
     } else {
       sequence.properties['queryType'] = this.selectedOperation;
       sequence.properties['customQuery'] = 'null';
+      sequence.properties['paramId'] = 'null';
     }
     sequence.properties['schedule'] = this.fetchDataSchedule;
 
@@ -609,13 +755,10 @@ export class BusinessLogicDesignerComponent
     this.showFetchDataPopup = false;
   }
 
-  onSelectionChange(event: any) {
-    console.log('Selected option:', this.selectedOperation);
-  }
+  onSelectionChange(event: any) {}
 
   // Loop Code Start
   updateConditionsLoop(editor: any) {
-    console.log(JSON.stringify(editor));
     this.saveInfoLoop(editor.step, editor.context);
 
     this.showLoopEditor = false;
@@ -623,7 +766,7 @@ export class BusinessLogicDesignerComponent
 
   public saveInfoLoop(
     sequence: any,
-    context: GlobalEditorContext | StepEditorContext
+    context: GlobalEditorContext | StepEditorContext,
   ) {
     // sequence = sequence.find((item: any) => item.type === 'loop');
     sequence.properties['conditionGroups'] = [];
@@ -636,7 +779,7 @@ export class BusinessLogicDesignerComponent
         conditions: [
           {
             firstValue: this.loopFirstValue,
-            operator: this.loopOperator.name,
+            operator: this.loopOperator,
             secondValue: this.loopSecondValue ? this.loopSecondValue : null,
             manualEntry: isManualEntry,
             manualEntryValue: this.loopStaticValue,
@@ -656,14 +799,13 @@ export class BusinessLogicDesignerComponent
   }
 
   handleValueChanges(e: any) {
-    console.log(e);
     if (e == 'manual') {
       this.loopManualEntry = true;
     }
   }
 
   // If else condition code Start
-  conditionGroups: ConditionGroup[] = [
+  conditionGroups: any = [
     {
       conditions: [
         {
@@ -739,8 +881,6 @@ export class BusinessLogicDesignerComponent
   }
 
   handleSecondValueChange(condition: Condition, e: any): void {
-    console.log(this.finalListModels);
-    console.log(e);
     if (e === 'manual') {
       condition.manualEntry = true;
       condition.secondValue = null;
@@ -750,7 +890,6 @@ export class BusinessLogicDesignerComponent
   }
 
   updateIfConditions(editor: any) {
-    console.log(editor);
     this.saveIfConditions(editor.step, editor.context);
 
     this.showConditionEditor = false;
@@ -758,13 +897,12 @@ export class BusinessLogicDesignerComponent
 
   saveIfConditions(
     sequence: any,
-    context: GlobalEditorContext | StepEditorContext
+    context: GlobalEditorContext | StepEditorContext,
   ) {
-    const payload = this.conditionGroups.map((group) => ({
+    const payload = this.conditionGroups.map((group: any) => ({
       conditions: group.conditions,
       connector: group.connector,
     }));
-    console.log('Payload:', JSON.stringify(payload));
 
     // sequence = sequence.find((item: any) => item.type === 'if');
     sequence.properties['conditionGroups'] = payload;
@@ -781,7 +919,7 @@ export class BusinessLogicDesignerComponent
 
   saveThisModel(
     sequence: any,
-    context: GlobalEditorContext | StepEditorContext
+    context: GlobalEditorContext | StepEditorContext,
   ) {
     // sequence = sequence.find((item: any) => item.type === 'saveDsData');
     sequence.properties['model'] = this.saveDataModel;
@@ -790,17 +928,16 @@ export class BusinessLogicDesignerComponent
 
   // Call Api code start
   updateApiEditor(editor: any) {
-    console.log(this.msSelected);
     this.saveThisAPICall(editor.step, editor.context);
     this.showAPIEditor = false;
   }
 
-  reqDtoModelMappedList: reqDtoMappedModel[] = [];
+  reqDtoModelMappedList: any;
   currReqDtoModel!: reqDtoMappedModel;
 
   saveThisAPICall(
     sequence: any,
-    context: GlobalEditorContext | StepEditorContext
+    context: GlobalEditorContext | StepEditorContext,
   ) {
     // sequence = sequence.find((item: any) => item.type === 'callWebclient');
 
@@ -811,11 +948,8 @@ export class BusinessLogicDesignerComponent
   }
 
   modelSelectedForReqDto(reqDtoField: any, modelSelected: any) {
-    console.log(reqDtoField);
-    console.log(modelSelected);
-
     const existingIndex = this.reqDtoModelMappedList.findIndex(
-      (item) => item.reqDtoField.id === reqDtoField.id
+      (item: any) => item.reqDtoField.id === reqDtoField.id,
     );
 
     if (existingIndex !== -1) {
@@ -847,19 +981,18 @@ export class BusinessLogicDesignerComponent
       .getAllEndpointsByCollection(selectedModel.id)
       .then((res: any) => {
         this.allEndpointsByModel = res;
-        console.log('current Endpoints of model');
-        console.log(this.allEndpointsByModel);
       });
   }
 
-  endpointChange(endpoint: Endpoint) {
-    console.log(endpoint);
-    this.fieldsService
-      .getFieldsByRequestDto(endpoint.requestDto?.id)
-      .then((res: any) => {
-        this.allFieldsByReqDto = res;
-        console.log(this.allFieldsByReqDto);
-      });
+  endpointChange(endpoint: any) {
+    this.currentEndpointByModel = endpoint;
+    if (endpoint !== null) {
+      this.fieldsService
+        .getFieldsByRequestDto(endpoint.requestDto?.id)
+        .then((res: any) => {
+          this.allFieldsByReqDto = res;
+        });
+    }
   }
 
   addParam() {
@@ -868,7 +1001,7 @@ export class BusinessLogicDesignerComponent
 
   // Set Response Pojo Code start
 
-  pojoModelMappedList: pojoMappedModel[] = [];
+  pojoModelMappedList: any;
   currPojoModel!: pojoMappedModel;
 
   getPojoFields(pojo: Collection) {
@@ -883,7 +1016,7 @@ export class BusinessLogicDesignerComponent
 
   modelSelectedForSetResData(pojoField: any, modelSelected: any) {
     const existingIndex = this.pojoModelMappedList.findIndex(
-      (item) => item.pojoField.id === pojoField.id
+      (item: any) => item.pojoField.id === pojoField.id,
     );
 
     if (existingIndex !== -1) {
@@ -899,15 +1032,13 @@ export class BusinessLogicDesignerComponent
   }
 
   updateSetResDataEditor(editor: any) {
-    console.log(editor.step.properties);
-    console.log(this.pojoModelMappedList);
     this.saveThisSetResData(editor.step, editor.context);
     this.showSetResponseDataEditor = false;
   }
 
   saveThisSetResData(
     sequence: any,
-    context: GlobalEditorContext | StepEditorContext
+    context: GlobalEditorContext | StepEditorContext,
   ) {
     // sequence = sequence.find((item: any) => item.type === 'import');
     sequence.properties['pojo'] = this.selectedResPojo;

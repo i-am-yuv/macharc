@@ -8,10 +8,11 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService } from '@splenta/vezo';
+import { MessageService, Pagination } from '@splenta/vezo';
 import { DndDropEvent, DropEffect, EffectAllowed } from 'ngx-drag-drop';
 import { Application } from '../../application/application';
 import { ApplicationService } from '../../application/application.service';
+import { InputParam } from '../../business-logic/business-logic';
 import { Collection } from '../../collection/collection';
 import { CollectionService } from '../../collection/collection.service';
 import { DataForm } from '../../data-form/data-form';
@@ -23,9 +24,10 @@ import { Asset, Folder } from '../../media-manager/folder';
 import { MediaService } from '../../media-manager/media.service';
 import { MicroService } from '../../microservice/microservice';
 import { MicroserviceService } from '../../microservice/microservice.service';
+import { ProjectService } from '../../project/project.service';
 import { FilterBuilder } from '../../utils/FilterBuilder';
 import { GenericComponent } from '../../utils/genericcomponent';
-import { Screen } from '../screen';
+import { PageParam, Screen } from '../screen';
 import { ScreenService } from '../screen.service';
 
 interface DropzoneLayout {
@@ -44,6 +46,7 @@ interface DraggableItem {
   children?: any[];
   icon?: any;
   id?: any;
+  navigateTo?: any;
 }
 @Component({
   selector: 'app-designer',
@@ -595,6 +598,9 @@ export class DesignerComponent
   mutiScreenView: boolean = false;
 
   collectionId: string | null | undefined = '';
+  projectId: string | null | undefined = '';
+  selectedParams: InputParam[] | any = [{ dataType: '', varName: '' }];
+
   searchQuery: string = '';
 
   collectionItems: Collection[] = [];
@@ -602,6 +608,21 @@ export class DesignerComponent
   microserviceItems: MicroService[] = [];
   applicationItems: Application[] = [];
   currentApplication: Application = {};
+
+  paramsOptions: any[] = [
+    { label: 'Yes', value: 'yes' },
+    { label: 'No', value: 'no' },
+  ];
+  isParamvalue: string = 'no';
+
+  dataTypes = [
+    { name: 'String', label: 'String' },
+    { name: 'Integer', label: 'int' },
+    { name: 'BigDecimal', label: 'Decimal' },
+    { name: 'Long', label: 'Long' },
+    { name: 'UUID', label: 'UUID' },
+    // { name: 'Model', label: 'Model' },
+  ];
 
   constructor(
     private screenService: ScreenService,
@@ -615,10 +636,11 @@ export class DesignerComponent
     private msgService: MessageService,
     private microserviceService: MicroserviceService,
     private applicationService: ApplicationService,
+    private projectService: ProjectService,
     private renderer: Renderer2,
     private el: ElementRef,
     private mediaService: MediaService,
-    private layoutService: LayoutService
+    private layoutService: LayoutService,
   ) {
     super(screenService, messageService);
     this.form = this.fb.group({
@@ -634,6 +656,7 @@ export class DesignerComponent
       microService: [],
       application: [],
       process: [],
+      enableAuth: [true],
     });
   }
   public ngOnInit() {
@@ -649,41 +672,61 @@ export class DesignerComponent
 
   getPageData() {
     this.loading = true;
-    this.getAllDataById(this.currentApplication.id);
-    this.loading = false;
+    this.getAllDataById(this.currentApplication.id); // This will fetch all the screen
 
-    this.microserviceService.getAllData().then((res: any) => {
-      if (res) {
-        this.microserviceItems = res.content;
+    this.projectService.setActiveProject();
+    this.projectService.getActiveProject().subscribe((val: any) => {
+      this.projectId = val?.id;
+      if (this.projectId) {
+        var filterStr = FilterBuilder.equal('project.id', this.projectId);
+        this.search = filterStr;
+        var paginator!: Pagination;
+        this.microserviceService
+          .getAllData(paginator, this.search)
+          .then((res: any) => {
+            if (res) {
+              this.microserviceItems = res.content;
+              this.loading = false;
+            }
+          });
       }
     });
+
     this.applicationService.getAllData().then((res: any) => {
       if (res) {
         this.applicationItems = res.content;
       }
     });
+
     this.getPageContent();
   }
 
   getDataSorted() {
     return this.data.sort((a: any, b: any) =>
-      a.screenName.localeCompare(b.screenName)
+      a.screenName.localeCompare(b.screenName),
     );
   }
 
   override editData(ds: any): void {
     super.editData(ds);
+    this.selectedParams = ds.selectedParams;
+    if (this.selectedParams.length > 0) {
+      this.isParamvalue = 'yes';
+    } else {
+      this.isParamvalue = 'no';
+    }
+
     this.getCollectionItems();
   }
 
   deleteThisPage(item: any) {
     this.activeItem = null;
     this.screenId = null;
-    this.router.navigate(['/builder/screens/designer/' + null]);
+    this.router.navigate(['/builder/screens/designer']);
     this.deleteDataByApplication(item, this.currentApplication.id);
     this.activeItem = null;
     this.screenId = null;
-    this.router.navigate(['/builder/screens/designer/' + null]);
+    this.router.navigate(['/builder/screens/designer']);
     this.activeData = null;
     this.visibleDeleteConfirmation = false;
   }
@@ -692,7 +735,7 @@ export class DesignerComponent
     // this.form.patchValue({ collection: null });
     var filterStr = FilterBuilder.equal(
       'microService.id',
-      this.form.value.microService.id
+      this.form.value.microService.id,
     );
     this.collectionService.getAllData(undefined, filterStr).then((res: any) => {
       if (res) {
@@ -704,12 +747,11 @@ export class DesignerComponent
   getPageContent() {
     this.loading = true;
     this.screenId = this.route.snapshot.paramMap.get('id');
-    // alert(this.screenId ) ;
-    if (this.screenId !== 'null') {
+
+    if (this.screenId !== null) {
       this.screenService
         .getData({ id: this.screenId })
         .then((res: any) => {
-          // console.log(res);
           this.screenData = res;
           if (res.screenDefinition) {
             this.draggableListRight = JSON.parse(res.screenDefinition);
@@ -721,7 +763,7 @@ export class DesignerComponent
           if (this.screenData) {
             var filterStr = FilterBuilder.equal(
               'collection.id',
-              this.screenData?.collection?.id!
+              this.screenData?.collection?.id!,
             );
             this.fieldService
               .getAllData(undefined, filterStr)
@@ -747,8 +789,7 @@ export class DesignerComponent
     } else {
       this.activeItem = null;
       this.screenId = null;
-      this.router.navigate(['/builder/screens/designer/' + null]);
-      console.log('no active page found');
+      // this.router.navigate(['/builder/screens/designer/' + null]);
       this.loading = false;
     }
     this.activeItem = null;
@@ -853,13 +894,12 @@ export class DesignerComponent
 
   handleClick(event: MouseEvent, item: any) {
     event.stopPropagation();
-    console.log(event);
-    console.log(item);
+
     this.activeItem = item;
   }
   handleClickForm(event: MouseEvent, child: any, item: any) {
     event.stopPropagation();
-    console.log(item);
+
     this.activeItem = item;
   }
 
@@ -904,7 +944,6 @@ export class DesignerComponent
 
   onItemReceived(item: any) {
     this.activeItem = item;
-    console.log('Item received from child:', item);
   }
 
   searchValue: string = '';
@@ -924,26 +963,26 @@ export class DesignerComponent
       this.filteredDraggableListLeftPE = [...this.draggableListLeftPE];
     } else {
       this.filteredDraggableListLeftVE = this.filterList(
-        this.draggableListLeftVE
+        this.draggableListLeftVE,
       );
       this.filteredDraggableListLeftLE = this.filterList(
-        this.draggableListLeftLE
+        this.draggableListLeftLE,
       );
       this.filteredDraggableListLeftPE = this.filterList(
-        this.draggableListLeftPE
+        this.draggableListLeftPE,
       );
     }
   }
 
   filterList(list: DraggableItem[]): DraggableItem[] {
     return list.filter((item) =>
-      item.content.toLowerCase().includes(this.searchValue.toLowerCase())
+      item.content.toLowerCase().includes(this.searchValue.toLowerCase()),
     );
   }
 
   getList(
     originalList: DraggableItem[],
-    filteredList: DraggableItem[]
+    filteredList: DraggableItem[],
   ): DraggableItem[] {
     return this.searchValue.trim() === '' ? originalList : filteredList;
   }
@@ -961,7 +1000,7 @@ export class DesignerComponent
       // height:'auto'+50,
       width: `${this.childWidth ? this.childWidth : 700}px`,
       transform: `scale(${this.zoom})`,
-      transformOrigin: 'top center',
+      transformOrigin: 'top left',
     };
   }
 
@@ -1021,7 +1060,6 @@ export class DesignerComponent
     this.draggableListRight = [...this.draggableListRight, ...this.copiedList];
     this.widgetTree = this.draggableListRight;
 
-    // console.log('after pasting');
     this.msgService.add({
       severity: 'success',
       summary: 'Paste',
@@ -1038,7 +1076,7 @@ export class DesignerComponent
     const found = this.insertAfterId(
       this.draggableListRight,
       afterObjectId,
-      this.copiedList
+      this.copiedList,
     );
 
     if (!found) {
@@ -1061,7 +1099,7 @@ export class DesignerComponent
   insertAfterId(
     list: any[],
     afterObjectId: string,
-    copiedList: any[]
+    copiedList: any[],
   ): boolean {
     for (let i = 0; i < list.length; i++) {
       if (list[i].id === afterObjectId) {
@@ -1071,7 +1109,7 @@ export class DesignerComponent
         const found = this.insertAfterId(
           list[i].children,
           afterObjectId,
-          copiedList
+          copiedList,
         );
         if (found) {
           return true;
@@ -1100,7 +1138,7 @@ export class DesignerComponent
   copySubList: any[] = []; // Initialize the list as empty
   onItemReceivedCopy(item: any) {
     //this.activeItem = item;
-    console.log(item);
+
     const newItem = { ...item, id: this.generateUniqueId() };
 
     this.copySubList = [];
@@ -1109,7 +1147,6 @@ export class DesignerComponent
   }
 
   onItemReceivedPaste(item: any) {
-    console.log(item);
     this.pasteThisPageInside(item.id);
   }
 
@@ -1224,35 +1261,6 @@ export class DesignerComponent
   private previewWindow: Window | null = null;
 
   previewInWeb() {
-    // const manContent = document.querySelector('app-page-preview')?.innerHTML;
-    // const manStyles = Array.from(document.styleSheets)
-    //   .map((sheet) => {
-    //     try {
-    //       return Array.from(sheet.cssRules || [])
-    //         .map((rule) => rule.cssText)
-    //         .join('');
-    //     } catch (e) {
-    //       console.warn('Could not read stylesheet:', sheet, e);
-    //       return '';
-    //     }
-    //   })
-    //   .join('');
-
-    // const newTab = window.open('', 'preview');
-    // if (newTab) {
-    //   newTab.document.write(`
-    //     <html>
-    //       <head>
-    //         <style>${manStyles}</style>
-    //       </head>
-    //       <body>${manContent}</body>
-    //     </html>
-    //   `);
-    //   newTab.document.close();
-    // } else {
-    //   console.error('Failed to open new tab');
-    // }
-
     const manContent = document.querySelector('app-page-preview')?.innerHTML;
     const manStyles = Array.from(document.styleSheets)
       .map((sheet) => {
@@ -1296,7 +1304,7 @@ export class DesignerComponent
     if (this.previewWindow) {
       this.previewWindow.postMessage(
         { type: 'UPDATE_CONTENT', content: manContent },
-        '*'
+        '*',
       );
     }
   }
@@ -1305,6 +1313,28 @@ export class DesignerComponent
     if (this.previewWindow) {
       this.previewWindow.close();
     }
+  }
+
+  openWebPreview() {
+    if (!this.screenId) {
+      this.msgService.add({
+        severity: 'info',
+        summary: 'Info',
+        detail: 'No Page Found.',
+      });
+      return;
+    }
+    const div = this.el.nativeElement.querySelector('#downloadable-div');
+    if (div == null) {
+      this.msgService.add({
+        severity: 'info',
+        summary: 'Info',
+        detail: 'No Preview available for an empty page.',
+      });
+      return;
+    }
+
+    this.router.navigate([`/builder/web-preview/${this.screenId}`]);
   }
 
   openMobilePreview() {
@@ -1398,7 +1428,7 @@ export class DesignerComponent
   searchAssets() {
     if (this.searchQuery) {
       this.filteredAssets = this.allAssets.filter((asset) =>
-        asset.fileName?.toLowerCase().includes(this.searchQuery.toLowerCase())
+        asset.fileName?.toLowerCase().includes(this.searchQuery.toLowerCase()),
       );
     } else {
       this.filteredAssets = this.allAssets;
@@ -1412,17 +1442,79 @@ export class DesignerComponent
   sendThisAsset(asset: any) {
     this.imageURL = asset.url;
     this.selectAssetModel = false;
-    console.log(this.imageURL);
   }
 
   renderNewPage(screenDefination: any) {
-    console.log('Rendering new page');
-    console.log(screenDefination);
     if (screenDefination !== null) {
       this.draggableListRight = JSON.parse(screenDefination);
       setTimeout(() => {
         this.previewInWeb();
       }, 2000);
+    }
+  }
+
+  deleteThisParams(index: any) {
+    if (index >= 0 && index < this.selectedParams.length) {
+      this.selectedParams.splice(index, 1);
+    } else {
+      console.error('Index out of bounds');
+    }
+  }
+
+  addParam() {
+    this.selectedParams.push({});
+  }
+
+  allPageParams!: PageParam[];
+  async SaveByApplication(applicationId: any) {
+    this.allPageParams = [];
+
+    for (let index = 0; index < this.selectedParams.length; index++) {
+      try {
+        const pageParam = this.selectedParams[index];
+        const res = await this.screenService.createPageParams(pageParam);
+
+        this.allPageParams.push(res);
+      } catch (err) {}
+    }
+
+    if (this.allPageParams.length === this.selectedParams.length) {
+      this.saveScreenByApplication(applicationId);
+    }
+  }
+
+  saveScreenByApplication(applicationId: any) {
+    this.form.value['selectedParams'] = this.allPageParams;
+    const formData = this.form.value;
+    formData.application = { ...formData.application, id: applicationId };
+
+    this.search = '';
+    if (!formData.id) {
+      this.dataService.createData(formData).then((res: any) => {
+        if (res) {
+          this.visible = false;
+          this.messageService.add({
+            severity: 'success',
+            detail: this.componentName + ' created',
+            summary: this.componentName + ' created',
+          });
+          this.search = '';
+          this.getAllDataById(applicationId);
+        }
+      });
+    } else {
+      this.dataService.updateData(formData).then((res: any) => {
+        if (res) {
+          this.visible = false;
+          this.messageService.add({
+            severity: 'success',
+            detail: this.componentName + ' updated',
+            summary: this.componentName + ' updated',
+          });
+          this.search = '';
+          this.getAllDataById(applicationId);
+        }
+      });
     }
   }
 }

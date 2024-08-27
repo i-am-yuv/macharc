@@ -207,18 +207,20 @@
                 <!-- <div class="flex justify-center items-center cursor-pointer" (click)="saveData()" style="background-color: #4F46E5; border-radius: 4px; width: 338px;">
                                     <div class="p-3" style="font-size: 16px; font-weight: 600; color: #FFFFFF;">Get started</div>
                                 </div> -->
-                <vezo-button
-                  label="SAVE"
-                  className="btn"
-                  labelClass="btn1"
-                  (click)="saveData()"
-                  [disabled]="!form.valid"
-                ></vezo-button>
-              </div>
-            </form>
-          </div>
+                                <vezo-button label="SAVE" className="btn" labelClass="btn1" (click)="saveData()"
+                                        [disabled]="!form.valid"></vezo-button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </div>
+<app-modal
+  *ngIf="isModalOpen"
+  [title]="modalTitle"
+  [buttonText]="modalButtonText"
+  [type]="modalType"
+  (close)="closeModal()">
+</app-modal>

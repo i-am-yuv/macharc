@@ -530,9 +530,9 @@
         </div>
     </div>
     <div class="mt-2">
-        <vezo-select label="Nevigate To" optionLabel="screenName" optionValue="screenDefinition" [items]="this.data"
+        <vezo-select label="Navigate To" optionLabel="screenName" optionValue="screenDefinition" [items]="this.data"
         [(ngModel)]="props.data.navigateTo"></vezo-select>
-        <div (click)="check(props.data.navigateTo)">Click me</div>
+        <!-- <div (click)="check(props.data.navigateTo)">Click me</div> -->
     </div>
 
     <div class="mt-2 flex gap-4 justify-start items-center" *ngIf="

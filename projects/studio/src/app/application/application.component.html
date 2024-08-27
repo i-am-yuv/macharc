@@ -1,5 +1,10 @@
-<div class="p-3 border-b bg-white">
-  <h1 class="heading">Web Frontend Application</h1>
+<div class="p-4 bg-white flex place-items-center">
+  <img
+    src="assets/front-end web_L.svg"
+    class="mr-3"
+    style="width: 24px; height: 24px"
+  />
+  <h1 class="title">Frontend Applications</h1>
 </div>
 <div class="p-4 bg-white">
   <div class="grid grid-cols-3 gap-8 mb-4">
@@ -19,7 +24,10 @@
               <div class="ml-2 flex-grow">Pages</div>
               <vezo-icon icon="arrowRight" className="w-4"></vezo-icon>
             </li>
-            <li class="flex place-items-center cursor-pointer" [routerLink]="['/actions']">
+            <li
+              class="flex place-items-center cursor-pointer"
+              (click)="goToApplicationActions(application)"
+            >
               <vezo-icon icon="cog6Tooth" className="w-4"></vezo-icon>
               <div class="ml-2 flex-grow">Actions</div>
               <vezo-icon icon="arrowRight" className="w-4"></vezo-icon>
@@ -43,7 +51,8 @@
           <vezo-button
             icon="cpuChip"
             className="bg-blue-500 hover:bg-blue-600 text-white mr-2"
-            label="MANAGE" (click)="manageApplication( application)"
+            label="MANAGE"
+            (click)="manageApplication(application)"
           ></vezo-button>
           <!-- <vezo-button icon="star" className="bg-blue-700 hover:bg-blue-900 text-white"
                         label="Set Default"></vezo-button> -->

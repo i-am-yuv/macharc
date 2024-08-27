@@ -1,8 +1,8 @@
 export const environment = {
     production: true,
     // apiurl: 'http://localhost:8222/api',
-    apiurl: 'https://api.macharc.com/api',
-    gitServerUrl: 'http://localhost:8282',
+    apiurl: 'https://apistaging1.macharc.com/api',
+    gitServerUrl: 'https://repostaging1.macharc.com',
     llmUrl: 'http://localhost:11434',
     // apiurl: 'https://studio.macharc.com/api',
     firebaseConfig: {

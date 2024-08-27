@@ -37,7 +37,7 @@ export class MenuPanelComponent extends GenericComponent {
     private router: Router,
     private collectionService: CollectionService,
     private microserviceService: MicroserviceService,
-    private applicationService: ApplicationService
+    private applicationService: ApplicationService,
   ) {
     super(formService, messageService);
     this.form = this.fb.group({
@@ -81,7 +81,7 @@ export class MenuPanelComponent extends GenericComponent {
     this.form.patchValue({ collection: null });
     var filterStr = FilterBuilder.equal(
       'microService.id',
-      this.form.value.microService.id
+      this.form.value.microService.id,
     );
     this.collectionService.getAllData(undefined, filterStr).then((res: any) => {
       if (res) {
@@ -89,18 +89,13 @@ export class MenuPanelComponent extends GenericComponent {
       }
     });
   }
-  saveFormData() {
-    console.log(this.form.value);
-  }
+  saveFormData() {}
 
   override preSave(): void {
-    console.log(this.form.value);
     if (!this.form.value.collection) {
-      console.log('here');
       if (this.collection) {
         this.form.patchValue({ collection: this.collection });
       } else {
-        console.log('no collection');
       }
     }
   }

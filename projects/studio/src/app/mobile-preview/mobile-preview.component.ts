@@ -16,8 +16,8 @@ export class MobilePreviewComponent implements OnInit {
   constructor(private changeDetectorRef: ChangeDetectorRef,
     private route: ActivatedRoute,
     private authService: AuthService,
-    private layoutService : LayoutService
-  ) { }
+    private layoutService: LayoutService
+  ) {}
 
   ngOnInit(): void {
     this.pageId = this.route.snapshot.paramMap.get('pageId');
@@ -29,7 +29,7 @@ export class MobilePreviewComponent implements OnInit {
     this.flutterState.onTextChanged(() => {
       this.onTextChanged();
     });
-    console.log(this.pageId);
+    // console.log(this.pageId);
 
     this.flutterState?.setScreen("text");
     this.onTokenSet(this.authService.getAuthToken());

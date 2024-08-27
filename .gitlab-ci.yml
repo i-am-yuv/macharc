@@ -69,11 +69,12 @@ staging-deploy-frontend:
     - echo "$MACHARC_STAGING_PRIVATE_KEY" | tr -d '\r' | ssh-add -
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
+    - ssh-keyscan -H $MACHARC_STAGING_SERVER_IP >> ~/.ssh/known_hosts
   script:
     - mv dist/studio studio
-    - scp -r -o StrictHostKeyChecking=no studio $MACHARC_STAGING_SERVER_USER@$MACHARC_STAGING_SERVER_IP:/home/gitlab-cicd/public_html/
+    - scp -r studio $MACHARC_STAGING_SERVER_USER@$MACHARC_STAGING_SERVER_IP:/home/gitlab-cicd/public_html/
   only:
   - develop
   environment:
     name: STAGING
-    url: https://portal.ifyn.com/sellstore/
+    url: https://studiostaging1.macharc.com

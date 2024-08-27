@@ -6,12 +6,23 @@
         class="col-span-4 gap-4 p-2 ml-4"
         style="display: flex; justify-content: start; align-items: center"
       >
-        <img
-          src="assets/iconamoon_edit-thin.png"
-          style="width: 18px; height: 18px"
-        />
-        <img src="assets/rotate-ccw.png" style="width: 18px; height: 18px" />
-        <img src="assets/rotate-cw.png" style="width: 18px; height: 18px" />
+        <!-- <img src="assets/iconamoon_edit-thin.png" style="width: 18px; height: 18px" /> -->
+        <div
+          class="flex gap-2 justify-center items-center cursor-pointer"
+          [routerLink]="'/applications'"
+        >
+          <vezo-icon
+            icon="arrowUturnLeft"
+            className="w-4 h-4"
+            style="color: #2e2e2e"
+          ></vezo-icon>
+          <div
+            class="mt-1"
+            style="font-size: 14px; font-weight: 400; color: #6d6d6d"
+          >
+            Back
+          </div>
+        </div>
       </div>
       <div class="col-span-3">
         <div
@@ -95,22 +106,19 @@
       <div class="col-span-5 p-2">
         <div class="flex justify-center items-center">
           <div class="flex w-full">
-            <div
-              class="flex-1 gap-2 flex justify-center items-center cursor-pointer"
-              (click)="addData()"
-            >
+            <!-- <div class="flex-1 gap-2 flex justify-center items-center cursor-pointer" (click)="addData()">
               <img src="assets/icons8_plus.png" style="width: 18px" />
               <div style="font-size: 14px; font-weight: 400; color: #6d6d6d">
                 Add Page
               </div>
-            </div>
+            </div> -->
             <div class="flex-1 gap-2 flex justify-center items-center">
               <div style="font-size: 14px; font-weight: 400; color: #6d6d6d">
                 Preview
               </div>
               <div
                 class="border border-gray-400 rounded p-2 cursor-pointer"
-                (click)="previewInWeb()"
+                (click)="openWebPreview()"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -149,27 +157,15 @@
 
               <!-- <img src="assets/elementsClose.svg" style="width: 12px" /> -->
             </div>
-            <!-- <div class="flex-1 gap-2 flex justify-center items-center">
-              <div style="font-size: 14px; font-weight: 400; color: #6d6d6d">
-                Deploy
-              </div>
-              <img src="assets/elementsClose.svg" style="width: 12px" />
-            </div> -->
-            <div
-              class="flex-1 gap-2 flex justify-center items-center cursor-pointer"
-              [routerLink]="'/applications'"
-            >
-              <vezo-icon
-                icon="arrowUturnLeft"
-                className="w-4 h-4"
-                style="color: #2e2e2e"
-              ></vezo-icon>
-              <div
-                class="mt-1"
-                style="font-size: 14px; font-weight: 400; color: #6d6d6d"
-              >
-                Back
-              </div>
+            <div class="flex gap-2 justify-center items-center mr-4">
+              <img
+                src="assets/rotate-ccw.png"
+                style="width: 18px; height: 18px"
+              />
+              <img
+                src="assets/rotate-cw.png"
+                style="width: 18px; height: 18px"
+              />
             </div>
           </div>
         </div>
@@ -180,7 +176,7 @@
   <!-- top bar with microservie, screen , Save and Back button -->
   <div class="flex justify-start">
     <div
-      class="flex place-items-center gap-2"
+      class="flex place-items-center gap-6"
       style="width: 15%; background-color: #c7d2fe; height: 38px"
     >
       <div class="ml-2">
@@ -200,8 +196,17 @@
         ></vezo-icon>
       </div>
 
-      <div style="font-size: 14px; font-weight: 400; color: #000000">
+      <!-- <div style="font-size: 14px; font-weight: 400; color: #000000">
         LIST OF PAGES
+      </div> -->
+      <div
+        class="gap-2 flex justify-center items-center cursor-pointer"
+        (click)="addData()"
+      >
+        <img src="assets/icons8_plus.png" style="width: 18px" />
+        <div style="font-size: 14px; font-weight: 400; color: #6d6d6d">
+          Add Page
+        </div>
       </div>
     </div>
     <div style="width: 85%">
@@ -353,7 +358,7 @@
               />
             </button>
           </div>
-          <div>Zoom: {{ zoom * 100 | number : "1.2-2" }}%</div>
+          <div>Zoom: {{ zoom * 100 | number: "1.2-2" }}%</div>
         </div>
         <div
           id="downloadable-div"
@@ -1376,34 +1381,87 @@
 <vezo-modal [(visible)]="visible">
   <ng-template vTemplate="header">Page</ng-template>
   <ng-template vTemplate="content">
-    <form [formGroup]="form">
-      <!-- <vezo-select
-        optionLabel="applicationName"
-        [items]="applicationItems"
-        formControlName="application"
-        label="Application"
-      ></vezo-select> -->
-      <vezo-select
-        optionLabel="microServiceName"
-        [items]="microserviceItems"
-        formControlName="microService"
-        label="Microservice"
-        (ngModelChange)="getCollectionItems()"
-      ></vezo-select>
-      <!-- <vezo-select optionLabel="collectionName" [items]="collectionItems" formControlName="collection"
-                label="Collection"></vezo-select> -->
-      <vezo-input label="Page Name" formControlName="screenName"></vezo-input>
-      <error-message
-        [controlName]="form.controls['screenName']"
-      ></error-message>
-    </form>
+    <div style="height: 65vh; overflow-y: auto">
+      <form [formGroup]="form">
+        <vezo-select
+          optionLabel="microServiceName"
+          [items]="microserviceItems"
+          formControlName="microService"
+          label="Microservice"
+          (ngModelChange)="getCollectionItems()"
+        ></vezo-select>
+        <vezo-input label="Page Name" formControlName="screenName"></vezo-input>
+        <error-message
+          [controlName]="form.controls['screenName']"
+        ></error-message>
+        <div class="mt-4">
+          <vezo-switch
+            label="Enable Authentication"
+            formControlName="enableAuth"
+          ></vezo-switch>
+        </div>
+      </form>
+
+      <div class="mt-4 flex justify-start gap-4 items-center">
+        <div class="text-lg text-gray-600">Add Page Variables</div>
+        <p-selectButton
+          [options]="paramsOptions"
+          [(ngModel)]="isParamvalue"
+          optionLabel="label"
+          optionValue="value"
+        ></p-selectButton>
+      </div>
+
+      <div *ngIf="isParamvalue == 'yes'">
+        <div
+          class="flex gap-4 justify-start items-center mt-4"
+          *ngFor="let selectedParam of selectedParams; index as i"
+        >
+          <div class="flex" style="flex-direction: column">
+            <label>Param Name</label>
+            <input
+              type="text"
+              pInputText
+              placeholder="Param Variable Name"
+              [(ngModel)]="selectedParam.varName"
+            />
+          </div>
+
+          <div>
+            <!-- First Selecting Datatype or Model -->
+            <label>Param Datatype</label>
+
+            <p-dropdown
+              [options]="dataTypes"
+              [(ngModel)]="selectedParam.dataType"
+              placeholder="Select"
+              optionLabel="label"
+              optionValue="name"
+              [style]="{ width: '100%' }"
+            >
+            </p-dropdown>
+          </div>
+
+          <div class="mt-4">
+            <vezo-icon
+              icon="trash"
+              (click)="deleteThisParams(i)"
+              className="w-6 h-6 text-red-400 cursor-pointer"
+            ></vezo-icon>
+          </div>
+        </div>
+        <div class="text-right mt-2">
+          <vezo-button label="Add More" (click)="addParam()"></vezo-button>
+        </div>
+      </div>
+    </div>
   </ng-template>
   <ng-template vTemplate="footer">
     <div class="text-right">
       <vezo-button
         label="Save"
         [disabled]="!form.valid"
-        (click)="saveDataByApplication(this.currentApplication.id)"
+        (click)="SaveByApplication(this.currentApplication.id)"
       ></vezo-button>
     </div>
   </ng-template>
