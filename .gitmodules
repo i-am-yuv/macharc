@@ -1,7 +1,7 @@
 [submodule "flutter"]
 	path = flutter
 	url = https://repo.splenta.com/macharc/flutterbuilder.git
-	branch = dev
+	branch = develop
 [submodule "projects/splenta"]
 	path = projects/splenta
 	url = https://repo.splenta.com/Splenta/splenta.git

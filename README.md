@@ -44,14 +44,18 @@ Follow the below steps to build and run the docker image locally.
 
 ### 1. Build the studio application
 
+```bash
+npm run build -- --configuration=docker
+```
+
 ### 2. Build the docker image
 
 ```bash
-docker build -t nginx:latest .
+docker build -t macharc-ui:latest .
 ```
 
 ### 3. Run the docker image
 
 ```bash
-docker run -p 80:80 nginx:latest
+docker run -p 80:80 macharc-ui:latest
 ```
