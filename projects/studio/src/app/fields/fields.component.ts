@@ -83,7 +83,7 @@ export class FieldsComponent extends GenericComponent implements OnInit {
         '',
         [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)],
       ],
-      // dataType: ['', [Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
+      dataType: ['', [Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
       fieldType: [''],
       validation: [''],
       pattern: [''],
