@@ -1,7 +1,15 @@
-<div class="w-2/3 bg-white p-16 m-8 mx-auto">
+<div class="w-full bg-white p-8 mx-auto w-2/3">
+  <div class="flex place-items-center">
+    <vezo-icon
+      icon="arrowLeft"
+      className="cursor-pointer"
+      routerLink="/datasources"
+    ></vezo-icon>
+    <div class="title m-4">{{ id ? "Manage" : "Create" }} Datasource</div>
+  </div>
   <form [formGroup]="form">
-    <div class="flex">
-      <div class="mr-4">
+    <div class="flex w-full gap-6 justify-between items-center">
+      <div class="w-1/2">
         <vezo-input
           label="Data Source Name"
           formControlName="dataSourceName"
@@ -10,7 +18,7 @@
           [controlName]="form.controls['dataSourceName']"
         ></error-message>
       </div>
-      <div class="flex-grow">
+      <div class="w-1/2">
         <vezo-select
           label="Datasource Type"
           formControlName="dbType"
@@ -23,11 +31,11 @@
       </div>
     </div>
     <div class="my-4" *ngIf="form.value.dbUrl">
-      <span class="font-semibold"> DB Url:</span> {{ form.value.dbUrl }}
+      <span class="font-semibold"> DB URL:</span> {{ form.value.dbUrl }}
     </div>
     <ng-container *ngIf="form.controls['dbType'].value != 'API'">
-      <div class="flex">
-        <div class="mr-4">
+      <div class="flex w-full gap-6 justify-between items-center mt-4">
+        <div class="w-4/12">
           <vezo-input
             label="Datasource Host"
             formControlName="dbHost"
@@ -36,7 +44,7 @@
             [controlName]="form.controls['dbHost']"
           ></error-message>
         </div>
-        <div class="mr-4">
+        <div class="w-4/12">
           <vezo-input
             label="Datasource Port"
             formControlName="dbPort"
@@ -45,7 +53,7 @@
             [controlName]="form.controls['dbPort']"
           ></error-message>
         </div>
-        <div class="">
+        <div class="w-4/12">
           <vezo-input
             label="Datasource DB Name"
             formControlName="dbDatabaseName"
@@ -59,15 +67,14 @@
         <span class="font-semibold"> Driver Class Name:</span>
         {{ form.value.driverClassName }}
       </div>
-      <div class="flex">
-        <div class="mr-4">
+      <div class="flex w-full gap-6 justify-between items-center mt-4">
+        <div class="w-1/2">
           <vezo-input label="Username" formControlName="username"></vezo-input>
           <error-message
             [controlName]="form.controls['username']"
           ></error-message>
         </div>
-
-        <div class="mr-4">
+        <div class="w-1/2">
           <vezo-input
             label="Password"
             type="password"
@@ -79,14 +86,24 @@
         </div>
       </div>
     </ng-container>
+
     <ng-container *ngIf="form.controls['dbType'].value == 'API'">
-      <vezo-input label="API Url" formControlName="apiUrl"></vezo-input>
-      <error-message [controlName]="form.controls['apiUrl']"></error-message>
-      <vezo-textarea label="Token" formControlName="authToken"></vezo-textarea>
-      <error-message [controlName]="form.controls['authToken']"></error-message>
+      <div class="mt-2">
+        <vezo-input label="API Url" formControlName="apiUrl"></vezo-input>
+        <error-message [controlName]="form.controls['apiUrl']"></error-message>
+      </div>
+      <div class="mt-4">
+        <vezo-textarea
+          label="Token"
+          formControlName="authToken"
+        ></vezo-textarea>
+        <error-message
+          [controlName]="form.controls['authToken']"
+        ></error-message>
+      </div>
     </ng-container>
   </form>
-  <div class="text-right">
+  <div class="text-right mt-4">
     <vezo-button
       label="Save"
       [disabled]="!form.valid"

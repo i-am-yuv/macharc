@@ -254,6 +254,11 @@
     </div>
   </div>
 </div>
+<app-web-terminal [serviceId]="id" serviceType="webfrontend"></app-web-terminal>
+<app-web-terminal
+  [serviceId]="id"
+  serviceType="mobilefrontend"
+></app-web-terminal>
 
 <app-modal
   *ngIf="isModalOpen"

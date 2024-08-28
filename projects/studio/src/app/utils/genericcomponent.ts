@@ -17,7 +17,7 @@ export abstract class GenericComponent {
 
   abstract componentName: string;
 
-  search: string = '' ;
+  search: string = '';
 
   pageData?: Pagination = {};
 
@@ -38,7 +38,7 @@ export abstract class GenericComponent {
       this.pageData!.sortField = '';
       this.pageData!.sortDir = '';
       if (callBack) {
-        callBack(res);
+        callBack(this);
       }
       // {
       //     "sort": {
@@ -75,7 +75,8 @@ export abstract class GenericComponent {
   getData(ds: any, callBack?: (resData: any) => void) {
     this.dataService.getData(ds).then((res: any) => {
       this.dataSingle = res;
-      if (callBack) callBack(res);
+      this.form.patchValue({ ...res });
+      if (callBack) callBack(this);
     });
   }
   preSave() {}
@@ -97,11 +98,11 @@ export abstract class GenericComponent {
         .then((res: any) => {
           if (res) {
             this.visible = false;
-            // this.messageService.add({
-            //   severity: 'success',
-            //   detail: this.componentName + ' created',
-            //   summary: this.componentName + ' created',
-            // });
+            this.messageService.add({
+              severity: 'success',
+              detail: this.componentName + ' created',
+              summary: this.componentName + ' created',
+            });
             this.getAllData();
             this.postSave(res);
             this.postSaveShowModal(this.componentName, 'createdSuccess');
@@ -116,11 +117,11 @@ export abstract class GenericComponent {
         .then((res: any) => {
           if (res) {
             this.visible = false;
-            // this.messageService.add({
-            //   severity: 'success',
-            //   detail: this.componentName + ' updated',
-            //   summary: this.componentName + ' updated',
-            // });
+            this.messageService.add({
+              severity: 'success',
+              detail: this.componentName + ' updated',
+              summary: this.componentName + ' updated',
+            });
             this.getAllData();
             this.postSave(res);
             this.postSaveShowModal(this.componentName, 'updatedSuccess');

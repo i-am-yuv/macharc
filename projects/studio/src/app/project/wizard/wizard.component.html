@@ -32,7 +32,7 @@
             width: auto;
             border-radius: 12px;
             height: auto;
-            background: url('assets/projectBG_new.svg');
+            background: url(&quot;assets/projectBG_new.svg&quot;);
             background-size: cover;
             background-repeat: repeat;
             background-position: center;
@@ -187,6 +187,15 @@
                   ></vezo-input>
                 </div>
                 <div class="mt-8">
+                  <vezo-input
+                    [labelInfo]="labelStyle"
+                    label="Domain Name"
+                    placeholder="example.com"
+                    formControlName="domainName"
+                    className="h-11"
+                  ></vezo-input>
+                </div>
+                <div class="mt-8">
                   <vezo-textarea
                     [labelInfo]="labelStyle"
                     label="Project Description"
@@ -207,20 +216,26 @@
                 <!-- <div class="flex justify-center items-center cursor-pointer" (click)="saveData()" style="background-color: #4F46E5; border-radius: 4px; width: 338px;">
                                     <div class="p-3" style="font-size: 16px; font-weight: 600; color: #FFFFFF;">Get started</div>
                                 </div> -->
-                                <vezo-button label="SAVE" className="btn" labelClass="btn1" (click)="saveData()"
-                                        [disabled]="!form.valid"></vezo-button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
+                <vezo-button
+                  label="SAVE"
+                  className="btn"
+                  labelClass="btn1"
+                  (click)="saveData()"
+                  [disabled]="!form.valid"
+                ></vezo-button>
+              </div>
+            </form>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </div>
 <app-modal
   *ngIf="isModalOpen"
   [title]="modalTitle"
   [buttonText]="modalButtonText"
   [type]="modalType"
-  (close)="closeModal()">
+  (close)="closeModal()"
+>
 </app-modal>

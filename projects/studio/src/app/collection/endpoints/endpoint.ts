@@ -9,7 +9,7 @@ export interface Endpoint {
   description?: string;
   returnType?: string;
   // Stored as json
-  pathVariables?: string;
+  pathVariables?: any;
   api?: boolean;
   webclient?: boolean;
   webhook?: boolean;

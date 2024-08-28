@@ -45,7 +45,7 @@ export class CollectionComponent extends GenericComponent implements OnInit {
         '',
         [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)],
       ],
-      // customTableName: [''],
+      customTableName: [''],
       collectionKind: ['', Validators.required],
       crud: [],
       readonly: [],

@@ -53,6 +53,9 @@ export class FieldsComponent extends GenericComponent implements OnInit {
   ];
   currentDTO: any;
 
+  dtoSelectedFieldsReq: Field[] = [];
+  dtoSelectedFieldsRes: Field[] = [];
+
   dtoSelectedFields: [] = [];
   relationShipTypes: any[] = [
     'OneToMany',
@@ -69,6 +72,7 @@ export class FieldsComponent extends GenericComponent implements OnInit {
     private msgService: MessageService,
     messageService: MessageService,
     private route: ActivatedRoute,
+    private fieldS: FieldService
   ) {
     super(fieldService, messageService);
     this.collectionId = this.route.snapshot.paramMap.get('id');
@@ -104,6 +108,7 @@ export class FieldsComponent extends GenericComponent implements OnInit {
         this.collection = res;
         this.microserviceId = this.collection.microService?.id;
       });
+      this.getDtodata();
     }
     this.setDefaultDTO();
   }
@@ -150,10 +155,10 @@ export class FieldsComponent extends GenericComponent implements OnInit {
         // alert('This is ResponseDTO') ;
         var finalPayload: dtoPayloadItem[] = [];
         // Transforming the list for the correct payload format
-        for (var i = 0; i < this.dtoSelectedFields.length; i++) {
-          var tempObj: dtoPayloadItem = {};
-          tempObj.id = this.dtoSelectedFields[i];
-          finalPayload.push(tempObj);
+        for (var i = 0; i < this.dtoSelectedFieldsRes.length; i++) {
+          // var tempObj: dtoPayloadItem = {};
+          // tempObj.id = this.dtoSelectedFields[i];
+          finalPayload.push(this.dtoSelectedFieldsRes[i]);
         }
 
         this.collectionService
@@ -168,13 +173,18 @@ export class FieldsComponent extends GenericComponent implements OnInit {
             this.showGenerateDtoModel = false;
           })
           .catch((err) => {
-            this.msgService.add({
-              severity: 'success',
-              summary: 'Success',
-              detail: 'Response DTO Generated',
-            });
-            this.getAllData();
-            this.showGenerateDtoModel = false;
+            console.log('Inside Error');
+            console.log(err);
+            if (err.error ) {
+              this.msgService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Something went wrong',
+              });
+              this.getAllData();
+              this.showGenerateDtoModel = false;
+            }
+
           });
       }
     } else if (this.currentDTO == 'RequestDTO') {
@@ -183,10 +193,12 @@ export class FieldsComponent extends GenericComponent implements OnInit {
 
         var finalPayload: dtoPayloadItem[] = [];
         // Transforming the list for the correct payload format
-        for (var i = 0; i < this.dtoSelectedFields.length; i++) {
-          var tempObj: dtoPayloadItem = {};
-          tempObj.id = this.dtoSelectedFields[i];
-          finalPayload.push(tempObj);
+        for (var i = 0; i < this.dtoSelectedFieldsReq.length; i++) {
+          // var tempObj: dtoPayloadItem = {};
+          // tempObj.id = this.dtoSelectedFields[i];
+          // finalPayload.push(tempObj);
+          finalPayload.push(this.dtoSelectedFieldsReq[i]);
+
         }
         this.collectionService
           .generateRequestDTO(this.collectionId, finalPayload)
@@ -216,5 +228,27 @@ export class FieldsComponent extends GenericComponent implements OnInit {
   setFieldType(ft: string) {
     this.fieldType = ft;
     this.form.patchValue({ fieldType: ft });
+  }
+
+  getDtodata() {
+    if (this.collection) {
+      this.collectionService.getReqDto(this.collectionId)
+        .then((res: any) => {
+          if (res && res?.fields) {
+            console.log('dto fields');
+            console.log(res);
+            this.dtoSelectedFieldsReq = res.fields;
+          }
+        });
+
+      this.collectionService.getResDto(this.collectionId)
+        .then((res: any) => {
+          if ( res && res?.fields) {
+            console.log('dto fields');
+            console.log(res);
+            this.dtoSelectedFieldsRes = res.fields;
+          }
+        });
+    }
   }
 }
