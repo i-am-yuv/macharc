@@ -38,7 +38,7 @@ export abstract class GenericComponent {
       this.pageData!.sortField = '';
       this.pageData!.sortDir = '';
       if (callBack) {
-        callBack(res);
+        callBack(this);
       }
       // {
       //     "sort": {
