@@ -125,23 +125,10 @@
     </div>
 
     <!-- Web Terminal Code -->
-    <div>
-      <div class="mt-16">
-        <div class="flex my-4 space-x-4 place-items-center">
-          <h2 class="title mb-2 grow">Service Control</h2>
-          <vezo-button
-            label="Disconnect"
-            (click)="stopMessages()"
-          ></vezo-button>
-          <vezo-button label="Stop Server" (click)="stopServer()"></vezo-button>
-          <vezo-button
-            label="Start Server"
-            (click)="startServer()"
-          ></vezo-button>
-        </div>
-        <ng-terminal #term [minHeight]="200"></ng-terminal>
-      </div>
-    </div>
+    <app-web-terminal
+      [serviceId]="msId"
+      serviceType="backend"
+    ></app-web-terminal>
   </form>
 </div>
 

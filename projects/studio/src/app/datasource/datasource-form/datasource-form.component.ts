@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from '@splenta/vezo';
 import { GenericComponent } from '../../utils/genericcomponent';
 import { Datasource } from '../datasource';
@@ -19,6 +19,7 @@ export class DatasourceFormComponent
   data: Datasource[] = [];
   componentName: string = 'Datasource';
   override pageData = {};
+  id: string | null = '';
 
   dbTypes: any[] = [
     { name: 'PostgreSQL', defaultPort: '5432' },
@@ -34,7 +35,8 @@ export class DatasourceFormComponent
     dsService: DatasourceService,
     private router: Router,
     messageService: MessageService,
-    private dataSourceService: DatasourceService
+    private dataSourceService: DatasourceService,
+    private route: ActivatedRoute,
   ) {
     super(dsService, messageService);
     this.form = this.fb.group({
@@ -46,7 +48,7 @@ export class DatasourceFormComponent
       ],
       dbUrl: [''],
       dbHost: ['localhost'],
-      dbPort: ['',[Validators.required,Validators.maxLength(5)]],
+      dbPort: ['', [Validators.required, Validators.maxLength(5)]],
       dbDatabaseName: [''],
       username: [''],
       password: [''],
@@ -57,6 +59,10 @@ export class DatasourceFormComponent
   }
   ngOnInit(): void {
     this.getAllData();
+    this.id = this.route.snapshot.paramMap.get('id');
+    if (this.id) {
+      this.getData({ id: this.id });
+    }
   }
 
   override addData(): void {
@@ -81,9 +87,9 @@ export class DatasourceFormComponent
   }
   setDefaultPort() {
     var dbType = this.dbTypes.find(
-      (t: any) => t.name === this.form.value.dbType
+      (t: any) => t.name === this.form.value.dbType,
     );
-    this.form.patchValue({ dbPort: dbType.defaultPort });
+    if (dbType) this.form.patchValue({ dbPort: dbType.defaultPort });
   }
 
   override postSave(data: any) {

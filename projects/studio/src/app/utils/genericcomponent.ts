@@ -75,7 +75,8 @@ export abstract class GenericComponent {
   getData(ds: any, callBack?: (resData: any) => void) {
     this.dataService.getData(ds).then((res: any) => {
       this.dataSingle = res;
-      if (callBack) callBack(res);
+      this.form.patchValue({ ...res });
+      if (callBack) callBack(this);
     });
   }
   preSave() {}

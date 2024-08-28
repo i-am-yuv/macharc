@@ -101,6 +101,7 @@ import { Properties2Component } from './screen/properties2/properties2.component
 import { TemplatesComponent } from './screen/templates/templates.component';
 import { SettingsComponent } from './settings/settings.component';
 import { ContenteditableValueAccessor } from './utils/constenteditable.directive';
+import { WebTerminalComponent } from './web-terminal/web-terminal.component';
 
 @NgModule({
   declarations: [
@@ -157,6 +158,7 @@ import { ContenteditableValueAccessor } from './utils/constenteditable.directive
     PagePreviewComponent,
     NestedPreviewComponent,
     ModalComponent,
+    WebTerminalComponent,
   ],
   imports: [
     BrowserModule,
