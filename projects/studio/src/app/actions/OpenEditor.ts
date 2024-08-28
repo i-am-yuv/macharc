@@ -170,29 +170,47 @@ export class OpenEditor {
     actions.showSetResponseDataEditor = !actions.showSetResponseDataEditor;
   }
   static openNavigateEditor(actions: ActionsComponent, editor: any) {
+   
     actions.navigateEditor = editor;
 
     // Code for data population
-    if (editor.step.properties?.screen) {
+    if (editor.step.properties?.screen?.id == null && editor.step.properties?.screen !== null ) {
       actions.currentScreenToNavigate = {};
       actions.navigateToMappedData = [];
       actions.finalMappedParamsList = [];
       actions.manualEntryStates = [];
+      actions.externalLinkValue = '';
+      actions.currentNavigationType = 'navigateToPage';
     } else {
       actions.currentScreenToNavigate = editor.step.properties.screen;
       actions.mappedObjList = editor.step.properties.mappedData;
       actions.finalMappedParamsList = editor.step.properties.mappedData;
       actions.navigateToMappedData = [];
+      actions.currentNavigationType = editor.step.properties.navigationType;
 
-      for (var i = 0; i < actions.mappedObjList.length; i++) {
-        var oneObj = actions.mappedObjList[i];
-        actions.navigateToMappedData.push(oneObj.mappedValue);
-        if (oneObj.mappedValue?.id == null) {
-          actions.manualEntryStates[i] = true;
-        } else {
-          actions.manualEntryStates[i] = false;
+      if (actions.currentNavigationType == 'navigateToPage') {
+        actions.externalLinkValue = '' ;
+        for (var i = 0; i < actions.mappedObjList.length; i++) {
+          var oneObj = actions.mappedObjList[i];
+          actions.navigateToMappedData.push(oneObj.mappedValue);
+          if (oneObj.mappedValue?.id == null) {
+            actions.manualEntryStates[i] = true;
+          } else {
+            actions.manualEntryStates[i] = false;
+          }
         }
       }
+      else {
+        actions.currentScreenToNavigate = {};
+        actions.navigateToMappedData = [];
+        actions.finalMappedParamsList = [];
+        actions.manualEntryStates = [];
+        // console.log('2134');
+
+        actions.externalLinkValue = editor.step.properties.externalLink;
+      }
+
+
     }
     actions.navigatePopup = !actions.navigatePopup;
   }

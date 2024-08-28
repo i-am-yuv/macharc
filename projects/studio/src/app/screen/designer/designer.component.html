@@ -218,7 +218,7 @@
           <div class="flex-none w-4/5 flex justify-center items-center">
             <div class="flex justify-center items-center w-full">
               <div class="flex w-full">
-                <div class="flex-none w-2/6 flex justify-center items-center">
+                <!-- <div class="flex-none w-2/6 flex justify-center items-center">
                   <div
                     class="text-center"
                     style="color: #4038ca; font-size: 13px; font-weight: 400"
@@ -228,8 +228,8 @@
                       screenData.microService?.microServiceName | uppercase
                     }}</span>
                   </div>
-                </div>
-                <div class="flex-none w-2/6 flex justify-center items-center">
+                </div> -->
+                <div class="flex-none w-1/2 flex justify-center items-center">
                   <div
                     class="text-center"
                     style="color: #4038ca; font-size: 13px; font-weight: 400"
@@ -238,7 +238,7 @@
                     <span>{{ screenData.screenName | uppercase }}</span>
                   </div>
                 </div>
-                <div class="flex-none w-2/6 flex justify-center items-center">
+                <div class="flex-none w-1/2 flex justify-center items-center">
                   <div class="cursor-pointer" (click)="generateComponent()">
                     <vezo-icon
                       icon="cursorArrowRays"
@@ -1383,13 +1383,14 @@
   <ng-template vTemplate="content">
     <div style="height: 65vh; overflow-y: auto">
       <form [formGroup]="form">
-        <vezo-select
+        <!-- No need of microservice mapping for pages -->
+        <!-- <vezo-select
           optionLabel="microServiceName"
           [items]="microserviceItems"
           formControlName="microService"
           label="Microservice"
           (ngModelChange)="getCollectionItems()"
-        ></vezo-select>
+        ></vezo-select> -->
         <vezo-input label="Page Name" formControlName="screenName"></vezo-input>
         <error-message
           [controlName]="form.controls['screenName']"

@@ -653,7 +653,7 @@ export class DesignerComponent
       screenDescription: [],
       screenDefinition: [],
       collection: [],
-      microService: [],
+      // microService: [],
       application: [],
       process: [],
       enableAuth: [true],
@@ -710,13 +710,13 @@ export class DesignerComponent
   override editData(ds: any): void {
     super.editData(ds);
     this.selectedParams = ds.selectedParams;
-    if (this.selectedParams.length > 0) {
+    console.log(this.selectedParams );
+    if (this.selectedParams[0].varname !== "" && this.selectedParams[0].dataType !== "") {
       this.isParamvalue = 'yes';
     } else {
       this.isParamvalue = 'no';
     }
-
-    this.getCollectionItems();
+    //this.getCollectionItems();
   }
 
   deleteThisPage(item: any) {
