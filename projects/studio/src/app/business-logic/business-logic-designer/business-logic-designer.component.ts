@@ -53,8 +53,7 @@ function createDefinition() {
 })
 export class BusinessLogicDesignerComponent
   extends GenericComponent
-  implements OnInit
-{
+  implements OnInit {
   form!: FormGroup<any>;
   data: Collection[] = [];
   allMicroservice: MicroService[] = [];
@@ -192,13 +191,16 @@ export class BusinessLogicDesignerComponent
       if (res) {
         this.wf = res;
         this.dataDef = this.wf.workflowDefinition;
+        if (this.wf.microService?.id!) {
+          this.getAllModels();
+          this.getAllPojos();
+        }
+
         if (this.dataDef) {
           this.definition = JSON.parse(this.dataDef);
           this.updateDefinitionJSON();
           this.populateEditorFormsData();
         }
-        this.getAllModels();
-        this.getAllPojos();
       }
     });
   }
@@ -206,6 +208,8 @@ export class BusinessLogicDesignerComponent
     if (this.definition.properties['collections']) {
       this.selectedModels = this.definition.properties['collections'];
       this.makeFieldListFromSelectedModel();
+      console.log('these are selected modal');
+      console.log(this.selectedModels);
     }
     !this.definition.properties['returnType']
       ? (this.resType = 'void')
@@ -492,8 +496,9 @@ export class BusinessLogicDesignerComponent
       this.allEndpointsByModel = [];
       this.allFieldsByReqDto = [];
       this.reqDtoModelMappedList = [];
-      // this.selectedModelForDtoField = [];
-    } else {
+      this.selectedModelForDtoField = [];
+    }
+    else {
       for (var i = 0; i < this.definition.sequence.length; i++) {
         var currDefination = this.definition.sequence[i];
         if (currDefination.id == editor.step.id) {
@@ -537,6 +542,7 @@ export class BusinessLogicDesignerComponent
       this.selectedResPojo = {};
       this.pojoModelMappedList = [];
       this.selectedPojoFields = [];
+      this.manualEntryStatesSetRes= [] ;
     } else {
       for (var i = 0; i < this.definition.sequence.length; i++) {
         var currDefination = this.definition.sequence[i];
@@ -546,11 +552,21 @@ export class BusinessLogicDesignerComponent
           this.pojoModelMappedList = currDefination.properties['mappedData'];
           this.getPojoFields(this.selectedResPojo);
           this.selectedModelForsetResField = [];
-
+          console.log('pojoComplete');
+          console.log(this.pojoModelMappedList);
           for (var j = 0; j < this.pojoModelMappedList.length; j++) {
             var newObj = this.pojoModelMappedList[j];
+            if( newObj.mappedModelField?.id  == null )
+              {
+                this.manualEntryStatesSetRes[j] = true ; 
+              }
+              else{
+                this.manualEntryStatesSetRes[j] = false ; 
+              }
+  
             this.selectedModelForsetResField.push(newObj.mappedModelField);
           }
+          console.log(this.selectedModelForsetResField);
         }
       }
     }
@@ -575,6 +591,7 @@ export class BusinessLogicDesignerComponent
   saveDataModel: any = {}; // This is Collection
   selectedResPojo: any;
   selectedPojoFields: Field[] = [];
+  manualEntryStatesSetRes: boolean[] = [];
 
   selectedParams: InputParam[] | any = [{ dataType: '', varName: '' }];
 
@@ -598,7 +615,7 @@ export class BusinessLogicDesignerComponent
       .then((res: any) => {
         this.allModels = res;
       })
-      .catch((err) => {});
+      .catch((err) => { });
   }
 
   getAllPojos() {
@@ -607,7 +624,7 @@ export class BusinessLogicDesignerComponent
       .then((res: any) => {
         this.allPojos = res;
       })
-      .catch((err) => {});
+      .catch((err) => { });
   }
 
   // Save Models Code Start
@@ -755,7 +772,7 @@ export class BusinessLogicDesignerComponent
     this.showFetchDataPopup = false;
   }
 
-  onSelectionChange(event: any) {}
+  onSelectionChange(event: any) { }
 
   // Loop Code Start
   updateConditionsLoop(editor: any) {
@@ -1014,22 +1031,58 @@ export class BusinessLogicDesignerComponent
     });
   }
 
-  modelSelectedForSetResData(pojoField: any, modelSelected: any) {
-    const existingIndex = this.pojoModelMappedList.findIndex(
-      (item: any) => item.pojoField.id === pojoField.id,
-    );
+  // modelSelectedForSetResData(pojoField: any, modelSelected: any , index : any) {
+  //   const existingIndex = this.pojoModelMappedList.findIndex(
+  //     (item: any) => item.pojoField.id === pojoField.id,
+  //   );
 
-    if (existingIndex !== -1) {
-      this.pojoModelMappedList[existingIndex].mappedModelField = modelSelected;
+  //   if (existingIndex !== -1) {
+  //     this.pojoModelMappedList[existingIndex].mappedModelField = modelSelected;
+  //   } else {
+  //     this.currPojoModel = {
+  //       pojoField: pojoField,
+  //       mappedModelField: modelSelected,
+  //     };
+
+  //     this.pojoModelMappedList.push(this.currPojoModel);
+  //   }
+  // }
+
+  modelSelectedForSetResData(pojoField: any, modelSelected: any , index : any) {
+    console.log(modelSelected);
+    if (modelSelected === 'manual') {
+      this.manualEntryStatesSetRes[index] = true;
     } else {
-      this.currPojoModel = {
-        pojoField: pojoField,
-        mappedModelField: modelSelected,
-      };
-
-      this.pojoModelMappedList.push(this.currPojoModel);
+      this.manualEntryStatesSetRes[index] = false;
+      const mappedObj = this.pojoModelMappedList.find((obj: any) => obj?.pojoField.id === pojoField.id);
+      if (mappedObj) {
+        mappedObj['mappedModelField'] = modelSelected;
+      } else {
+        this.pojoModelMappedList.push({
+          pojoField: pojoField,
+          mappedModelField: modelSelected,
+        }) ;
+      }
     }
   }
+
+  modelSelectedForSetResDataManual(pojoField: any, modelSelected: any, index: number) {
+    const mappedObj = this.pojoModelMappedList.find((obj: any) => obj?.pojoField.id === pojoField.id);
+    if (mappedObj) {
+      mappedObj['mappedModelField'] = modelSelected;
+    } else {
+      this.reqDtoModelMappedList.push({
+        pojoField: pojoField,
+        mappedModelField: modelSelected,
+      });
+    }
+  }
+
+  toggleManualEntrySetRes(index: number) {
+    this.manualEntryStatesSetRes[index] = !this.manualEntryStatesSetRes[index];
+  }
+
+
 
   updateSetResDataEditor(editor: any) {
     this.saveThisSetResData(editor.step, editor.context);

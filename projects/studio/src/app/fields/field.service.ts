@@ -14,7 +14,7 @@ export class FieldService extends GenericService {
   }
 
   async getFieldsByRequestDto(reqDtoId: any) {
-    var url = this.apiurl + '/field/public/requestDto/'+encodeURIComponent(reqDtoId)+ '/fields';
+    var url = this.apiurl + '/field/requestDto/'+encodeURIComponent(reqDtoId)+ '/fields';
     const res = await lastValueFrom(this.http.get<any>(url ));
     return res;
   }

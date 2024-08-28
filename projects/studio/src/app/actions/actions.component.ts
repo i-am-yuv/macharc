@@ -453,6 +453,7 @@ export class ActionsComponent extends GenericComponent implements OnInit {
   }
 
   openNavigateEditor(editor: any) {
+    console.log('navigate editor') ;
     OpenEditor.openNavigateEditor(this, editor);
   }
 
@@ -597,6 +598,11 @@ export class ActionsComponent extends GenericComponent implements OnInit {
 
   // Navigate To Code Start
 
+  navigationOptions: any[] = [{ label: 'Navigate To Page', value: 'navigateToPage' }, { label: 'External Link', value: 'externalLink' }];
+  currentNavigationType: string = 'navigateToPage';
+
+  externalLinkValue !: string;
+
   selectTheScreen(screen: Screen) {
     this.currentScreenToNavigate = screen;
   }
@@ -619,8 +625,19 @@ export class ActionsComponent extends GenericComponent implements OnInit {
     sequence: any,
     context: GlobalEditorContext | StepEditorContext,
   ) {
-    sequence.properties['screen'] = this.currentScreenToNavigate;
-    sequence.properties['mappedData'] = this.finalMappedParamsList;
+    sequence.properties['navigationType'] = this.currentNavigationType;
+    if (this.currentNavigationType == 'navigateToPage') {
+      sequence.properties['screen'] = this.currentScreenToNavigate;
+      sequence.properties['mappedData'] = this.finalMappedParamsList;
+
+      sequence.properties['externalLink'] = '';
+    }
+    else {
+      sequence.properties['externalLink'] = this.externalLinkValue;
+
+      sequence.properties['screen'] = null;
+      sequence.properties['mappedData'] = null;
+    }
     context.notifyPropertiesChanged();
   }
 
