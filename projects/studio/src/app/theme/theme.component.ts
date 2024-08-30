@@ -3,13 +3,13 @@ import { GenericComponent } from '../utils/genericcomponent';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Font, FontWeight, Theme, ThemeData } from './theme';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService } from '@splenta/vezo/src/public-api';
 import { ApplicationService } from '../application/application.service';
 import { CollectionService } from '../collection/collection.service';
 import { FieldService } from '../fields/field.service';
 import { MicroserviceService } from '../microservice/microservice.service';
 import { ScreenService } from '../screen/screen.service';
 import { ThemeService } from './themeservice.service';
+import { MessageService } from '@splenta/vezo';
 
 @Component({
   selector: 'app-theme',

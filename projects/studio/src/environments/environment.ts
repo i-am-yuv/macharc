@@ -1,7 +1,7 @@
 export const environment = {
   production: false,
   // apiurl: 'https://studio.macharc.com/api',
-  apiurl: 'http://10.20.3.69:8222/api',
+  apiurl: 'http://10.20.4.234:8222/api',
   // apiurl: 'http://10.20.3.70:8222/api',
   // gitServerUrl: 'http://localhost:8282'
   gitServerUrl: 'http://localhost:8282',

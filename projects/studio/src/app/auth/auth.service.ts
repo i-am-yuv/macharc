@@ -42,11 +42,6 @@ export class AuthService {
     return status;
   }
 
-  getAuthToken() {
-    const token = sessionStorage.getItem("token");
-    return token;
-  }
-
   getRoles() {
     const token = localStorage.getItem('token');
     let jwt: any = atob(token!.split('.')[1]);
